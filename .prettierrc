@@ -1,0 +1,42 @@
+{
+	"printWidth": 120,
+	"tabWidth": 4,
+	"useTabs": true,
+	"semi": true,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"bracketSpacing": true,
+	"arrowParens": "always",
+	"endOfLine": "lf",
+	"plugins": [
+		"@trivago/prettier-plugin-sort-imports",
+		"prettier-plugin-tailwindcss",
+		"prettier-plugin-classnames",
+		"prettier-plugin-merge"
+	],
+	"tailwindStylesheet": "./src/app/globals.css",
+	"tailwindFunctions": ["clsx", "cn", "cva", "twMerge"],
+	"customFunctions": ["clsx", "cn", "cva", "twMerge"],
+	"importOrder": [
+		"^react",
+		"^next(?!-intl)(?:$|\\/.*)$",
+		"^@tanstack/react-query(|.*)$",
+		"^@suspensive/(|.*)$",
+		"^@/apis/(|.*)$",
+		"^@/types/apis(|.*)$",
+		"^@/types/(|.*)$",
+		"^@/hooks/(|.*)$",
+		"^next-intl(?:$|\\/.*)$",
+		"^@/i18n(|.*)$",
+		"^@/lib/(|.*)$",
+		"^zod",
+		"^@/forms/(|.*)$",
+		"<THIRD_PARTY_MODULES>",
+		"^@/components/(|.*)$",
+		"^@/public/(|.*)$",
+		"^[./]"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+	"importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"]
+}
