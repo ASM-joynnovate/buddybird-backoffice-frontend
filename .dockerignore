@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.husky
+.env
+.env*.local
+*.md
+Dockerfile*
+.dockerignore
+.vscode
+.idea
+coverage
+.DS_Store
+.claude
