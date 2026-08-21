@@ -1,7 +1,7 @@
 export default interface ApiResponse {
-	success: boolean;
 	message: string;
 	data: Record<string, unknown> | null | string | number | object;
+	meta?: Record<string, unknown> | null;
 }
 
 export class ApiError {

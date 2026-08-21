@@ -34,3 +34,11 @@ export const camelize = <T>(obj: T): SnakeToCamel<T> => {
 	}
 	return obj as SnakeToCamel<T>;
 };
+
+export function formatMs(ms: number): string {
+	const minutes = Math.floor(ms / 60000);
+	const seconds = Math.floor((ms % 60000) / 1000);
+	const millis = ms % 1000;
+
+	return `${minutes}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+}

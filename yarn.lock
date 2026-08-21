@@ -378,6 +378,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@colors/colors@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@colors/colors@npm:1.5.0"
+  checksum: 10c0/eb42729851adca56d19a08e48d5a1e95efd2a32c55ae0323de8119052be0510d4b7a1611f2abcbf28c044a6c11e6b7d38f99fccdad7429300c37a8ea5fb95b44
+  languageName: node
+  linkType: hard
+
+"@commander-js/extra-typings@npm:^13.0.0":
+  version: 13.1.0
+  resolution: "@commander-js/extra-typings@npm:13.1.0"
+  peerDependencies:
+    commander: ~13.1.0
+  checksum: 10c0/ff799f0641f68855aa73c976912a607c25d564df34fd8e262927a80b19f6cccd882fe7ce098a0e072a497fd0020cbd19fd1e4d5cc98a461cd6623abf8ed5f4e7
+  languageName: node
+  linkType: hard
+
+"@date-fns/tz@npm:^1.4.1":
+  version: 1.5.0
+  resolution: "@date-fns/tz@npm:1.5.0"
+  checksum: 10c0/4ef25eedd55924938fa81b23b949a3425201597e2007f5323db54d50fc19283eca5e2a7963c3d82c99b3adf273e9ea9bc7adfd1c9076e15badd99c593a984ffa
+  languageName: node
+  linkType: hard
+
 "@dotenvx/dotenvx@npm:^1.48.4":
   version: 1.75.1
   resolution: "@dotenvx/dotenvx@npm:1.75.1"
@@ -1113,6 +1136,45 @@ __metadata:
   version: 4.0.0
   resolution: "@sindresorhus/merge-streams@npm:4.0.0"
   checksum: 10c0/482ee543629aa1933b332f811a1ae805a213681ecdd98c042b1c1b89387df63e7812248bb4df3910b02b3cc5589d3d73e4393f30e197c9dde18046ccd471fc6b
+  languageName: node
+  linkType: hard
+
+"@suspensive/react-query-4@npm:^3.21.3":
+  version: 3.21.3
+  resolution: "@suspensive/react-query-4@npm:3.21.3"
+  peerDependencies:
+    "@tanstack/react-query": "*"
+    react: ^18 || ^19
+  checksum: 10c0/c12eff06fa6d2f113fd486f86a4c670aa2b938283d4a7cc1a7cb20debed883a600a78c8c2649be3a6cdb2f45961387457a64e1a630b0266477f604501435bcf7
+  languageName: node
+  linkType: hard
+
+"@suspensive/react-query-5@npm:^3.21.3":
+  version: 3.21.3
+  resolution: "@suspensive/react-query-5@npm:3.21.3"
+  peerDependencies:
+    "@tanstack/react-query": "*"
+    react: ^18 || ^19
+  checksum: 10c0/e3eaa72100a182697bec823894388965dd1512bb9179992e8231645176210153db1eefb789d77f0966b83c35485833a74d56984d6f13b1ff4ba6f28c417a290e
+  languageName: node
+  linkType: hard
+
+"@suspensive/react-query@npm:^3.21.3":
+  version: 3.21.3
+  resolution: "@suspensive/react-query@npm:3.21.3"
+  dependencies:
+    "@commander-js/extra-typings": "npm:^13.0.0"
+    "@suspensive/react-query-4": "npm:^3.21.3"
+    "@suspensive/react-query-5": "npm:^3.21.3"
+    cli-table3: "npm:^0.6.5"
+    commander: "npm:^13.0.0"
+  peerDependencies:
+    "@tanstack/react-query": ^4.44.0 || ^5.82.0
+    react: ^18 || ^19
+  bin:
+    srq: dist/bin/cli.cjs
+    suspensive-react-query: dist/bin/cli.cjs
+  checksum: 10c0/d367631ee9d54686063d2dbf2cd5c2662bc97635dce7f017c3aa0ff0325dee89d190cd3181b39c312f791cd3201c0f0ce15e7974b4378eab2c019b09b111f70f
   languageName: node
   linkType: hard
 
@@ -2138,6 +2200,7 @@ __metadata:
   dependencies:
     "@base-ui/react": "npm:^1.7.0"
     "@suspensive/react": "npm:^3.21.3"
+    "@suspensive/react-query": "npm:^3.21.3"
     "@tailwindcss/postcss": "npm:^4"
     "@tanstack/eslint-plugin-query": "npm:^5.101.4"
     "@tanstack/react-query": "npm:^5.101.4"
@@ -2148,6 +2211,7 @@ __metadata:
     "@types/react-dom": "npm:^19"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
+    date-fns: "npm:^4.4.0"
     eslint: "npm:^9"
     eslint-config-next: "npm:16.3.1"
     eslint-config-prettier: "npm:^10.1.8"
@@ -2161,6 +2225,7 @@ __metadata:
     prettier-plugin-merge: "npm:^0.10.1"
     prettier-plugin-tailwindcss: "npm:^0.8.1"
     react: "npm:19.2.8"
+    react-day-picker: "npm:^10.0.1"
     react-dom: "npm:19.2.8"
     shadcn: "npm:^4.18.0"
     sonner: "npm:^2.0.8"
@@ -2168,6 +2233,7 @@ __metadata:
     tailwindcss: "npm:^4"
     tw-animate-css: "npm:^1.4.0"
     typescript: "npm:^5"
+    wavesurfer.js: "npm:^7.12.11"
   languageName: unknown
   linkType: soft
 
@@ -2275,6 +2341,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cli-table3@npm:^0.6.5":
+  version: 0.6.5
+  resolution: "cli-table3@npm:0.6.5"
+  dependencies:
+    "@colors/colors": "npm:1.5.0"
+    string-width: "npm:^4.2.0"
+  dependenciesMeta:
+    "@colors/colors":
+      optional: true
+  checksum: 10c0/d7cc9ed12212ae68241cc7a3133c52b844113b17856e11f4f81308acc3febcea7cc9fd298e70933e294dd642866b29fd5d113c2c098948701d0c35f09455de78
+  languageName: node
+  linkType: hard
+
 "client-only@npm:0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
@@ -2316,6 +2395,13 @@ __metadata:
   version: 11.1.0
   resolution: "commander@npm:11.1.0"
   checksum: 10c0/13cc6ac875e48780250f723fb81c1c1178d35c5decb1abb1b628b3177af08a8554e76b2c0f29de72d69eef7c864d12613272a71fabef8047922bc622ab75a179
+  languageName: node
+  linkType: hard
+
+"commander@npm:^13.0.0":
+  version: 13.1.0
+  resolution: "commander@npm:13.1.0"
+  checksum: 10c0/7b8c5544bba704fbe84b7cab2e043df8586d5c114a4c5b607f83ae5060708940ed0b5bd5838cf8ce27539cde265c1cbd59ce3c8c6b017ed3eec8943e3a415164
   languageName: node
   linkType: hard
 
@@ -2484,6 +2570,13 @@ __metadata:
     es-errors: "npm:^1.3.0"
     is-data-view: "npm:^1.0.1"
   checksum: 10c0/fa7aa40078025b7810dcffc16df02c480573b7b53ef1205aa6a61533011005c1890e5ba17018c692ce7c900212b547262d33279fde801ad9843edc0863bf78c4
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.1.0, date-fns@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "date-fns@npm:4.4.0"
+  checksum: 10c0/988f0a13db183f5dfc85c36bbb6847a9c135a9225888bbea4005876ec15539a8613c21a07370a4e7ea543918d5a1cafb423c528b42cdbbde5fdfddb178126b21
   languageName: node
   linkType: hard
 
@@ -2678,6 +2771,13 @@ __metadata:
   version: 10.6.0
   resolution: "emoji-regex@npm:10.6.0"
   checksum: 10c0/1e4aa097bb007301c3b4b1913879ae27327fdc48e93eeefefe3b87e495eb33c5af155300be951b4349ff6ac084f4403dc9eff970acba7c1c572d89396a9a32d7
+  languageName: node
+  linkType: hard
+
+"emoji-regex@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "emoji-regex@npm:8.0.0"
+  checksum: 10c0/b6053ad39951c4cf338f9092d7bfba448cdfd46fe6a2a034700b149ac9ffbc137e361cbd3c442297f86bed2e5f7576c1b54cc0a6bf8ef5106cc62f496af35010
   languageName: node
   linkType: hard
 
@@ -4034,6 +4134,13 @@ __metadata:
   dependencies:
     call-bound: "npm:^1.0.3"
   checksum: 10c0/818dff679b64f19e228a8205a1e2d09989a98e98def3a817f889208cfcbf918d321b251aadf2c05918194803ebd2eb01b14fc9d0b2bea53d984f4137bfca5e97
+  languageName: node
+  linkType: hard
+
+"is-fullwidth-code-point@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "is-fullwidth-code-point@npm:3.0.0"
+  checksum: 10c0/bb11d825e049f38e04c06373a8d72782eee0205bda9d908cc550ccb3c59b99d750ff9537982e01733c1c94a58e35400661f57042158ff5e8f3e90cf936daf0fc
   languageName: node
   linkType: hard
 
@@ -5601,6 +5708,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-day-picker@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "react-day-picker@npm:10.0.1"
+  dependencies:
+    "@date-fns/tz": "npm:^1.4.1"
+    date-fns: "npm:^4.1.0"
+  peerDependencies:
+    "@types/react": ">=16.8.0"
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/2ca2690f5e8c22b0fd24079b68959110ec199ec7d5ac74f26cfe6dad3cadf7d781458a9a654673dd47009e4fbb8548711ec0ae048e41dd3cf1d4ede16dadad55
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:19.2.8":
   version: 19.2.8
   resolution: "react-dom@npm:19.2.8"
@@ -6217,6 +6340,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string-width@npm:^4.2.0":
+  version: 4.2.3
+  resolution: "string-width@npm:4.2.3"
+  dependencies:
+    emoji-regex: "npm:^8.0.0"
+    is-fullwidth-code-point: "npm:^3.0.0"
+    strip-ansi: "npm:^6.0.1"
+  checksum: 10c0/1e525e92e5eae0afd7454086eed9c818ee84374bb80328fc41217ae72ff5f065ef1c9d7f72da41de40c75fa8bb3dee63d92373fd492c84260a552c636392a47b
+  languageName: node
+  linkType: hard
+
 "string-width@npm:^7.2.0":
   version: 7.2.0
   resolution: "string-width@npm:7.2.0"
@@ -6806,6 +6940,13 @@ __metadata:
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: 10c0/f15d588d79f3675135ba783c91a4083dcd290a2a5be9fcb6514220a1634e23df116847b1cc51f66bfb0644cf9353b2abb7815ae499bab06e46dd33c1a6bf1f4f
+  languageName: node
+  linkType: hard
+
+"wavesurfer.js@npm:^7.12.11":
+  version: 7.12.11
+  resolution: "wavesurfer.js@npm:7.12.11"
+  checksum: 10c0/e08b0fb41d605fc9d88b956795a89f8fef3c1df3a896ae9f45c236a6e2769ee6ae836e42b6d7e147e775ed687761db40a216f59c0b797aea07b916274dfd665c
   languageName: node
   linkType: hard
 

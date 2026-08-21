@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import Providers from '@/providers';
 import { Toaster } from 'sonner';
 
 import './globals.css';
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 	return (
 		<html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
 			<body className="flex min-h-full flex-col">
-				{children}
+				<Providers>{children}</Providers>
 				<Toaster richColors expand closeButton />
 			</body>
 		</html>
