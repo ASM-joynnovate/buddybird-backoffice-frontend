@@ -1,6 +1,6 @@
 import Header from '@/components/header';
 
-export default function Layout({ children }: LayoutProps<'/(backoffice)'>) {
+export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
 		<div className="flex min-h-full flex-col">
 			<Header />

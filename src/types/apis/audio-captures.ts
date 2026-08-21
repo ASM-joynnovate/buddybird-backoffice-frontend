@@ -12,10 +12,10 @@ export interface GetAudioCaptureDetailResponse extends ApiResponse {
 	data: AudioCaptureDetail;
 }
 
-export interface AudioCaptureListParams extends PaginationParams {
+export type AudioCaptureListParams = PaginationParams & {
 	firebaseAnonUid?: string;
 	wordLabel?: string;
 	labelStatus?: LabelStatusEnum;
 	dateFrom?: string;
 	dateTo?: string;
-}
+};

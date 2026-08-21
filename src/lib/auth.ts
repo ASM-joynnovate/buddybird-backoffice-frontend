@@ -4,6 +4,7 @@ export const BACKOFFICE_PASSWORD_HEADER = 'X-Backoffice-Password';
 const MAX_AGE = 60 * 60 * 24 * 3;
 
 export function getPasswordFromBrowser(): string {
+	if (typeof document === 'undefined') return '';
 	const match = document.cookie.match(new RegExp(`${BACKOFFICE_COOKIE_NAME}=([^;]+)`));
 	return match ? decodeURIComponent(match[1]) : '';
 }

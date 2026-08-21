@@ -16,14 +16,14 @@ export type SnakeToCamel<T> =
 
 export type CamelCase<S extends string> = S extends `${infer T}_${infer U}` ? `${Capitalize<T>}${CamelCase<U>}` : S;
 
-export interface PaginationParams {
+export type PaginationParams = {
 	page?: number;
 	countByPage?: number;
-}
+};
 
-export interface PaginationMeta {
+export type PaginationMeta = {
 	currentPage: number;
 	totalPageCount: number;
 	isFirst: boolean;
 	isLast: boolean;
-}
+};
