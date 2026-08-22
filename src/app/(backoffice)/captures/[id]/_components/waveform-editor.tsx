@@ -62,13 +62,17 @@ export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }:
 
 		regions.clearRegions();
 		capture.segments.forEach((seg) => {
-			regions.addRegion({
+			const region = regions.addRegion({
 				id: seg.id,
 				start: seg.startMs / 1000,
 				end: seg.endMs / 1000,
 				color: 'rgba(37, 99, 235, 0.2)',
 				drag: true,
 				resize: true,
+			});
+			region.element?.querySelectorAll<HTMLElement>('[part*="region-handle"]').forEach((el) => {
+				el.style.width = '12px';
+				el.style.backgroundColor = 'rgba(37, 99, 235, 0.35)';
 			});
 		});
 	}, [capture.segments]);
@@ -161,7 +165,7 @@ export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }:
 					재생
 				</Button>
 			</div>
-			<div ref={containerRef} className="rounded-md bg-muted" />
+			<div ref={containerRef} className="touch-action-none rounded-md bg-muted" />
 		</div>
 	);
 }
