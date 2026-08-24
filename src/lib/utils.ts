@@ -35,6 +35,18 @@ export const camelize = <T>(obj: T): SnakeToCamel<T> => {
 	return obj as SnakeToCamel<T>;
 };
 
+export async function downloadFile(url: string) {
+	const res = await fetch(url);
+	const blob = await res.blob();
+	const blobUrl = URL.createObjectURL(blob);
+	const filename = new URL(url).pathname.split('/').pop() ?? 'download';
+	const a = document.createElement('a');
+	a.href = blobUrl;
+	a.download = filename;
+	a.click();
+	URL.revokeObjectURL(blobUrl);
+}
+
 export function formatMs(ms: number): string {
 	const minutes = Math.floor(ms / 60000);
 	const seconds = Math.floor((ms % 60000) / 1000);

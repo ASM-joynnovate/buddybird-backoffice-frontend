@@ -5,9 +5,9 @@ import type { LabelCategory } from '@/types/label';
 
 import { useAssignAudioSegmentLabel, useDeleteAudioSegment } from '@/hooks/apis/use-audio-segments';
 
-import { cn, formatMs } from '@/lib/utils';
+import { cn, downloadFile, formatMs } from '@/lib/utils';
 
-import { PlayIcon, XIcon } from 'lucide-react';
+import { DownloadIcon, PlayIcon, XIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -46,62 +46,76 @@ export default function AudioSegmentItem({
 
 	return (
 		<div
-			className={cn('flex items-start gap-3 border-b px-4 py-2 last:border-b-0', isSelected && 'bg-accent/5')}
+			className={cn('flex flex-col gap-1 border-b px-4 py-2 last:border-b-0', isSelected && 'bg-accent/5')}
 			onClick={() => onSelect(seg.id)}
 		>
-			<Button
-				variant="outline"
-				size="icon-sm"
-				className="mt-0.5 shrink-0 rounded-full"
-				onClick={(e) => {
-					e.stopPropagation();
-					onPlay(seg.id);
-				}}
-			>
-				<PlayIcon className="size-3" />
-			</Button>
-			<div className="flex-1">
+			<div className="flex items-center gap-3">
 				<div className="text-xs text-muted-foreground tabular-nums">
 					{formatMs(seg.startMs)} – {formatMs(seg.endMs)}
 				</div>
-				<div className="mt-1">
-					<Select
-						value={seg.labelOptionId}
-						items={labelItems}
-						onValueChange={(value) => {
-							if (value) assignLabel.mutate({ audioSegmentId: seg.id, data: { labelOptionId: value } });
+				<div className="flex-1" />
+				<Select
+					value={seg.labelOptionId}
+					items={labelItems}
+					onValueChange={(value) => {
+						if (value) assignLabel.mutate({ audioSegmentId: seg.id, data: { labelOptionId: value } });
+					}}
+				>
+					<SelectTrigger className="h-7 w-auto text-xs">
+						<SelectValue placeholder="라벨 선택" />
+					</SelectTrigger>
+					<SelectContent>
+						{labels.map((category) => (
+							<SelectGroup key={category.id}>
+								<SelectLabel>{category.name}</SelectLabel>
+								{category.options.map((option) => (
+									<SelectItem key={option.id} value={option.id}>
+										{option.name}
+									</SelectItem>
+								))}
+							</SelectGroup>
+						))}
+					</SelectContent>
+				</Select>
+				<div
+					data-slot="button-group"
+					className="flex -space-x-px [&>*:not(:first-child)]:rounded-l-none
+						[&>*:not(:last-child)]:rounded-r-none"
+				>
+					<Button
+						variant="outline"
+						size="icon-sm"
+						onClick={(e) => {
+							e.stopPropagation();
+							downloadFile(seg.audioUrl);
 						}}
 					>
-						<SelectTrigger className="h-7 text-xs">
-							<SelectValue placeholder="라벨 선택" />
-						</SelectTrigger>
-						<SelectContent>
-							{labels.map((category) => (
-								<SelectGroup key={category.id}>
-									<SelectLabel>{category.name}</SelectLabel>
-									{category.options.map((option) => (
-										<SelectItem key={option.id} value={option.id}>
-											{option.name}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							))}
-						</SelectContent>
-					</Select>
+						<DownloadIcon className="size-3.5" />
+					</Button>
+					<Button
+						variant="outline"
+						size="icon-sm"
+						onClick={(e) => {
+							e.stopPropagation();
+							onPlay(seg.id);
+						}}
+					>
+						<PlayIcon className="size-3.5" />
+					</Button>
+					<Button
+						variant="outline"
+						size="icon-sm"
+						className="text-muted-foreground hover:text-destructive"
+						onClick={(e) => {
+							e.stopPropagation();
+							deleteSegment.mutate(seg.id);
+						}}
+					>
+						<XIcon className="size-3.5" />
+					</Button>
 				</div>
-				<AudioSegmentMemo audioCaptureId={audioCaptureId} segmentId={seg.id} memo={seg.memo} />
 			</div>
-			<Button
-				variant="ghost"
-				size="icon-sm"
-				className="mt-0.5 shrink-0 text-muted-foreground hover:text-destructive"
-				onClick={(e) => {
-					e.stopPropagation();
-					deleteSegment.mutate(seg.id);
-				}}
-			>
-				<XIcon className="size-3.5" />
-			</Button>
+			<AudioSegmentMemo audioCaptureId={audioCaptureId} segmentId={seg.id} memo={seg.memo} />
 		</div>
 	);
 }

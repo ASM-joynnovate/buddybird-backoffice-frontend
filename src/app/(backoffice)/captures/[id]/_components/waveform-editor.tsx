@@ -5,6 +5,8 @@ import { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useGetAudioCaptureDetail } from '@/hooks/apis/use-audio-captures';
 import { useCreateAudioSegment, useTrimAudioSegment } from '@/hooks/apis/use-audio-segments';
 
+import { downloadFile } from '@/lib/utils';
+
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin, { Region } from 'wavesurfer.js/dist/plugins/regions.js';
 
@@ -160,7 +162,10 @@ export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }:
 
 	return (
 		<div className="rounded-lg border bg-card p-4">
-			<div className="mb-3">
+			<div className="mb-3 flex justify-end gap-2">
+				<Button variant="outline" size="sm" onClick={() => downloadFile(capture.audioUrl)}>
+					다운로드
+				</Button>
 				<Button variant="outline" size="sm" onClick={handlePlayPause}>
 					재생
 				</Button>
