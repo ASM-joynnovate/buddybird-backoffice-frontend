@@ -27,7 +27,8 @@ export default function AudioSegmentMemo({ audioCaptureId, segmentId, memo }: Au
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
 				placeholder="메모"
-				className="min-h-8 resize-none rounded-none border-none text-xs shadow-none focus-visible:ring-0"
+				className="h-20 resize-none overflow-scroll rounded-none border-none text-xs shadow-none
+					focus-visible:ring-0"
 				onClick={(e) => e.stopPropagation()}
 			/>
 			<div className="flex justify-end gap-1 border-t px-2 py-1.5">
