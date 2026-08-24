@@ -9,18 +9,18 @@ import AudioSegmentItem from './audio-segment-item';
 
 interface AudioSegmentListProps {
 	audioCaptureId: string;
-	selectedSegmentId: string | null;
-	onSegmentSelect: (segmentId: string) => void;
+	hoveredSegmentId: string | null;
 	onSegmentPlay: (segmentId: string) => void;
+	onSegmentHover: (segmentId: string | null) => void;
 	onRunVad: () => void;
 	isVadPending: boolean;
 }
 
 export default function AudioSegmentList({
 	audioCaptureId,
-	selectedSegmentId,
-	onSegmentSelect,
+	hoveredSegmentId,
 	onSegmentPlay,
+	onSegmentHover,
 	onRunVad,
 	isVadPending,
 }: AudioSegmentListProps) {
@@ -37,18 +37,20 @@ export default function AudioSegmentList({
 					VAD 실행
 				</Button>
 			</div>
-			{capture.segments.map((seg) => (
-				<AudioSegmentItem
-					key={seg.id}
-					audioCaptureId={audioCaptureId}
-					segment={seg}
-					isSelected={selectedSegmentId === seg.id}
-					labels={labels}
-					labelItems={labelItems}
-					onSelect={onSegmentSelect}
-					onPlay={onSegmentPlay}
-				/>
-			))}
+			<div className="max-h-[50vh] overflow-y-auto">
+				{capture.segments.map((seg) => (
+					<AudioSegmentItem
+						key={seg.id}
+						audioCaptureId={audioCaptureId}
+						segment={seg}
+						isHighlighted={hoveredSegmentId === seg.id}
+						labels={labels}
+						labelItems={labelItems}
+						onPlay={onSegmentPlay}
+						onHover={onSegmentHover}
+					/>
+				))}
+			</div>
 		</div>
 	);
 }

@@ -25,29 +25,30 @@ import AudioSegmentMemo from './audio-segment-memo';
 interface AudioSegmentItemProps {
 	audioCaptureId: string;
 	segment: AudioSegment;
-	isSelected: boolean;
+	isHighlighted: boolean;
 	labels: LabelCategory[];
 	labelItems: Record<string, string>;
-	onSelect: (segmentId: string) => void;
 	onPlay: (segmentId: string) => void;
+	onHover: (segmentId: string | null) => void;
 }
 
 export default function AudioSegmentItem({
 	audioCaptureId,
 	segment: seg,
-	isSelected,
+	isHighlighted,
 	labels,
 	labelItems,
-	onSelect,
 	onPlay,
+	onHover,
 }: AudioSegmentItemProps) {
 	const assignLabel = useAssignAudioSegmentLabel(audioCaptureId);
 	const deleteSegment = useDeleteAudioSegment(audioCaptureId);
 
 	return (
 		<div
-			className={cn('flex flex-col gap-1 border-b px-4 py-2 last:border-b-0', isSelected && 'bg-accent/5')}
-			onClick={() => onSelect(seg.id)}
+			className={cn('flex flex-col gap-1 border-b px-4 py-2 last:border-b-0', isHighlighted && 'bg-accent/5')}
+			onMouseEnter={() => onHover(seg.id)}
+			onMouseLeave={() => onHover(null)}
 		>
 			<div className="flex items-center gap-3">
 				<div className="text-xs text-muted-foreground tabular-nums">

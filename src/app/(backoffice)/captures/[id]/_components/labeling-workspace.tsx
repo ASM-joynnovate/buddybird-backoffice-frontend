@@ -32,7 +32,7 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 	const { data: capture } = useGetAudioCaptureDetail(audioCaptureId);
 	const waveformRef = useRef<WaveformEditorHandle>(null);
 
-	const [selectedSegmentId, setSelectedSegmentId] = useState<string | null>(null);
+	const [hoveredSegmentId, setHoveredSegmentId] = useState<string | null>(null);
 
 	const runVad = useRunAudioCaptureVad(audioCaptureId);
 
@@ -116,17 +116,19 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 				</CardContent>
 			</Card>
 
-			<WaveformEditor ref={waveformRef} audioCaptureId={audioCaptureId} onSegmentSelect={setSelectedSegmentId} />
+			<WaveformEditor
+				ref={waveformRef}
+				audioCaptureId={audioCaptureId}
+				highlightedSegmentId={hoveredSegmentId}
+				onSegmentHover={setHoveredSegmentId}
+			/>
 
 			<div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
 				<AudioSegmentList
 					audioCaptureId={audioCaptureId}
-					selectedSegmentId={selectedSegmentId}
-					onSegmentSelect={setSelectedSegmentId}
-					onSegmentPlay={(segmentId) => {
-						setSelectedSegmentId(segmentId);
-						waveformRef.current?.playSegment(segmentId);
-					}}
+					hoveredSegmentId={hoveredSegmentId}
+					onSegmentPlay={(segmentId) => waveformRef.current?.playSegment(segmentId)}
+					onSegmentHover={setHoveredSegmentId}
 					onRunVad={() => runVad.mutate()}
 					isVadPending={runVad.isPending}
 				/>

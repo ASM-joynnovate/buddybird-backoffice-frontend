@@ -18,14 +18,21 @@ export interface WaveformEditorHandle {
 
 interface WaveformEditorProps {
 	audioCaptureId: string;
-	onSegmentSelect: (segmentId: string) => void;
+	highlightedSegmentId: string | null;
+	onSegmentHover: (segmentId: string | null) => void;
 	ref?: React.Ref<WaveformEditorHandle>;
 }
 
-export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }: WaveformEditorProps) {
+export default function WaveformEditor({
+	audioCaptureId,
+	highlightedSegmentId,
+	onSegmentHover,
+	ref,
+}: WaveformEditorProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const wavesurferRef = useRef<WaveSurfer | null>(null);
 	const regionsRef = useRef<RegionsPlugin | null>(null);
+	const highlightedIdRef = useRef<string | null>(null);
 
 	const { data: capture } = useGetAudioCaptureDetail(audioCaptureId);
 	const createSegment = useCreateAudioSegment(audioCaptureId);
@@ -64,20 +71,28 @@ export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }:
 
 		regions.clearRegions();
 		capture.segments.forEach((seg) => {
+			const isHighlighted = seg.id === highlightedIdRef.current;
 			const region = regions.addRegion({
 				id: seg.id,
 				start: seg.startMs / 1000,
 				end: seg.endMs / 1000,
-				color: 'rgba(37, 99, 235, 0.2)',
+				color: isHighlighted ? 'rgba(37, 99, 235, 0.4)' : 'rgba(37, 99, 235, 0.2)',
 				drag: true,
 				resize: true,
 			});
+			if (region.element) {
+				if (isHighlighted) {
+					region.element.style.outline = '2px solid rgba(37, 99, 235, 0.6)';
+				}
+				region.element.addEventListener('mouseenter', () => onSegmentHover(seg.id));
+				region.element.addEventListener('mouseleave', () => onSegmentHover(null));
+			}
 			region.element?.querySelectorAll<HTMLElement>('[part*="region-handle"]').forEach((el) => {
 				el.style.width = '12px';
 				el.style.backgroundColor = 'rgba(37, 99, 235, 0.35)';
 			});
 		});
-	}, [capture.segments]);
+	}, [capture.segments, onSegmentHover]);
 
 	useEffect(() => {
 		if (!containerRef.current) return;
@@ -122,10 +137,6 @@ export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }:
 
 		addRegions();
 
-		const handleRegionClick = (region: Region) => {
-			onSegmentSelect(region.id);
-		};
-
 		const handleRegionUpdate = (region: Region) => {
 			trimSegment.mutate({
 				audioSegmentId: region.id,
@@ -145,16 +156,26 @@ export default function WaveformEditor({ audioCaptureId, onSegmentSelect, ref }:
 			);
 		};
 
-		regions.on('region-clicked', handleRegionClick);
 		regions.on('region-updated', handleRegionUpdate);
 		regions.on('region-created', handleRegionCreated);
 
 		return () => {
-			regions.un('region-clicked', handleRegionClick);
 			regions.un('region-updated', handleRegionUpdate);
 			regions.un('region-created', handleRegionCreated);
 		};
-	}, [onSegmentSelect, trimSegment, createSegment, capture.segments]);
+	}, [trimSegment, createSegment, capture.segments]);
+
+	useEffect(() => {
+		highlightedIdRef.current = highlightedSegmentId;
+		const regions = regionsRef.current;
+		if (!regions) return;
+		for (const region of regions.getRegions()) {
+			if (!region.element) continue;
+			const active = region.id === highlightedSegmentId;
+			region.setOptions({ color: active ? 'rgba(37, 99, 235, 0.4)' : 'rgba(37, 99, 235, 0.2)' });
+			region.element.style.outline = active ? '2px solid rgba(37, 99, 235, 0.6)' : 'none';
+		}
+	}, [highlightedSegmentId]);
 
 	const handlePlayPause = useCallback(() => {
 		wavesurferRef.current?.playPause();
