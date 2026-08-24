@@ -11,3 +11,7 @@ export interface TrimAudioSegmentRequest {
 export interface AssignAudioSegmentLabelRequest {
 	labelOptionId: string;
 }
+
+export interface UpdateAudioSegmentMemoRequest {
+	memo: string;
+}

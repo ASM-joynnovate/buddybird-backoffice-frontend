@@ -6,12 +6,14 @@ import {
 	deleteAudioSegment,
 	runAudioCaptureVad,
 	trimAudioSegment,
+	updateAudioSegmentMemo,
 } from '@/apis/audio-segments';
 
 import {
 	AssignAudioSegmentLabelRequest,
 	CreateAudioSegmentRequest,
 	TrimAudioSegmentRequest,
+	UpdateAudioSegmentMemoRequest,
 } from '@/types/apis/audio-segments';
 
 import { getQueryClient } from '@/lib/react-query';
@@ -50,6 +52,16 @@ export const useAssignAudioSegmentLabel = (audioCaptureId: string) => {
 	return useMutation({
 		mutationFn: ({ audioSegmentId, data }: { audioSegmentId: string; data: AssignAudioSegmentLabelRequest }) =>
 			assignAudioSegmentLabel(audioSegmentId, data),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['audio-captures', audioCaptureId] }),
+	});
+};
+
+export const useUpdateAudioSegmentMemo = (audioCaptureId: string) => {
+	const queryClient = getQueryClient();
+
+	return useMutation({
+		mutationFn: ({ audioSegmentId, data }: { audioSegmentId: string; data: UpdateAudioSegmentMemoRequest }) =>
+			updateAudioSegmentMemo(audioSegmentId, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['audio-captures', audioCaptureId] }),
 	});
 };

@@ -3,6 +3,7 @@ import {
 	AssignAudioSegmentLabelRequest,
 	CreateAudioSegmentRequest,
 	TrimAudioSegmentRequest,
+	UpdateAudioSegmentMemoRequest,
 } from '@/types/apis/audio-segments';
 
 import { getAuthHeader } from '@/lib/auth';
@@ -46,6 +47,18 @@ export const assignAudioSegmentLabel = async (
 	password?: string,
 ): Promise<ApiResponse> => {
 	return await fetcher(`/api/v1/backoffice/segments/${audioSegmentId}/label`, {
+		method: 'PUT',
+		headers: getAuthHeader(password),
+		body: JSON.stringify(snakelize(data)),
+	});
+};
+
+export const updateAudioSegmentMemo = async (
+	audioSegmentId: string,
+	data: UpdateAudioSegmentMemoRequest,
+	password?: string,
+): Promise<ApiResponse> => {
+	return await fetcher(`/api/v1/backoffice/segments/${audioSegmentId}/memo`, {
 		method: 'PUT',
 		headers: getAuthHeader(password),
 		body: JSON.stringify(snakelize(data)),

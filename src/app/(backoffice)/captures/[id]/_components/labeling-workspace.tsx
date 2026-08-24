@@ -15,8 +15,8 @@ import { useRunAudioCaptureVad } from '@/hooks/apis/use-audio-segments';
 
 import { formatMs } from '@/lib/utils';
 
+import AudioSegmentList from '@/app/(backoffice)/captures/[id]/_components/audio-segment-list';
 import LabelPanel from '@/app/(backoffice)/captures/[id]/_components/label-panel';
-import SegmentList from '@/app/(backoffice)/captures/[id]/_components/segment-list';
 import WaveformEditor, { WaveformEditorHandle } from '@/app/(backoffice)/captures/[id]/_components/waveform-editor';
 
 import { Button } from '@/components/ui/button';
@@ -119,7 +119,7 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 			<WaveformEditor ref={waveformRef} audioCaptureId={audioCaptureId} onSegmentSelect={setSelectedSegmentId} />
 
 			<div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
-				<SegmentList
+				<AudioSegmentList
 					audioCaptureId={audioCaptureId}
 					selectedSegmentId={selectedSegmentId}
 					onSegmentSelect={setSelectedSegmentId}
