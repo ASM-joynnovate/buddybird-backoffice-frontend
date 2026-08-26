@@ -26,7 +26,7 @@ export default function AudioSegmentMemo({ audioCaptureId, segmentId, memo }: Au
 			<Textarea
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
-				placeholder="메모"
+				placeholder="메모 입력"
 				className="h-20 resize-none overflow-scroll rounded-none border-none text-xs shadow-none
 					focus-visible:ring-0"
 				onClick={(e) => e.stopPropagation()}
