@@ -31,6 +31,14 @@ export const useAssignAudioCaptureLabels = (audioCaptureId: string) => {
 
 	return useMutation({
 		mutationFn: (data: AssignAudioCaptureLabelsRequest) => assignAudioCaptureLabels(audioCaptureId, data),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['audio-captures'] }),
+		onSuccess: (_, variables) => {
+			queryClient.setQueryData(getAudioCaptureDetailOptions(audioCaptureId).queryKey, (old) =>
+				old ? { ...old, labelOptionIds: variables.labelOptionIds } : old,
+			);
+			queryClient.invalidateQueries({
+				queryKey: ['audio-captures'],
+				predicate: (query) => typeof query.queryKey[1] !== 'string',
+			});
+		},
 	});
 };
