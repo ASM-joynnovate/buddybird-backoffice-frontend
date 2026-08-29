@@ -4,9 +4,8 @@ import { QueriesHydration } from '@suspensive/react-query-5';
 
 import { AudioCaptureListParams } from '@/types/apis/audio-captures';
 
-import { LabelStatusEnum } from '@/types/audio-capture';
-
 import { getAudioCaptureListOptions } from '@/hooks/apis/use-audio-captures';
+import { getLabelListOptions } from '@/hooks/apis/use-labels';
 
 import { BACKOFFICE_COOKIE_NAME } from '@/lib/auth';
 
@@ -20,12 +19,14 @@ export default async function Page(props: PageProps<'/captures'>) {
 
 	const searchParams = await props.searchParams;
 
+	const labelOptionIds = [searchParams.labelOptionIds ?? []].flat().filter(Boolean) as string[] | undefined;
+
 	const params: AudioCaptureListParams = {
 		page: Number(searchParams.page) || 1,
 		countByPage: Number(searchParams.countByPage) || 12,
 		firebaseAnonUid: searchParams.firebaseAnonUid as string | undefined,
 		wordLabel: searchParams.wordLabel as string | undefined,
-		labelStatus: (searchParams.labelStatus as LabelStatusEnum) || undefined,
+		labelOptionIds: labelOptionIds?.length ? labelOptionIds : undefined,
 		dateFrom: searchParams.dateFrom as string | undefined,
 		dateTo: searchParams.dateTo as string | undefined,
 	};
@@ -37,13 +38,13 @@ export default async function Page(props: PageProps<'/captures'>) {
 				<ExportButton />
 			</div>
 
-			<CaptureFilters />
+			<QueriesHydration queries={[getAudioCaptureListOptions(params, password), getLabelListOptions(password)]}>
+				<CaptureFilters />
 
-			<div className="mt-4 flex flex-1 flex-col">
-				<QueriesHydration queries={[getAudioCaptureListOptions(params, password)]}>
+				<div className="mt-4 flex flex-1 flex-col">
 					<CaptureTable params={params} />
-				</QueriesHydration>
-			</div>
+				</div>
+			</QueriesHydration>
 		</div>
 	);
 }

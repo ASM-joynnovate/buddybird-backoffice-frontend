@@ -5,18 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { AudioCaptureListParams } from '@/types/apis/audio-captures';
 
 import { useGetAudioCaptureList } from '@/hooks/apis/use-audio-captures';
+import { useGetLabelList } from '@/hooks/apis/use-labels';
 
 import { format } from 'date-fns';
 
 import PaginatedNavigation from '@/components/paginated-navigation';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
-function getLabelBadgeVariant(labeled: number, total: number) {
-	if (total === 0) return 'secondary' as const;
-	if (labeled === total) return 'default' as const;
-	return 'outline' as const;
-}
 
 interface CaptureTableProps {
 	params: AudioCaptureListParams;
@@ -26,7 +21,10 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { data } = useGetAudioCaptureList(params);
+	const { data: labels } = useGetLabelList();
 	const { meta } = data;
+
+	const labelOptionMap = Object.fromEntries(labels.flatMap((c) => c.options.map((o) => [o.id, o.name])));
 
 	const buildHref = (page: number) => {
 		const p = new URLSearchParams(searchParams.toString());
@@ -46,7 +44,7 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 							<TableHead>사이클</TableHead>
 							<TableHead>캡처 시각</TableHead>
 							<TableHead>길이</TableHead>
-							<TableHead>라벨링</TableHead>
+							<TableHead>라벨</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -67,9 +65,17 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 									{capture.durationMs ? `${(capture.durationMs / 1000).toFixed(1)}s` : '-'}
 								</TableCell>
 								<TableCell>
-									<Badge variant={getLabelBadgeVariant(capture.labeledCount, capture.segmentCount)}>
-										{capture.labeledCount} / {capture.segmentCount}
-									</Badge>
+									<div className="flex flex-wrap gap-1">
+										{capture.labelOptionIds.length > 0 ? (
+											capture.labelOptionIds.map((optionId) => (
+												<Badge key={optionId} variant="default">
+													{labelOptionMap[optionId] ?? optionId}
+												</Badge>
+											))
+										) : (
+											<Badge variant="secondary">없음</Badge>
+										)}
+									</div>
 								</TableCell>
 							</TableRow>
 						))}
