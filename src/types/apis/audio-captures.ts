@@ -1,6 +1,6 @@
 import ApiResponse from '@/types/apis';
 
-import { AudioCaptureDetail, AudioCaptureListItem, LabelStatusEnum } from '@/types/audio-capture';
+import { AudioCaptureDetail, AudioCaptureListItem } from '@/types/audio-capture';
 import { PaginationMeta, PaginationParams } from '@/types/common';
 
 export interface GetAudioCaptureListResponse extends ApiResponse {
@@ -15,7 +15,19 @@ export interface GetAudioCaptureDetailResponse extends ApiResponse {
 export type AudioCaptureListParams = PaginationParams & {
 	firebaseAnonUid?: string;
 	wordLabel?: string;
-	labelStatus?: LabelStatusEnum;
+	labelOptionIds?: string[];
+	dateFrom?: string;
+	dateTo?: string;
+};
+
+export interface AssignAudioCaptureLabelsRequest {
+	labelOptionIds: string[];
+}
+
+export type ExportAudioSegmentsParams = {
+	firebaseAnonUid?: string;
+	wordLabel?: string;
+	audioCaptureLabelOptionIds?: string[];
 	dateFrom?: string;
 	dateTo?: string;
 };

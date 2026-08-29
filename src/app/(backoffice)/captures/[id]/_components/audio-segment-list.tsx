@@ -1,5 +1,7 @@
 'use client';
 
+import { LabelCategoryTargetEnum } from '@/types/label';
+
 import { useGetAudioCaptureDetail } from '@/hooks/apis/use-audio-captures';
 import { useGetLabelList } from '@/hooks/apis/use-labels';
 
@@ -27,7 +29,8 @@ export default function AudioSegmentList({
 	const { data: capture } = useGetAudioCaptureDetail(audioCaptureId);
 	const { data: labels } = useGetLabelList();
 
-	const labelItems = Object.fromEntries(labels.flatMap((c) => c.options.map((o) => [o.id, o.name])));
+	const segmentLabels = labels.filter((c) => c.target === LabelCategoryTargetEnum.SEGMENT);
+	const labelItems = Object.fromEntries(segmentLabels.flatMap((c) => c.options.map((o) => [o.id, o.name])));
 
 	return (
 		<div className="rounded-lg border bg-card">
@@ -44,7 +47,7 @@ export default function AudioSegmentList({
 						audioCaptureId={audioCaptureId}
 						segment={seg}
 						isHighlighted={hoveredSegmentId === seg.id}
-						labels={labels}
+						labels={segmentLabels}
 						labelItems={labelItems}
 						onPlay={onSegmentPlay}
 						onHover={onSegmentHover}
