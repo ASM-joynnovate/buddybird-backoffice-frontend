@@ -1,6 +1,6 @@
 import ApiResponse from '@/types/apis';
 
-import { LabelCategory } from '@/types/label';
+import { LabelCategory, LabelCategoryTargetEnum } from '@/types/label';
 
 export interface GetLabelListResponse extends ApiResponse {
 	data: LabelCategory[];
@@ -8,6 +8,7 @@ export interface GetLabelListResponse extends ApiResponse {
 
 export interface CreateLabelCategoryRequest {
 	name: string;
+	target: LabelCategoryTargetEnum;
 	displayOrder?: number;
 }
 

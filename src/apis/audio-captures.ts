@@ -1,6 +1,8 @@
 import { buildQueryString } from '@/apis/common';
 
+import ApiResponse from '@/types/apis';
 import {
+	AssignAudioCaptureLabelsRequest,
 	AudioCaptureListParams,
 	GetAudioCaptureDetailResponse,
 	GetAudioCaptureListResponse,
@@ -8,6 +10,7 @@ import {
 
 import { getAuthHeader } from '@/lib/auth';
 import fetcher from '@/lib/fetcher';
+import { snakelize } from '@/lib/utils';
 
 export const getAudioCaptureList = async (
 	params?: AudioCaptureListParams,
@@ -26,5 +29,17 @@ export const getAudioCaptureDetail = async (
 	return await fetcher(`/api/v1/backoffice/captures/${audioCaptureId}`, {
 		method: 'GET',
 		headers: getAuthHeader(password),
+	});
+};
+
+export const assignAudioCaptureLabels = async (
+	audioCaptureId: string,
+	data: AssignAudioCaptureLabelsRequest,
+	password?: string,
+): Promise<ApiResponse> => {
+	return await fetcher(`/api/v1/backoffice/captures/${audioCaptureId}/labels`, {
+		method: 'PUT',
+		headers: getAuthHeader(password),
+		body: JSON.stringify(snakelize(data)),
 	});
 };
