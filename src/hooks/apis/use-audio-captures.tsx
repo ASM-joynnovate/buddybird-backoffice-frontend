@@ -1,8 +1,10 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query';
 
-import { getAudioCaptureDetail, getAudioCaptureList } from '@/apis/audio-captures';
+import { assignAudioCaptureLabels, getAudioCaptureDetail, getAudioCaptureList } from '@/apis/audio-captures';
 
-import { AudioCaptureListParams } from '@/types/apis/audio-captures';
+import { AssignAudioCaptureLabelsRequest, AudioCaptureListParams } from '@/types/apis/audio-captures';
+
+import { getQueryClient } from '@/lib/react-query';
 
 export const getAudioCaptureListOptions = (params?: AudioCaptureListParams, password?: string) =>
 	queryOptions({
@@ -22,4 +24,13 @@ export const getAudioCaptureDetailOptions = (audioCaptureId: string, password?: 
 
 export const useGetAudioCaptureDetail = (audioCaptureId: string) => {
 	return useSuspenseQuery(getAudioCaptureDetailOptions(audioCaptureId));
+};
+
+export const useAssignAudioCaptureLabels = (audioCaptureId: string) => {
+	const queryClient = getQueryClient();
+
+	return useMutation({
+		mutationFn: (data: AssignAudioCaptureLabelsRequest) => assignAudioCaptureLabels(audioCaptureId, data),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['audio-captures'] }),
+	});
 };

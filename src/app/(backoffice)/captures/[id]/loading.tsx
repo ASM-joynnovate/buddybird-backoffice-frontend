@@ -9,10 +9,8 @@ export default function Loading() {
 				<Skeleton className="h-9 w-24" />
 				<Skeleton className="h-9 w-24" />
 			</div>
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
-				<Skeleton className="h-32 w-full lg:h-64" />
-				<Skeleton className="h-32 w-full lg:h-64" />
-			</div>
+			<Skeleton className="h-10 w-full" />
+			<Skeleton className="h-32 w-full lg:h-64" />
 		</div>
 	);
 }
