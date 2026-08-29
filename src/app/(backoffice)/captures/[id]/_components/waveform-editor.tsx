@@ -35,8 +35,8 @@ export default function WaveformEditor({
 	const highlightedIdRef = useRef<string | null>(null);
 
 	const { data: capture } = useGetAudioCaptureDetail(audioCaptureId);
-	const createSegment = useCreateAudioSegment(audioCaptureId);
-	const trimSegment = useTrimAudioSegment(audioCaptureId);
+	const { mutate: createSegment } = useCreateAudioSegment(audioCaptureId);
+	const { mutate: trimSegment } = useTrimAudioSegment(audioCaptureId);
 
 	useImperativeHandle(
 		ref,
@@ -129,7 +129,7 @@ export default function WaveformEditor({
 			ws.destroy();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [capture.audioUrl]);
+	}, [audioCaptureId]);
 
 	useEffect(() => {
 		const regions = regionsRef.current;
@@ -138,7 +138,7 @@ export default function WaveformEditor({
 		addRegions();
 
 		const handleRegionUpdate = (region: Region) => {
-			trimSegment.mutate({
+			trimSegment({
 				audioSegmentId: region.id,
 				data: { startMs: Math.round(region.start * 1000), endMs: Math.round(region.end * 1000) },
 			});
@@ -150,7 +150,7 @@ export default function WaveformEditor({
 				region.remove();
 				return;
 			}
-			createSegment.mutate(
+			createSegment(
 				{ startMs: Math.round(region.start * 1000), endMs: Math.round(region.end * 1000) },
 				{ onError: () => region.remove() },
 			);
@@ -163,7 +163,8 @@ export default function WaveformEditor({
 			regions.un('region-updated', handleRegionUpdate);
 			regions.un('region-created', handleRegionCreated);
 		};
-	}, [trimSegment, createSegment, capture.segments]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [addRegions]);
 
 	useEffect(() => {
 		highlightedIdRef.current = highlightedSegmentId;

@@ -5,20 +5,22 @@ import { DateRange } from 'react-day-picker';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { LabelStatusEnum, LabelStatusLabel } from '@/types/audio-capture';
+import { LabelCategoryTargetEnum } from '@/types/label';
+
+import { useGetLabelList } from '@/hooks/apis/use-labels';
 
 import { cn } from '@/lib/utils';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, ChevronDownIcon } from 'lucide-react';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const formatRange = (range?: DateRange) => {
 	if (!range?.from) return '기간 선택';
@@ -29,14 +31,25 @@ const formatRange = (range?: DateRange) => {
 export default function CaptureFilters() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { data: labels } = useGetLabelList();
 
-	const [labelStatus, setLabelStatus] = useState(searchParams.get('labelStatus') ?? LabelStatusEnum.ALL);
+	const captureLabels = labels.filter((c) => c.target === LabelCategoryTargetEnum.CAPTURE);
+
+	const [selectedLabelOptionIds, setSelectedLabelOptionIds] = useState<string[]>(() =>
+		searchParams.getAll('labelOptionIds'),
+	);
 
 	const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
 		const from = searchParams.get('dateFrom');
 		const to = searchParams.get('dateTo');
 		return from || to ? { from: from ? new Date(from) : undefined, to: to ? new Date(to) : undefined } : undefined;
 	});
+
+	const toggleLabelOption = (optionId: string) => {
+		setSelectedLabelOptionIds((prev) =>
+			prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId],
+		);
+	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -47,6 +60,10 @@ export default function CaptureFilters() {
 			if (typeof value === 'string' && value.trim()) {
 				params.set(key, value.trim());
 			}
+		}
+
+		for (const id of selectedLabelOptionIds) {
+			params.append('labelOptionIds', id);
 		}
 
 		if (dateRange?.from) params.set('dateFrom', dateRange.from.toISOString());
@@ -78,22 +95,46 @@ export default function CaptureFilters() {
 				/>
 			</div>
 			<div className="space-y-1">
-				<Label>라벨링 상태</Label>
-				<Select
-					name="labelStatus"
-					value={labelStatus}
-					onValueChange={(v) => setLabelStatus(v ?? LabelStatusEnum.ALL)}
-					items={LabelStatusLabel}
-				>
-					<SelectTrigger className="w-36">
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value={LabelStatusEnum.ALL}>전체</SelectItem>
-						<SelectItem value={LabelStatusEnum.UNLABELED}>미라벨</SelectItem>
-						<SelectItem value={LabelStatusEnum.LABELED}>라벨완료</SelectItem>
-					</SelectContent>
-				</Select>
+				<Label>클립 라벨</Label>
+				<Popover>
+					<PopoverTrigger
+						render={<Button variant="outline" />}
+						className={cn(
+							'w-48 justify-between text-left font-normal',
+							selectedLabelOptionIds.length === 0 && 'text-muted-foreground',
+						)}
+					>
+						{selectedLabelOptionIds.length > 0 ? `${selectedLabelOptionIds.length}개 선택` : '라벨 선택'}
+						<ChevronDownIcon className="ml-2 size-4 opacity-50" />
+					</PopoverTrigger>
+					<PopoverContent className="w-64 p-3" align="start">
+						{captureLabels.length === 0 && (
+							<p className="text-xs text-muted-foreground">클립 대상 라벨이 없습니다.</p>
+						)}
+						{captureLabels.map((category) => (
+							<div key={category.id} className="mb-3 last:mb-0">
+								<p className="mb-1.5 text-xs font-semibold text-muted-foreground">{category.name}</p>
+								<div className="flex flex-wrap gap-1">
+									{category.options.map((option) => {
+										const selected = selectedLabelOptionIds.includes(option.id);
+										return (
+											<Badge
+												key={option.id}
+												variant={selected ? 'default' : 'outline'}
+												className="cursor-pointer"
+												render={<button type="button" />}
+												aria-pressed={selected}
+												onClick={() => toggleLabelOption(option.id)}
+											>
+												{option.name}
+											</Badge>
+										);
+									})}
+								</div>
+							</div>
+						))}
+					</PopoverContent>
+				</Popover>
 			</div>
 			<div className="space-y-1">
 				<Label>캡처 기간</Label>

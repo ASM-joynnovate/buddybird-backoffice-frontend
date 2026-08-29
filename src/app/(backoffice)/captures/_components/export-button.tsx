@@ -6,9 +6,7 @@ import { useSearchParams } from 'next/navigation';
 
 import { exportAudioSegments } from '@/apis/exports';
 
-import { AudioCaptureListParams } from '@/types/apis/audio-captures';
-
-import { LabelStatusEnum } from '@/types/audio-capture';
+import { ExportAudioSegmentsParams } from '@/types/apis/audio-captures';
 
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -22,10 +20,12 @@ export default function ExportButton() {
 	const handleExport = async () => {
 		setLoading(true);
 		try {
-			const params: AudioCaptureListParams = {
+			const labelOptionIds = searchParams.getAll('labelOptionIds');
+
+			const params: ExportAudioSegmentsParams = {
 				firebaseAnonUid: searchParams.get('firebaseAnonUid') ?? undefined,
 				wordLabel: searchParams.get('wordLabel') ?? undefined,
-				labelStatus: (searchParams.get('labelStatus') as LabelStatusEnum) || undefined,
+				audioCaptureLabelOptionIds: labelOptionIds.length ? labelOptionIds : undefined,
 				dateFrom: searchParams.get('dateFrom') ?? undefined,
 				dateTo: searchParams.get('dateTo') ?? undefined,
 			};
