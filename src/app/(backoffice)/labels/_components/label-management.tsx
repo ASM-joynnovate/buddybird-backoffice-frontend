@@ -47,7 +47,7 @@ export default function LabelManagement() {
 	const [editingOptionName, setEditingOptionName] = useState('');
 
 	const handleCreateCategory = () => {
-		if (!newCategoryName.trim()) return;
+		if (!newCategoryName.trim() || createCategory.isPending) return;
 		createCategory.mutate(
 			{ name: newCategoryName.trim(), target: newCategoryTarget },
 			{
@@ -58,7 +58,7 @@ export default function LabelManagement() {
 	};
 
 	const handleUpdateCategory = (categoryId: string) => {
-		if (!editingCategoryName.trim()) return;
+		if (!editingCategoryName.trim() || updateCategory.isPending) return;
 		updateCategory.mutate(
 			{ categoryId, data: { name: editingCategoryName.trim() } },
 			{
@@ -69,7 +69,7 @@ export default function LabelManagement() {
 	};
 
 	const handleCreateOption = (categoryId: string) => {
-		if (!newOptionName.trim()) return;
+		if (!newOptionName.trim() || createOption.isPending) return;
 		createOption.mutate(
 			{ categoryId, data: { name: newOptionName.trim() } },
 			{
@@ -83,7 +83,7 @@ export default function LabelManagement() {
 	};
 
 	const handleUpdateOption = (optionId: string) => {
-		if (!editingOptionName.trim()) return;
+		if (!editingOptionName.trim() || updateOption.isPending) return;
 		updateOption.mutate(
 			{ optionId, data: { name: editingOptionName.trim() } },
 			{
@@ -104,7 +104,11 @@ export default function LabelManagement() {
 									value={editingCategoryName}
 									onChange={(e) => setEditingCategoryName(e.target.value)}
 									className="h-7 text-sm"
-									onKeyDown={(e) => e.key === 'Enter' && handleUpdateCategory(category.id)}
+									onKeyDown={(e) =>
+										e.key === 'Enter' &&
+										!e.nativeEvent.isComposing &&
+										handleUpdateCategory(category.id)
+									}
 									autoFocus
 								/>
 								<Button size="sm" onClick={() => handleUpdateCategory(category.id)}>
@@ -166,7 +170,11 @@ export default function LabelManagement() {
 											value={editingOptionName}
 											onChange={(e) => setEditingOptionName(e.target.value)}
 											className="h-7 w-32 text-xs"
-											onKeyDown={(e) => e.key === 'Enter' && handleUpdateOption(option.id)}
+											onKeyDown={(e) =>
+												e.key === 'Enter' &&
+												!e.nativeEvent.isComposing &&
+												handleUpdateOption(option.id)
+											}
 											autoFocus
 										/>
 										<Button size="sm" onClick={() => handleUpdateOption(option.id)}>
@@ -215,7 +223,11 @@ export default function LabelManagement() {
 									onChange={(e) => setNewOptionName(e.target.value)}
 									placeholder="옵션명"
 									className="h-7 w-48 text-xs"
-									onKeyDown={(e) => e.key === 'Enter' && handleCreateOption(category.id)}
+									onKeyDown={(e) =>
+										e.key === 'Enter' &&
+										!e.nativeEvent.isComposing &&
+										handleCreateOption(category.id)
+									}
 									autoFocus
 								/>
 								<Button size="sm" onClick={() => handleCreateOption(category.id)}>
@@ -235,7 +247,7 @@ export default function LabelManagement() {
 						onChange={(e) => setNewCategoryName(e.target.value)}
 						placeholder="카테고리명"
 						className="h-8 w-48 text-sm"
-						onKeyDown={(e) => e.key === 'Enter' && handleCreateCategory()}
+						onKeyDown={(e) => e.key === 'Enter' && !e.nativeEvent.isComposing && handleCreateCategory()}
 					/>
 					<Select
 						value={newCategoryTarget}
