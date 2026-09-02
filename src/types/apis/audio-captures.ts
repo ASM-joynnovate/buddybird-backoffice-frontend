@@ -29,9 +29,5 @@ export interface UpdateAudioCaptureMemoRequest {
 }
 
 export type ExportAudioSegmentsParams = {
-	firebaseAnonUid?: string;
-	wordLabel?: string;
 	audioCaptureLabelOptionIds?: string[];
-	dateFrom?: string;
-	dateTo?: string;
 };
