@@ -19,9 +19,10 @@ import {
 import { useRunAudioCaptureVad } from '@/hooks/apis/use-audio-segments';
 import { useGetLabelList } from '@/hooks/apis/use-labels';
 
-import { cn, formatMs } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 import AudioSegmentList from '@/app/(backoffice)/captures/[id]/_components/audio-segment-list';
+import CaptureInfo from '@/app/(backoffice)/captures/[id]/_components/capture-info';
 import MemoEditor from '@/app/(backoffice)/captures/[id]/_components/memo-editor';
 import WaveformEditor, { WaveformEditorHandle } from '@/app/(backoffice)/captures/[id]/_components/waveform-editor';
 import { toast } from 'sonner';
@@ -95,40 +96,7 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 
 	return (
 		<div className="flex flex-col gap-4">
-			<Card>
-				<CardContent className="p-4">
-					<dl className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-x-6 gap-y-3">
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">단어</dt>
-							<dd className="text-sm font-semibold">{capture.clientWordId}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">구간</dt>
-							<dd className="text-sm font-semibold">{capture.phase}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">사이클</dt>
-							<dd className="text-sm font-semibold">{capture.cycle}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">길이</dt>
-							<dd className="text-sm font-semibold">
-								{capture.durationMs ? formatMs(capture.durationMs) : '-'}
-							</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">사용자</dt>
-							<dd className="truncate font-mono text-xs">{capture.firebaseAnonUid}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">캡처 시각</dt>
-							<dd className="text-sm font-semibold">
-								{new Date(capture.capturedAt).toLocaleString('ko')}
-							</dd>
-						</div>
-					</dl>
-				</CardContent>
-			</Card>
+			<CaptureInfo capture={capture} />
 
 			<WaveformEditor
 				ref={waveformRef}

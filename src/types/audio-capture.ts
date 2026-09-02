@@ -6,6 +6,11 @@ export const PhaseEnum = {
 } as const;
 export type PhaseEnum = (typeof PhaseEnum)[keyof typeof PhaseEnum];
 
+export const PHASE_LABEL: Record<PhaseEnum, string> = {
+	[PhaseEnum.LEARN]: '학습',
+	[PhaseEnum.RECORD]: '녹음',
+};
+
 export interface AudioCaptureListItem {
 	id: string;
 	firebaseAnonUid: string;
@@ -33,6 +38,9 @@ export interface AudioCaptureDetail {
 	createdAt: string;
 	parrotSpecies: string | null;
 	parrotBirthdate: string | null;
+	devicePlatform: string | null;
+	deviceOsVersion: string | null;
+	deviceModel: string | null;
 	memo: string | null;
 	audioUrl: string;
 	segments: AudioSegment[];
