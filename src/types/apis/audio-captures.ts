@@ -24,10 +24,10 @@ export interface AssignAudioCaptureLabelsRequest {
 	labelOptionIds: string[];
 }
 
+export interface UpdateAudioCaptureMemoRequest {
+	memo: string | null;
+}
+
 export type ExportAudioSegmentsParams = {
-	firebaseAnonUid?: string;
-	wordLabel?: string;
 	audioCaptureLabelOptionIds?: string[];
-	dateFrom?: string;
-	dateTo?: string;
 };

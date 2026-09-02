@@ -23,11 +23,7 @@ export default function ExportButton() {
 			const labelOptionIds = searchParams.getAll('labelOptionIds');
 
 			const params: ExportAudioSegmentsParams = {
-				firebaseAnonUid: searchParams.get('firebaseAnonUid') ?? undefined,
-				wordLabel: searchParams.get('wordLabel') ?? undefined,
 				audioCaptureLabelOptionIds: labelOptionIds.length ? labelOptionIds : undefined,
-				dateFrom: searchParams.get('dateFrom') ?? undefined,
-				dateTo: searchParams.get('dateTo') ?? undefined,
 			};
 
 			const { blob, filename } = await exportAudioSegments(params);

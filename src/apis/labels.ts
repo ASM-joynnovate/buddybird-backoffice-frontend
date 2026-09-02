@@ -33,7 +33,7 @@ export const updateLabelCategory = async (
 	password?: string,
 ): Promise<GetLabelListResponse> => {
 	return await fetcher(`/api/v1/backoffice/labels/categories/${categoryId}`, {
-		method: 'PUT',
+		method: 'PATCH',
 		headers: getAuthHeader(password),
 		body: JSON.stringify(snakelize(data)),
 	});
@@ -64,7 +64,7 @@ export const updateLabelOption = async (
 	password?: string,
 ): Promise<GetLabelListResponse> => {
 	return await fetcher(`/api/v1/backoffice/labels/options/${optionId}`, {
-		method: 'PUT',
+		method: 'PATCH',
 		headers: getAuthHeader(password),
 		body: JSON.stringify(snakelize(data)),
 	});
