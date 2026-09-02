@@ -13,5 +13,5 @@ export interface AssignAudioSegmentLabelRequest {
 }
 
 export interface UpdateAudioSegmentMemoRequest {
-	memo: string;
+	memo: string | null;
 }

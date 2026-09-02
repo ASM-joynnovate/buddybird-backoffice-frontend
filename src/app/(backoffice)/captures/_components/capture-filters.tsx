@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import { ko } from 'react-day-picker/locale';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -11,8 +12,7 @@ import { useGetLabelList } from '@/hooks/apis/use-labels';
 
 import { cn } from '@/lib/utils';
 
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import dayjs from 'dayjs';
 import { CalendarIcon, ChevronDownIcon } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 const formatRange = (range?: DateRange) => {
 	if (!range?.from) return '기간 선택';
-	const f = (d: Date) => format(d, 'yyyy.MM.dd', { locale: ko });
+	const f = (d: Date) => dayjs(d).format('YYYY.MM.DD');
 	return range.to ? `${f(range.from)} - ${f(range.to)}` : f(range.from);
 };
 

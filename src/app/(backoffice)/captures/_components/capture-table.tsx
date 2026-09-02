@@ -7,7 +7,7 @@ import { AudioCaptureListParams } from '@/types/apis/audio-captures';
 import { useGetAudioCaptureList } from '@/hooks/apis/use-audio-captures';
 import { useGetLabelList } from '@/hooks/apis/use-labels';
 
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 
 import PaginatedNavigation from '@/components/paginated-navigation';
 import { Badge } from '@/components/ui/badge';
@@ -60,7 +60,7 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 								<TableCell>{capture.clientWordId}</TableCell>
 								<TableCell>{capture.phase}</TableCell>
 								<TableCell>{capture.cycle}</TableCell>
-								<TableCell>{format(new Date(capture.capturedAt), 'yyyy.MM.dd HH:mm')}</TableCell>
+								<TableCell>{dayjs(capture.capturedAt).format('YYYY.MM.DD HH:mm')}</TableCell>
 								<TableCell>
 									{capture.durationMs ? `${(capture.durationMs / 1000).toFixed(1)}s` : '-'}
 								</TableCell>

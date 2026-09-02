@@ -14,14 +14,18 @@ import {
 	getAudioCaptureListOptions,
 	useAssignAudioCaptureLabels,
 	useGetAudioCaptureDetail,
+	useUpdateAudioCaptureMemo,
 } from '@/hooks/apis/use-audio-captures';
 import { useRunAudioCaptureVad } from '@/hooks/apis/use-audio-segments';
 import { useGetLabelList } from '@/hooks/apis/use-labels';
 
-import { cn, formatMs } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 import AudioSegmentList from '@/app/(backoffice)/captures/[id]/_components/audio-segment-list';
+import CaptureInfo from '@/app/(backoffice)/captures/[id]/_components/capture-info';
+import MemoEditor from '@/app/(backoffice)/captures/[id]/_components/memo-editor';
 import WaveformEditor, { WaveformEditorHandle } from '@/app/(backoffice)/captures/[id]/_components/waveform-editor';
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -42,6 +46,7 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 
 	const runVad = useRunAudioCaptureVad(audioCaptureId);
 	const assignCaptureLabels = useAssignAudioCaptureLabels(audioCaptureId);
+	const updateCaptureMemo = useUpdateAudioCaptureMemo(audioCaptureId);
 
 	const captureLabels = labels.filter((c) => c.target === LabelCategoryTargetEnum.CAPTURE);
 
@@ -91,40 +96,7 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 
 	return (
 		<div className="flex flex-col gap-4">
-			<Card>
-				<CardContent className="p-4">
-					<dl className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-x-6 gap-y-3">
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">단어</dt>
-							<dd className="text-sm font-semibold">{capture.clientWordId}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">구간</dt>
-							<dd className="text-sm font-semibold">{capture.phase}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">사이클</dt>
-							<dd className="text-sm font-semibold">{capture.cycle}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">길이</dt>
-							<dd className="text-sm font-semibold">
-								{capture.durationMs ? formatMs(capture.durationMs) : '-'}
-							</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">사용자</dt>
-							<dd className="truncate font-mono text-xs">{capture.firebaseAnonUid}</dd>
-						</div>
-						<div>
-							<dt className="text-xs font-medium text-muted-foreground">캡처 시각</dt>
-							<dd className="text-sm font-semibold">
-								{new Date(capture.capturedAt).toLocaleString('ko')}
-							</dd>
-						</div>
-					</dl>
-				</CardContent>
-			</Card>
+			<CaptureInfo capture={capture} />
 
 			<WaveformEditor
 				ref={waveformRef}
@@ -181,6 +153,25 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 							))}
 						</div>
 					)}
+				</CardContent>
+			</Card>
+
+			<Card>
+				<div className="border-b px-4 py-3">
+					<span className="text-sm font-semibold">클립 메모</span>
+				</div>
+				<CardContent className="p-4">
+					<MemoEditor
+						key={capture.memo}
+						memo={capture.memo}
+						isPending={updateCaptureMemo.isPending}
+						onSave={(value) =>
+							updateCaptureMemo.mutate(
+								{ memo: value },
+								{ onError: () => toast.error('메모 저장에 실패했습니다.') },
+							)
+						}
+					/>
 				</CardContent>
 			</Card>
 

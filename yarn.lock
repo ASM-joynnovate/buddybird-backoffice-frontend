@@ -2211,7 +2211,7 @@ __metadata:
     "@types/react-dom": "npm:^19"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
-    date-fns: "npm:^4.4.0"
+    dayjs: "npm:^1.11.23"
     eslint: "npm:^9"
     eslint-config-next: "npm:16.3.1"
     eslint-config-prettier: "npm:^10.1.8"
@@ -2573,10 +2573,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^4.1.0, date-fns@npm:^4.4.0":
+"date-fns@npm:^4.1.0":
   version: 4.4.0
   resolution: "date-fns@npm:4.4.0"
   checksum: 10c0/988f0a13db183f5dfc85c36bbb6847a9c135a9225888bbea4005876ec15539a8613c21a07370a4e7ea543918d5a1cafb423c528b42cdbbde5fdfddb178126b21
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.23":
+  version: 1.11.23
+  resolution: "dayjs@npm:1.11.23"
+  checksum: 10c0/69ab04bf19c676e44ab50cc2fca223d265f3dafd107151ef3b0f3ad74d360c37caa602abe62f87cb25d90bd9f6bee003698af47df5b0dbf10a998b7b5f3bb3f1
   languageName: node
   linkType: hard
 
