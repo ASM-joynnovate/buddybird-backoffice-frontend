@@ -6,6 +6,7 @@ import {
 	AudioCaptureListParams,
 	GetAudioCaptureDetailResponse,
 	GetAudioCaptureListResponse,
+	UpdateAudioCaptureMemoRequest,
 } from '@/types/apis/audio-captures';
 
 import { getAuthHeader } from '@/lib/auth';
@@ -38,6 +39,18 @@ export const assignAudioCaptureLabels = async (
 	password?: string,
 ): Promise<ApiResponse> => {
 	return await fetcher(`/api/v1/backoffice/captures/${audioCaptureId}/labels`, {
+		method: 'PUT',
+		headers: getAuthHeader(password),
+		body: JSON.stringify(snakelize(data)),
+	});
+};
+
+export const updateAudioCaptureMemo = async (
+	audioCaptureId: string,
+	data: UpdateAudioCaptureMemoRequest,
+	password?: string,
+): Promise<ApiResponse> => {
+	return await fetcher(`/api/v1/backoffice/captures/${audioCaptureId}/memo`, {
 		method: 'PUT',
 		headers: getAuthHeader(password),
 		body: JSON.stringify(snakelize(data)),

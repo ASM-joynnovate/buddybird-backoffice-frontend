@@ -14,6 +14,7 @@ import {
 	getAudioCaptureListOptions,
 	useAssignAudioCaptureLabels,
 	useGetAudioCaptureDetail,
+	useUpdateAudioCaptureMemo,
 } from '@/hooks/apis/use-audio-captures';
 import { useRunAudioCaptureVad } from '@/hooks/apis/use-audio-segments';
 import { useGetLabelList } from '@/hooks/apis/use-labels';
@@ -21,7 +22,9 @@ import { useGetLabelList } from '@/hooks/apis/use-labels';
 import { cn, formatMs } from '@/lib/utils';
 
 import AudioSegmentList from '@/app/(backoffice)/captures/[id]/_components/audio-segment-list';
+import MemoEditor from '@/app/(backoffice)/captures/[id]/_components/memo-editor';
 import WaveformEditor, { WaveformEditorHandle } from '@/app/(backoffice)/captures/[id]/_components/waveform-editor';
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -42,6 +45,7 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 
 	const runVad = useRunAudioCaptureVad(audioCaptureId);
 	const assignCaptureLabels = useAssignAudioCaptureLabels(audioCaptureId);
+	const updateCaptureMemo = useUpdateAudioCaptureMemo(audioCaptureId);
 
 	const captureLabels = labels.filter((c) => c.target === LabelCategoryTargetEnum.CAPTURE);
 
@@ -181,6 +185,25 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 							))}
 						</div>
 					)}
+				</CardContent>
+			</Card>
+
+			<Card>
+				<div className="border-b px-4 py-3">
+					<span className="text-sm font-semibold">클립 메모</span>
+				</div>
+				<CardContent className="p-4">
+					<MemoEditor
+						key={capture.memo}
+						memo={capture.memo}
+						isPending={updateCaptureMemo.isPending}
+						onSave={(value) =>
+							updateCaptureMemo.mutate(
+								{ memo: value },
+								{ onError: () => toast.error('메모 저장에 실패했습니다.') },
+							)
+						}
+					/>
 				</CardContent>
 			</Card>
 

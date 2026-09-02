@@ -33,6 +33,7 @@ export interface AudioCaptureDetail {
 	createdAt: string;
 	parrotSpecies: string | null;
 	parrotBirthdate: string | null;
+	memo: string | null;
 	audioUrl: string;
 	segments: AudioSegment[];
 	labelOptionIds: string[];
