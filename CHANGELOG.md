@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.3.0...v0.4.0) (2026-09-02)
+
+
+### Features
+
+* add capture memo ([bfcd5f6](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/bfcd5f606f7f3bc585b5b085739f4dfda2d7b0dd))
+* add parrot and device info cards to capture detail ([da5f84a](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/da5f84ae037e1620131dddbdd74831eb0fc1e285))
+* 오디오 클립 상세 정보 추가 및 클립 메모 추가 ([69225b7](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/69225b76d9e98cd496f37d0f9bc9295c93c0d4ad))
+
+
+### Bug Fixes
+
+* change label update requests to PATCH ([3d42c26](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/3d42c26a2d9750d0a5a12a93d2c5ee7b78dbfa74))
+* **ci:** upgrade setup-node version ([9417076](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/941707687c52d399492b1cd12a951d3e1558ab63))
+* **label:** fix enter bug ([5bd5117](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/5bd5117d23fd49429dc8770d5d60525eb13ad340))
+
 ## [0.3.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.2.0...v0.3.0) (2026-08-29)
 
 
