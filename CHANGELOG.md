@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.4.0...v0.5.0) (2026-09-13)
+
+
+### Features
+
+* expand capture info and filters ([2c95a6a](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/2c95a6a745c6ad78c477c868cf4de5e7122ec7f0))
+* 캡처 정보 · 검색 필터 확장 및 전체 내보내기 ([c8c15ba](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/c8c15baf16d5beb61ead063554c8e91625617c58))
+
 ## [0.4.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.3.0...v0.4.0) (2026-09-02)
 
 
