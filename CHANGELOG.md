@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.5.0...v0.5.1) (2026-09-13)
+
+
+### Bug Fixes
+
+* release capture layout and scrolling improvements ([9d81001](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/9d81001e3872ebf4604568cfd444fcc6a57b6184))
+* release capture layout and scrolling improvements ([34dee6e](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/34dee6e0e87cc8389c15d93b1116bf8cff42706b))
+
 ## [0.5.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.4.0...v0.5.0) (2026-09-13)
 
 
