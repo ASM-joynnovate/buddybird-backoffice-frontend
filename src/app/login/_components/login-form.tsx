@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -16,7 +16,7 @@ export default function LoginForm() {
 	const router = useRouter();
 	const [password, setPasswordValue] = useState('');
 
-	const handleSubmit = (e: FormEvent) => {
+	const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		if (!password.trim()) {
