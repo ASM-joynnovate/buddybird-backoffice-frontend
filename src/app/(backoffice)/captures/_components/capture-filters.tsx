@@ -83,7 +83,7 @@ export default function CaptureFilters() {
 				setDateRange(undefined);
 				router.push('/captures');
 			}}
-			className="space-y-4 rounded-lg border bg-card p-4"
+			className="shrink-0 space-y-4 rounded-lg border bg-card p-4"
 		>
 			<div className="grid grid-cols-1 items-end gap-3 sm:grid-cols-2 xl:grid-cols-4">
 				<div className="space-y-1">
@@ -112,7 +112,7 @@ export default function CaptureFilters() {
 								: '라벨 선택'}
 							<ChevronDownIcon className="ml-2 size-4 opacity-50" />
 						</PopoverTrigger>
-						<PopoverContent className="w-64 p-3" align="start">
+						<PopoverContent className="max-h-(--available-height) w-64 overflow-y-auto p-3" align="start">
 							{captureLabels.length === 0 && (
 								<p className="text-xs text-muted-foreground">클립 대상 라벨이 없습니다.</p>
 							)}

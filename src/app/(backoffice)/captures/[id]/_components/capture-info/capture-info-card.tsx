@@ -9,7 +9,7 @@ interface CaptureInfoCardProps {
 
 export default function CaptureInfoCard({ title, children }: CaptureInfoCardProps) {
 	return (
-		<Card>
+		<Card className="gap-0 py-0">
 			<div className="border-b px-4 py-3">
 				<span className="text-sm font-semibold">{title}</span>
 			</div>
