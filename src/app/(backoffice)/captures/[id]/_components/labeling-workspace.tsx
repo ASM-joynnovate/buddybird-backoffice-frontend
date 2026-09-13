@@ -57,6 +57,10 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 		countByPage: Number(searchParams.get('countByPage')) || 12,
 		firebaseAnonUid: searchParams.get('firebaseAnonUid') || undefined,
 		wordLabel: searchParams.get('wordLabel') || undefined,
+		parrotSpecies: searchParams.get('parrotSpecies') || undefined,
+		deviceModel: searchParams.get('deviceModel') || undefined,
+		devicePlatform: searchParams.get('devicePlatform') || undefined,
+		deviceOsVersion: searchParams.get('deviceOsVersion') || undefined,
 		labelOptionIds: labelOptionIds.length ? labelOptionIds : undefined,
 		dateFrom: searchParams.get('dateFrom') || undefined,
 		dateTo: searchParams.get('dateTo') || undefined,
@@ -95,96 +99,127 @@ export default function LabelingWorkspace({ audioCaptureId }: LabelingWorkspaceP
 	};
 
 	return (
-		<div className="flex flex-col gap-4">
-			<CaptureInfo capture={capture} />
-
-			<WaveformEditor
-				ref={waveformRef}
-				audioCaptureId={audioCaptureId}
-				highlightedSegmentId={hoveredSegmentId}
-				onSegmentHover={setHoveredSegmentId}
-			/>
-
-			<Card>
-				<div className="flex items-center justify-between border-b px-4 py-3">
-					<span className="text-sm font-semibold">클립 라벨</span>
-					{capture.labelOptionIds.length > 0 && (
-						<Badge variant="secondary">{capture.labelOptionIds.length}개 선택</Badge>
-					)}
-				</div>
-				<CardContent className="p-4">
-					{captureLabels.length === 0 ? (
-						<p className="text-xs text-muted-foreground">
-							클립 대상 라벨 카테고리가 없습니다. 라벨 관리에서 먼저 추가해 주세요.
-						</p>
-					) : (
-						<div
-							className={cn(
-								'space-y-3',
-								assignCaptureLabels.isPending && 'pointer-events-none opacity-50',
-							)}
-						>
-							{captureLabels.map((category) => (
-								<div key={category.id}>
-									<p className="mb-1.5 text-xs font-medium text-muted-foreground">{category.name}</p>
-									<div className="flex flex-wrap gap-1.5">
-										{category.options.map((option) => {
-											const selected = capture.labelOptionIds.includes(option.id);
-											return (
-												<Badge
-													key={option.id}
-													variant={selected ? 'default' : 'outline'}
-													className="cursor-pointer"
-													render={<button type="button" />}
-													aria-pressed={selected}
-													onClick={() => {
-														const next = selected
-															? capture.labelOptionIds.filter((id) => id !== option.id)
-															: [...capture.labelOptionIds, option.id];
-														assignCaptureLabels.mutate({ labelOptionIds: next });
-													}}
-												>
-													{option.name}
-												</Badge>
-											);
-										})}
+		<div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4">
+			<div
+				className="grid min-w-0 gap-4 capture-desktop:min-h-0 capture-desktop:flex-1
+					capture-desktop:grid-cols-[minmax(0,1fr)_360px]"
+			>
+				<section aria-label="오디오 클립 작업" className="flex min-w-0 flex-col gap-4 capture-desktop:min-h-0">
+					<div className="shrink-0">
+						<WaveformEditor
+							ref={waveformRef}
+							audioCaptureId={audioCaptureId}
+							highlightedSegmentId={hoveredSegmentId}
+							onSegmentHover={setHoveredSegmentId}
+						/>
+					</div>
+					<div
+						role="region"
+						aria-label="클립 라벨 · 메모 · 세그먼트"
+						tabIndex={0}
+						className="flex flex-col gap-4 p-px focus-visible:outline-2 focus-visible:-outline-offset-2
+							capture-desktop:min-h-0 capture-desktop:flex-1 capture-desktop:overflow-y-auto"
+					>
+						<Card className="shrink-0 gap-0 py-0">
+							<div className="flex items-center justify-between border-b px-4 py-3">
+								<span className="text-sm font-semibold">클립 라벨</span>
+								{capture.labelOptionIds.length > 0 && (
+									<Badge variant="secondary">{capture.labelOptionIds.length}개 선택</Badge>
+								)}
+							</div>
+							<CardContent className="p-4">
+								{captureLabels.length === 0 ? (
+									<p className="text-xs text-muted-foreground">
+										클립 대상 라벨 카테고리가 없습니다. 라벨 관리에서 먼저 추가해 주세요.
+									</p>
+								) : (
+									<div
+										className={cn(
+											'space-y-3',
+											assignCaptureLabels.isPending && 'pointer-events-none opacity-50',
+										)}
+									>
+										{captureLabels.map((category) => (
+											<div key={category.id}>
+												<p className="mb-1.5 text-xs font-medium text-muted-foreground">
+													{category.name}
+												</p>
+												<div className="flex flex-wrap gap-1.5">
+													{category.options.map((option) => {
+														const selected = capture.labelOptionIds.includes(option.id);
+														return (
+															<Badge
+																key={option.id}
+																variant={selected ? 'default' : 'outline'}
+																className="cursor-pointer"
+																render={<button type="button" />}
+																aria-pressed={selected}
+																onClick={() => {
+																	const next = selected
+																		? capture.labelOptionIds.filter(
+																				(id) => id !== option.id,
+																			)
+																		: [...capture.labelOptionIds, option.id];
+																	assignCaptureLabels.mutate({
+																		labelOptionIds: next,
+																	});
+																}}
+															>
+																{option.name}
+															</Badge>
+														);
+													})}
+												</div>
+											</div>
+										))}
 									</div>
-								</div>
-							))}
-						</div>
-					)}
-				</CardContent>
-			</Card>
+								)}
+							</CardContent>
+						</Card>
 
-			<Card>
-				<div className="border-b px-4 py-3">
-					<span className="text-sm font-semibold">클립 메모</span>
-				</div>
-				<CardContent className="p-4">
-					<MemoEditor
-						key={capture.memo}
-						memo={capture.memo}
-						isPending={updateCaptureMemo.isPending}
-						onSave={(value) =>
-							updateCaptureMemo.mutate(
-								{ memo: value },
-								{ onError: () => toast.error('메모 저장에 실패했습니다.') },
-							)
-						}
-					/>
-				</CardContent>
-			</Card>
+						<Card className="shrink-0 gap-0 py-0">
+							<div className="border-b px-4 py-3">
+								<span className="text-sm font-semibold">클립 메모</span>
+							</div>
+							<CardContent className="p-4">
+								<MemoEditor
+									key={capture.memo}
+									memo={capture.memo}
+									isPending={updateCaptureMemo.isPending}
+									onSave={(value) =>
+										updateCaptureMemo.mutate(
+											{ memo: value },
+											{ onError: () => toast.error('메모 저장에 실패했습니다.') },
+										)
+									}
+								/>
+							</CardContent>
+						</Card>
 
-			<AudioSegmentList
-				audioCaptureId={audioCaptureId}
-				hoveredSegmentId={hoveredSegmentId}
-				onSegmentPlay={(segmentId) => waveformRef.current?.playSegment(segmentId)}
-				onSegmentHover={setHoveredSegmentId}
-				onRunVad={() => runVad.mutate()}
-				isVadPending={runVad.isPending}
-			/>
+						<AudioSegmentList
+							audioCaptureId={audioCaptureId}
+							hoveredSegmentId={hoveredSegmentId}
+							onSegmentPlay={(segmentId) => waveformRef.current?.playSegment(segmentId)}
+							onSegmentHover={setHoveredSegmentId}
+							onRunVad={() => runVad.mutate()}
+							isVadPending={runVad.isPending}
+						/>
+					</div>
+				</section>
+				<aside
+					aria-label="클립 정보"
+					tabIndex={0}
+					className="min-w-0 p-px focus-visible:outline-2 focus-visible:-outline-offset-2
+						capture-desktop:min-h-0 capture-desktop:overflow-y-auto"
+				>
+					<CaptureInfo capture={capture} />
+				</aside>
+			</div>
 
-			<div className="sticky bottom-0 grid grid-cols-2 gap-2 border-t bg-background py-3">
+			<div
+				className="sticky bottom-0 z-10 grid shrink-0 grid-cols-2 gap-2 border-t bg-background py-3
+					capture-desktop:static"
+			>
 				<Button
 					variant="outline"
 					className="py-5 text-sm font-semibold"

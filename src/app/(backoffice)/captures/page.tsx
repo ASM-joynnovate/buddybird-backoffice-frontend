@@ -26,22 +26,26 @@ export default async function Page(props: PageProps<'/captures'>) {
 		countByPage: Number(searchParams.countByPage) || 12,
 		firebaseAnonUid: searchParams.firebaseAnonUid as string | undefined,
 		wordLabel: searchParams.wordLabel as string | undefined,
+		parrotSpecies: searchParams.parrotSpecies as string | undefined,
+		deviceModel: searchParams.deviceModel as string | undefined,
+		devicePlatform: searchParams.devicePlatform as string | undefined,
+		deviceOsVersion: searchParams.deviceOsVersion as string | undefined,
 		labelOptionIds: labelOptionIds?.length ? labelOptionIds : undefined,
 		dateFrom: searchParams.dateFrom as string | undefined,
 		dateTo: searchParams.dateTo as string | undefined,
 	};
 
 	return (
-		<div className="flex flex-1 flex-col">
-			<div className="mb-4 flex items-center justify-between">
+		<div className="flex min-h-0 min-w-0 flex-1 flex-col">
+			<div className="mb-4 flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<h2 className="text-lg font-bold">오디오 캡처</h2>
 				<ExportButton />
 			</div>
 
 			<QueriesHydration queries={[getAudioCaptureListOptions(params, password), getLabelListOptions(password)]}>
-				<CaptureFilters />
+				<CaptureFilters key={JSON.stringify(searchParams)} />
 
-				<div className="mt-4 flex flex-1 flex-col">
+				<div className="mt-4 flex min-h-0 flex-1 flex-col">
 					<CaptureTable params={params} />
 				</div>
 			</QueriesHydration>

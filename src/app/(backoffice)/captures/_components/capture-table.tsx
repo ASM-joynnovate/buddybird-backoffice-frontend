@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { AudioCaptureListParams } from '@/types/apis/audio-captures';
@@ -34,35 +35,77 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 
 	return (
 		<>
-			<div className="flex-1 overflow-x-auto rounded-lg border">
+			<div
+				className="min-h-0 flex-1 overflow-hidden rounded-lg border
+					capture-desktop:[&>[data-slot=table-container]]:h-full
+					capture-desktop:[&>[data-slot=table-container]]:overflow-auto"
+			>
 				<Table>
-					<TableHeader>
+					<TableHeader
+						className="capture-desktop:sticky capture-desktop:top-0 capture-desktop:z-10
+							capture-desktop:bg-card"
+					>
 						<TableRow>
 							<TableHead>사용자 ID</TableHead>
 							<TableHead>단어</TableHead>
+							<TableHead>앵무새 종</TableHead>
 							<TableHead>구간</TableHead>
 							<TableHead>사이클</TableHead>
 							<TableHead>캡처 시각</TableHead>
 							<TableHead>길이</TableHead>
+							<TableHead>캡처 기기</TableHead>
 							<TableHead>라벨</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
+						{data.data.length === 0 && (
+							<TableRow>
+								<TableCell
+									colSpan={9}
+									className="h-32 text-center whitespace-normal text-muted-foreground"
+								>
+									검색 조건에 맞는 캡처가 없습니다. 조건을 변경하거나 초기화해 주세요.
+								</TableCell>
+							</TableRow>
+						)}
 						{data.data.map((capture) => (
 							<TableRow
 								key={capture.id}
 								className="cursor-pointer"
 								onClick={() => router.push(`/captures/${capture.id}?${searchParams.toString()}`)}
 							>
-								<TableCell className="max-w-32 truncate font-mono text-xs text-muted-foreground">
+								<TableCell
+									title={capture.firebaseAnonUid}
+									className="max-w-32 truncate font-mono text-xs text-muted-foreground"
+								>
 									{capture.firebaseAnonUid}
 								</TableCell>
-								<TableCell>{capture.clientWordId}</TableCell>
+								<TableCell className="max-w-48 min-w-36 wrap-anywhere whitespace-normal">
+									<Link
+										href={`/captures/${capture.id}?${searchParams.toString()}`}
+										onClick={(event) => event.stopPropagation()}
+										className="rounded-sm font-medium underline-offset-4 hover:underline
+											focus-visible:outline-2 focus-visible:outline-offset-4"
+										aria-label={`${capture.word?.label ?? '-'} 캡처 상세 보기`}
+									>
+										{capture.word?.label ?? '-'}
+									</Link>
+								</TableCell>
+								<TableCell className="max-w-32 min-w-24 wrap-anywhere whitespace-normal">
+									{capture.parrotSpecies ?? '-'}
+								</TableCell>
 								<TableCell>{capture.phase}</TableCell>
 								<TableCell>{capture.cycle}</TableCell>
 								<TableCell>{dayjs(capture.capturedAt).format('YYYY.MM.DD HH:mm')}</TableCell>
 								<TableCell>
 									{capture.durationMs ? `${(capture.durationMs / 1000).toFixed(1)}s` : '-'}
+								</TableCell>
+								<TableCell className="max-w-48 min-w-36 wrap-anywhere whitespace-normal">
+									<div>{capture.deviceModel ?? '-'}</div>
+									<div className="text-xs text-muted-foreground">
+										{[capture.devicePlatform, capture.deviceOsVersion].filter(Boolean).join(' ') ||
+											'-'}
+									</div>
 								</TableCell>
 								<TableCell>
 									<div className="flex flex-wrap gap-1">
@@ -83,7 +126,7 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 				</Table>
 			</div>
 
-			<PaginatedNavigation meta={meta} buildHref={buildHref} className="mt-auto pt-6 pb-2" />
+			<PaginatedNavigation meta={meta} buildHref={buildHref} className="mt-auto shrink-0 pt-6 pb-2" />
 		</>
 	);
 }

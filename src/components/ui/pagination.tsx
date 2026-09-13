@@ -1,7 +1,9 @@
 import * as React from "react"
 
+import Link from "next/link"
+
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { type Button, buttonVariants } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
@@ -35,30 +37,32 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean
+  href?: React.ComponentProps<typeof Link>["href"]
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">
+  Omit<React.ComponentProps<typeof Link>, "href">
 
 function PaginationLink({
   className,
   isActive,
   size = "icon",
+  href,
   ...props
 }: PaginationLinkProps) {
-  return (
-    <Button
-      variant={isActive ? "outline" : "ghost"}
-      size={size}
-      className={cn(className)}
-      nativeButton={false}
-      render={
-        <a
-          aria-current={isActive ? "page" : undefined}
-          data-slot="pagination-link"
-          data-active={isActive}
-          {...props}
-        />
-      }
-    />
+  const linkProps = {
+    "aria-current": isActive ? ("page" as const) : undefined,
+    "data-slot": "pagination-link",
+    "data-active": isActive,
+    className: cn(
+      buttonVariants({ variant: isActive ? "outline" : "ghost", size }),
+      className
+    ),
+    ...props,
+  }
+
+  return href === undefined ? (
+    <a {...linkProps} />
+  ) : (
+    <Link href={href} {...linkProps} />
   )
 }
 

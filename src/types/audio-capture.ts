@@ -14,13 +14,16 @@ export const PHASE_LABEL: Record<PhaseEnum, string> = {
 export interface AudioCaptureListItem {
 	id: string;
 	firebaseAnonUid: string;
-	clientWordId: string;
-	wordId: string | null;
+	word: { id: string; label: string } | null;
 	cycle: number;
 	phase: PhaseEnum;
 	capturedAt: string;
 	durationMs: number | null;
 	createdAt: string;
+	parrotSpecies: string | null;
+	devicePlatform: string | null;
+	deviceOsVersion: string | null;
+	deviceModel: string | null;
 	segmentCount: number;
 	labeledCount: number;
 	labelOptionIds: string[];
@@ -29,8 +32,15 @@ export interface AudioCaptureListItem {
 export interface AudioCaptureDetail {
 	id: string;
 	firebaseAnonUid: string;
-	clientWordId: string;
-	wordId: string | null;
+	word: {
+		id: string;
+		label: string;
+		firebaseAnonUid: string | null;
+		clientWordId: string;
+		devicePlatform: string | null;
+		deviceOsVersion: string | null;
+		deviceModel: string | null;
+	} | null;
 	cycle: number;
 	phase: PhaseEnum;
 	capturedAt: string;

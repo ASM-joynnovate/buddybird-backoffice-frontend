@@ -33,14 +33,14 @@ export default function AudioSegmentList({
 	const labelItems = Object.fromEntries(segmentLabels.flatMap((c) => c.options.map((o) => [o.id, o.name])));
 
 	return (
-		<div className="rounded-lg border bg-card">
+		<div className="shrink-0 rounded-lg border bg-card">
 			<div className="flex items-center justify-between border-b px-4 py-3">
 				<span className="text-sm font-semibold">세그먼트</span>
 				<Button variant="outline" size="sm" onClick={onRunVad} disabled={isVadPending}>
 					VAD 실행
 				</Button>
 			</div>
-			<div className="max-h-[50vh] overflow-y-auto">
+			<div className="max-h-[50vh] overflow-y-auto capture-desktop:max-h-none capture-desktop:overflow-visible">
 				{capture.segments.map((seg) => (
 					<AudioSegmentItem
 						key={seg.id}

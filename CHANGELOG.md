@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.5.2](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.5.1...v0.5.2) (2026-09-13)
+
+
+### Bug Fixes
+
+* remove exact-match hint from capture filters ([5593dca](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/5593dca29747760a297e9c27967c966d28582cf1))
+* replace deprecated form event types ([eeadfff](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/eeadfff356c6b9cc9f559954bc82bfff532021e0))
+* use client-side navigation for pagination ([ae9a0e4](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ae9a0e4330474dc4d60185f1afc7902729730ba2))
+* 페이지네이션 새로고침 및 폼 이벤트 타입 경고 수정 ([2a5b3ef](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/2a5b3efa178e58e4b07c46bcbf362abbf0a1566a))
+
+## [0.5.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.5.0...v0.5.1) (2026-09-13)
+
+
+### Bug Fixes
+
+* release capture layout and scrolling improvements ([9d81001](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/9d81001e3872ebf4604568cfd444fcc6a57b6184))
+* release capture layout and scrolling improvements ([34dee6e](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/34dee6e0e87cc8389c15d93b1116bf8cff42706b))
+
+## [0.5.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.4.0...v0.5.0) (2026-09-13)
+
+
+### Features
+
+* expand capture info and filters ([2c95a6a](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/2c95a6a745c6ad78c477c868cf4de5e7122ec7f0))
+* 캡처 정보 · 검색 필터 확장 및 전체 내보내기 ([c8c15ba](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/c8c15baf16d5beb61ead063554c8e91625617c58))
+
 ## [0.4.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.3.0...v0.4.0) (2026-09-02)
 
 

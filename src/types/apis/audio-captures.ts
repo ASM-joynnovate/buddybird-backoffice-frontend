@@ -15,6 +15,10 @@ export interface GetAudioCaptureDetailResponse extends ApiResponse {
 export type AudioCaptureListParams = PaginationParams & {
 	firebaseAnonUid?: string;
 	wordLabel?: string;
+	parrotSpecies?: string;
+	deviceModel?: string;
+	devicePlatform?: string;
+	deviceOsVersion?: string;
 	labelOptionIds?: string[];
 	dateFrom?: string;
 	dateTo?: string;
@@ -27,7 +31,3 @@ export interface AssignAudioCaptureLabelsRequest {
 export interface UpdateAudioCaptureMemoRequest {
 	memo: string | null;
 }
-
-export type ExportAudioSegmentsParams = {
-	audioCaptureLabelOptionIds?: string[];
-};
