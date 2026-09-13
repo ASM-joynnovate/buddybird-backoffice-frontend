@@ -6,9 +6,13 @@ interface CaptureInfoFieldProps {
 	className?: string;
 }
 
-export default function CaptureInfoField({ label, value, className = 'text-sm font-semibold' }: CaptureInfoFieldProps) {
+export default function CaptureInfoField({
+	label,
+	value,
+	className = 'text-sm font-semibold wrap-anywhere',
+}: CaptureInfoFieldProps) {
 	return (
-		<div>
+		<div className="min-w-0">
 			<dt className="text-xs font-medium text-muted-foreground">{label}</dt>
 			<dd className={className}>{value}</dd>
 		</div>
