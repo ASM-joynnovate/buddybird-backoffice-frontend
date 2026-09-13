@@ -36,8 +36,8 @@ export default async function Page(props: PageProps<'/captures'>) {
 	};
 
 	return (
-		<div className="flex min-w-0 flex-1 flex-col">
-			<div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+		<div className="flex min-h-0 min-w-0 flex-1 flex-col">
+			<div className="mb-4 flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<h2 className="text-lg font-bold">오디오 캡처</h2>
 				<ExportButton />
 			</div>
@@ -45,7 +45,7 @@ export default async function Page(props: PageProps<'/captures'>) {
 			<QueriesHydration queries={[getAudioCaptureListOptions(params, password), getLabelListOptions(password)]}>
 				<CaptureFilters key={JSON.stringify(searchParams)} />
 
-				<div className="mt-4 flex flex-1 flex-col">
+				<div className="mt-4 flex min-h-0 flex-1 flex-col">
 					<CaptureTable params={params} />
 				</div>
 			</QueriesHydration>

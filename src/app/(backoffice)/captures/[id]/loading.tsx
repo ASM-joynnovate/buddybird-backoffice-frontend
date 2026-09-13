@@ -2,15 +2,25 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Loading() {
 	return (
-		<div className="space-y-4">
-			<Skeleton className="h-16 w-full sm:h-24" />
-			<Skeleton className="h-24 w-full sm:h-36" />
-			<div className="flex gap-2">
-				<Skeleton className="h-9 w-24" />
-				<Skeleton className="h-9 w-24" />
+		<div
+			className="flex min-h-0 flex-1 flex-col gap-4 capture-desktop:overflow-hidden"
+			aria-label="캡처 상세 로딩 중"
+		>
+			<div className="grid min-h-0 flex-1 gap-4 capture-desktop:grid-cols-[minmax(0,1fr)_360px]">
+				<div className="flex min-h-0 flex-col gap-4 capture-desktop:overflow-hidden">
+					<Skeleton className="h-48 w-full shrink-0" />
+					<Skeleton className="min-h-48 w-full flex-1" />
+				</div>
+				<div className="space-y-3 capture-desktop:overflow-hidden">
+					{Array.from({ length: 4 }).map((_, i) => (
+						<Skeleton key={i} className="h-32 w-full" />
+					))}
+				</div>
 			</div>
-			<Skeleton className="h-10 w-full" />
-			<Skeleton className="h-32 w-full lg:h-64" />
+			<div className="grid shrink-0 grid-cols-2 gap-2">
+				<Skeleton className="h-12 w-full" />
+				<Skeleton className="h-12 w-full" />
+			</div>
 		</div>
 	);
 }

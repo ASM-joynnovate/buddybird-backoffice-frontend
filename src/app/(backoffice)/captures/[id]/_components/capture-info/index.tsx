@@ -15,7 +15,7 @@ export default function CaptureInfo({ capture }: CaptureInfoProps) {
 	const wordDeviceOs = [capture.word?.devicePlatform, capture.word?.deviceOsVersion].filter(Boolean).join(' ');
 
 	return (
-		<div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
+		<div className="grid grid-cols-1 items-start gap-3">
 			<CaptureInfoCard title="오디오 정보">
 				<CaptureInfoField label="구간" value={PHASE_LABEL[capture.phase]} />
 				<CaptureInfoField label="사이클" value={capture.cycle} />
@@ -42,7 +42,7 @@ export default function CaptureInfo({ capture }: CaptureInfoProps) {
 				<CaptureInfoField label="단어명" value={capture.word?.label ?? '-'} />
 				<CaptureInfoField label="단어 녹음 기기" value={capture.word?.deviceModel ?? '-'} />
 				<CaptureInfoField label="단어 녹음 OS" value={wordDeviceOs || '-'} />
-				<div className="col-span-full border-t pt-3">
+				<div className="relative col-span-full border-t pt-3">
 					<dt className="sr-only">단어 식별 정보</dt>
 					<dd>
 						<details>

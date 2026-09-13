@@ -35,9 +35,16 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 
 	return (
 		<>
-			<div className="flex-1 overflow-x-auto rounded-lg border">
+			<div
+				className="min-h-0 flex-1 overflow-hidden rounded-lg border
+					capture-desktop:[&>[data-slot=table-container]]:h-full
+					capture-desktop:[&>[data-slot=table-container]]:overflow-auto"
+			>
 				<Table>
-					<TableHeader>
+					<TableHeader
+						className="capture-desktop:sticky capture-desktop:top-0 capture-desktop:z-10
+							capture-desktop:bg-card"
+					>
 						<TableRow>
 							<TableHead>사용자 ID</TableHead>
 							<TableHead>단어</TableHead>
@@ -119,7 +126,7 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 				</Table>
 			</div>
 
-			<PaginatedNavigation meta={meta} buildHref={buildHref} className="mt-auto pt-6 pb-2" />
+			<PaginatedNavigation meta={meta} buildHref={buildHref} className="mt-auto shrink-0 pt-6 pb-2" />
 		</>
 	);
 }

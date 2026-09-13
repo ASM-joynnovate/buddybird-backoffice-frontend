@@ -3,6 +3,25 @@
 @import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant capture-desktop (@media (min-width: 1280px) and (min-height: 720px));
+
+@layer components {
+	.backoffice-layout:has([data-capture-viewport]) {
+		@variant capture-desktop {
+			height: 100dvh;
+
+			> header {
+				flex-shrink: 0;
+			}
+
+			> main {
+				display: flex;
+				min-height: 0;
+				overflow: hidden;
+			}
+		}
+	}
+}
 
 @theme inline {
 	--color-background: var(--background);
