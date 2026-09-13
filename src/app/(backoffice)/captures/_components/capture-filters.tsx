@@ -179,7 +179,7 @@ export default function CaptureFilters() {
 					/>
 				</div>
 			</div>
-			<p className="text-xs text-muted-foreground">단어명·앵무새 종은 완전일치로 검색합니다.</p>
+
 			<details className="border-t pt-3">
 				<summary
 					className="w-fit cursor-pointer rounded-sm text-sm font-medium focus-visible:outline-2
