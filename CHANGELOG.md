@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.5.2...v0.6.0) (2026-10-06)
+
+
+### Features
+
+* rebuild the backoffice for the current api ([0d02942](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/0d0294209f110cbc23db17234adf55bb344ab6cd))
+* 현재 백엔드 API에 맞춰 백오피스 재구현 [BB-189] ([d211089](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/d21108911588ecef0b653a7070bea4557581417b))
+
+
+### Bug Fixes
+
+* format the legacy capture times in Asia/Seoul ([d4db94c](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/d4db94cd18c3e8f4c62539e43549e64ef589efb6))
+* remove the password from the legacy query keys ([efe1616](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/efe161680cc88a27392c6190d08e3f7b80a26ec2))
+* reset the segment memo editor when the memo changes ([9ac7102](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/9ac7102e8a39007aaa02b63c40408cb748957b8d))
+
 ## [0.5.2](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.5.1...v0.5.2) (2026-09-13)
 
 
