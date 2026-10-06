@@ -10,9 +10,9 @@ import { LabelCategoryTargetEnum } from '@/legacy/types/label';
 
 import { useGetLabelList } from '@/legacy/hooks/apis/use-labels';
 
+import { formatSeoulTime } from '@/legacy/lib/date';
 import { cn } from '@/legacy/lib/utils';
 
-import dayjs from 'dayjs';
 import { CalendarIcon, ChevronDownIcon } from 'lucide-react';
 
 import { Badge } from '@/legacy/components/ui/badge';
@@ -24,7 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/legacy/components/ui/
 
 const formatRange = (range?: DateRange) => {
 	if (!range?.from) return '기간 선택';
-	const f = (d: Date) => dayjs(d).format('YYYY.MM.DD');
+	const f = (d: Date) => formatSeoulTime(d, 'YYYY.MM.DD');
 	return range.to ? `${f(range.from)} - ${f(range.to)}` : f(range.from);
 };
 

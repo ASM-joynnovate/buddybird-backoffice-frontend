@@ -1,5 +1,6 @@
 import { AudioCaptureDetail, PHASE_LABEL } from '@/legacy/types/audio-capture';
 
+import { formatSeoulTime } from '@/legacy/lib/date';
 import { formatMs } from '@/legacy/lib/utils';
 
 import CaptureInfoCard from '@/app/legacy/(backoffice)/captures/[id]/_components/capture-info/capture-info-card';
@@ -20,7 +21,10 @@ export default function CaptureInfo({ capture }: CaptureInfoProps) {
 				<CaptureInfoField label="구간" value={PHASE_LABEL[capture.phase]} />
 				<CaptureInfoField label="사이클" value={capture.cycle} />
 				<CaptureInfoField label="길이" value={capture.durationMs ? formatMs(capture.durationMs) : '-'} />
-				<CaptureInfoField label="캡처 시각" value={new Date(capture.capturedAt).toLocaleString('ko')} />
+				<CaptureInfoField
+					label="캡처 시각"
+					value={formatSeoulTime(capture.capturedAt, 'YYYY. M. D. A h:mm:ss')}
+				/>
 			</CaptureInfoCard>
 			<CaptureInfoCard title="캡처 사용자 · 기기">
 				<CaptureInfoField

@@ -8,7 +8,7 @@ import { AudioCaptureListParams } from '@/legacy/types/apis/audio-captures';
 import { useGetAudioCaptureList } from '@/legacy/hooks/apis/use-audio-captures';
 import { useGetLabelList } from '@/legacy/hooks/apis/use-labels';
 
-import dayjs from 'dayjs';
+import { formatSeoulTime } from '@/legacy/lib/date';
 
 import PaginatedNavigation from '@/legacy/components/paginated-navigation';
 import { Badge } from '@/legacy/components/ui/badge';
@@ -96,7 +96,7 @@ export default function CaptureTable({ params }: CaptureTableProps) {
 								</TableCell>
 								<TableCell>{capture.phase}</TableCell>
 								<TableCell>{capture.cycle}</TableCell>
-								<TableCell>{dayjs(capture.capturedAt).format('YYYY.MM.DD HH:mm')}</TableCell>
+								<TableCell>{formatSeoulTime(capture.capturedAt, 'YYYY.MM.DD HH:mm')}</TableCell>
 								<TableCell>
 									{capture.durationMs ? `${(capture.durationMs / 1000).toFixed(1)}s` : '-'}
 								</TableCell>
