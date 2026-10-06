@@ -1,0 +1,30 @@
+import { cookies } from 'next/headers';
+
+import { QueriesHydration } from '@suspensive/react-query-5';
+
+import { getAudioCaptureDetailOptions } from '@/legacy/hooks/apis/use-audio-captures';
+import { getLabelListOptions } from '@/legacy/hooks/apis/use-labels';
+
+import { BACKOFFICE_COOKIE_NAME } from '@/legacy/lib/auth';
+
+import LabelingWorkspace from '@/app/legacy/(backoffice)/captures/[id]/_components/labeling-workspace';
+
+export default async function Page(props: PageProps<'/legacy/captures/[id]'>) {
+	const cookieStore = await cookies();
+	const password = cookieStore.get(BACKOFFICE_COOKIE_NAME)?.value ?? '';
+
+	const params = await props.params;
+
+	return (
+		<div
+			className="min-w-0 capture-desktop:flex capture-desktop:min-h-0 capture-desktop:flex-1
+				capture-desktop:flex-col"
+		>
+			<QueriesHydration
+				queries={[getAudioCaptureDetailOptions(params.id, password), getLabelListOptions(password)]}
+			>
+				<LabelingWorkspace audioCaptureId={params.id} />
+			</QueriesHydration>
+		</div>
+	);
+}
