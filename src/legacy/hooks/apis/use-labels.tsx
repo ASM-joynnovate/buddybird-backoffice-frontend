@@ -21,7 +21,7 @@ import { getQueryClient } from '@/legacy/lib/react-query';
 
 export const getLabelListOptions = (password?: string) =>
 	queryOptions({
-		queryKey: ['labels', password],
+		queryKey: ['labels'],
 		queryFn: () => getLabelList(password).then((res) => res.data),
 	});
 

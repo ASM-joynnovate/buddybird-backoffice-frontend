@@ -17,7 +17,7 @@ import { getQueryClient } from '@/legacy/lib/react-query';
 
 export const getAudioCaptureListOptions = (params?: AudioCaptureListParams, password?: string) =>
 	queryOptions({
-		queryKey: ['audio-captures', params, password],
+		queryKey: ['audio-captures', params],
 		queryFn: () => getAudioCaptureList(params, password).then((res) => ({ data: res.data, meta: res.meta })),
 	});
 
@@ -27,7 +27,7 @@ export const useGetAudioCaptureList = (params?: AudioCaptureListParams) => {
 
 export const getAudioCaptureDetailOptions = (audioCaptureId: string, password?: string) =>
 	queryOptions({
-		queryKey: ['audio-captures', audioCaptureId, password],
+		queryKey: ['audio-captures', audioCaptureId],
 		queryFn: () => getAudioCaptureDetail(audioCaptureId, password).then((res) => res.data),
 	});
 
