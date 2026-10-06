@@ -1,22 +1,31 @@
-export const BACKOFFICE_COOKIE_NAME = 'backoffice-password';
-export const BACKOFFICE_PASSWORD_HEADER = 'X-Backoffice-Password';
+import { PASSWORD_COOKIE_MAX_AGE_MS } from '@/config';
+import { SECOND } from '@/config/units';
 
-const MAX_AGE = 60 * 60 * 24 * 3;
+export const PASSWORD_COOKIE_NAME = 'backoffice-password';
+export const PASSWORD_HEADER_NAME = 'X-Backoffice-Password';
 
-export function getPasswordFromBrowser(): string {
-	if (typeof document === 'undefined') return '';
-	const match = document.cookie.match(new RegExp(`${BACKOFFICE_COOKIE_NAME}=([^;]+)`));
-	return match ? decodeURIComponent(match[1]) : '';
-}
+/** 브라우저 쿠키에서 비밀번호를 읽는 함수 */
+export const readBrowserPassword = () => {
+	const passwordCookie = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${PASSWORD_COOKIE_NAME}=`));
 
-export function setPassword(password: string): void {
-	document.cookie = `${BACKOFFICE_COOKIE_NAME}=${encodeURIComponent(password)}; path=/; max-age=${MAX_AGE}; SameSite=Lax`;
-}
+	return passwordCookie ? decodeURIComponent(passwordCookie.slice(PASSWORD_COOKIE_NAME.length + 1)) : undefined;
+};
 
-export function clearPassword(): void {
-	document.cookie = `${BACKOFFICE_COOKIE_NAME}=; path=/; max-age=0`;
-}
+/** 비밀번호를 브라우저 쿠키에 저장하는 함수 */
+export const savePassword = (password: string) => {
+	const maxAge = PASSWORD_COOKIE_MAX_AGE_MS / SECOND;
 
-export function getAuthHeader(password?: string): Record<string, string> {
-	return { [BACKOFFICE_PASSWORD_HEADER]: password ?? getPasswordFromBrowser() };
-}
+	document.cookie = `${PASSWORD_COOKIE_NAME}=${encodeURIComponent(password)}; path=/; max-age=${maxAge}; SameSite=Lax`;
+};
+
+/** 브라우저 쿠키의 비밀번호를 삭제하는 함수 */
+export const removePassword = () => {
+	document.cookie = `${PASSWORD_COOKIE_NAME}=; path=/; max-age=0`;
+};
+
+/** 로그아웃 함수 */
+export const signOut = () => {
+	removePassword();
+
+	window.location.replace('/login');
+};
