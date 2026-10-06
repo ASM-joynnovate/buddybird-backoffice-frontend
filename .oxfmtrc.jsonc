@@ -1,0 +1,65 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"semi": true,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"quoteProps": "as-needed",
+	"sortPackageJson": true,
+	"sortImports": {
+		"customGroups": [
+			{ "groupName": "react", "elementNamePattern": ["react"] },
+			{ "groupName": "next", "elementNamePattern": ["next", "next/**"] },
+			{ "groupName": "tanstack-query", "elementNamePattern": ["@tanstack/react-query"] },
+			{ "groupName": "apis", "elementNamePattern": ["@/apis/**"] },
+			{ "groupName": "types-apis", "elementNamePattern": ["@/types/apis/**"] },
+			{ "groupName": "types", "elementNamePattern": ["@/types/**"] },
+			{ "groupName": "hooks", "elementNamePattern": ["@/hooks/**"] },
+			{ "groupName": "lib", "elementNamePattern": ["@/lib/**"] },
+			{ "groupName": "zod", "elementNamePattern": ["zod"] },
+			{
+				"groupName": "app-folders",
+				"elementNamePattern": [
+					"@/app/**",
+					"@/config",
+					"@/config/**",
+					"@/providers",
+					"@/providers/**",
+					"@/stores/**",
+					"@/utils/**"
+				]
+			},
+			{ "groupName": "components", "elementNamePattern": ["@/components/**"] }
+		],
+		"groups": [
+			"react",
+			"next",
+			"tanstack-query",
+			"apis",
+			"types-apis",
+			"types",
+			"hooks",
+			"lib",
+			"zod",
+			"unknown",
+			"app-folders",
+			"components"
+		],
+		"newlinesBetween": true,
+		"sortSideEffects": true
+	},
+	"sortTailwindcss": {
+		"stylesheet": "./src/app/(main)/globals.css",
+		"functions": ["clsx", "cn", "cva"]
+	},
+	"ignorePatterns": [
+		"node_modules",
+		".next",
+		"out",
+		"build",
+		".yarn",
+		"next-env.d.ts",
+		"src/legacy",
+		"src/app/legacy",
+		"src/components/ui"
+	]
+}
