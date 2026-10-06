@@ -17,6 +17,7 @@ export default function AudioSegmentMemo({ audioCaptureId, segmentId, memo }: Au
 	return (
 		<div className="mt-1.5">
 			<MemoEditor
+				key={memo}
 				memo={memo}
 				isPending={updateMemo.isPending}
 				onSave={(value) =>
