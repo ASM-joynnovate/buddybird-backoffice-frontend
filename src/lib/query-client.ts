@@ -1,0 +1,59 @@
+import { environmentManager, MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
+
+import { ApiError } from '@/types/apis/common';
+
+import { DEFAULT_STALE_TIME_MS } from '@/config';
+
+const MAX_RETRIES = 2;
+
+let onUnauthorized: (() => void) | undefined;
+
+/** 비밀번호 오류 시 실행할 함수 등록 */
+export const setUnauthorizedHandler = (handler: () => void) => {
+	onUnauthorized = handler;
+};
+
+/** 쿼리 재시도 여부를 반환하는 함수 */
+const retryPolicy = (failureCount: number, error: unknown) =>
+	failureCount < MAX_RETRIES && error instanceof ApiError && error.retryable;
+
+/** 비밀번호 오류 응답 시 등록된 함수 실행 */
+const handleUnauthorized = (error: unknown) => {
+	if (error instanceof ApiError && error.passwordRejected) {
+		onUnauthorized?.();
+	}
+};
+
+/** QueryClient 생성 함수 */
+const makeQueryClient = () => {
+	return new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: DEFAULT_STALE_TIME_MS,
+				retry: retryPolicy,
+				throwOnError: true,
+			},
+		},
+		queryCache: new QueryCache({ onError: handleUnauthorized }),
+		mutationCache: new MutationCache({
+			onError: (error, _variables, _context, mutation) => {
+				if (!mutation.meta?.skipUnauthorizedSignOut) {
+					handleUnauthorized(error);
+				}
+			},
+		}),
+	});
+};
+
+let browserQueryClient: QueryClient | undefined;
+
+/** QueryClient getter */
+export const getQueryClient = () => {
+	if (environmentManager.isServer()) {
+		return makeQueryClient();
+	}
+
+	browserQueryClient ??= makeQueryClient();
+
+	return browserQueryClient;
+};

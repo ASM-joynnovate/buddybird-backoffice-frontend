@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
-import { BACKOFFICE_COOKIE_NAME } from '@/lib/auth';
+import { PASSWORD_COOKIE_NAME } from '@/lib/auth';
 
-const PUBLIC_PATHS = ['/login'];
+const LOGIN_PATH = '/login';
 
-export function proxy(request: NextRequest) {
-	const pathname = request.nextUrl.pathname;
-	const isPublic = PUBLIC_PATHS.some((path) => pathname === path);
+/** 비밀번호 쿠키가 없으면 로그인 화면으로 보내는 proxy */
+export const proxy = (request: NextRequest) => {
+	const { pathname } = request.nextUrl;
 
-	const password = request.cookies.get(BACKOFFICE_COOKIE_NAME)?.value;
+	const passwordSaved = !!request.cookies.get(PASSWORD_COOKIE_NAME)?.value;
 
-	if (!password && !isPublic) {
-		return NextResponse.redirect(new URL('/login', request.url));
+	if (!passwordSaved && pathname !== LOGIN_PATH) {
+		return NextResponse.redirect(new URL(LOGIN_PATH, request.url));
 	}
 
-	if (password && pathname === '/login') {
-		return NextResponse.redirect(new URL('/captures', request.url));
+	if (passwordSaved && pathname === LOGIN_PATH) {
+		return NextResponse.redirect(new URL('/', request.url));
 	}
 
 	return NextResponse.next();
-}
+};
 
 export const config = {
 	matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
