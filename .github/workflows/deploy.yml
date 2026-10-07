@@ -1,8 +1,6 @@
 name: deploy
 
 on:
-  push:
-    branches: [main]
   workflow_call:
 
 permissions:
@@ -17,9 +15,9 @@ jobs:
     env:
       ECR_REPOSITORY: jn-buddybird-backoffice-frontend
       ECS_CLUSTER: jn-cluster
-      ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
-      ECS_SERVICE: jn-buddybird-backoffice-frontend-${{ github.ref_name == 'main' && 'prod' || 'dev' }}
-      NEXT_PUBLIC_API_URL: ${{ github.ref_name == 'main' && 'https://buddybird.xyz' || 'https://dev.buddybird.xyz' }}
+      ENVIRONMENT: prod
+      ECS_SERVICE: jn-buddybird-backoffice-frontend-prod
+      NEXT_PUBLIC_API_URL: https://buddybird.xyz
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - name: checkout
@@ -30,13 +28,7 @@ jobs:
       - name: read version
         id: version
         run: |
-          version=$(jq -r .version package.json)
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            echo "image_tag=$version" >> "$GITHUB_OUTPUT"
-          else
-            echo "image_tag=$version-dev" >> "$GITHUB_OUTPUT"
-          fi
+          echo "image_tag=$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
           echo "started=$(date +%s)" >> "$GITHUB_OUTPUT"
 
       - name: notify deploy start
@@ -69,17 +61,8 @@ jobs:
         id: image
         run: echo "uri=${{ steps.ecr.outputs.registry }}/$ECR_REPOSITORY:${{ steps.version.outputs.image_tag }}" >> "$GITHUB_OUTPUT"
 
-      - name: ensure version is not in ecr
-        if: github.ref_name != 'main'
-        run: "! aws ecr describe-images --repository-name $ECR_REPOSITORY --image-ids imageTag=${{ steps.version.outputs.image_tag }}"
-
-      - name: ensure dev version exists
-        if: github.ref_name == 'main'
-        run: aws ecr describe-images --repository-name $ECR_REPOSITORY --image-ids imageTag=${{ steps.version.outputs.version }}-dev
-
       - name: check if prod image exists
         id: check-prod-image
-        if: github.ref_name == 'main'
         run: |
           if aws ecr describe-images --repository-name $ECR_REPOSITORY --image-ids imageTag=${{ steps.version.outputs.image_tag }} 2>/dev/null; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
@@ -88,11 +71,11 @@ jobs:
           fi
 
       - name: set up buildx
-        if: github.ref_name != 'main' || steps.check-prod-image.outputs.exists == 'false'
+        if: steps.check-prod-image.outputs.exists == 'false'
         uses: docker/setup-buildx-action@v4
 
       - name: build and push image
-        if: github.ref_name != 'main' || steps.check-prod-image.outputs.exists == 'false'
+        if: steps.check-prod-image.outputs.exists == 'false'
         uses: docker/build-push-action@v7
         with:
           context: .

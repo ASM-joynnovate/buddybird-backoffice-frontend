@@ -2,7 +2,7 @@ name: release
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
 
 jobs:
   release:
@@ -17,7 +17,7 @@ jobs:
         id: release
         with:
           release-type: node
-          target-branch: dev
+          target-branch: main
 
   deploy:
     needs: release
