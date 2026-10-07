@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.6.0...v0.7.0) (2026-10-07)
+
+
+### Features
+
+* add sentry error monitoring ([e93de6b](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/e93de6bd6eae15aa6e818ba6298ee75877a658fe))
+* 백오피스 Sentry 연동 [BB-622] ([0c20e15](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/0c20e15b169390b5803336e81f6dd8ad105ac16e))
+
 ## [0.6.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.5.2...v0.6.0) (2026-10-07)
 
 
