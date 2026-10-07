@@ -46,6 +46,7 @@ function PaginationLink({
   isActive,
   size = "icon",
   href,
+  children,
   ...props
 }: PaginationLinkProps) {
   const linkProps = {
@@ -60,9 +61,11 @@ function PaginationLink({
   }
 
   return href === undefined ? (
-    <a {...linkProps} />
+    <a {...linkProps}>{children}</a>
   ) : (
-    <Link href={href} {...linkProps} />
+    <Link href={href} {...linkProps}>
+      {children}
+    </Link>
   )
 }
 

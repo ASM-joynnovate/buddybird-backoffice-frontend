@@ -3,7 +3,6 @@ name: ci
 on:
   pull_request:
     branches:
-      - dev
       - main
 
 jobs:
@@ -25,14 +24,14 @@ jobs:
       - name: install dependencies
         run: yarn install --immutable
 
-      - name: generate types
-        run: npx next typegen
+      - name: type check
+        run: yarn typecheck
 
       - name: lint
         run: yarn lint
 
-      - name: type check
-        run: npx tsc --noEmit
+      - name: format check
+        run: yarn format:check
 
       - name: notify failure
         if: failure()
