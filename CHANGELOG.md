@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.8.0...v0.9.0) (2026-10-08)
+
+
+### Features
+
+* redesign the feedback tab ([b260dac](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/b260dac68d005e9dd67bdfe776701d4735ce243f))
+* 피드백 탭 검색, 필터 및 대시보드 추가 [BB-633] ([6396bd4](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/6396bd46782adf31750ccdf5b945b29536fe105f))
+
 ## [0.8.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.7.0...v0.8.0) (2026-10-08)
 
 
