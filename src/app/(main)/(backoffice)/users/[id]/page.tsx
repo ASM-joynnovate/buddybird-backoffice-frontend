@@ -1,47 +1,42 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import { getUserOptions, getUserSessionListOptions } from '@/hooks/apis/users';
+import { getFeedbackListOptions } from '@/hooks/apis/feedback';
+import { getNotificationListOptions } from '@/hooks/apis/notifications';
+import {
+	getUserConsentListOptions,
+	getUserOptions,
+	getUserSessionListOptions,
+	getUserWordListOptions,
+} from '@/hooks/apis/users';
 
 import { getQueryClient } from '@/lib/query-client';
 
 import UserDetail from '@/app/(main)/(backoffice)/users/[id]/_components/user-detail';
-import UserSessionList from '@/app/(main)/(backoffice)/users/[id]/_components/user-session-list';
+import { USER_RECENT_ITEM_COUNT } from '@/config';
+import { formatToday, getNow } from '@/utils/date';
 import { toPageNumber } from '@/utils/search-params';
-
-import ContentSkeleton from '@/components/content-skeleton';
-import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
-import QueryError from '@/components/query-error';
 
 /** 사용자 상세 페이지 */
 export default async function Page(props: PageProps<'/users/[id]'>) {
 	const { id } = await props.params;
 	const searchParams = await props.searchParams;
-	const page = toPageNumber(searchParams.session_page);
+	const sessionPage = toPageNumber(searchParams.session_page);
+	const recentListParams = { page: 1, count_by_page: USER_RECENT_ITEM_COUNT, user_id: id };
 
 	const queryClient = getQueryClient();
 
-	await Promise.all([
-		queryClient.prefetchQuery(getUserOptions({ id })),
-		queryClient.prefetchQuery(getUserSessionListOptions({ id, page })),
-	]);
+	// 응답을 기다리지 않고 조회 시작
+	void queryClient.prefetchQuery(getUserOptions({ id }));
+	void queryClient.prefetchQuery(getUserSessionListOptions({ id, page: 1 }));
+	void queryClient.prefetchQuery(getUserSessionListOptions({ id, page: sessionPage }));
+	void queryClient.prefetchQuery(getNotificationListOptions(recentListParams));
+	void queryClient.prefetchQuery(getFeedbackListOptions(recentListParams));
+	void queryClient.prefetchQuery(getUserWordListOptions({ id }));
+	void queryClient.prefetchQuery(getUserConsentListOptions({ id }));
 
 	return (
-		<>
-			<h1 className="text-2xl font-bold">사용자 상세</h1>
-
-			<HydrationBoundary state={dehydrate(queryClient)}>
-				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-					<UserDetail id={id} />
-				</ErrorHandlingWrapper>
-
-				<section className="space-y-2">
-					<h2>세션</h2>
-
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-						<UserSessionList id={id} page={page} />
-					</ErrorHandlingWrapper>
-				</section>
-			</HydrationBoundary>
-		</>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<UserDetail id={id} sessionPage={sessionPage} today={formatToday()} now={getNow()} />
+		</HydrationBoundary>
 	);
 }

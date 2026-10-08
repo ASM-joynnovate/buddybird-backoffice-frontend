@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useGetPushDeliveryList } from '@/hooks/apis/notifications';
 
+import NotificationKindTag from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import { formatDateTime } from '@/utils/date';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
@@ -25,37 +26,44 @@ const PushDeliveryList = ({ deviceId }: Props) => {
 
 	return (
 		<>
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead>발송 일시</TableHead>
-						<TableHead>예약 일시</TableHead>
-						<TableHead>종류</TableHead>
-						<TableHead>제목</TableHead>
-						<TableHead>본문</TableHead>
-					</TableRow>
-				</TableHeader>
-
-				<TableBody>
-					{pushDeliveryListData.data.map((pushDelivery) => (
-						<TableRow key={pushDelivery.id}>
-							<TableCell>{formatDateTime(pushDelivery.sent_at)}</TableCell>
-							<TableCell>{formatDateTime(pushDelivery.scheduled_at)}</TableCell>
-							<TableCell>{pushDelivery.kind}</TableCell>
-							<TableCell>{koreanOrEnglishText(pushDelivery.title)}</TableCell>
-							<TableCell>{pushDelivery.body ? koreanOrEnglishText(pushDelivery.body) : '-'}</TableCell>
+			{pushDeliveryListData.data.length === 0 ? (
+				<p className="text-muted-foreground">푸시 발송 기록이 없습니다.</p>
+			) : (
+				<Table>
+					<TableHeader>
+						<TableRow>
+							<TableHead className="pl-0 text-muted-foreground">발송 일시</TableHead>
+							<TableHead className="text-muted-foreground">종류</TableHead>
+							<TableHead className="text-muted-foreground">제목</TableHead>
+							<TableHead className="text-muted-foreground">본문</TableHead>
 						</TableRow>
-					))}
-				</TableBody>
-			</Table>
+					</TableHeader>
 
-			{pushDeliveryListData.data.length === 0 && (
-				<p className="text-sm text-muted-foreground">푸시 발송 기록이 없습니다.</p>
+					<TableBody>
+						{pushDeliveryListData.data.map((pushDelivery) => (
+							<TableRow key={pushDelivery.id}>
+								<TableCell className="py-2.5 pl-0 text-muted-foreground tabular-nums">
+									{formatDateTime(pushDelivery.sent_at)}
+								</TableCell>
+								<TableCell className="py-2.5">
+									<NotificationKindTag kind={pushDelivery.kind} />
+								</TableCell>
+								<TableCell className="min-w-40 py-2.5 whitespace-normal">
+									{koreanOrEnglishText(pushDelivery.title)}
+								</TableCell>
+								<TableCell className="min-w-40 py-2.5 whitespace-normal">
+									{pushDelivery.body ? koreanOrEnglishText(pushDelivery.body) : '-'}
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
 			)}
 
-			<div className="flex items-center gap-2">
+			<div className="flex justify-end gap-1.5">
 				<Button
 					variant="outline"
+					size="sm"
 					disabled={pushDeliveryListData.meta.is_first}
 					onClick={() => setPage((prev) => prev - 1)}
 				>
@@ -63,6 +71,7 @@ const PushDeliveryList = ({ deviceId }: Props) => {
 				</Button>
 				<Button
 					variant="outline"
+					size="sm"
 					disabled={pushDeliveryListData.meta.is_last}
 					onClick={() => setPage((prev) => prev + 1)}
 				>

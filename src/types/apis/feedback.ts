@@ -12,3 +12,9 @@ export const feedbackSchema = z.object({
 });
 
 export type Feedback = z.infer<typeof feedbackSchema>;
+
+export interface FeedbackListParams {
+	page: number;
+	count_by_page?: number;
+	user_id?: string;
+}

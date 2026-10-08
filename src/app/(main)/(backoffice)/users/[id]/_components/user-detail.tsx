@@ -1,192 +1,136 @@
-'use client';
+import Link from 'next/link';
 
-import { useState } from 'react';
+import { ChevronLeft } from 'lucide-react';
 
-import Image from 'next/image';
+import TitledCardSkeleton from '@/app/(main)/(backoffice)/_components/titled-card-skeleton';
+import ConsentCard from '@/app/(main)/(backoffice)/users/[id]/_components/consent-card';
+import CurrentSessionCard from '@/app/(main)/(backoffice)/users/[id]/_components/current-session-card';
+import DeviceCard from '@/app/(main)/(backoffice)/users/[id]/_components/device-card';
+import FeedbackCard from '@/app/(main)/(backoffice)/users/[id]/_components/feedback-card';
+import NotificationCard from '@/app/(main)/(backoffice)/users/[id]/_components/notification-card';
+import ParrotCard from '@/app/(main)/(backoffice)/users/[id]/_components/parrot-card';
+import SettingsCard from '@/app/(main)/(backoffice)/users/[id]/_components/settings-card';
+import UserProfileCard from '@/app/(main)/(backoffice)/users/[id]/_components/user-profile-card';
+import UserSessionCard from '@/app/(main)/(backoffice)/users/[id]/_components/user-session-card';
+import WithdrawalCard from '@/app/(main)/(backoffice)/users/[id]/_components/withdrawal-card';
+import WordCard from '@/app/(main)/(backoffice)/users/[id]/_components/word-card';
 
-import { useGetUser } from '@/hooks/apis/users';
-
-import DeleteUserDialog from '@/app/(main)/(backoffice)/users/[id]/_components/delete-user-dialog';
-import DeviceRow from '@/app/(main)/(backoffice)/users/[id]/_components/device-row';
-import { formatDateTime } from '@/utils/date';
-import { yesNoText } from '@/utils/yes-no';
-
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
+import QueryError from '@/components/query-error';
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Props {
 	id: string;
+	sessionPage: number;
+	today: string;
+	now: number;
 }
 
 /**
- * 사용자 상세 컴포넌트
+ * 사용자 상세 화면 컴포넌트
  * @param id 조회할 사용자 ID
+ * @param sessionPage 세션 목록의 페이지 번호
+ * @param today 오늘 날짜
+ * @param now 서버가 화면을 그린 시각
  */
-const UserDetail = ({ id }: Props) => {
-	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
-	const { data: userData } = useGetUser({ id });
-
+const UserDetail = ({ id, sessionPage, today, now }: Props) => {
 	return (
 		<>
-			<section className="space-y-2">
-				<div className="flex items-center justify-between">
-					<h2>기본 정보</h2>
+			<Link
+				href="/users"
+				className="inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground"
+			>
+				<ChevronLeft className="size-4" />
+				사용자 목록
+			</Link>
 
-					{!userData.is_deleted && (
-						<Button variant="destructive" onClick={() => setDeleteDialogOpen(true)}>
-							사용자 삭제
-						</Button>
-					)}
+			<ErrorHandlingWrapper
+				fallbackComponent={QueryError}
+				suspenseFallback=<Card className="gap-4 px-5 py-4.5">
+					<Skeleton className="h-14 w-64" />
+					<Skeleton className="h-17" />
+				</Card>
+			>
+				<UserProfileCard id={id} initialNow={now} />
+			</ErrorHandlingWrapper>
+
+			<div className="grid gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
+				<ErrorHandlingWrapper
+					fallbackComponent={QueryError}
+					suspenseFallback=<TitledCardSkeleton title="현재 세션" rowCount={4} />
+				>
+					<CurrentSessionCard id={id} initialNow={now} />
+				</ErrorHandlingWrapper>
+
+				<ErrorHandlingWrapper
+					fallbackComponent={QueryError}
+					suspenseFallback=<TitledCardSkeleton title="앵무새" rowCount={4} />
+				>
+					<ParrotCard id={id} today={today} />
+				</ErrorHandlingWrapper>
+			</div>
+
+			{/*세션 목록의 페이지가 바뀌면 다시 마운트*/}
+			<ErrorHandlingWrapper
+				key={sessionPage}
+				fallbackComponent={QueryError}
+				suspenseFallback=<TitledCardSkeleton title="세션" rowCount={7} />
+			>
+				<UserSessionCard id={id} page={sessionPage} initialNow={now} />
+			</ErrorHandlingWrapper>
+
+			<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
+				<div className="contents xl:grid xl:gap-4">
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<TitledCardSkeleton title="알림" rowCount={5} />
+					>
+						<NotificationCard id={id} />
+					</ErrorHandlingWrapper>
+
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<TitledCardSkeleton title="피드백" rowCount={2} />
+					>
+						<FeedbackCard id={id} />
+					</ErrorHandlingWrapper>
+
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<TitledCardSkeleton title="동의" rowCount={4} />
+					>
+						<ConsentCard id={id} />
+					</ErrorHandlingWrapper>
 				</div>
 
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>ID</TableHead>
-							<TableHead>이메일</TableHead>
-							<TableHead>닉네임</TableHead>
-							<TableHead>익명 여부</TableHead>
-							<TableHead>삭제 여부</TableHead>
-							<TableHead>가입 일시</TableHead>
-						</TableRow>
-					</TableHeader>
+				<div className="contents xl:grid xl:gap-4">
+					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
+						<WithdrawalCard id={id} />
+					</ErrorHandlingWrapper>
 
-					<TableBody>
-						<TableRow>
-							<TableCell>{userData.id}</TableCell>
-							<TableCell>{userData.email ?? '-'}</TableCell>
-							<TableCell>{userData.nickname ?? '-'}</TableCell>
-							<TableCell>{yesNoText(userData.is_anonymous)}</TableCell>
-							<TableCell>{yesNoText(userData.is_deleted)}</TableCell>
-							<TableCell>{formatDateTime(userData.created_at)}</TableCell>
-						</TableRow>
-					</TableBody>
-				</Table>
-			</section>
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<TitledCardSkeleton title="기기" rowCount={6} />
+					>
+						<DeviceCard id={id} initialNow={now} />
+					</ErrorHandlingWrapper>
 
-			<section className="space-y-2">
-				<h2>프로필 사진</h2>
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<TitledCardSkeleton title="단어" rowCount={5} />
+					>
+						<WordCard id={id} />
+					</ErrorHandlingWrapper>
 
-				{userData.photo_file ? (
-					<div className="flex items-center gap-2">
-						<Image src={userData.photo_file.url} alt="프로필 사진" width={96} height={96} unoptimized />
-						<span>{userData.photo_file.status}</span>
-					</div>
-				) : (
-					<p>-</p>
-				)}
-			</section>
-
-			<section className="space-y-2">
-				<h2>설정</h2>
-
-				{userData.settings ? (
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead>취침 시각</TableHead>
-								<TableHead>기상 시각</TableHead>
-								<TableHead>푸시 알림</TableHead>
-								<TableHead>공지 알림</TableHead>
-								<TableHead>리포트 알림</TableHead>
-								<TableHead>마케팅 알림</TableHead>
-								<TableHead>야간 마케팅 알림</TableHead>
-							</TableRow>
-						</TableHeader>
-
-						<TableBody>
-							<TableRow>
-								<TableCell>{userData.settings.sleep.sleep_at}</TableCell>
-								<TableCell>{userData.settings.sleep.wake_at}</TableCell>
-								<TableCell>{yesNoText(userData.settings.notifications.push_enabled)}</TableCell>
-								<TableCell>{yesNoText(userData.settings.notifications.announcement_enabled)}</TableCell>
-								<TableCell>{yesNoText(userData.settings.notifications.report_enabled)}</TableCell>
-								<TableCell>{yesNoText(userData.settings.notifications.marketing_enabled)}</TableCell>
-								<TableCell>
-									{yesNoText(userData.settings.notifications.marketing_night_enabled)}
-								</TableCell>
-							</TableRow>
-						</TableBody>
-					</Table>
-				) : (
-					<p>-</p>
-				)}
-			</section>
-
-			<section className="space-y-2">
-				<h2>탈퇴 상태</h2>
-
-				{userData.withdrawal ? (
-					<Table>
-						<TableHeader>
-							<TableRow>
-								{userData.withdrawal.providers.map(({ provider }) => (
-									<TableHead key={provider}>{provider}</TableHead>
-								))}
-								<TableHead>시도 횟수</TableHead>
-								<TableHead>마지막 오류 코드</TableHead>
-								<TableHead>다음 시도 일시</TableHead>
-								<TableHead>완료 일시</TableHead>
-								<TableHead>요청 일시</TableHead>
-							</TableRow>
-						</TableHeader>
-
-						<TableBody>
-							<TableRow>
-								{userData.withdrawal.providers.map(({ provider, status }) => (
-									<TableCell key={provider}>{status}</TableCell>
-								))}
-								<TableCell>{userData.withdrawal.attempt_count}</TableCell>
-								<TableCell>{userData.withdrawal.last_error_code ?? '-'}</TableCell>
-								<TableCell>
-									{userData.withdrawal.next_attempt_at
-										? formatDateTime(userData.withdrawal.next_attempt_at)
-										: '-'}
-								</TableCell>
-								<TableCell>
-									{userData.withdrawal.completed_at
-										? formatDateTime(userData.withdrawal.completed_at)
-										: '-'}
-								</TableCell>
-								<TableCell>{formatDateTime(userData.withdrawal.created_at)}</TableCell>
-							</TableRow>
-						</TableBody>
-					</Table>
-				) : (
-					<p>-</p>
-				)}
-			</section>
-
-			<section className="space-y-2">
-				<h2>기기</h2>
-
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>ID</TableHead>
-							<TableHead>모델</TableHead>
-							<TableHead>OS</TableHead>
-							<TableHead>앱 버전</TableHead>
-							<TableHead>언어</TableHead>
-							<TableHead>시간대</TableHead>
-							<TableHead>마지막 접속 일시</TableHead>
-							<TableHead>푸시 등록 여부</TableHead>
-							<TableHead>관리</TableHead>
-						</TableRow>
-					</TableHeader>
-
-					<TableBody>
-						{userData.devices.map((device) => (
-							<DeviceRow key={device.id} device={device} />
-						))}
-					</TableBody>
-				</Table>
-
-				{userData.devices.length === 0 && <p className="text-sm text-muted-foreground">기기가 없습니다.</p>}
-			</section>
-
-			<DeleteUserDialog open={deleteDialogOpen} id={id} onClose={() => setDeleteDialogOpen(false)} />
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<TitledCardSkeleton title="설정" rowCount={6} />
+					>
+						<SettingsCard id={id} />
+					</ErrorHandlingWrapper>
+				</div>
+			</div>
 		</>
 	);
 };

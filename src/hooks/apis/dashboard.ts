@@ -1,0 +1,43 @@
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+
+import { getDashboard, getDashboardLive, getUserDashboard } from '@/apis/dashboard';
+
+import type { DashboardParams } from '@/types/apis/dashboard';
+
+import { apiKeys } from '@/hooks/apis/keys';
+
+import { DASHBOARD_LIVE_REFETCH_INTERVAL_MS } from '@/config';
+
+/** 대시보드 조회 Hook에 사용할 옵션 */
+export const getDashboardOptions = (dashboardParams: DashboardParams) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.detail(dashboardParams),
+		queryFn: () => getDashboard(dashboardParams),
+	});
+/** 대시보드 조회 Hook */
+export const useGetDashboard = (dashboardParams: DashboardParams) => {
+	return useSuspenseQuery(getDashboardOptions(dashboardParams));
+};
+
+/** 대시보드 현재 상태 조회 Hook에 사용할 옵션 */
+export const getDashboardLiveOptions = () =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.live(),
+		queryFn: getDashboardLive,
+		refetchInterval: DASHBOARD_LIVE_REFETCH_INTERVAL_MS,
+	});
+/** 대시보드 현재 상태 조회 Hook */
+export const useGetDashboardLive = () => {
+	return useSuspenseQuery(getDashboardLiveOptions());
+};
+
+/** 사용자 대시보드 조회 Hook에 사용할 옵션 */
+export const getUserDashboardOptions = (dashboardParams: DashboardParams) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.users(dashboardParams),
+		queryFn: () => getUserDashboard(dashboardParams),
+	});
+/** 사용자 대시보드 조회 Hook */
+export const useGetUserDashboard = (dashboardParams: DashboardParams) => {
+	return useSuspenseQuery(getUserDashboardOptions(dashboardParams));
+};
