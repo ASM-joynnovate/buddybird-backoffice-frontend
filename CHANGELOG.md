@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.7.0...v0.8.0) (2026-10-08)
+
+
+### Features
+
+* add the home dashboard and redesign the users tab ([8376e42](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/8376e4203c475a296e24bb114cfd9664d07478c9))
+* 홈 대시보드 및 사용자 탭 구현 [BB-632] ([dd53f9b](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/dd53f9bef11c5aa5d822e93c318ae4ffd2f8bb80))
+
+
+### Bug Fixes
+
+* match the marketing preview to the sent notification ([ef22bba](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ef22bbad5aedc7cfdc2980a849e9a684fd2a19f7))
+
 ## [0.7.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.6.0...v0.7.0) (2026-10-07)
 
 
