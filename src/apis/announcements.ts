@@ -2,22 +2,25 @@ import { postAnnouncementImageUpload, putUploadFile } from '@/apis/uploads';
 
 import {
 	type Announcement,
+	type AnnouncementListParams,
+	announcementListItemSchema,
+	type AnnouncementPage,
+	announcementPageMetaSchema,
 	announcementSchema,
 	type CreateAnnouncementRequest,
 	type UpdateAnnouncementRequest,
 } from '@/types/apis/announcements';
-import { type Page, pageMetaSchema } from '@/types/apis/common';
 
 import { apiRequest } from '@/lib/api';
 
 import { z } from 'zod';
 
-export const getAnnouncementList = async ({ page }: { page: number }): Promise<Page<Announcement>> => {
-	const { data, meta } = await apiRequest('/api/v1/backoffice/announcements', z.array(announcementSchema), {
-		searchParams: { page },
+export const getAnnouncementList = async (listParams: AnnouncementListParams): Promise<AnnouncementPage> => {
+	const { data, meta } = await apiRequest('/api/v1/backoffice/announcements', z.array(announcementListItemSchema), {
+		searchParams: { ...listParams },
 	});
 
-	return { data, meta: pageMetaSchema.parse(meta) };
+	return { data, meta: announcementPageMetaSchema.parse(meta) };
 };
 
 export const postAnnouncement = async ({ data }: { data: CreateAnnouncementRequest }): Promise<Announcement> => {

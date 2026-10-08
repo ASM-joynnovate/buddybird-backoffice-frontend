@@ -549,6 +549,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Hover:** 마우스를 올린 날짜의 배경을 `muted`로 변경한다
 - **File drop area:** 파일을 고르는 영역은 `chart-neutral` 색 1px 점선 테두리, `{rounded.lg}` 모서리, `card-inset` 배경으로 그린다. 가운데에 `muted-foreground` 색 18px 아이콘, 굵기 600의 안내 문구, 12.5px `muted-foreground`의 허용 형식 및 크기를 차례로 둔다. 영역을 누르거나 파일을 끌어다 놓으면 파일을 고른다. 마우스를 올리거나 파일을 영역 위로 끌어오면 테두리를 `muted-foreground`, 배경을 `muted`로 변경한다. 파일을 고른 뒤에는 영역 대신 굵기 600의 파일 이름, `muted-foreground`의 크기, 오른쪽 끝의 작은 "파일 변경" 버튼을 한 행에 둔다
 - **Field error:** 입력값의 오류는 해당 입력 아래 6px에 13px `destructive` 문구로 표시하고 `role="alert"`를 지정한다. 오류가 있는 입력에는 `aria-invalid`를 지정해 테두리를 `destructive`로 변경하고 `aria-describedby`로 문구를 연결한다. 입력값을 수정하면 문구를 지운다
+- **Switch:** 켜고 끄는 설정에 사용한다. 폭 36px, 높이 20px의 끝이 둥근 막대 안에 지름 16px의 `card` 색 손잡이를 둔다. 꺼진 배경은 `muted-foreground`의 50% 불투명도, 켜진 배경은 `foreground`다. `aria-label`에 설정 이름을 넣는다
 
 ### Lists
 
@@ -560,6 +561,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Legend row:** 한 행에 8px 점, 이름, 굵기 700의 건수, `muted-foreground`의 비율을 순서대로 둔다. 행의 위아래 여백은 6px이다
 - **Cell list:** 항목마다 재생, 수정, 삭제 같은 동작이 있는 목록은 구분선 없이 `muted` 배경의 칸으로 나열한다. 칸의 모서리는 `{rounded.lg}`, 최소 높이는 56px이고 칸 사이 간격은 8px이다. 안쪽 여백은 위아래 및 왼쪽 10px, 오른쪽 8px이다. 굵기 600의 이름은 한 줄로 적고 넘치면 말줄임으로 표시하며 `title`에 전체 이름을 넣는다. 이름 아래에는 Caption의 `muted-foreground` 보조 값을, 오른쪽 끝에는 28px 아이콘 버튼을 둔다. 아이콘 버튼은 `muted-foreground` 색이고 마우스를 올리면 배경을 `card`로 변경하며, 삭제 버튼은 아이콘도 `destructive`로 변경한다. 화면 폭 1280px 이상에서는 두 열로, 그보다 좁으면 `repeat(auto-fill, minmax(220px, 1fr))`로 배치한다
 - **Step track:** 순서가 있는 단계는 칩을 진행 순서대로 나란히 두고 칩 사이를 길이 12px의 `chart-neutral` 색 1px 선으로 잇는다. 화면 폭 768px 미만에서는 선을 숨기고 칩 사이에 6px 간격을 둔다
+- **Dialog row:** 누르면 다이얼로그가 열리는 행은 제목을 `button`으로 두고 버튼의 누르는 영역을 행 전체로 넓힌다. 마우스를 올리면 배경을 `muted`로 변경하고 배경을 좌우로 8px 넓힌다. 모서리는 `{rounded.md}`이고 오른쪽 끝에 14px 화살표를 둔다. 키보드 포커스 표시는 행 전체에 그린다
 
 ### Tags
 
@@ -568,7 +570,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Tag:** `{components.tag-success}`, `{components.tag-info}`. 글자는 상태 색이고 배경은 같은 상태 색의 10% 불투명도다
 - **Chip:** 로고 및 이름을 함께 표시하는 높이 28px의 끝이 둥근 칩이다. `card` 배경에 `border` 색 1px 외곽선을 두른다. 왼쪽부터 20px 로고, 13px 굵기 600의 이름, 14px 상태 아이콘을 6px 간격으로 둔다. 상태 아이콘은 상태를 알려야 할 때만 둔다
 - **Chip tone:** 실패한 칩 및 진행 중인 칩은 배경에 상태 색 8%를 `card`에 섞은 색을, 외곽선에 상태 색의 32% 불투명도를 사용한다. 대기 중인 칩은 이름을 굵기 500의 `muted-foreground`로 적는다
-- **Status icon:** 완료는 `success` 색 체크, 실패는 `destructive` 색 X, 진행 중은 `info` 색의 회전하는 원호, 확인하지 못한 상태는 `warning` 색 경고 삼각형, 대기는 `muted-foreground` 색 점선 원으로 표시한다. 선 굵기는 2px이다. `aria-label` 및 `title`에 상태 이름을 넣는다. `prefers-reduced-motion`에서는 원호를 회전시키지 않는다
+- **Status icon:** 완료는 `success` 색 체크, 실패는 `destructive` 색 X, 진행 중은 `info` 색의 회전하는 원호, 확인하지 못한 상태는 `warning` 색 경고 삼각형, 대기는 `muted-foreground` 색 점선 원으로 표시한다. 예정은 `info` 색 시계, 꺼짐은 `muted-foreground` 색 꺼진 종으로 표시한다. 선 굵기는 2px이다. `aria-label` 및 `title`에 상태 이름을 넣는다. `prefers-reduced-motion`에서는 원호를 회전시키지 않는다
 - **Change:** `{components.kpi-change}`. 14px 화살표 및 굵기 700의 비율을 둔다. 증가 및 감소는 화살표 방향으로 구분하고 색은 변경하지 않는다
 - **Warning note:** `{components.warning-note}`. 한 행에 `warning` 색 16px 아이콘, 문구, 오른쪽 끝의 굵기 700 수치를 둔다. 배경은 `warning`의 10% 불투명도다
 - **Dot:** 지름 8px의 원이다. "확인할 항목" 목록에는 `destructive-dot` 및 `warning-dot`를, 범례에는 데이터 색을 사용한다. 점 옆에는 이름을 글자로 적는다
@@ -605,6 +607,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Stacked ratio groups:** 제목, 비율 막대, 범례를 묶은 그룹이 넷 이상이면 격자로 배치한다. 열은 카드 폭에 따라 두 개 또는 세 개이고 화면 폭 768px 미만에서는 한 개다. 간격은 세로 18px, 가로 24px이다
 - **Legend:** `CardHeader` 오른쪽에 8px 점, 13px `muted-foreground`의 계열 이름, 굵기 700 `foreground`의 합계를 순서대로 둔다. 화면 폭 860px 이하에서는 숨긴다
 - **Tooltip:** `{components.chart-tooltip}`. 계열마다 한 행에 8px 점, 13px 굵기 700의 값, 12px 계열 이름을 두고 마지막 행에 날짜를 둔다. 계열 이름 및 날짜는 `tooltip-foreground`의 75% 불투명도다. 가리키는 값의 12px 위에 표시하며 120ms 동안 나타난다
+- **Schedule bar:** 기간은 높이 8px의 끝이 둥근 막대로 그린다. 바탕은 `chart-2`의 22% 불투명도이고 시작부터 현재 시각까지를 `chart-2`로 채운다. 현재 시각에는 `foreground` 색 1px 세로선을, 7일마다 `border`의 50% 불투명도 1px 세로선을 둔다. 영역을 넘는 막대는 그 끝에서 자르고 잘린 쪽의 모서리는 둥글게 하지 않는다
 
 ## Do's and Don'ts
 

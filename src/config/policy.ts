@@ -26,6 +26,12 @@ export const PHASE_CYCLE = [
 export const TIMELINE_MIN_VISIBLE_MS = 30 * MINUTE;
 export const TIMELINE_MAX_SOUND_BAR_COUNT = 480;
 
+export const SCHEDULE_PAST_MS = 14 * DAY;
+export const SCHEDULE_VISIBLE_MS = 56 * DAY;
+export const SCHEDULE_TICK_MS = 7 * DAY;
+
+export const DEFAULT_PUSH_LOCAL_TIME = '09:00';
+
 export const DISPLAY_TIME_ZONE = 'Asia/Seoul';
 
 export const IMAGE_CONTENT_TYPES = ['image/jpeg', 'image/png'];

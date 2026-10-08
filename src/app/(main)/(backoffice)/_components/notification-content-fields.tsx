@@ -6,9 +6,10 @@ import { type SendableNotificationKind, sendableNotificationKindSchema } from '@
 
 import type { I18nFieldValue } from '@/types/i18n';
 
+import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import NotificationImageField from '@/app/(main)/(backoffice)/_components/notification-image-field';
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
-import NotificationTextField from '@/app/(main)/(backoffice)/_components/notification-text-field';
+import { NOTIFICATION_BODY_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/config';
 import { toI18nFieldValue } from '@/utils/i18n-text';
 
 const rowClassName = 'grid gap-1.5 @md:grid-cols-[72px_minmax(0,1fr)] @md:gap-3';
@@ -73,10 +74,13 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 				<span className={`${labelClassName} @md:pt-2.5`}>내용</span>
 
 				<div className="grid gap-3 @md:grid-cols-2">
-					<NotificationTextField
+					<LocaleTextField
 						locale="ko_kr"
 						title={content.title.ko_kr}
 						body={content.body.ko_kr}
+						bodyMaxLength={NOTIFICATION_BODY_MAX_LENGTH}
+						englishBodyRequired
+						lengthText={`${content.title.ko_kr.length}/${TITLE_MAX_LENGTH}, ${content.body.ko_kr.length}/${NOTIFICATION_BODY_MAX_LENGTH}`}
 						onTitleChange={(ko_kr) =>
 							onContentChange((prev) => ({ ...prev, title: { ...prev.title, ko_kr } }))
 						}
@@ -84,10 +88,13 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 							onContentChange((prev) => ({ ...prev, body: { ...prev.body, ko_kr } }))
 						}
 					/>
-					<NotificationTextField
+					<LocaleTextField
 						locale="en_us"
 						title={content.title.en_us}
 						body={content.body.en_us}
+						bodyMaxLength={NOTIFICATION_BODY_MAX_LENGTH}
+						englishBodyRequired
+						lengthText={`${content.title.en_us.length}/${TITLE_MAX_LENGTH}, ${content.body.en_us.length}/${NOTIFICATION_BODY_MAX_LENGTH}`}
 						onTitleChange={(en_us) =>
 							onContentChange((prev) => ({ ...prev, title: { ...prev.title, en_us } }))
 						}
