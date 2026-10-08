@@ -1,4 +1,4 @@
-import { DAY, MINUTE, SECOND } from '@/config/units';
+import { DAY, MEGABYTE, MINUTE, SECOND } from '@/config/units';
 
 export const API_TIMEOUT_MS = 30 * SECOND;
 
@@ -36,6 +36,7 @@ export const PRESET_WORD_AUDIO_CONTENT_TYPES = [
 	'audio/x-wav',
 	'audio/mpeg',
 ];
+export const PRESET_WORD_AUDIO_MAX_BYTES = 5 * MEGABYTE;
 
 export const TITLE_MAX_LENGTH = 100;
 export const NOTIFICATION_BODY_MAX_LENGTH = 500;
