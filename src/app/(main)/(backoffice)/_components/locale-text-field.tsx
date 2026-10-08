@@ -2,6 +2,8 @@
 
 import type { I18nFieldValue } from '@/types/i18n';
 
+import { cn } from '@/lib/utils';
+
 import { TITLE_MAX_LENGTH } from '@/config';
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
 	title: string;
 	body: string;
 	bodyMaxLength?: number;
+	bodyClassName?: string;
 	englishBodyRequired: boolean;
 	lengthText: string;
 	onTitleChange: (title: string) => void;
@@ -22,6 +25,7 @@ interface Props {
  * @param title 제목 입력값
  * @param body 본문 입력값
  * @param bodyMaxLength 본문의 최대 길이
+ * @param bodyClassName 본문 입력에 더할 class
  * @param englishBodyRequired 영어 본문의 필수 여부
  * @param lengthText 헤더에 표시할 글자 수
  * @param onTitleChange 제목이 바뀔 때 실행할 함수
@@ -33,6 +37,7 @@ const LocaleTextField = ({
 	title,
 	body,
 	bodyMaxLength,
+	bodyClassName,
 	englishBodyRequired,
 	lengthText,
 	onTitleChange,
@@ -70,7 +75,10 @@ const LocaleTextField = ({
 				required={english && englishBodyRequired}
 				maxLength={bodyMaxLength}
 				value={body}
-				className="block h-40 w-full resize-none [scrollbar-width:thin] bg-transparent px-3 pt-0.5 pb-3 leading-normal outline-none placeholder:text-muted-foreground"
+				className={cn(
+					'block h-40 w-full resize-none [scrollbar-width:thin] bg-transparent px-3 pt-0.5 pb-3 leading-normal outline-none placeholder:text-muted-foreground',
+					bodyClassName,
+				)}
 				onChange={(event) => onBodyChange(event.target.value)}
 			/>
 		</div>

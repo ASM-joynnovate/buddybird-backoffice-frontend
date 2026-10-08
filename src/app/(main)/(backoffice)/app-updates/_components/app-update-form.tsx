@@ -13,6 +13,7 @@ import { useGetAppUpdateDashboard } from '@/hooks/apis/dashboard';
 
 import LocaleTextareaField from '@/app/(main)/(backoffice)/_components/locale-textarea-field';
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import AppUpdatePreview from '@/app/(main)/(backoffice)/app-updates/_components/app-update-preview';
 import DeviceCountChanges from '@/app/(main)/(backoffice)/app-updates/_components/device-count-changes';
 import { APP_VERSION_MAX_LENGTH } from '@/config';
@@ -151,29 +152,23 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 								{toPlatformName(appUpdate.platform)}
 							</p>
 						) : (
-							<fieldset className="inline-flex h-9 w-fit rounded-md border bg-card p-0.5">
-								<legend className="sr-only">플랫폼</legend>
-
-								{platformSchema.options.map((platformOption) => (
-									<label
-										key={platformOption}
-										className="inline-flex cursor-pointer items-center gap-1.5 rounded-sm px-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground has-checked:bg-foreground has-checked:text-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand"
-									>
-										<input
-											type="radio"
-											name="platform"
-											checked={selectedPlatform === platformOption}
-											className="sr-only"
-											onChange={() => setSelectedPlatform(platformOption)}
-										/>
-										<PlatformIcon
-											platform={platformOption}
-											selected={selectedPlatform === platformOption}
-										/>
-										{toPlatformName(platformOption)}
-									</label>
-								))}
-							</fieldset>
+							<SegmentedControl
+								label="플랫폼"
+								options={platformSchema.options.map((platformOption) => ({
+									value: platformOption,
+									label: (
+										<>
+											<PlatformIcon
+												platform={platformOption}
+												selected={selectedPlatform === platformOption}
+											/>
+											{toPlatformName(platformOption)}
+										</>
+									),
+								}))}
+								value={selectedPlatform}
+								onValueChange={setSelectedPlatform}
+							/>
 						)}
 					</div>
 

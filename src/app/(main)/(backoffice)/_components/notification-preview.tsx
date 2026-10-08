@@ -6,6 +6,7 @@ import type { I18nText } from '@/types/apis/common';
 import type { NotificationKind } from '@/types/apis/notifications';
 
 import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { UNSUBSCRIBE_TEXTS } from '@/config/notification';
 
 const PREVIEW_LOCALES = [
@@ -39,21 +40,14 @@ const NotificationPreview = ({ kind, title, body, imageUrl }: Props) => {
 			<div className="flex min-h-7 items-center justify-between gap-3">
 				<h4 className="text-[13px] font-semibold">미리보기</h4>
 
-				<fieldset className="inline-flex h-7 min-w-0 rounded-md border bg-card p-0.5">
-					<legend className="sr-only">미리보기 언어</legend>
-
-					{PREVIEW_LOCALES.map((localeOption) => (
-						<button
-							key={localeOption.locale}
-							type="button"
-							aria-pressed={localeOption.locale === previewLocale}
-							className="inline-flex items-center rounded-sm px-2.5 text-[13px] font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-pressed:bg-foreground aria-pressed:text-card"
-							onClick={() => setPreviewLocale(localeOption.locale)}
-						>
-							{localeOption.label}
-						</button>
-					))}
-				</fieldset>
+				<SegmentedControl
+					label="미리보기 언어"
+					size="sm"
+					options={PREVIEW_LOCALES.map(({ locale, label }) => ({ value: locale, label }))}
+					value={previewLocale}
+					className="border-border"
+					onValueChange={setPreviewLocale}
+				/>
 			</div>
 
 			{/*마케팅 알림은 본문 아래에 수신거부 문구 발송*/}

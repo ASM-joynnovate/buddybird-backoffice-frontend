@@ -123,6 +123,13 @@ export const formatDaysOrHours = (durationMs: number) => {
 	return `${Math.max(1, Math.floor(durationMs / HOUR))}시간`;
 };
 
+/** ms를 "7일 후", "5시간 후" 같은 문구로 변환하는 함수 */
+export const formatDaysOrHoursLater = (durationMs: number) => {
+	const hours = Math.max(1, Math.round(durationMs / HOUR));
+
+	return hours < 24 ? `${hours}시간 후` : `${Math.round(hours / 24)}일 후`;
+};
+
 /** ms를 "1시간 30분 뒤" 같은 문구로 변환하는 함수 */
 export const formatDurationLater = (durationMs: number) => {
 	const minutes = Math.max(1, Math.round(durationMs / MINUTE));

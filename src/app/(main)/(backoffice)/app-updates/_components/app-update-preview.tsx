@@ -5,6 +5,7 @@ import { type ReactNode, useState } from 'react';
 import type { I18nFieldValue } from '@/types/i18n';
 
 import AppDialogPreview from '@/app/(main)/(backoffice)/_components/app-dialog-preview';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { compareVersions, isAppVersion } from '@/utils/version';
 
 // 문구는 앱의 업데이트 다이얼로그와 같음
@@ -84,21 +85,17 @@ const AppUpdatePreview = ({ version, forced, releaseNotes, latestVersion }: Prop
 			<div className="flex items-center justify-between">
 				<h3 className="text-base font-bold">미리보기</h3>
 
-				<fieldset className="inline-flex h-7 min-w-0 rounded-md border bg-card p-0.5">
-					<legend className="sr-only">미리보기 언어</legend>
-
-					{PREVIEW_LOCALES.map((localeOption) => (
-						<button
-							key={localeOption.locale}
-							type="button"
-							aria-pressed={localeOption.locale === previewLocale}
-							className="inline-flex items-center rounded-sm px-2.5 text-[13px] font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-pressed:bg-foreground aria-pressed:text-card"
-							onClick={() => setPreviewLocale(localeOption.locale)}
-						>
-							{localeOption.label}
-						</button>
-					))}
-				</fieldset>
+				<SegmentedControl
+					label="미리보기 언어"
+					size="sm"
+					options={PREVIEW_LOCALES.map((localeOption) => ({
+						value: localeOption.locale,
+						label: localeOption.label,
+					}))}
+					value={previewLocale}
+					className="border-border"
+					onValueChange={setPreviewLocale}
+				/>
 			</div>
 
 			<div className="grid gap-2">

@@ -1,5 +1,6 @@
 import type { UserDashboard } from '@/types/apis/dashboard';
 
+import RatioBarRow from '@/app/(main)/(backoffice)/_components/ratio-bar-row';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { VISIBLE_SPECIES_COUNT } from '@/config';
 import { toSpeciesName } from '@/utils/species';
@@ -26,20 +27,13 @@ const SpeciesCard = ({ parrots }: Props) => {
 
 			<ul className="grid gap-2.5">
 				{parrots.species.slice(0, VISIBLE_SPECIES_COUNT).map(({ species, count }) => (
-					<li key={species} className="grid grid-cols-[104px_minmax(0,1fr)_40px] items-center gap-2.5">
-						<span className="truncate font-semibold">{toSpeciesName(species)}</span>
-
-						<div aria-hidden className="h-2 rounded-full bg-muted">
-							<div
-								className="h-full rounded-full bg-chart-2"
-								style={{ width: `${(count / maxCount) * 100}%` }}
-							/>
-						</div>
-
-						<strong className="text-right font-bold tabular-nums">
-							{Math.round((count / parrots.total_count) * 100)}%
-						</strong>
-					</li>
+					<RatioBarRow
+						key={species}
+						label={toSpeciesName(species)}
+						barPercent={(count / maxCount) * 100}
+						percent={Math.round((count / parrots.total_count) * 100)}
+						className="grid-cols-[104px_minmax(0,1fr)_40px] gap-2.5 font-semibold"
+					/>
 				))}
 			</ul>
 		</TitledCard>

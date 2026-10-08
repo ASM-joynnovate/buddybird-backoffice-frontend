@@ -16,6 +16,7 @@ interface Props {
 	unit: string;
 	highlightedDate: string;
 	today: string;
+	lastValueDataKey?: string;
 	onSelectDate?: (date: string) => void;
 }
 
@@ -27,22 +28,34 @@ interface Props {
  * @param unit 개수 뒤에 붙는 단위
  * @param highlightedDate 진하게 표시할 날짜
  * @param today 오늘 날짜
+ * @param lastValueDataKey 마지막 막대 위에 값을 표시할 계열
  * @param onSelectDate 막대를 누르면 실행할 함수
  */
-const DailyCountChart = ({ daily, title, series, unit, highlightedDate, today, onSelectDate }: Props) => {
+const DailyCountChart = ({
+	daily,
+	title,
+	series,
+	unit,
+	highlightedDate,
+	today,
+	lastValueDataKey,
+	onSelectDate,
+}: Props) => {
 	const chartConfig: ChartConfig = Object.fromEntries(
 		series.map(({ dataKey, name, color }) => [dataKey, { label: name, color }]),
 	);
 
 	const dailyCounts = daily.map((dailyCount, index) => {
 		const totalCount = series.reduce((sum, { dataKey }) => sum + Number(dailyCount[dataKey]), 0);
+		// 계열을 고르지 않으면 합계 표시
+		const lastValue = lastValueDataKey ? Number(dailyCount[lastValueDataKey]) : totalCount;
 
 		return {
 			...dailyCount,
 			totalCount,
 			fillOpacity: dailyCount.date === highlightedDate ? 1 : 0.42,
 			cursor: onSelectDate && totalCount > 0 ? 'pointer' : undefined,
-			lastCount: index === daily.length - 1 ? totalCount : undefined,
+			lastCount: index === daily.length - 1 ? lastValue : undefined,
 		};
 	});
 	const maxAxisCount = Math.max(MIN_AXIS_COUNT, ...dailyCounts.map((dailyCount) => dailyCount.totalCount));

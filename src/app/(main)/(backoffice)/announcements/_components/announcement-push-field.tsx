@@ -2,6 +2,8 @@
 
 import type { Dispatch, SetStateAction } from 'react';
 
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
+
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 
@@ -36,25 +38,12 @@ const AnnouncementPushField = ({ pushSetting, onPushSettingChange }: Props) => {
 			/>
 
 			{pushSetting.enabled && (
-				<fieldset className="inline-flex h-9 w-fit min-w-0 rounded-md border bg-card p-0.5">
-					<legend className="sr-only">푸시 시점</legend>
-
-					{PUSH_TIMINGS.map(({ timeSpecified, label }) => (
-						<label
-							key={label}
-							className="inline-flex cursor-pointer items-center rounded-sm px-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground has-checked:bg-foreground has-checked:text-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand"
-						>
-							<input
-								type="radio"
-								name="push-timing"
-								checked={pushSetting.timeSpecified === timeSpecified}
-								className="sr-only"
-								onChange={() => onPushSettingChange((prev) => ({ ...prev, timeSpecified }))}
-							/>
-							{label}
-						</label>
-					))}
-				</fieldset>
+				<SegmentedControl
+					label="푸시 시점"
+					options={PUSH_TIMINGS.map(({ timeSpecified, label }) => ({ value: timeSpecified, label }))}
+					value={pushSetting.timeSpecified}
+					onValueChange={(timeSpecified) => onPushSettingChange((prev) => ({ ...prev, timeSpecified }))}
+				/>
 			)}
 
 			{pushSetting.enabled && pushSetting.timeSpecified && (
