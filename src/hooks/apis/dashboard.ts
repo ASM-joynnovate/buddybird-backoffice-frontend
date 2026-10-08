@@ -2,6 +2,7 @@ import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import {
 	getAppUpdateDashboard,
+	getConsentDashboard,
 	getDashboard,
 	getDashboardLive,
 	getFeedbackDashboard,
@@ -93,4 +94,15 @@ export const getAppUpdateDashboardOptions = ({ platform }: { platform: Platform 
 /** 앱 업데이트 대시보드 조회 Hook */
 export const useGetAppUpdateDashboard = ({ platform }: { platform: Platform }) => {
 	return useSuspenseQuery(getAppUpdateDashboardOptions({ platform }));
+};
+
+/** 고지문 대시보드 조회 Hook에 사용할 옵션 */
+export const getConsentDashboardOptions = ({ id, dashboardParams }: { id: string; dashboardParams: DashboardParams }) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.consents(id, dashboardParams),
+		queryFn: () => getConsentDashboard({ id, dashboardParams }),
+	});
+/** 고지문 대시보드 조회 Hook */
+export const useGetConsentDashboard = ({ id, dashboardParams }: { id: string; dashboardParams: DashboardParams }) => {
+	return useSuspenseQuery(getConsentDashboardOptions({ id, dashboardParams }));
 };

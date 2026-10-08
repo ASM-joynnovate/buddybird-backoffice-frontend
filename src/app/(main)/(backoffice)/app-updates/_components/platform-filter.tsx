@@ -1,10 +1,7 @@
-import Link from 'next/link';
-
 import { type Platform, platformSchema } from '@/types/apis/app-updates';
 
-import { cn } from '@/lib/utils';
-
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { toPlatformName } from '@/utils/platform';
 
 interface Props {
@@ -19,22 +16,13 @@ interface Props {
  */
 const PlatformFilter = ({ platform, latestVersions }: Props) => {
 	return (
-		<nav aria-label="플랫폼" className="inline-flex h-9 rounded-md border bg-card p-0.5 text-sm">
-			{platformSchema.options.map((platformOption) => {
-				const selected = platformOption === platform;
-
-				return (
-					<Link
-						key={platformOption}
-						href={{ pathname: '/app-updates', query: { platform: platformOption } }}
-						scroll={false}
-						aria-current={selected ? 'true' : undefined}
-						className={cn(
-							'inline-flex items-center gap-1.5 rounded-sm px-3.5 font-semibold whitespace-nowrap text-muted-foreground hover:text-foreground',
-							selected && 'bg-foreground text-card hover:text-card',
-						)}
-					>
-						<PlatformIcon platform={platformOption} selected={selected} />
+		<SegmentedControl
+			label="플랫폼"
+			options={platformSchema.options.map((platformOption) => ({
+				value: platformOption,
+				label: (
+					<>
+						<PlatformIcon platform={platformOption} selected={platformOption === platform} />
 						{toPlatformName(platformOption)}
 
 						{/*로딩 중에는 버전을 표시하지 않음*/}
@@ -43,10 +31,12 @@ const PlatformFilter = ({ platform, latestVersions }: Props) => {
 								{latestVersions[platformOption] ?? '등록 전'}
 							</span>
 						)}
-					</Link>
-				);
-			})}
-		</nav>
+					</>
+				),
+				href: { pathname: '/app-updates', query: { platform: platformOption } },
+			}))}
+			value={platform}
+		/>
 	);
 };
 

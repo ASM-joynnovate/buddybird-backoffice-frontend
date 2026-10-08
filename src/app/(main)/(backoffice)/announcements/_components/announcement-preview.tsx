@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 
 import AppDialogPreview from '@/app/(main)/(backoffice)/_components/app-dialog-preview';
 import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 
 const PREVIEW_LOCALES = [
 	{ locale: 'ko_kr', label: '한국어', closeLabel: '닫기', detailLabel: '자세히' },
@@ -42,21 +43,17 @@ const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale, onLoc
 			<div className="flex items-center justify-between">
 				<h3 className="text-base font-bold">미리보기</h3>
 
-				<fieldset className="inline-flex h-7 min-w-0 rounded-md border bg-card p-0.5">
-					<legend className="sr-only">미리보기 언어</legend>
-
-					{PREVIEW_LOCALES.map((localeOption) => (
-						<button
-							key={localeOption.locale}
-							type="button"
-							aria-pressed={localeOption.locale === locale}
-							className="inline-flex items-center rounded-sm px-2.5 text-[13px] font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-pressed:bg-foreground aria-pressed:text-card"
-							onClick={() => onLocaleChange(localeOption.locale)}
-						>
-							{localeOption.label}
-						</button>
-					))}
-				</fieldset>
+				<SegmentedControl
+					label="미리보기 언어"
+					size="sm"
+					options={PREVIEW_LOCALES.map((localeOption) => ({
+						value: localeOption.locale,
+						label: localeOption.label,
+					}))}
+					value={locale}
+					className="border-border"
+					onValueChange={onLocaleChange}
+				/>
 			</div>
 
 			<section className="grid gap-1.5">

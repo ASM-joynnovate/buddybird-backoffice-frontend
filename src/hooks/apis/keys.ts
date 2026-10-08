@@ -22,6 +22,8 @@ export const apiKeys = {
 		notifications: (dashboardParams: DashboardParams) =>
 			['api', 'dashboard', 'notifications', dashboardParams] as const,
 		appUpdates: (platform: Platform) => ['api', 'dashboard', 'app-updates', platform] as const,
+		consents: (id: string, dashboardParams: DashboardParams) =>
+			['api', 'dashboard', 'consents', id, dashboardParams] as const,
 	},
 	users: {
 		all: () => ['api', 'users'] as const,

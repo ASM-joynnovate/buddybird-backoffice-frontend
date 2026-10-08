@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import type { Consent } from '@/types/apis/consents';
 
 import { useDeleteConsent } from '@/hooks/apis/consents';
@@ -21,6 +23,8 @@ interface Props {
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */
 const DeleteConsentDialog = ({ open, consent, onClose }: Props) => {
+	const router = useRouter();
+
 	const { isPending, mutate } = useDeleteConsent();
 
 	const handleDeleteConsent = () => {
@@ -28,13 +32,27 @@ const DeleteConsentDialog = ({ open, consent, onClose }: Props) => {
 			return;
 		}
 
-		mutate({ id: consent.id }, { onSuccess: onClose });
+		mutate(
+			{ id: consent.id },
+			{
+				onSuccess: () => {
+					onClose();
+
+					// 같은 종류의 대표하는 버전을 고름
+					router.push(`/consents?${new URLSearchParams({ kind: consent.kind })}`, { scroll: false });
+				},
+			},
+		);
 	};
 
 	return (
 		<ConfirmDialog
 			open={open}
-			text={{ title: '고지문을 삭제할까요?', message: koreanOrEnglishText(consent.title), confirm: '삭제' }}
+			text={{
+				title: '이 버전을 삭제할까요?',
+				message: `${koreanOrEnglishText(consent.title)} 버전 ${consent.version}`,
+				confirm: '삭제',
+			}}
 			busy={isPending}
 			onConfirm={handleDeleteConsent}
 			onClose={onClose}

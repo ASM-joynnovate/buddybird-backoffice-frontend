@@ -476,12 +476,12 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 `box-shadow`에는 아래 값을 사용한다.
 
 - **Card outline**: `box-shadow: 0 0 0 1px var(--border)`. 카드 경계를 표시하는 1px 선
-- **Tooltip shadow**: `box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.4)`. 그래프 위에 표시하는 툴팁
+- **Tooltip shadow**: `box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.4)`. 그래프 위에 표시하는 툴팁, Icon toggle의 툴팁, 칸 위에 겹쳐 놓는 Paging button
 
 ### Named Rules
 
 **The Flat Surface Rule.** 카드, 버튼, 입력에는 그림자를 적용하지 않는다.
-그림자는 다른 내용 위에 표시하는 툴팁에만 사용한다.
+그림자는 다른 내용 위에 겹쳐 표시하는 툴팁 및 Paging button에만 사용한다.
 
 ## Shapes
 
@@ -531,6 +531,8 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Group cell:** 기준 값으로 나눈 묶음을 담는 칸은 단계 칸의 여백 및 진행 막대를 사용한다. 진행 막대 아래에 `foreground` 8% 불투명도의 1px 구분선을 두고, 묶음에 속한 항목을 한 줄에 하나씩 13px로 적는다. 묶음에 속한 항목이 없으면 그 자리에 항목이 없다는 문구를 `muted-foreground`로 적는다
 - **Group cell tone:** 묶음 칸의 색은 세 가지다. 정상 묶음은 배경이 `chart-2` 9%를 `card`에 섞은 색이고 막대 및 점이 `chart-2`다. 안내가 필요한 묶음은 배경이 `muted`, 막대 및 점이 `chart-2` 50%를 `card`에 섞은 색, 막대의 빈 부분이 `foreground` 8% 불투명도다. 조치가 필요한 묶음은 배경이 `warning` 10% 불투명도, 막대가 `warning-dot`이고, 이름 앞에 `warning` 색 14px 경고 아이콘을 두며 이름을 굵기 600의 `warning`으로 적는다
 - **Threshold row:** 묶음 칸 사이에 묶음을 나누는 기준 값을 두는 행이다. 열은 `minmax(0, 1fr) 148px minmax(0, 1fr) 148px minmax(0, 1fr)`이고 간격은 12px다. 기준 값은 12.5px 굵기 600의 이름, 16px 굵기 700의 값, 12.5px `muted-foreground`의 설명을 가운데 정렬로 둔다. 값의 세로 가운데에 `border` 색 1px 가로선을 양옆 칸까지 긋고, 값은 `card` 배경 위에 적어 선이 글자를 지나지 않게 한다. 행이 들어 있는 영역의 폭이 720px보다 좁으면 같은 순서로 한 열에 쌓고, 기준 값은 이름 및 설명을 왼쪽에, 값을 오른쪽 끝에 두며 가로선을 그리지 않는다
+- **Document pane:** 긴 글을 보여 주는 영역은 `border` 색 1px 테두리 및 `{rounded.lg}` 모서리로 묶는다. 위쪽 띠는 `muted` 배경이고 아래에 `border` 색 1px 구분선을 둔다. 띠의 왼쪽에는 `card` 배경의 작은 버튼 그룹을, 오른쪽 끝에는 Icon toggle을 둔다. 제목은 18px 굵기 700이고, 본문은 줄 높이 1.75, 최대 폭 68ch이며 빈 줄은 12px 간격으로 표시한다. 안쪽 여백은 위 18px, 오른쪽 20px, 아래 20px, 왼쪽 32px이고 화면 폭 768px 미만에서는 오른쪽 16px, 왼쪽 28px이다
+- **Line diff:** 두 글을 줄 단위로 비교하면 추가된 줄은 `success`의 10% 배경으로, 삭제된 줄은 `destructive`의 10% 배경 및 취소선으로 표시한다. 삭제된 줄의 글자는 `destructive` 45%를 `foreground`에 섞은 색이다. 이어진 줄은 한 묶음으로 두고 묶음의 첫 줄 왼쪽 여백에 굵기 700의 `+` 또는 `−` 기호를 상태 색으로 둔다. 배경은 영역의 양 끝까지 채운다. 기호를 왼쪽 여백에 두므로 비교를 켜고 꺼도 글자의 위치 및 줄바꿈은 그대로다. 바뀐 줄 수는 띠 오른쪽에 더하기 아이콘이 있는 `success` 태그 및 빼기 아이콘이 있는 `destructive` 태그로 표시한다
 - **Forecast cell:** 저장한 뒤의 값을 미리 보여 주는 칸은 묶음 칸의 색을 사용하고 같은 폭으로 8px 간격을 두어 나란히 놓는다. 안쪽 여백은 위아래 10px, 좌우 12px이고 값은 Metric Small이다. 현재 값과 다르면 값 오른쪽에 증감 표시를 두는데, 칸 배경 위에서 보이도록 배경을 `card`로 변경하고 차이를 수량으로 적으며 `title`에 "현재 대비"를 넣는다
 
 ### Buttons
@@ -539,6 +541,9 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 
 - **Segmented control:** `{components.segmented-control}`. 기간처럼 하나만 선택하는 값에 사용하고 `border` 색 1px 테두리를 두른다
 - **Item / Selected:** `{components.segmented-control-item}`, `{components.segmented-control-item-selected}`. 선택된 버튼에는 `aria-pressed="true"`를 지정한다
+- **Small segmented control:** 작은 버튼 그룹은 높이 28px이고 버튼은 13px 글자에 좌우 여백 10px이다. 그룹의 배경은 `card` 및 `muted` 중 놓이는 자리의 배경이 아닌 색을 사용한다
+- **Icon toggle:** 켜고 끄는 아이콘 버튼은 28px 크기, `{rounded.sm}` 모서리, `border` 색 1px 테두리, `card` 배경이고 아이콘은 16px이다. 켜면 배경을 `foreground`, 아이콘을 `card` 색으로 변경한다. 글자 없이 `aria-label` 및 `aria-pressed`를 지정하고, 마우스를 올리거나 키보드로 포커스하면 버튼 아래 8px에 `tooltip` 배경, 12px 굵기 600 글자의 툴팁을 표시한다
+- **Paging button:** 가로로 넘치는 칸 목록에는 넘친 쪽 끝에 지름 28px의 원형 넘김 버튼을 칸 줄의 세로 가운데에 둔다. 배경은 `card`, 테두리는 `border` 색 1px이다. 버튼은 칸 하나만큼 넘기고, 더 넘길 칸이 없는 쪽의 버튼은 숨긴다
 - **Text link:** `{components.text-link}`. 마우스를 올리면 글자에서 3px 떨어진 밑줄을 표시한다. 표 안의 링크는 본문 굵기에 `brand` 색만 적용한다
 - **Icon link:** 숫자 카드의 16px 화살표 링크는 `muted-foreground` 색이며 `aria-label`에 이동할 화면을 적는다
 - **Add cell:** 칸으로 표시하는 목록의 마지막 칸은 항목을 추가하는 버튼이다. 크기 및 모서리는 다른 칸과 같고 `chart-neutral` 색 1px 점선 테두리를 두른다. 가운데에 16px 더하기 아이콘 및 굵기 600의 "추가"를 `muted-foreground`로 둔다. 마우스를 올리면 테두리를 `muted-foreground`, 배경을 `muted`, 글자를 `foreground`로 변경한다. 항목이 없는 목록에서는 한 행 전체를 차지한다
@@ -565,6 +570,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Ratio row:** 한 행에 굵기 600의 이름, 굵기 700의 비율, 13px `muted-foreground`의 수량을 두고 그 아래에 비율 막대를 둔다. 행의 위아래 여백은 12px이다
 - **Legend row:** 한 행에 8px 점, 이름, 굵기 700의 건수, `muted-foreground`의 비율을 순서대로 둔다. 행의 위아래 여백은 6px이다
 - **Cell list:** 항목마다 재생, 수정, 삭제 같은 동작이 있는 목록은 구분선 없이 `muted` 배경의 칸으로 나열한다. 칸의 모서리는 `{rounded.lg}`, 최소 높이는 56px이고 칸 사이 간격은 8px이다. 안쪽 여백은 위아래 및 왼쪽 10px, 오른쪽 8px이다. 굵기 600의 이름은 한 줄로 적고 넘치면 말줄임으로 표시하며 `title`에 전체 이름을 넣는다. 이름 아래에는 Caption의 `muted-foreground` 보조 값을, 오른쪽 끝에는 28px 아이콘 버튼을 둔다. 아이콘 버튼은 `muted-foreground` 색이고 마우스를 올리면 배경을 `card`로 변경하며, 삭제 버튼은 아이콘도 `destructive`로 변경한다. 화면 폭 1280px 이상에서는 두 열로, 그보다 좁으면 `repeat(auto-fill, minmax(220px, 1fr))`로 배치한다
+- **Selectable cell row:** 순서가 있는 항목 중 하나를 고르는 칸은 `muted` 배경, `{rounded.lg}` 모서리이고 안쪽 여백은 위아래 10px, 좌우 14px이다. 첫 줄에는 Metric Small의 이름 및 오른쪽 끝의 태그를, 둘째 줄에는 12.5px `muted-foreground`의 기간을 줄바꿈 없이 둔다. 칸은 폭 `max(184px, calc((100% - 16px) / 3))`, 간격 8px로 한 줄에 나열하고, 넘치면 가로로 스크롤하며 칸 단위로 멈춘다. 스크롤바는 숨기고 Paging button을 둔다. 고른 칸에는 `foreground` 색 1.5px 안쪽 테두리를, 마우스를 올린 칸에는 `chart-neutral` 색 1px 안쪽 테두리를 둔다. 작성 중인 항목은 배경 없이 `foreground` 색 1.5px 점선 테두리의 칸으로 맨 앞에 둔다
 - **Step track:** 순서가 있는 단계는 칩을 진행 순서대로 나란히 두고 칩 사이를 길이 12px의 `chart-neutral` 색 1px 선으로 잇는다. 화면 폭 768px 미만에서는 선을 숨기고 칩 사이에 6px 간격을 둔다
 - **Expanded row:** 행을 누르면 그 아래에 펼치는 상세는 `card-inset` 배경, `{rounded.lg}` 모서리, `border` 색 1px 외곽선의 영역이다. 구역 사이를 `border` 색 1px 선으로 나누고 구역의 안쪽 여백은 16px이다. 목록 폭이 760px보다 넓으면 위 두 구역을 `minmax(0, 1fr) minmax(0, 1.2fr)`의 두 열로 둔다. 행 전체가 상세를 여닫는 버튼이며 한 번에 한 행만 펼친다
 - **Vertical steps:** 순서가 있는 단계를 위에서 아래로 나열할 때는 28px 원 안의 16px 아이콘, 13px `muted-foreground`의 이름, 굵기 600의 일시 순서로 한 행을 둔다. 일시가 있는 단계의 원은 데이터 색 14% 배경이고, 없는 단계는 `muted` 배경에 일시 자리에 "-"를 둔다. 단계 사이를 `chart-neutral` 색 2px 세로선으로 잇는다
@@ -607,7 +613,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Line:** 선은 2.5px 굵기의 곡선이다. 첫 계열의 아래에는 계열 색이 26% 불투명도에서 0%로 옅어지는 그라데이션을 채운다. 마지막 값에는 반지름 5px 점을 표시하고 점에 `card` 색 2.5px 테두리를 두른다
 - **Last value:** 마지막 값은 막대 또는 점 위에 12px 굵기 700의 `foreground`로 적는다
 - **Hover:** 마우스를 올리거나 키보드로 포커스한 날짜에 툴팁을 표시한다. 선 그래프는 그 날짜에 `chart-neutral` 색 세로 보조선 및 계열별 점을 함께 표시한다
-- **Half donut:** 반원 도넛 그래프는 굵기 16px의 끝이 둥근 호로 그린다. 계열 사이에 5px 간격을 두고 뒤에 `muted` 색 호를 둔다. 가운데에는 28px 굵기 700의 값 및 12.5px `muted-foreground`의 이름을 적는다
+- **Half donut:** 반원 도넛 그래프는 굵기 16px의 끝이 둥근 호로 그린다. 계열 사이에 5px 간격을 두고 뒤에 `muted` 색 호를 둔다. 가운데에는 28px 굵기 700의 값 및 12.5px `muted-foreground`의 이름을 적는다. 동의 여부처럼 응답을 나누는 그래프는 동의에 `chart-2`, 거부에 `chart-neutral`, 접속 후 미응답에 `warning-dot`, 접속 없음에 `muted`를 사용한다. 인원이 아주 적은 계열도 보이도록 계열마다 최소 각도 10°를 둔다
 - **Hourly bars:** 시간대별 막대는 폭 8px이고 위쪽 끝이 둥글다. 지난 시간은 `chart-1`의 38% 불투명도로, 현재 시간은 `chart-1`로 표시한다. 아직 지나지 않은 시간은 높이 4px의 `chart-neutral` 50% 불투명도로 표시한다. 화면 폭 860px 이하에서 막대 폭은 6px이다
 - **Time axis:** 시각마다 값을 막대로 그리는 시간 축은 높이 64px이고 아래에 `border` 색 1px 선을 둔다. 범위는 한국 시간 0시, 6시, 12시, 18시 단위로 감싸고, 1시간마다 `border` 색 55% 불투명도, 6시간마다 `chart-neutral` 색 1px 세로선을 둔다. 막대는 그 시각이 속한 1시간 칸의 가운데에 3px 이상 14px 이하의 폭으로 두고, 높이는 가장 큰 값에 대한 비율의 제곱근에 36px을 곱한 값이며 6px 이상이다. 지난 막대는 데이터 색, 남은 막대는 데이터 색 45%를 `card`에 섞은 색이다. 현재 시각에는 `foreground` 색 1px 세로선 및 굵기 700의 "지금" 눈금을 둔다
 - **Funnel rows:** 첫 행의 값에 대한 비율을 나타내는 행은 13px `muted-foreground`의 이름, 높이 8px의 막대, 굵기 700의 값, 13px `muted-foreground`의 비율 순서다. 첫 행에는 비율을 적지 않는다

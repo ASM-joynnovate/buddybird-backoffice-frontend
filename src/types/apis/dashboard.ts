@@ -160,6 +160,25 @@ export const appUpdateDashboardSchema = z.object({
 	versions: z.array(z.object({ app_version: z.string(), count: z.number().int() })),
 });
 
+export const consentDashboardSchema = z.object({
+	users: z.object({ total_count: z.number().int() }),
+	decisions: z.object({
+		granted_count: z.number().int(),
+		denied_count: z.number().int(),
+		waiting_count: z.number().int(),
+	}),
+	daily: z.array(
+		z.object({ date: localDateSchema, granted_count: z.number().int(), denied_count: z.number().int() }),
+	),
+	versions: z.array(
+		z.object({ version: z.number().int(), granted_count: z.number().int(), user_count: z.number().int() }),
+	),
+	platforms: z.array(
+		z.object({ platform: z.string(), granted_count: z.number().int(), user_count: z.number().int() }),
+	),
+	locales: z.array(z.object({ locale: z.string(), granted_count: z.number().int(), user_count: z.number().int() })),
+});
+
 export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
@@ -167,6 +186,7 @@ export type FeedbackDashboard = z.infer<typeof feedbackDashboardSchema>;
 export type WithdrawalDashboard = z.infer<typeof withdrawalDashboardSchema>;
 export type NotificationDashboard = z.infer<typeof notificationDashboardSchema>;
 export type AppUpdateDashboard = z.infer<typeof appUpdateDashboardSchema>;
+export type ConsentDashboard = z.infer<typeof consentDashboardSchema>;
 
 export interface DashboardParams {
 	date_from: string;

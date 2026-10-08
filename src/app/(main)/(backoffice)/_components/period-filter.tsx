@@ -3,13 +3,12 @@
 import { type SyntheticEvent, useEffect, useRef } from 'react';
 
 import Form from 'next/form';
-import Link from 'next/link';
 
 import type { DashboardParams } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
-import { cn } from '@/lib/utils';
 
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { DASHBOARD_MAX_PERIOD_DAYS, DASHBOARD_PERIODS } from '@/config';
 import { addDays } from '@/utils/date';
 import { toLinkQuery } from '@/utils/search-params';
@@ -51,22 +50,15 @@ const PeriodFilter = ({ pathname, query = {}, period, dashboardParams, today }: 
 
 	return (
 		<div className="flex flex-wrap items-center gap-2.5 text-sm">
-			<nav aria-label="조회 기간" className="inline-flex h-9 rounded-md border bg-card p-0.5">
-				{DASHBOARD_PERIODS.map((dashboardPeriod) => (
-					<Link
-						key={dashboardPeriod}
-						href={{ pathname, query: { ...linkQuery, period: dashboardPeriod } }}
-						scroll={false}
-						aria-current={dashboardPeriod === period ? 'true' : undefined}
-						className={cn(
-							'inline-flex items-center rounded-sm px-3.5 font-semibold text-muted-foreground hover:text-foreground',
-							dashboardPeriod === period && 'bg-foreground text-card hover:text-card',
-						)}
-					>
-						{dashboardPeriod}일
-					</Link>
-				))}
-			</nav>
+			<SegmentedControl
+				label="조회 기간"
+				options={DASHBOARD_PERIODS.map((dashboardPeriod) => ({
+					value: dashboardPeriod,
+					label: `${dashboardPeriod}일`,
+					href: { pathname, query: { ...linkQuery, period: dashboardPeriod } },
+				}))}
+				value={period}
+			/>
 
 			<Form
 				ref={formRef}

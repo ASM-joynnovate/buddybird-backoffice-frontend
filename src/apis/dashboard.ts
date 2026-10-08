@@ -2,6 +2,8 @@ import type { Platform } from '@/types/apis/app-updates';
 import {
 	type AppUpdateDashboard,
 	appUpdateDashboardSchema,
+	type ConsentDashboard,
+	consentDashboardSchema,
 	type Dashboard,
 	type DashboardLive,
 	dashboardLiveSchema,
@@ -82,4 +84,20 @@ export const getAppUpdateDashboard = async ({ platform }: { platform: Platform }
 	);
 
 	return appUpdateDashboard;
+};
+
+export const getConsentDashboard = async ({
+	id,
+	dashboardParams: { date_from, date_to },
+}: {
+	id: string;
+	dashboardParams: DashboardParams;
+}): Promise<ConsentDashboard> => {
+	const { data: consentDashboard } = await apiRequest(
+		`/api/v1/backoffice/dashboard/consents/${id}`,
+		consentDashboardSchema,
+		{ searchParams: { date_from, date_to } },
+	);
+
+	return consentDashboard;
 };

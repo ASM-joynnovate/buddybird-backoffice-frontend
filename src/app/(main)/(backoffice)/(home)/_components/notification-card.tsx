@@ -3,13 +3,12 @@
 import type { Dashboard } from '@/types/apis/dashboard';
 import type { NotificationKind } from '@/types/apis/notifications';
 
-import { Pie, PieChart } from 'recharts';
-
+import HalfDonutChart from '@/app/(main)/(backoffice)/_components/half-donut-chart';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { formatDateTime } from '@/utils/date';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
-import { type ChartConfig, ChartContainer } from '@/components/ui/chart';
+import type { ChartConfig } from '@/components/ui/chart';
 
 const chartConfig = {
 	report: { label: '리포트', color: 'var(--chart-1)' },
@@ -31,9 +30,9 @@ interface Props {
 const NotificationCard = ({ notifications }: Props) => {
 	const sentCount = notifications.kinds.reduce((total, kindCount) => total + kindCount.sent_count, 0);
 	const readCount = notifications.kinds.reduce((total, kindCount) => total + kindCount.read_count, 0);
-	const kindCounts = notifications.kinds
-		.toSorted((a, b) => notificationKinds.indexOf(a.kind) - notificationKinds.indexOf(b.kind))
-		.map((kindCount) => ({ ...kindCount, fill: `var(--color-${kindCount.kind})` }));
+	const kindCounts = notifications.kinds.toSorted(
+		(a, b) => notificationKinds.indexOf(a.kind) - notificationKinds.indexOf(b.kind),
+	);
 
 	// 건수가 없는 목록은 제외
 	const notificationSections = [
@@ -48,46 +47,16 @@ const NotificationCard = ({ notifications }: Props) => {
 			) : (
 				<>
 					{/*종류별 건수 반원 그래프 및 읽은 비율*/}
-					<div className="relative mx-auto mt-1 w-52.5 max-w-full">
-						<ChartContainer config={chartConfig} className="aspect-auto h-26 w-full">
-							<PieChart title="알림의 종류별 건수" margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-								<Pie
-									data={[{ value: 1 }]}
-									dataKey="value"
-									cy="100%"
-									startAngle={180}
-									endAngle={0}
-									innerRadius={86}
-									outerRadius={102}
-									cornerRadius={8}
-									fill="var(--muted)"
-									stroke="none"
-									isAnimationActive={false}
-								/>
-								<Pie
-									data={kindCounts}
-									dataKey="sent_count"
-									nameKey="kind"
-									cy="100%"
-									startAngle={180}
-									endAngle={0}
-									innerRadius={86}
-									outerRadius={102}
-									cornerRadius={8}
-									paddingAngle={3}
-									stroke="none"
-									isAnimationActive={false}
-								/>
-							</PieChart>
-						</ChartContainer>
-
-						<p className="absolute inset-x-0 bottom-0 text-center leading-tight">
-							<strong className="block text-[28px] font-bold tracking-tight">
-								{Math.round((readCount / sentCount) * 100)}%
-							</strong>
-							<span className="text-[12.5px] text-muted-foreground">읽음</span>
-						</p>
-					</div>
+					<HalfDonutChart
+						title="알림의 종류별 건수"
+						parts={kindCounts.map((kindCount) => ({
+							name: chartConfig[kindCount.kind].label,
+							count: kindCount.sent_count,
+							color: chartConfig[kindCount.kind].color,
+						}))}
+						value={`${Math.round((readCount / sentCount) * 100)}%`}
+						label="읽음"
+					/>
 
 					<ul className="mt-3.5 divide-y tabular-nums">
 						{kindCounts.map((kindCount) => (

@@ -17,6 +17,7 @@ import NotificationContentFields, {
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import NotificationPreview from '@/app/(main)/(backoffice)/_components/notification-preview';
 import NotificationReachIcon from '@/app/(main)/(backoffice)/_components/notification-reach-icon';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import UserPicker from '@/app/(main)/(backoffice)/_components/user-picker';
 import { BROADCAST_MAX_USER_COUNT } from '@/config';
 import { AUDIENCE_HELP_TEXTS } from '@/config/notification';
@@ -126,25 +127,15 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 						<span className={`${labelClassName} @md:pt-2`}>받는 사람</span>
 
 						<div className="grid min-w-0 justify-items-start gap-2">
-							<fieldset className="inline-flex h-9 w-fit rounded-md border bg-card p-0.5">
-								<legend className="sr-only">받는 사람</legend>
-
-								{RECIPIENT_TARGETS.map((recipientTarget) => (
-									<label
-										key={recipientTarget.target}
-										className="inline-flex cursor-pointer items-center rounded-sm px-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground has-checked:bg-foreground has-checked:text-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand"
-									>
-										<input
-											type="radio"
-											name="target"
-											checked={target === recipientTarget.target}
-											className="sr-only"
-											onChange={() => setTarget(recipientTarget.target)}
-										/>
-										{recipientTarget.label}
-									</label>
-								))}
-							</fieldset>
+							<SegmentedControl
+								label="받는 사람"
+								options={RECIPIENT_TARGETS.map((recipientTarget) => ({
+									value: recipientTarget.target,
+									label: recipientTarget.label,
+								}))}
+								value={target}
+								onValueChange={setTarget}
+							/>
 
 							{target === 'selected' && (
 								<UserPicker

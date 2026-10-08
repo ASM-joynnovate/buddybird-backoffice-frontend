@@ -9,6 +9,7 @@ import type { I18nFieldValue } from '@/types/i18n';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import NotificationImageField from '@/app/(main)/(backoffice)/_components/notification-image-field';
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { NOTIFICATION_BODY_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/config';
 import { toI18nFieldValue } from '@/utils/i18n-text';
 
@@ -47,30 +48,23 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 			<div className={`${rowClassName} items-center`}>
 				<span className={labelClassName}>종류</span>
 
-				<div className="inline-flex h-9 w-fit rounded-md border bg-card p-0.5">
-					{sendableNotificationKindSchema.options.map((sendableNotificationKind) => (
-						<label
-							key={sendableNotificationKind}
-							className="inline-flex cursor-pointer items-center gap-1.5 rounded-sm px-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground has-checked:bg-foreground has-checked:text-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand"
-						>
-							<input
-								type="radio"
-								name="kind"
-								required
-								checked={content.kind === sendableNotificationKind}
-								className="sr-only"
-								onChange={() =>
-									onContentChange((prev) => ({ ...prev, kind: sendableNotificationKind }))
-								}
-							/>
-							<span
-								className="size-2 rounded-full"
-								style={{ backgroundColor: NOTIFICATION_KINDS[sendableNotificationKind].color }}
-							/>
-							{NOTIFICATION_KINDS[sendableNotificationKind].label}
-						</label>
-					))}
-				</div>
+				<SegmentedControl
+					label="종류"
+					options={sendableNotificationKindSchema.options.map((sendableNotificationKind) => ({
+						value: sendableNotificationKind,
+						label: (
+							<>
+								<span
+									className="size-2 rounded-full"
+									style={{ backgroundColor: NOTIFICATION_KINDS[sendableNotificationKind].color }}
+								/>
+								{NOTIFICATION_KINDS[sendableNotificationKind].label}
+							</>
+						),
+					}))}
+					value={content.kind}
+					onValueChange={(kind) => onContentChange((prev) => ({ ...prev, kind }))}
+				/>
 			</div>
 
 			{/*언어마다 제목 및 본문을 한 상자에 입력*/}

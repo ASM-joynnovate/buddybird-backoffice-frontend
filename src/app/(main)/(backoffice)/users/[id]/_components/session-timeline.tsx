@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 
 import dayjs from 'dayjs';
 
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import SessionTrack from '@/app/(main)/(backoffice)/users/[id]/_components/session-track';
 import { TIMELINE_MAX_SOUND_BAR_COUNT, TIMELINE_MIN_VISIBLE_MS } from '@/config';
@@ -60,6 +61,11 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 	const durationMs = sessionPeriod.endMs - sessionPeriod.startMs;
 	const duration = toHoursAndMinutes(durationMs);
 	const maxZoom = Math.max(1, durationMs / TIMELINE_MIN_VISIBLE_MS);
+	// 버튼마다 확대 배율
+	const zoomLevels = zoomOptions.map((zoomOption) => ({
+		...zoomOption,
+		zoom: zoomOption.visibleMs ? durationMs / zoomOption.visibleMs : 1,
+	}));
 
 	const sessionEvents = sessionEventListData.map((sessionEvent) => {
 		const heartbeatExpired =
@@ -204,24 +210,20 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h3 className="text-base font-bold">{formatMonthDayTime(session.period.started_at)} 세션</h3>
 
-				<div className="inline-flex h-7 rounded-md bg-muted p-0.5">
-					{zoomOptions.map((zoomOption) => {
-						const optionZoom = zoomOption.visibleMs ? durationMs / zoomOption.visibleMs : 1;
-
-						return (
-							<button
-								key={zoomOption.label}
-								type="button"
-								disabled={!!zoomOption.visibleMs && optionZoom <= 1}
-								aria-pressed={Math.abs(zoom - optionZoom) < 0.01}
-								className="rounded-sm px-2.5 text-[13px] font-semibold text-muted-foreground hover:text-foreground disabled:opacity-40 aria-pressed:bg-foreground aria-pressed:text-card"
-								onClick={() => changeZoom(() => optionZoom, 0.5)}
-							>
-								{zoomOption.label}
-							</button>
-						);
-					})}
-				</div>
+				<SegmentedControl
+					label="확대"
+					size="sm"
+					options={zoomLevels.map((zoomLevel) => ({
+						value: zoomLevel.label,
+						label: zoomLevel.label,
+						disabled: !!zoomLevel.visibleMs && zoomLevel.zoom <= 1,
+					}))}
+					value={zoomLevels.find((zoomLevel) => Math.abs(zoom - zoomLevel.zoom) < 0.01)?.label}
+					className="border-0 bg-muted"
+					onValueChange={(label) =>
+						changeZoom(() => zoomLevels.find((zoomLevel) => zoomLevel.label === label)?.zoom ?? zoom, 0.5)
+					}
+				/>
 			</div>
 
 			<dl className="grid grid-cols-2 gap-2 md:grid-cols-4">

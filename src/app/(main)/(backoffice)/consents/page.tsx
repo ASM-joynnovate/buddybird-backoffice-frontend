@@ -4,32 +4,27 @@ import { getConsentListOptions } from '@/hooks/apis/consents';
 
 import { getQueryClient } from '@/lib/query-client';
 
-import ConsentList from '@/app/(main)/(backoffice)/consents/_components/consent-list';
-import CreateConsentButton from '@/app/(main)/(backoffice)/consents/_components/create-consent-button';
+import Consents from '@/app/(main)/(backoffice)/consents/_components/consents';
+import { formatToday, getNow } from '@/utils/date';
+import { toOptionalText } from '@/utils/search-params';
 
-import ContentSkeleton from '@/components/content-skeleton';
-import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
-import QueryError from '@/components/query-error';
+/** 고지문 페이지 */
+export default async function Page(props: PageProps<'/consents'>) {
+	const searchParams = await props.searchParams;
 
-/** 고지문 목록 페이지 */
-export default async function Page() {
 	const queryClient = getQueryClient();
 
-	await queryClient.prefetchQuery(getConsentListOptions());
+	// 응답을 기다리지 않고 조회 시작
+	void queryClient.prefetchQuery(getConsentListOptions());
 
 	return (
-		<>
-			<div className="flex items-center justify-between">
-				<h1 className="text-2xl font-bold">고지문</h1>
-
-				<CreateConsentButton />
-			</div>
-
-			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-				<HydrationBoundary state={dehydrate(queryClient)}>
-					<ConsentList />
-				</HydrationBoundary>
-			</ErrorHandlingWrapper>
-		</>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<Consents
+				kind={toOptionalText(searchParams.kind)}
+				version={toOptionalText(searchParams.version)}
+				today={formatToday()}
+				now={getNow()}
+			/>
+		</HydrationBoundary>
 	);
 }
