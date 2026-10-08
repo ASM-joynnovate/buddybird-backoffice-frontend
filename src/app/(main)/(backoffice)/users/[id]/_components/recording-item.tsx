@@ -1,6 +1,6 @@
 'use client';
 
-import { type SyntheticEvent, useRef, useState } from 'react';
+import useAudioPlayer from '@/hooks/use-audio-player';
 
 import { Play, Square } from 'lucide-react';
 
@@ -17,46 +17,11 @@ interface Props {
  * @param wordName 녹음이 속한 단어
  */
 const RecordingItem = ({ audioUrl, label, wordName }: Props) => {
-	const audioRef = useRef<HTMLAudioElement>(null);
-
-	const [playing, setPlaying] = useState(false);
-	const [progressPercent, setProgressPercent] = useState(0);
-	const [durationSeconds, setDurationSeconds] = useState<number | null>(null);
-
-	const handleTogglePlay = () => {
-		const audio = audioRef.current;
-
-		if (!audio) {
-			return;
-		}
-
-		if (!playing) {
-			void audio.play();
-
-			return;
-		}
-
-		audio.pause();
-		audio.currentTime = 0;
-	};
-
-	const handleTimeUpdate = (event: SyntheticEvent<HTMLAudioElement>) => {
-		const { currentTime, duration } = event.currentTarget;
-
-		setProgressPercent(Number.isFinite(duration) ? (currentTime / duration) * 100 : 0);
-	};
+	const { playing, progressPercent, durationSeconds, handleTogglePlay, audioProps } = useAudioPlayer();
 
 	return (
 		<li className="flex items-center gap-2.5 py-1 text-[13px]">
-			<audio
-				ref={audioRef}
-				src={audioUrl}
-				preload="metadata"
-				onLoadedMetadata={(event) => setDurationSeconds(event.currentTarget.duration)}
-				onTimeUpdate={handleTimeUpdate}
-				onPlay={() => setPlaying(true)}
-				onPause={() => setPlaying(false)}
-			>
+			<audio src={audioUrl} preload="metadata" {...audioProps}>
 				<track kind="captions" />
 			</audio>
 
@@ -75,7 +40,7 @@ const RecordingItem = ({ audioUrl, label, wordName }: Props) => {
 				<span className="block h-full rounded-full bg-chart-1" style={{ width: `${progressPercent}%` }} />
 			</span>
 
-			{durationSeconds !== null && Number.isFinite(durationSeconds) && (
+			{durationSeconds !== null && (
 				<time className="text-muted-foreground tabular-nums">
 					{Math.floor(durationSeconds / 60)}:{String(Math.round(durationSeconds % 60)).padStart(2, '0')}
 				</time>

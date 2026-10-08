@@ -537,6 +537,8 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Item / Selected:** `{components.segmented-control-item}`, `{components.segmented-control-item-selected}`. 선택된 버튼에는 `aria-pressed="true"`를 지정한다
 - **Text link:** `{components.text-link}`. 마우스를 올리면 글자에서 3px 떨어진 밑줄을 표시한다. 표 안의 링크는 본문 굵기에 `brand` 색만 적용한다
 - **Icon link:** 숫자 카드의 16px 화살표 링크는 `muted-foreground` 색이며 `aria-label`에 이동할 화면을 적는다
+- **Add cell:** 칸으로 표시하는 목록의 마지막 칸은 항목을 추가하는 버튼이다. 크기 및 모서리는 다른 칸과 같고 `chart-neutral` 색 1px 점선 테두리를 두른다. 가운데에 16px 더하기 아이콘 및 굵기 600의 "추가"를 `muted-foreground`로 둔다. 마우스를 올리면 테두리를 `muted-foreground`, 배경을 `muted`, 글자를 `foreground`로 변경한다. 항목이 없는 목록에서는 한 행 전체를 차지한다
+- **Play button:** 음성을 재생하는 버튼은 지름 36px의 원이다. 배경은 `card`, 아이콘은 `foreground` 색의 재생 아이콘이다. 마우스를 올리면 둘레 3px를 남기고 안쪽 배경을 `chart-neutral`로 변경한다. 재생 중에는 배경을 `foreground`, 아이콘을 `card` 색의 정지 아이콘으로 변경하고 둘레 3px에 진행한 만큼 `chart-1`을 채운다. 재생이 끝나면 처음 모양으로 되돌린다. `aria-label`에는 대상의 이름 뒤에 "재생" 또는 "정지"를 적는다
 
 ### Inputs
 
@@ -545,6 +547,8 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Date range:** `{components.date-range}`. `border` 색 1px 테두리 안에 시작일, "~" 글자, 종료일을 6px 간격으로 나란히 둔다
 - **Date:** `{components.date-range-input}`. 브라우저 기본 `<input type="date">`를 사용하고 `tabular-nums`를 적용한다
 - **Hover:** 마우스를 올린 날짜의 배경을 `muted`로 변경한다
+- **File drop area:** 파일을 고르는 영역은 `chart-neutral` 색 1px 점선 테두리, `{rounded.lg}` 모서리, `card-inset` 배경으로 그린다. 가운데에 `muted-foreground` 색 18px 아이콘, 굵기 600의 안내 문구, 12.5px `muted-foreground`의 허용 형식 및 크기를 차례로 둔다. 영역을 누르거나 파일을 끌어다 놓으면 파일을 고른다. 마우스를 올리거나 파일을 영역 위로 끌어오면 테두리를 `muted-foreground`, 배경을 `muted`로 변경한다. 파일을 고른 뒤에는 영역 대신 굵기 600의 파일 이름, `muted-foreground`의 크기, 오른쪽 끝의 작은 "파일 변경" 버튼을 한 행에 둔다
+- **Field error:** 입력값의 오류는 해당 입력 아래 6px에 13px `destructive` 문구로 표시하고 `role="alert"`를 지정한다. 오류가 있는 입력에는 `aria-invalid`를 지정해 테두리를 `destructive`로 변경하고 `aria-describedby`로 문구를 연결한다. 입력값을 수정하면 문구를 지운다
 
 ### Lists
 
@@ -554,6 +558,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Two-line row:** 첫 행에 굵기 600의 제목 및 오른쪽 끝의 태그를, 둘째 행에 Caption의 `muted-foreground` 설명을 둔다. 행의 위아래 여백은 10px이다
 - **Ratio row:** 한 행에 굵기 600의 이름, 굵기 700의 비율, 13px `muted-foreground`의 수량을 두고 그 아래에 비율 막대를 둔다. 행의 위아래 여백은 12px이다
 - **Legend row:** 한 행에 8px 점, 이름, 굵기 700의 건수, `muted-foreground`의 비율을 순서대로 둔다. 행의 위아래 여백은 6px이다
+- **Cell list:** 항목마다 재생, 수정, 삭제 같은 동작이 있는 목록은 구분선 없이 `muted` 배경의 칸으로 나열한다. 칸의 모서리는 `{rounded.lg}`, 최소 높이는 56px이고 칸 사이 간격은 8px이다. 안쪽 여백은 위아래 및 왼쪽 10px, 오른쪽 8px이다. 굵기 600의 이름은 한 줄로 적고 넘치면 말줄임으로 표시하며 `title`에 전체 이름을 넣는다. 이름 아래에는 Caption의 `muted-foreground` 보조 값을, 오른쪽 끝에는 28px 아이콘 버튼을 둔다. 아이콘 버튼은 `muted-foreground` 색이고 마우스를 올리면 배경을 `card`로 변경하며, 삭제 버튼은 아이콘도 `destructive`로 변경한다. 화면 폭 1280px 이상에서는 두 열로, 그보다 좁으면 `repeat(auto-fill, minmax(220px, 1fr))`로 배치한다
 
 ### Tags
 

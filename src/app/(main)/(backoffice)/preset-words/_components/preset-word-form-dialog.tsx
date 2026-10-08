@@ -1,43 +1,68 @@
 'use client';
 
-import { type SubmitEvent, useState } from 'react';
+import { type ChangeEvent, type SubmitEvent, useState } from 'react';
 
-import { type PresetLanguage, type PresetWord, presetLanguageSchema } from '@/types/apis/preset-words';
+import type { PresetLanguage, PresetWord } from '@/types/apis/preset-words';
 
-import { useCreatePresetWord, useUpdatePresetWord } from '@/hooks/apis/preset-words';
+import { useCreatePresetWord, useGetPresetWordList, useUpdatePresetWord } from '@/hooks/apis/preset-words';
 
-import { PRESET_WORD_AUDIO_CONTENT_TYPES, PRESET_WORD_NAME_MAX_LENGTH } from '@/config';
+import PresetWordAudioField, {
+	type PickedAudio,
+} from '@/app/(main)/(backoffice)/preset-words/_components/preset-word-audio-field';
+import { PRESET_WORD_NAME_MAX_LENGTH } from '@/config';
+import { toPresetLanguageName } from '@/utils/locale';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const NAME_ERROR_ID = 'preset-word-name-error';
 
 interface Props {
+	language: PresetLanguage;
 	presetWord?: PresetWord;
 	onClose: () => void;
 }
 
 /**
- * 단어 프리셋 생성 및 수정 다이얼로그 컴포넌트
+ * 단어 프리셋 추가 및 수정 다이얼로그 컴포넌트
+ * @param language 프리셋의 언어
  * @param presetWord 수정할 단어 프리셋
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */
-const PresetWordFormDialog = ({ presetWord, onClose }: Props) => {
-	const [language, setLanguage] = useState<PresetLanguage | null>(null);
+const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 	const [name, setName] = useState(presetWord?.name ?? '');
-	const [audioFile, setAudioFile] = useState<File>();
+	const [nameError, setNameError] = useState('');
+	const [pickedAudio, setPickedAudio] = useState<PickedAudio>();
+	const [audioError, setAudioError] = useState('');
+
+	const { data: presetWordListData } = useGetPresetWordList();
 
 	const createPresetWord = useCreatePresetWord();
 	const updatePresetWord = useUpdatePresetWord();
 
+	const languageName = toPresetLanguageName(language);
 	const saving = createPresetWord.isPending || updatePresetWord.isPending;
 
 	const handleOpenChange = (nextOpen: boolean) => {
 		if (!nextOpen && !saving) {
 			onClose();
 		}
+	};
+
+	const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setName(event.target.value);
+		setNameError('');
+	};
+
+	const handleAudioPick = (nextPickedAudio: PickedAudio) => {
+		if (pickedAudio) {
+			URL.revokeObjectURL(pickedAudio.url);
+		}
+
+		setPickedAudio(nextPickedAudio);
+		setAudioError('');
 	};
 
 	const handleSave = (event: SubmitEvent<HTMLFormElement>) => {
@@ -47,93 +72,111 @@ const PresetWordFormDialog = ({ presetWord, onClose }: Props) => {
 			return;
 		}
 
-		if (presetWord) {
-			const nameChanged = name !== presetWord.name;
+		const trimmedName = name.trim();
+		const nameTaken = presetWordListData.some(
+			(otherPresetWord) =>
+				otherPresetWord.language === language &&
+				otherPresetWord.id !== presetWord?.id &&
+				otherPresetWord.name === trimmedName,
+		);
 
-			if (!nameChanged && !audioFile) {
+		let nextNameError = '';
+
+		if (!trimmedName) {
+			nextNameError = '이름을 입력하세요.';
+		} else if (nameTaken) {
+			nextNameError = `${languageName}에 같은 이름의 프리셋이 있습니다.`;
+		}
+
+		const nextAudioError = !presetWord && !pickedAudio ? '음성 파일을 선택하세요.' : '';
+
+		setNameError(nextNameError);
+		setAudioError(nextAudioError);
+
+		if (nextNameError || nextAudioError) {
+			return;
+		}
+
+		if (presetWord) {
+			const nameChanged = trimmedName !== presetWord.name;
+
+			if (!nameChanged && !pickedAudio) {
 				onClose();
 
 				return;
 			}
 
 			updatePresetWord.mutate(
-				{ id: presetWord.id, data: { name: nameChanged ? name : undefined, file: audioFile } },
+				{ id: presetWord.id, data: { name: nameChanged ? trimmedName : undefined, file: pickedAudio?.file } },
 				{ onSuccess: onClose },
 			);
 
 			return;
 		}
 
-		// 빈 값은 required 속성이 제출 전에 막으므로 타입만 좁힌다
-		if (!language || !audioFile) {
+		// 음성 없는 추가는 위에서 막으므로 타입만 좁힌다
+		if (!pickedAudio) {
 			return;
 		}
 
-		createPresetWord.mutate({ data: { language, name, file: audioFile } }, { onSuccess: onClose });
+		createPresetWord.mutate(
+			{ data: { language, name: trimmedName, file: pickedAudio.file } },
+			{ onSuccess: onClose },
+		);
 	};
 
 	return (
 		<Dialog open onOpenChange={handleOpenChange}>
-			<DialogContent>
-				<form onSubmit={handleSave} className="space-y-4">
+			<DialogContent className="p-5 sm:max-w-110">
+				<form onSubmit={handleSave} className="grid gap-4">
 					<DialogHeader>
-						<DialogTitle>{presetWord ? '단어 프리셋 수정' : '단어 프리셋 생성'}</DialogTitle>
+						<DialogTitle className="font-bold">
+							{languageName} 프리셋 {presetWord ? '수정' : '추가'}
+						</DialogTitle>
 					</DialogHeader>
 
-					{presetWord ? (
-						<p className="text-sm text-muted-foreground">언어: {presetWord.language}</p>
-					) : (
-						<div className="space-y-2">
-							<Label htmlFor="preset-word-language">언어</Label>
-							<Select
-								id="preset-word-language"
-								name="language"
-								required
-								value={language}
-								onValueChange={setLanguage}
-							>
-								<SelectTrigger>
-									<SelectValue placeholder="언어 선택" />
-								</SelectTrigger>
-								<SelectContent>
-									{presetLanguageSchema.options.map((presetLanguage) => (
-										<SelectItem key={presetLanguage} value={presetLanguage}>
-											{presetLanguage}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</div>
-					)}
-
-					<div className="space-y-2">
-						<Label htmlFor="preset-word-name">이름</Label>
+					<div>
+						<Label
+							htmlFor="preset-word-name"
+							className="mb-1.5 items-baseline justify-between text-[13px] leading-normal font-semibold"
+						>
+							이름
+							<span className="text-[12.5px] font-normal text-muted-foreground tabular-nums">
+								{name.length}/{PRESET_WORD_NAME_MAX_LENGTH}
+							</span>
+						</Label>
 						<Input
 							id="preset-word-name"
-							required
+							autoComplete="off"
 							maxLength={PRESET_WORD_NAME_MAX_LENGTH}
 							value={name}
-							onChange={(event) => setName(event.target.value)}
+							aria-invalid={!!nameError}
+							aria-describedby={nameError ? NAME_ERROR_ID : undefined}
+							onChange={handleNameChange}
 						/>
+						{!!nameError && (
+							<p id={NAME_ERROR_ID} role="alert" className="mt-1.5 text-[13px] text-destructive">
+								{nameError}
+							</p>
+						)}
 					</div>
 
-					<div className="space-y-2">
-						<Label htmlFor="preset-word-audio-file">오디오 파일</Label>
-						<Input
-							id="preset-word-audio-file"
-							type="file"
-							required={!presetWord}
-							accept={PRESET_WORD_AUDIO_CONTENT_TYPES.join(',')}
-							onChange={(event) => setAudioFile(event.target.files?.[0])}
-						/>
-					</div>
+					<PresetWordAudioField
+						pickedAudio={pickedAudio}
+						registeredAudioUrl={presetWord?.audio_file.url}
+						error={audioError}
+						onAudioPick={handleAudioPick}
+						onErrorChange={setAudioError}
+					/>
 
-					<DialogFooter>
+					<p className="text-[12.5px] text-muted-foreground">저장한 뒤에 가입하는 사용자부터 적용됩니다.</p>
+
+					<DialogFooter className="m-0 mt-1 flex-row justify-end border-0 bg-transparent p-0 *:flex-1 md:*:flex-none">
 						<Button type="button" variant="outline" disabled={saving} onClick={onClose}>
 							취소
 						</Button>
 						<Button type="submit" disabled={saving}>
-							저장
+							{saving ? '저장 중' : '저장'}
 						</Button>
 					</DialogFooter>
 				</form>
