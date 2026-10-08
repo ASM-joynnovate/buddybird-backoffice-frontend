@@ -1,18 +1,14 @@
-import { type Page, pageMetaSchema } from '@/types/apis/common';
+import { type CountedPage, countedPageMetaSchema } from '@/types/apis/common';
 import { type Feedback, type FeedbackListParams, feedbackSchema } from '@/types/apis/feedback';
 
 import { apiRequest } from '@/lib/api';
 
 import { z } from 'zod';
 
-export const getFeedbackList = async ({
-	page,
-	count_by_page,
-	user_id,
-}: FeedbackListParams): Promise<Page<Feedback>> => {
+export const getFeedbackList = async (listParams: FeedbackListParams): Promise<CountedPage<Feedback>> => {
 	const { data, meta } = await apiRequest('/api/v1/backoffice/feedback', z.array(feedbackSchema), {
-		searchParams: { page, count_by_page, user_id },
+		searchParams: { ...listParams },
 	});
 
-	return { data, meta: pageMetaSchema.parse(meta) };
+	return { data, meta: countedPageMetaSchema.parse(meta) };
 };

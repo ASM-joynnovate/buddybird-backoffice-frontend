@@ -15,8 +15,8 @@ import { cn } from '@/lib/utils';
 import { ChevronDown, TriangleAlert } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
+import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
-import UserAvatar from '@/app/(main)/(backoffice)/users/_components/user-avatar';
 import { SESSION_PHASES } from '@/config/session';
 import { DAY, HOUR } from '@/config/units';
 import { formatDate, formatRelativeTime } from '@/utils/date';

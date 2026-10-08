@@ -1,56 +1,89 @@
 'use client';
 
+import { ViewTransition } from 'react';
+
 import Link from 'next/link';
 
-import { useGetFeedbackList } from '@/hooks/apis/feedback';
+import type { FeedbackListParams } from '@/types/apis/feedback';
 
-import { formatDateTime } from '@/utils/date';
+import { useGetFeedbackList } from '@/hooks/apis/feedback';
+import { useNow } from '@/hooks/use-now';
+
+import type { SearchParamValue } from '@/lib/api';
+
+import FeedbackRow from '@/app/(main)/(backoffice)/feedback/_components/feedback-row';
 
 import PageNavigation from '@/components/page-navigation';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { buttonVariants } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 interface Props {
-	page: number;
+	listParams: FeedbackListParams;
+	keyword?: string;
+	filterSelected: boolean;
+	query: Record<string, SearchParamValue>;
+	initialNow: number;
 }
 
 /**
  * 피드백 목록 컴포넌트
- * @param page 조회할 페이지 번호
+ * @param listParams 목록 조회 조건
+ * @param keyword 검색 입력에 적은 검색어
+ * @param filterSelected 날짜, 앱 버전, 기기, 언어 조건을 골랐는지 여부
+ * @param query 현재 주소의 쿼리
+ * @param initialNow 서버가 화면을 그린 시각
  */
-const FeedbackList = ({ page }: Props) => {
-	const { data: feedbackListData } = useGetFeedbackList({ page });
+const FeedbackList = ({ listParams, keyword, filterSelected, query, initialNow }: Props) => {
+	const { data: feedbackListData } = useGetFeedbackList(listParams);
+
+	const now = useNow(initialNow);
+
+	if (feedbackListData.data.length === 0) {
+		return (
+			<Card className="grid justify-items-center gap-2.5 px-4 pt-11 pb-9 text-center">
+				{!!keyword && (
+					<>
+						<strong className="text-base font-bold">‘{keyword}’에 맞는 피드백이 없습니다</strong>
+						<p className="text-muted-foreground">검색어를 줄이거나 조회 기간을 늘려 보세요.</p>
+					</>
+				)}
+
+				{!keyword && filterSelected && (
+					<>
+						<strong className="text-base font-bold">조건에 맞는 피드백이 없습니다</strong>
+						<p className="text-muted-foreground">위에서 고른 조건을 지우면 다른 피드백이 보입니다.</p>
+					</>
+				)}
+
+				{!keyword && !filterSelected && (
+					<>
+						<strong className="text-base font-bold">이 기간에 받은 피드백이 없습니다</strong>
+						<p className="text-muted-foreground">조회 기간을 늘리면 이전 피드백이 보입니다.</p>
+
+						<Link
+							href={{ pathname: '/feedback', query: { period: 90 } }}
+							scroll={false}
+							className={buttonVariants({ variant: 'outline' })}
+						>
+							최근 90일 보기
+						</Link>
+					</>
+				)}
+			</Card>
+		);
+	}
 
 	return (
 		<>
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead>작성 일시</TableHead>
-						<TableHead>사용자</TableHead>
-						<TableHead>기기 ID</TableHead>
-						<TableHead>앱 버전</TableHead>
-						<TableHead>내용</TableHead>
-					</TableRow>
-				</TableHeader>
+			<Card className="gap-0 px-5 py-4.5">
+				{feedbackListData.data.map((feedback) => (
+					<ViewTransition key={feedback.id} name={`feedback-${feedback.id}`}>
+						<FeedbackRow feedback={feedback} keyword={keyword} now={now} />
+					</ViewTransition>
+				))}
+			</Card>
 
-				<TableBody>
-					{feedbackListData.data.map((feedback) => (
-						<TableRow key={feedback.id}>
-							<TableCell>{formatDateTime(feedback.created_at)}</TableCell>
-							<TableCell>
-								<Link href={`/users/${feedback.user_id}`}>{feedback.user_id}</Link>
-							</TableCell>
-							<TableCell>{feedback.device_id}</TableCell>
-							<TableCell>{feedback.app_version}</TableCell>
-							<TableCell>{feedback.message}</TableCell>
-						</TableRow>
-					))}
-				</TableBody>
-			</Table>
-
-			{feedbackListData.data.length === 0 && <p className="text-sm text-muted-foreground">피드백이 없습니다.</p>}
-
-			<PageNavigation meta={feedbackListData.meta} pathname="/feedback" />
+			<PageNavigation meta={feedbackListData.meta} pathname="/feedback" query={query} />
 		</>
 	);
 };

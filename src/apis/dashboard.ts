@@ -4,6 +4,8 @@ import {
 	dashboardLiveSchema,
 	type DashboardParams,
 	dashboardSchema,
+	type FeedbackDashboard,
+	feedbackDashboardSchema,
 	type UserDashboard,
 	userDashboardSchema,
 } from '@/types/apis/dashboard';
@@ -30,4 +32,14 @@ export const getUserDashboard = async ({ date_from, date_to }: DashboardParams):
 	});
 
 	return userDashboard;
+};
+
+export const getFeedbackDashboard = async ({ date_from, date_to }: DashboardParams): Promise<FeedbackDashboard> => {
+	const { data: feedbackDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/feedback',
+		feedbackDashboardSchema,
+		{ searchParams: { date_from, date_to } },
+	);
+
+	return feedbackDashboard;
 };

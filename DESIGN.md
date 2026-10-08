@@ -313,10 +313,10 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 
 데이터 색은 그래프의 계열을 구분한다.
 
-- `{colors.chart-1}`: 세션, 가입, 학습 단계, 알림 종류 중 리포트
-- `{colors.chart-2}`: 탈퇴, 휴식 단계, 알림 종류 중 공지, 앱 버전의 비율 막대
-- `{colors.chart-3}`: 스트레스 케어 단계, 알림 종류 중 마케팅
-- `{colors.chart-4}`: 수면 단계
+- `{colors.chart-1}`: 세션, 가입, 학습 단계, 알림 종류 중 리포트, 피드백, 언어 중 한국어
+- `{colors.chart-2}`: 탈퇴, 휴식 단계, 알림 종류 중 공지, 앱 버전의 비율 막대, 기기 종류 중 iOS
+- `{colors.chart-3}`: 스트레스 케어 단계, 알림 종류 중 마케팅, 기기 종류 중 Android
+- `{colors.chart-4}`: 수면 단계, 언어 중 English
 - `{colors.chart-neutral}`: 선 그래프의 세로 보조선, 아직 지나지 않은 시간의 막대, 최소 지원 버전보다 낮은 버전의 비율 막대
 
 ### Tertiary
@@ -331,6 +331,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
   - 신호가 끊긴 세션, 응급 상황 감지, 탈퇴 실패에 사용
 - `{colors.warning-dot}`: "확인할 항목" 목록의 노란 점
   - 모사 판정 실패, 프리셋 음성 거부에 사용
+  - 검색어와 같은 글자의 배경에는 34% 불투명도로 사용
 
 ### Neutral
 
@@ -563,6 +564,12 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Warning note:** `{components.warning-note}`. 한 행에 `warning` 색 16px 아이콘, 문구, 오른쪽 끝의 굵기 700 수치를 둔다. 배경은 `warning`의 10% 불투명도다
 - **Dot:** 지름 8px의 원이다. "확인할 항목" 목록에는 `destructive-dot` 및 `warning-dot`를, 범례에는 데이터 색을 사용한다. 점 옆에는 이름을 글자로 적는다
 
+### Logos
+
+로고는 값의 이름 앞에 둔다.
+
+- **Platform logo:** 기기 종류의 로고는 16px이다. iOS는 `foreground` 색 원 안에 `card` 색 로고를 넣고, Android는 원 없이 `#3ddc84` 색 로고만 표시한다
+
 ### Tables
 
 표는 카드 안에 두며 행 사이의 `border` 색 1px 구분선으로만 행을 구분한다.
@@ -584,6 +591,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Half donut:** 반원 도넛 그래프는 굵기 16px의 끝이 둥근 호로 그린다. 계열 사이에 5px 간격을 두고 뒤에 `muted` 색 호를 둔다. 가운데에는 28px 굵기 700의 값 및 12.5px `muted-foreground`의 이름을 적는다
 - **Hourly bars:** 시간대별 막대는 폭 8px이고 위쪽 끝이 둥글다. 지난 시간은 `chart-1`의 38% 불투명도로, 현재 시간은 `chart-1`로 표시한다. 아직 지나지 않은 시간은 높이 4px의 `chart-neutral` 50% 불투명도로 표시한다. 화면 폭 860px 이하에서 막대 폭은 6px이다
 - **Ratio bar:** `{components.progress-track}` 위에 `{components.progress-fill}`을 둔다. 강조하지 않는 항목은 채운 부분에 `chart-neutral`을 사용한다
+- **Stacked ratio bar:** 순서가 있는 값의 비율을 한 줄에 나란히 놓는 막대는 데이터 색, 데이터 색의 62%, 데이터 색의 30%, `chart-neutral`, `chart-neutral`의 45%를 차례로 사용한다. 여섯 번째 값부터는 다섯 번째 색을 사용한다
 - **Legend:** `CardHeader` 오른쪽에 8px 점, 13px `muted-foreground`의 계열 이름, 굵기 700 `foreground`의 합계를 순서대로 둔다. 화면 폭 860px 이하에서는 숨긴다
 - **Tooltip:** `{components.chart-tooltip}`. 계열마다 한 행에 8px 점, 13px 굵기 700의 값, 12px 계열 이름을 두고 마지막 행에 날짜를 둔다. 계열 이름 및 날짜는 `tooltip-foreground`의 75% 불투명도다. 가리키는 값의 12px 위에 표시하며 120ms 동안 나타난다
 

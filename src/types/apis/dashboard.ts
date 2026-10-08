@@ -100,9 +100,22 @@ export const userDashboardSchema = z.object({
 	}),
 });
 
+export const feedbackDashboardSchema = z.object({
+	feedback: z.object({
+		count: z.number().int(),
+		previous_count: z.number().int(),
+		writer_count: z.number().int(),
+	}),
+	daily: z.array(dailyCountSchema),
+	app_versions: z.array(z.object({ app_version: z.string(), count: z.number().int() })),
+	platforms: z.array(z.object({ platform: z.string(), count: z.number().int() })),
+	locales: z.array(z.object({ locale: z.string(), count: z.number().int() })),
+});
+
 export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
+export type FeedbackDashboard = z.infer<typeof feedbackDashboardSchema>;
 
 export interface DashboardParams {
 	date_from: string;

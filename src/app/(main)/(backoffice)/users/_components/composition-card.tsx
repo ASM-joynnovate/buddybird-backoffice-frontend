@@ -1,10 +1,8 @@
-import Link from 'next/link';
-
 import type { UserDashboard } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
-import { cn } from '@/lib/utils';
 
+import CompositionGroup from '@/app/(main)/(backoffice)/_components/composition-group';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { USER_FILTER_GROUPS } from '@/config/user-filters';
 import { toToggledQuery } from '@/utils/search-params';
@@ -70,47 +68,7 @@ const CompositionCard = ({ userDashboard, query }: Props) => {
 		<TitledCard title="구성">
 			<div className="grid gap-4.5">
 				{compositions.map((composition) => (
-					<section key={composition.name}>
-						<h3 className="mb-2 text-[13px] font-semibold">{composition.title}</h3>
-
-						<div className="flex h-3 gap-0.75">
-							{composition.parts.map((part) => (
-								<Link
-									key={part.value}
-									href={part.href}
-									scroll={false}
-									aria-label={`${part.label} ${part.percent}%`}
-									className={cn(
-										'min-w-1.5 basis-0 rounded-full transition-opacity',
-										part.colorClassName,
-										part.dimmed && 'opacity-40',
-									)}
-									style={{ flexGrow: part.percent }}
-								/>
-							))}
-						</div>
-
-						<ul className="mt-2 flex flex-wrap gap-x-3.5 gap-y-1 text-[13px]">
-							{composition.parts.map((part) => (
-								<li key={part.value}>
-									<Link
-										href={part.href}
-										scroll={false}
-										className={cn(
-											'inline-flex items-center gap-1.5 rounded-sm text-muted-foreground transition-opacity hover:text-foreground',
-											part.dimmed && 'opacity-40',
-										)}
-									>
-										<span className={cn('size-2 shrink-0 rounded-full', part.colorClassName)} />
-										{part.label}
-										<strong className="font-bold text-foreground tabular-nums">
-											{part.percent}%
-										</strong>
-									</Link>
-								</li>
-							))}
-						</ul>
-					</section>
+					<CompositionGroup key={composition.name} title={composition.title} parts={composition.parts} />
 				))}
 			</div>
 		</TitledCard>
