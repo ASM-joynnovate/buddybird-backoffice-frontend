@@ -4,8 +4,7 @@ import { cn } from '@/lib/utils';
 
 import type { NotificationContent } from '@/app/(main)/(backoffice)/_components/notification-content-fields';
 
-const MARKETING_TITLE_PREFIX = '(광고) ';
-const MARKETING_BODY_PREFIX = '(광고)';
+const MARKETING_PREFIX = '(광고) ';
 const KOREAN_UNSUBSCRIBE_TEXT = '무료 수신거부: 프로필 > 설정 > 알림에서 마케팅 알림 Off';
 const ENGLISH_UNSUBSCRIBE_TEXT = 'Unsubscribe for free: Profile > Settings > Notifications > turn off Marketing alerts';
 
@@ -54,7 +53,7 @@ const NotificationPreview = ({ content }: Props) => {
 							<strong
 								className={cn('block font-bold', !push.title && 'font-normal text-muted-foreground')}
 							>
-								{marketing && MARKETING_TITLE_PREFIX}
+								{marketing && MARKETING_PREFIX}
 								{push.title || '제목'}
 							</strong>
 
@@ -65,7 +64,7 @@ const NotificationPreview = ({ content }: Props) => {
 									!push.body && 'text-muted-foreground',
 								)}
 							>
-								{marketing && `${MARKETING_BODY_PREFIX}\n`}
+								{marketing && MARKETING_PREFIX}
 								{push.body || '본문'}
 								{marketing && `\n${push.unsubscribeText}`}
 							</p>
