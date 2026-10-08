@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.12.0...v0.13.0) (2026-10-08)
+
+
+### Features
+
+* 백오피스 모바일 화면 및 공통 UI 개선 [BB-649] ([62a9c66](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/62a9c66c638543ab85525212b92472f8221a675a))
+* 백오피스 모바일 화면 및 공통 UI 개선 [BB-649] ([a62981f](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/a62981f74d8db67fa8449e5afbe275b11f6f349c))
+
 ## [0.12.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.11.0...v0.12.0) (2026-10-08)
 
 
