@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.12.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.11.0...v0.12.0) (2026-10-08)
+
+
+### Features
+
+* 고지문 탭을 종류 및 버전 상세 카드로 재구성 [BB-647] ([057d029](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/057d029597b35209bfa7b6568e39455a315b5a63))
+* 고지문 탭을 종류 및 버전 상세 카드로 재구성 [BB-647] ([57daf8a](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/57daf8a6a5d519df8a67fc933cdde8b2daf0e9af))
+
 ## [0.11.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.10.0...v0.11.0) (2026-10-08)
 
 
