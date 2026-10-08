@@ -1,6 +1,7 @@
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import {
+	getAppUpdateDashboard,
 	getDashboard,
 	getDashboardLive,
 	getFeedbackDashboard,
@@ -9,6 +10,7 @@ import {
 	getWithdrawalDashboard,
 } from '@/apis/dashboard';
 
+import type { Platform } from '@/types/apis/app-updates';
 import type { DashboardParams } from '@/types/apis/dashboard';
 
 import { apiKeys } from '@/hooks/apis/keys';
@@ -80,4 +82,15 @@ export const getWithdrawalDashboardOptions = (dashboardParams: DashboardParams) 
 /** 탈퇴 대시보드 조회 Hook */
 export const useGetWithdrawalDashboard = (dashboardParams: DashboardParams) => {
 	return useSuspenseQuery(getWithdrawalDashboardOptions(dashboardParams));
+};
+
+/** 앱 업데이트 대시보드 조회 Hook에 사용할 옵션 */
+export const getAppUpdateDashboardOptions = ({ platform }: { platform: Platform }) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.appUpdates(platform),
+		queryFn: () => getAppUpdateDashboard({ platform }),
+	});
+/** 앱 업데이트 대시보드 조회 Hook */
+export const useGetAppUpdateDashboard = ({ platform }: { platform: Platform }) => {
+	return useSuspenseQuery(getAppUpdateDashboardOptions({ platform }));
 };

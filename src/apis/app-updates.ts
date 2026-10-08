@@ -1,25 +1,41 @@
-import { type AppUpdate, appUpdateSchema, type Platform } from '@/types/apis/app-updates';
-import { ApiError } from '@/types/apis/common';
+import {
+	type AppUpdate,
+	appUpdateSchema,
+	type CreateAppUpdateRequest,
+	type Platform,
+	type UpdateAppUpdateRequest,
+} from '@/types/apis/app-updates';
 
 import { apiRequest } from '@/lib/api';
 
-export const getAppUpdate = async ({ platform }: { platform: Platform }): Promise<AppUpdate | null> => {
-	try {
-		const { data: appUpdate } = await apiRequest(`/api/v1/backoffice/app-updates/${platform}`, appUpdateSchema);
+import { z } from 'zod';
 
-		return appUpdate;
-	} catch (e) {
-		if (e instanceof ApiError && e.code === 'COMMON__RESOURCE_NOT_FOUND') {
-			return null;
-		}
+export const getAppUpdateList = async ({ platform }: { platform: Platform }): Promise<AppUpdate[]> => {
+	const { data: appUpdates } = await apiRequest('/api/v1/backoffice/app-updates', z.array(appUpdateSchema), {
+		searchParams: { platform },
+	});
 
-		throw e;
-	}
+	return appUpdates;
 };
 
-export const putAppUpdate = async ({ platform, data }: { platform: Platform; data: AppUpdate }): Promise<AppUpdate> => {
-	const { data: appUpdate } = await apiRequest(`/api/v1/backoffice/app-updates/${platform}`, appUpdateSchema, {
-		method: 'PUT',
+export const postAppUpdate = async ({ data }: { data: CreateAppUpdateRequest }): Promise<AppUpdate> => {
+	const { data: appUpdate } = await apiRequest('/api/v1/backoffice/app-updates', appUpdateSchema, {
+		method: 'POST',
+		json: data,
+	});
+
+	return appUpdate;
+};
+
+export const patchAppUpdate = async ({
+	id,
+	data,
+}: {
+	id: string;
+	data: UpdateAppUpdateRequest;
+}): Promise<AppUpdate> => {
+	const { data: appUpdate } = await apiRequest(`/api/v1/backoffice/app-updates/${id}`, appUpdateSchema, {
+		method: 'PATCH',
 		json: data,
 	});
 

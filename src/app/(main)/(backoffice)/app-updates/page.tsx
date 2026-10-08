@@ -2,39 +2,30 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import { platformSchema } from '@/types/apis/app-updates';
 
-import { getAppUpdateOptions } from '@/hooks/apis/app-updates';
+import { getAppUpdateListOptions } from '@/hooks/apis/app-updates';
+import { getAppUpdateDashboardOptions } from '@/hooks/apis/dashboard';
 
 import { getQueryClient } from '@/lib/query-client';
 
-import AppUpdateForm from '@/app/(main)/(backoffice)/app-updates/_components/app-update-form';
-
-import ContentSkeleton from '@/components/content-skeleton';
-import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
-import QueryError from '@/components/query-error';
+import AppUpdates from '@/app/(main)/(backoffice)/app-updates/_components/app-updates';
+import { getNow } from '@/utils/date';
 
 /** 앱 업데이트 페이지 */
-export default async function Page() {
+export default async function Page(props: PageProps<'/app-updates'>) {
+	const searchParams = await props.searchParams;
+	const platform = platformSchema.safeParse(searchParams.platform).data ?? 'ios';
+
 	const queryClient = getQueryClient();
 
-	await Promise.all(
-		platformSchema.options.map((platform) => queryClient.prefetchQuery(getAppUpdateOptions({ platform }))),
-	);
+	// 응답을 기다리지 않고 두 플랫폼 조회 시작
+	for (const platformOption of platformSchema.options) {
+		void queryClient.prefetchQuery(getAppUpdateListOptions({ platform: platformOption }));
+		void queryClient.prefetchQuery(getAppUpdateDashboardOptions({ platform: platformOption }));
+	}
 
 	return (
-		<>
-			<h1 className="text-2xl font-bold">앱 업데이트</h1>
-
-			<HydrationBoundary state={dehydrate(queryClient)}>
-				{platformSchema.options.map((platform) => (
-					<section key={platform} className="space-y-4">
-						<h2>{platform}</h2>
-
-						<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-							<AppUpdateForm platform={platform} />
-						</ErrorHandlingWrapper>
-					</section>
-				))}
-			</HydrationBoundary>
-		</>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<AppUpdates platform={platform} now={getNow()} />
+		</HydrationBoundary>
 	);
 }

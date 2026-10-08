@@ -21,6 +21,7 @@ export const apiKeys = {
 			['api', 'dashboard', 'withdrawals', dashboardParams] as const,
 		notifications: (dashboardParams: DashboardParams) =>
 			['api', 'dashboard', 'notifications', dashboardParams] as const,
+		appUpdates: (platform: Platform) => ['api', 'dashboard', 'app-updates', platform] as const,
 	},
 	users: {
 		all: () => ['api', 'users'] as const,
@@ -43,7 +44,7 @@ export const apiKeys = {
 	},
 	appUpdates: {
 		all: () => ['api', 'app-updates'] as const,
-		detail: (platform: Platform) => ['api', 'app-updates', platform] as const,
+		list: (platform: Platform) => ['api', 'app-updates', 'list', platform] as const,
 	},
 	feedback: {
 		list: (listParams: FeedbackListParams) => ['api', 'feedback', 'list', listParams] as const,

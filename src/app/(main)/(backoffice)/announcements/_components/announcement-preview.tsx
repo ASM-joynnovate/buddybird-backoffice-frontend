@@ -4,6 +4,7 @@ import type { I18nFieldValue } from '@/types/i18n';
 
 import { cn } from '@/lib/utils';
 
+import AppDialogPreview from '@/app/(main)/(backoffice)/_components/app-dialog-preview';
 import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
 
 const PREVIEW_LOCALES = [
@@ -61,20 +62,14 @@ const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale, onLoc
 			<section className="grid gap-1.5">
 				<h4 className="text-[13px] font-semibold text-muted-foreground">앱 팝업</h4>
 
-				{/*앱에는 어두운 화면이 없어 색을 고정*/}
-				<div
-					aria-label="앱 홈 화면에 표시되는 공지 팝업"
-					className="grid gap-5 rounded-2xl bg-white px-5 py-6 text-[#3c3c3c] ring-1 ring-border"
+				<AppDialogPreview
+					label="앱 홈 화면에 표시되는 공지 팝업"
+					title={
+						<span className={cn(!previewTitle && 'font-normal text-[#777]')}>{previewTitle || '제목'}</span>
+					}
+					closeLabel={previewLocale.closeLabel}
+					acceptLabel={previewLocale.detailLabel}
 				>
-					<strong
-						className={cn(
-							'text-lg leading-6 font-black wrap-anywhere',
-							!previewTitle && 'font-normal text-[#777]',
-						)}
-					>
-						{previewTitle || '제목'}
-					</strong>
-
 					<div className="grid gap-3">
 						{!!imageUrl && (
 							<Image
@@ -96,16 +91,7 @@ const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale, onLoc
 							{previewBody || '본문'}
 						</p>
 					</div>
-
-					<div aria-hidden className="flex gap-3 pb-1.5 text-base font-extrabold">
-						<span className="grid min-h-13 flex-1 place-items-center rounded-[16px] border-2 border-[#e5e5e5] bg-white shadow-[0_6px_0_#e5e5e5]">
-							{previewLocale.closeLabel}
-						</span>
-						<span className="grid min-h-13 flex-1 place-items-center rounded-[16px] bg-[#ff9600] text-white shadow-[0_6px_0_#e07f00]">
-							{previewLocale.detailLabel}
-						</span>
-					</div>
-				</div>
+				</AppDialogPreview>
 			</section>
 
 			{pushEnabled && (

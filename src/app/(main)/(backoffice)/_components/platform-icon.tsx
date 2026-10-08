@@ -2,19 +2,21 @@ import { cn } from '@/lib/utils';
 
 interface Props {
 	platform: string;
+	selected?: boolean;
 }
 
 /**
  * 기기 종류의 로고 컴포넌트
  * @param platform 기기 종류
+ * @param selected 선택된 버튼 안에 있는지 여부
  */
-const PlatformIcon = ({ platform }: Props) => {
+const PlatformIcon = ({ platform, selected = false }: Props) => {
 	return (
 		<span
 			aria-hidden
 			className={cn(
 				'grid size-4 shrink-0 place-items-center rounded-full',
-				platform === 'ios' && 'bg-foreground text-card',
+				platform === 'ios' && (selected ? 'bg-card text-foreground' : 'bg-foreground text-card'),
 				platform === 'android' && 'text-[#3ddc84]',
 			)}
 		>
