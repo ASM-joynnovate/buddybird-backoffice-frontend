@@ -5,7 +5,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import { DISPLAY_TIME_ZONE } from '@/config';
-import { HOUR, MINUTE, SECOND } from '@/config/units';
+import { DAY, HOUR, MINUTE, SECOND } from '@/config/units';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -36,6 +36,11 @@ export const formatMonthDayTime = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M월 D일 HH:mm');
 };
 
+/** 시각을 'M월 D일' 형식의 한국 날짜로 변환하는 함수 */
+export const formatMonthDay = (date: ConfigType) => {
+	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M월 D일');
+};
+
 /** 현재 시각을 ms로 반환하는 함수 */
 export const getNow = () => {
 	return dayjs().valueOf();
@@ -49,6 +54,11 @@ export const formatToday = () => {
 /** 시각을 한국 시간의 시와 분으로 변환하는 함수 */
 export const formatTime = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('HH:mm');
+};
+
+/** 'HH:mm:ss' 형식의 시각을 'HH:mm'으로 변환하는 함수 */
+export const toHourMinute = (time: string) => {
+	return time.slice(0, 'HH:mm'.length);
 };
 
 /** 시각을 "3시간 전" 같은 상대 시각으로 변환하는 함수 */
@@ -102,6 +112,15 @@ export const formatDuration = (durationMs: number) => {
 	const { hours, minutes } = toHoursAndMinutes(durationMs);
 
 	return `${hours}시간 ${minutes}분`;
+};
+
+/** ms를 "7일", "5시간" 같은 문구로 변환하는 함수 */
+export const formatDaysOrHours = (durationMs: number) => {
+	if (durationMs >= DAY) {
+		return `${Math.floor(durationMs / DAY)}일`;
+	}
+
+	return `${Math.max(1, Math.floor(durationMs / HOUR))}시간`;
 };
 
 /** 시각을 datetime-local 입력값으로 변환하는 함수 */

@@ -1,8 +1,5 @@
-import Image from 'next/image';
-
-import { cn } from '@/lib/utils';
-
 import type { NotificationContent } from '@/app/(main)/(backoffice)/_components/notification-content-fields';
+import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
 
 const MARKETING_PREFIX = '(광고) ';
 const KOREAN_UNSUBSCRIBE_TEXT = '무료 수신거부: 프로필 > 설정 > 알림에서 마케팅 알림 Off';
@@ -41,46 +38,14 @@ const NotificationPreview = ({ content }: Props) => {
 				<section key={push.label} className="grid gap-1.5">
 					<h4 className="text-[13px] font-semibold text-muted-foreground">{push.label}</h4>
 
-					{/*푸시 알림 모양*/}
-					<div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2.5 rounded-xl bg-card p-3 ring-1 ring-border">
-						<p className="col-span-2 flex items-center gap-1.5 text-xs text-muted-foreground">
-							<Image src="/images/mascot.svg" alt="" width={18} height={18} />
-							버디버드
-							<span className="ml-auto">지금</span>
-						</p>
-
-						<div className="min-w-0 wrap-anywhere">
-							<strong
-								className={cn('block font-bold', !push.title && 'font-normal text-muted-foreground')}
-							>
-								{marketing && MARKETING_PREFIX}
-								{push.title || '제목'}
-							</strong>
-
-							{/*마케팅 알림은 서버가 앞뒤에 문구를 붙여 발송*/}
-							<p
-								className={cn(
-									'text-[13px] leading-snug whitespace-pre-line',
-									!push.body && 'text-muted-foreground',
-								)}
-							>
-								{marketing && MARKETING_PREFIX}
-								{push.body || '본문'}
-								{marketing && `\n${push.unsubscribeText}`}
-							</p>
-						</div>
-
-						{!!content.imagePreviewUrl && (
-							<Image
-								src={content.imagePreviewUrl}
-								alt=""
-								width={44}
-								height={44}
-								unoptimized
-								className="size-11 rounded-md object-cover"
-							/>
-						)}
-					</div>
+					{/*마케팅 알림은 서버가 앞뒤에 문구를 붙여 발송*/}
+					<PushPreviewCard
+						title={push.title}
+						body={push.body}
+						prefix={marketing ? MARKETING_PREFIX : undefined}
+						bodySuffix={marketing ? `\n${push.unsubscribeText}` : undefined}
+						imageUrl={content.imagePreviewUrl}
+					/>
 				</section>
 			))}
 		</aside>

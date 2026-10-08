@@ -1,3 +1,4 @@
+import type { AnnouncementListParams } from '@/types/apis/announcements';
 import type { Platform } from '@/types/apis/app-updates';
 import type { DashboardParams } from '@/types/apis/dashboard';
 import type { FeedbackListParams } from '@/types/apis/feedback';
@@ -28,7 +29,7 @@ export const apiKeys = {
 	},
 	announcements: {
 		all: () => ['api', 'announcements'] as const,
-		list: (page: number) => ['api', 'announcements', 'list', page] as const,
+		list: (listParams: AnnouncementListParams) => ['api', 'announcements', 'list', listParams] as const,
 	},
 	consents: {
 		all: () => ['api', 'consents'] as const,
