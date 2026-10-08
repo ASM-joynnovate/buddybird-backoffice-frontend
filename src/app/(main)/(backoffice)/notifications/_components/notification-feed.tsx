@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import type { NotificationDispatchListParams, NotificationListParams } from '@/types/apis/notifications';
 
@@ -24,6 +24,7 @@ interface Props {
 	filterSelected: boolean;
 	query: Record<string, SearchParamValue>;
 	initialNow: number;
+	searchBar: ReactNode;
 }
 
 /**
@@ -34,6 +35,7 @@ interface Props {
  * @param filterSelected 받는 사람, 종류, 날짜 조건을 골랐는지 여부
  * @param query 현재 주소의 쿼리
  * @param initialNow 서버가 화면을 그린 시각
+ * @param searchBar 목록 위에 둘 검색 및 필터
  */
 const NotificationFeed = ({
 	scheduledListParams,
@@ -42,6 +44,7 @@ const NotificationFeed = ({
 	filterSelected,
 	query,
 	initialNow,
+	searchBar,
 }: Props) => {
 	const now = useNow(initialNow);
 
@@ -55,7 +58,7 @@ const NotificationFeed = ({
 	};
 
 	return (
-		<div className="grid grid-cols-[minmax(0,1fr)] gap-4">
+		<div className="min-w-0 space-y-4">
 			{!!scheduledListParams && (
 				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ScheduledDispatchSkeleton />>
 					<ScheduledDispatchCard
@@ -66,6 +69,8 @@ const NotificationFeed = ({
 					/>
 				</ErrorHandlingWrapper>
 			)}
+
+			{searchBar}
 
 			<ErrorHandlingWrapper
 				fallbackComponent={QueryError}

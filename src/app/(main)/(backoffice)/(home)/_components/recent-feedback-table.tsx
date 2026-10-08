@@ -25,7 +25,7 @@ const RecentFeedbackTable = () => {
 					<TableHead className="pl-0 text-muted-foreground">작성 일시</TableHead>
 					<TableHead className="text-muted-foreground">내용</TableHead>
 					<TableHead className="text-muted-foreground">앱 버전</TableHead>
-					<TableHead className="text-muted-foreground max-md:hidden">사용자</TableHead>
+					<TableHead className="text-muted-foreground">사용자</TableHead>
 				</TableRow>
 			</TableHeader>
 
@@ -35,11 +35,11 @@ const RecentFeedbackTable = () => {
 						<TableCell className="py-2.5 pl-0 text-muted-foreground tabular-nums">
 							{formatDateTime(feedback.created_at)}
 						</TableCell>
-						<TableCell className="py-2.5 whitespace-normal">{feedback.message}</TableCell>
+						<TableCell className="min-w-60 py-2.5 whitespace-normal">{feedback.message}</TableCell>
 						<TableCell className="py-2.5 text-muted-foreground tabular-nums">
 							{feedback.app_version}
 						</TableCell>
-						<TableCell className="py-2.5 max-md:hidden">
+						<TableCell className="py-2.5">
 							<Link href={`/users/${feedback.user_id}`} className="text-brand hover:underline">
 								{feedback.user_id.slice(0, 8)}
 							</Link>

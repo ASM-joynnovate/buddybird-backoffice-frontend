@@ -67,6 +67,7 @@ const PageNavigation = ({ meta, pathname, query, pageParam = 'page' }: Props) =>
 					<PaginationPrevious
 						text="이전"
 						href={meta.is_first ? undefined : pageHref(meta.current_page - 1)}
+						scroll={false}
 						aria-disabled={meta.is_first}
 						className={cn(meta.is_first && 'pointer-events-none opacity-50')}
 					/>
@@ -79,7 +80,7 @@ const PageNavigation = ({ meta, pathname, query, pageParam = 'page' }: Props) =>
 						</PaginationItem>
 					) : (
 						<PaginationItem key={page}>
-							<PaginationLink href={pageHref(page)} isActive={page === meta.current_page}>
+							<PaginationLink href={pageHref(page)} scroll={false} isActive={page === meta.current_page}>
 								{page}
 							</PaginationLink>
 						</PaginationItem>
@@ -90,6 +91,7 @@ const PageNavigation = ({ meta, pathname, query, pageParam = 'page' }: Props) =>
 					<PaginationNext
 						text="다음"
 						href={meta.is_last ? undefined : pageHref(meta.current_page + 1)}
+						scroll={false}
 						aria-disabled={meta.is_last}
 						className={cn(meta.is_last && 'pointer-events-none opacity-50')}
 					/>

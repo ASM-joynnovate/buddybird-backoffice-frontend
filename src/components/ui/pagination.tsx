@@ -46,6 +46,7 @@ function PaginationLink({
   isActive,
   size = "icon",
   href,
+  scroll,
   children,
   ...props
 }: PaginationLinkProps) {
@@ -63,7 +64,7 @@ function PaginationLink({
   return href === undefined ? (
     <a {...linkProps}>{children}</a>
   ) : (
-    <Link href={href} {...linkProps}>
+    <Link href={href} scroll={scroll} {...linkProps}>
       {children}
     </Link>
   )

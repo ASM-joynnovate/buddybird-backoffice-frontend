@@ -95,7 +95,7 @@ const SearchBar = ({
 	};
 
 	return (
-		<div className="z-10 -mt-2 mb-2 flex flex-wrap items-center gap-2 bg-background py-2 md:sticky md:top-0">
+		<div className="@container relative z-10 -mt-2 mb-2 flex flex-wrap items-center gap-2 bg-background py-2 md:sticky md:top-0">
 			{/*검색어가 바뀌면 입력값을 새로 채움*/}
 			<Form
 				key={keyword}
@@ -137,8 +137,9 @@ const SearchBar = ({
 				</Button>
 			</Form>
 
+			{/*좁은 화면에서는 검색줄 폭으로 패널 표시*/}
 			{!!filterPanel && (
-				<div ref={filterRef} className="relative">
+				<div ref={filterRef} className="md:relative">
 					<Button
 						variant="outline"
 						aria-expanded={filterPanelOpen}

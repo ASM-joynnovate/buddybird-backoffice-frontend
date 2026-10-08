@@ -124,15 +124,12 @@ const AnnouncementScheduleRow = ({ announcement, userCount, now, onOpen, onToolt
 			<figure
 				ref={laneRef}
 				aria-label={`${formatMonthDay(announcement.starts_at)}부터 ${endDateText} 게시, ${remainingText}`}
-				className={cn(
-					scheduleGridClassName,
-					'pointer-events-none relative min-h-11 self-stretch max-xl:col-span-full max-xl:row-start-2 xl:min-h-15.25',
-				)}
+				className={cn(scheduleGridClassName, 'pointer-events-none relative min-h-15.25 self-stretch')}
 			>
 				<span
 					aria-hidden
 					className={cn(
-						'absolute top-0.5 text-xs leading-4.5 font-bold whitespace-nowrap xl:top-2.75',
+						'absolute top-2.75 text-xs leading-4.5 font-bold whitespace-nowrap',
 						labelAtEnd && 'right-1.5',
 					)}
 					style={labelAtEnd ? undefined : { left: `calc(${labelPercent}% + 6px)` }}

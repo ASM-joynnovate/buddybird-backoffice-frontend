@@ -85,24 +85,24 @@ const Feedback = ({ period, dashboardParams, listParams, keyword, date, listQuer
 				/>
 			</div>
 
-			<SearchBar
-				pathname="/feedback"
-				placeholder="내용, 닉네임, 이메일, 사용자 ID"
-				keyword={keyword}
-				query={query}
-				selectedFilters={selectedFilters}
-				filterCount={panelFilters.length}
-				filterPanel=<FeedbackFilterPanel dashboardParams={dashboardParams} query={query} />
-			>
-				{(!!keyword || selectedFilters.length > 0) && (
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
-						<FeedbackResultCount listParams={listParams} />
-					</ErrorHandlingWrapper>
-				)}
-			</SearchBar>
-
 			<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
 				<div className="min-w-0 space-y-4">
+					<SearchBar
+						pathname="/feedback"
+						placeholder="내용, 닉네임, 이메일, 사용자 ID"
+						keyword={keyword}
+						query={query}
+						selectedFilters={selectedFilters}
+						filterCount={panelFilters.length}
+						filterPanel=<FeedbackFilterPanel dashboardParams={dashboardParams} query={query} />
+					>
+						{(!!keyword || selectedFilters.length > 0) && (
+							<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
+								<FeedbackResultCount listParams={listParams} />
+							</ErrorHandlingWrapper>
+						)}
+					</SearchBar>
+
 					{/*조건이 바뀌어도 이전 목록을 유지해 행 이동 전환 실행*/}
 					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<FeedbackListSkeleton />>
 						<FeedbackList
@@ -115,7 +115,8 @@ const Feedback = ({ period, dashboardParams, listParams, keyword, date, listQuer
 					</ErrorHandlingWrapper>
 				</div>
 
-				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 xl:sticky xl:top-15">
+				{/*한 열일 때는 목록 위에 표시*/}
+				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 max-xl:order-first xl:sticky xl:top-2">
 					{/*조회 기간이 바뀌면 다시 마운트*/}
 					<ErrorHandlingWrapper
 						key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}

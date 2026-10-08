@@ -110,6 +110,7 @@ const ConsentStats = ({ consent, dashboardParams, today }: Props) => {
 					parts={decisionParts}
 					value={formatPercent(decisions.granted_count, users.total_count)}
 					label="동의"
+					unit="명"
 					minAngle={SMALL_PART_MIN_ANGLE}
 				/>
 

@@ -43,13 +43,13 @@ const DeviceGroupCell = ({ deviceGroup, versions, deviceCount }: Props) => {
 			<DeviceGroupLabel deviceGroup={deviceGroup} />
 
 			{versions ? (
-				<p className="flex items-baseline gap-0.5 text-[26px] leading-9 font-bold tracking-[-0.02em] whitespace-nowrap tabular-nums">
+				<p className="mt-1.5 flex items-baseline gap-0.5 text-[26px] leading-9 font-bold tracking-[-0.02em] whitespace-nowrap tabular-nums">
 					{groupDeviceCount.toLocaleString('ko-KR')}
 					<span className="text-[13px] font-semibold tracking-normal text-muted-foreground">대</span>
 					<span className="ml-auto text-sm tracking-normal">{percent}%</span>
 				</p>
 			) : (
-				<p className="text-[26px] leading-9 font-bold text-muted-foreground">-</p>
+				<p className="mt-1.5 text-[26px] leading-9 font-bold text-muted-foreground">-</p>
 			)}
 
 			<div aria-hidden className={cn('mt-1.5 h-1 rounded-full', trackClassName)}>

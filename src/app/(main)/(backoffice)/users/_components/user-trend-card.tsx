@@ -116,7 +116,8 @@ const UserTrendCard = ({ userDashboard, today }: Props) => {
 									tickLine={false}
 									axisLine={false}
 									domain={['dataMin', 'dataMax']}
-									ticks={[Math.min(...totalCounts), Math.max(...totalCounts)]}
+									// 값이 모두 같으면 눈금 하나만 표시
+									ticks={[...new Set([Math.min(...totalCounts), Math.max(...totalCounts)])]}
 									tickFormatter={(count: number) => count.toLocaleString('ko-KR')}
 								/>
 								<ChartTooltip

@@ -10,6 +10,7 @@ import { apiKeys } from '@/hooks/apis/keys';
 import { getNotificationAudienceOptions, useBroadcastNotification } from '@/hooks/apis/notifications';
 import { getUserListOptions } from '@/hooks/apis/users';
 
+import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
 import FunnelRows from '@/app/(main)/(backoffice)/_components/funnel-rows';
 import NotificationContentFields, {
 	type NotificationContent,
@@ -28,7 +29,6 @@ import { receivesNotification, toSentText } from '@/utils/notification';
 
 import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 
 const RECIPIENT_TARGETS = [
@@ -166,13 +166,11 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 							/>
 
 							{scheduleOn && (
-								<Input
-									type="datetime-local"
-									aria-label="예약 일시"
-									required
+								<DateTimePicker
 									value={recipientLocalDatetime}
-									className="w-auto font-semibold tabular-nums"
-									onChange={(event) => setRecipientLocalDatetime(event.target.value)}
+									ariaLabel="예약 일시"
+									required
+									onValueChange={setRecipientLocalDatetime}
 								/>
 							)}
 

@@ -13,7 +13,7 @@ import AppUpdateForm from '@/app/(main)/(backoffice)/app-updates/_components/app
 import ContentSkeleton from '@/components/content-skeleton';
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Props {
 	platform: Platform;
@@ -45,14 +45,16 @@ const AppUpdateFormDialog = ({ platform, appUpdate, onClose }: Props) => {
 					<DialogTitle className="font-bold">{appUpdate ? '업데이트 편집' : '업데이트 추가'}</DialogTitle>
 				</DialogHeader>
 
-				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-					<AppUpdateForm
-						platform={platform}
-						appUpdate={appUpdate}
-						versionInputRef={versionInputRef}
-						onClose={onClose}
-					/>
-				</ErrorHandlingWrapper>
+				<DialogBody>
+					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
+						<AppUpdateForm
+							platform={platform}
+							appUpdate={appUpdate}
+							versionInputRef={versionInputRef}
+							onClose={onClose}
+						/>
+					</ErrorHandlingWrapper>
+				</DialogBody>
 			</DialogContent>
 		</Dialog>
 	);

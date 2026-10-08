@@ -4,6 +4,7 @@ import type { SearchParamValue } from '@/lib/api';
 
 import CompositionGroup from '@/app/(main)/(backoffice)/_components/composition-group';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
+import UserFilterIcon from '@/app/(main)/(backoffice)/users/_components/user-filter-icon';
 import { USER_FILTER_GROUPS } from '@/config/user-filters';
 import { toToggledQuery } from '@/utils/search-params';
 
@@ -52,15 +53,20 @@ const CompositionCard = ({ userDashboard, query }: Props) => {
 		return {
 			name: composition.name,
 			title: filterGroup?.label,
-			parts: composition.counts.map(({ value, count }) => ({
-				value,
-				label: filterGroup?.options.find((filterOption) => filterOption.value === value)?.label ?? value,
-				percent: totalCount ? Math.round((count / totalCount) * 100) : 0,
-				colorClassName: colorClassNames[value] ?? 'bg-chart-neutral',
-				// 다른 값을 골랐으면 옅게 표시
-				dimmed: !!query[composition.name] && query[composition.name] !== value,
-				href: { pathname: '/users', query: toToggledQuery(query, composition.name, value) },
-			})),
+			parts: composition.counts.map(({ value, count }) => {
+				const filterOption = filterGroup?.options.find((option) => option.value === value);
+
+				return {
+					value,
+					label: filterOption?.label ?? value,
+					percent: totalCount ? Math.round((count / totalCount) * 100) : 0,
+					icon: <UserFilterIcon listParams={filterOption?.listParams} />,
+					colorClassName: colorClassNames[value] ?? 'bg-chart-neutral',
+					// 다른 값을 골랐으면 옅게 표시
+					dimmed: !!query[composition.name] && query[composition.name] !== value,
+					href: { pathname: '/users', query: toToggledQuery(query, composition.name, value) },
+				};
+			}),
 		};
 	});
 

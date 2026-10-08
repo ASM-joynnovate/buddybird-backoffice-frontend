@@ -132,14 +132,31 @@ const RunningSessionCard = ({ dashboardLive }: Props) => {
 						className="flex h-21 items-end justify-between"
 					>
 						{today.hourly.map((hourlySession, index) => (
+							// 마우스를 올리는 영역을 막대 높이 전체 및 좌우로 넓힘
 							<span
 								key={hourlySession.start}
-								className={cn(
-									'w-1.5 rounded-t-full bg-chart-1/38 md:w-2',
-									index === today.hourly.length - 1 && 'bg-chart-1',
-								)}
-								style={{ height: `${(hourlySession.count / maxHourlyCount) * 100}%` }}
-							/>
+								className="group relative flex h-full w-1.5 items-end before:absolute before:-inset-x-1 before:inset-y-0 before:content-[''] md:w-2 [&:hover]:z-1"
+							>
+								<span
+									className={cn(
+										'relative w-full rounded-t-full bg-chart-1/38',
+										index === today.hourly.length - 1 && 'bg-chart-1',
+									)}
+									style={{ height: `${(hourlySession.count / maxHourlyCount) * 100}%` }}
+								>
+									{/*터치 기기에서도 누르면 표시*/}
+									<span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-3 grid -translate-x-1/2 gap-1 rounded-lg bg-tooltip px-3 py-2 text-xs whitespace-nowrap text-tooltip-foreground shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] group-[:hover]:visible">
+										<span className="flex items-center gap-1.5">
+											<span className="size-2 rounded-full bg-chart-1" />
+											<strong className="text-[13px] font-bold tabular-nums">
+												{hourlySession.count.toLocaleString('ko-KR')}개
+											</strong>
+											<span className="text-tooltip-foreground/75">세션</span>
+										</span>
+										<span className="text-tooltip-foreground/75">{index}시</span>
+									</span>
+								</span>
+							</span>
 						))}
 
 						{/*아직 지나지 않은 시간*/}

@@ -5,6 +5,7 @@ import type { SearchParamValue } from '@/lib/api';
 import CompositionGroup, {
 	STACKED_RATIO_COLOR_CLASS_NAMES,
 } from '@/app/(main)/(backoffice)/_components/composition-group';
+import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toFeedbackFilterGroups } from '@/utils/feedback';
 import { toToggledQuery } from '@/utils/search-params';
@@ -36,6 +37,7 @@ const CompositionCard = ({ feedbackDashboard, query }: Props) => {
 			value,
 			label,
 			percent: Math.round((count / feedbackCount) * 100),
+			icon: filterGroup.name === 'platform' && <PlatformIcon platform={value} />,
 			// 앱 버전은 높은 버전부터 옅어지는 색
 			colorClassName:
 				colorClassNames[value] ??

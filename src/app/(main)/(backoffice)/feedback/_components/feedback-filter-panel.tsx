@@ -37,7 +37,7 @@ const FeedbackFilterPanel = ({ dashboardParams, query }: Props) => {
 			pathname="/feedback"
 			query={query}
 			filterGroups={filterGroups}
-			className="w-[min(440px,calc(100vw-32px))]"
+			className="md:w-[min(440px,100cqw)]"
 		/>
 	);
 };

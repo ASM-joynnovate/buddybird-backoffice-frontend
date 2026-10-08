@@ -71,37 +71,22 @@ const Notifications = ({
 
 	return (
 		<>
-			<div className="flex flex-wrap items-center justify-between gap-2.5">
-				<h1 className="text-2xl font-bold">알림</h1>
+			<div className="flex flex-wrap items-center gap-2.5">
+				<h1 className="mr-auto text-2xl font-bold">알림</h1>
 
-				<PeriodFilter
-					pathname="/notifications"
-					query={listQuery}
-					period={period}
-					dashboardParams={dashboardParams}
-					today={today}
-				/>
+				{/*좁은 화면에서는 다음 줄에 표시*/}
+				<div className="max-md:order-last max-md:w-full">
+					<PeriodFilter
+						pathname="/notifications"
+						query={listQuery}
+						period={period}
+						dashboardParams={dashboardParams}
+						today={today}
+					/>
+				</div>
+
+				<SendNotificationButton />
 			</div>
-
-			<SearchBar
-				pathname="/notifications"
-				placeholder="제목, 본문, 사용자 ID"
-				keyword={keyword}
-				query={query}
-				selectedFilters={selectedFilters}
-			>
-				{(!!keyword || selectedFilters.length > 0) && (
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
-						{dispatchListParams ? (
-							<DispatchResultCount listParams={dispatchListParams} />
-						) : (
-							<NotificationResultCount listParams={notificationListParams} />
-						)}
-					</ErrorHandlingWrapper>
-				)}
-
-				<SendNotificationButton className="ml-auto max-md:w-full" />
-			</SearchBar>
 
 			<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
 				<div className="@container min-w-0">
@@ -112,10 +97,30 @@ const Notifications = ({
 						filterSelected={selectedFilters.length > 0}
 						query={query}
 						initialNow={now}
+						searchBar={
+							<SearchBar
+								pathname="/notifications"
+								placeholder="제목, 본문, 사용자 ID"
+								keyword={keyword}
+								query={query}
+								selectedFilters={selectedFilters}
+							>
+								{(!!keyword || selectedFilters.length > 0) && (
+									<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
+										{dispatchListParams ? (
+											<DispatchResultCount listParams={dispatchListParams} />
+										) : (
+											<NotificationResultCount listParams={notificationListParams} />
+										)}
+									</ErrorHandlingWrapper>
+								)}
+							</SearchBar>
+						}
 					/>
 				</div>
 
-				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 xl:sticky xl:top-15">
+				{/*한 열일 때는 목록 위에 표시*/}
+				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 max-xl:order-first xl:sticky xl:top-2">
 					{/*조회 기간이 바뀌면 다시 마운트*/}
 					<ErrorHandlingWrapper
 						key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}

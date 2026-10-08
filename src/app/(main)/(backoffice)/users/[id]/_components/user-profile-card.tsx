@@ -18,7 +18,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-const factClassName = 'min-w-0 rounded-lg bg-muted px-3.5 py-2.5';
+const factClassName = 'grid min-w-0 content-start gap-1 rounded-lg bg-muted px-3.5 py-2.5';
+const factTitleClassName = 'mb-1 text-[12.5px] text-muted-foreground';
 const factValueClassName = 'text-base font-bold tracking-tight tabular-nums';
 const factNoteClassName = 'text-[12.5px] text-muted-foreground';
 
@@ -91,7 +92,7 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 
 				<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))]">
 					<div className={`${factClassName} relative max-md:col-span-2`}>
-						<dt className={factNoteClassName}>사용자 ID</dt>
+						<dt className={factTitleClassName}>사용자 ID</dt>
 						<dd className={`${factValueClassName} wrap-anywhere`}>{userData.id}</dd>
 						<dd className={factNoteClassName}>Sentry 및 피드백에 표시되는 값</dd>
 
@@ -106,7 +107,7 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 					</div>
 
 					<div className={factClassName}>
-						<dt className={factNoteClassName}>로그인</dt>
+						<dt className={factTitleClassName}>로그인</dt>
 						<dd className={`${factValueClassName} flex flex-wrap gap-1.5 py-0.5`}>
 							{userData.is_anonymous && '익명'}
 							{!userData.is_anonymous && userData.providers.length === 0 && '-'}
@@ -128,13 +129,13 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 					</div>
 
 					<div className={factClassName}>
-						<dt className={factNoteClassName}>가입</dt>
+						<dt className={factTitleClassName}>가입</dt>
 						<dd className={factValueClassName}>{formatRelativeTime(userData.created_at, now)}</dd>
 						<dd className={factNoteClassName}>{formatDateTime(userData.created_at)}</dd>
 					</div>
 
 					<div className={factClassName}>
-						<dt className={factNoteClassName}>최근 접속</dt>
+						<dt className={factTitleClassName}>최근 접속</dt>
 						<dd className={factValueClassName}>
 							{lastSeenDevice?.last_seen_at ? formatRelativeTime(lastSeenDevice.last_seen_at, now) : '-'}
 						</dd>

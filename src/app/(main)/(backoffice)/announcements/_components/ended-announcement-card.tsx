@@ -12,6 +12,7 @@ import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import AnnouncementFormDialog from '@/app/(main)/(backoffice)/announcements/_components/announcement-form-dialog';
 import AnnouncementRow, {
 	announcementGridClassName,
+	announcementTableClassName,
 } from '@/app/(main)/(backoffice)/announcements/_components/announcement-row';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
@@ -36,35 +37,37 @@ const EndedAnnouncementCard = ({ listParams }: Props) => {
 				{announcementListData.data.length === 0 ? (
 					<p className="text-muted-foreground">종료된 공지가 없습니다.</p>
 				) : (
-					<>
-						<div
-							className={cn(
-								announcementGridClassName,
-								'font-medium whitespace-nowrap text-muted-foreground max-md:hidden',
-							)}
-						>
-							<span className="pb-2">공지</span>
-							<span className="pb-2 max-xl:hidden">본문</span>
-							<span className="pb-2 text-right">읽음</span>
-							<span className="pb-2">푸시</span>
-						</div>
+					<div className="-mx-2 overflow-x-auto px-2">
+						<div className={announcementTableClassName}>
+							<div
+								className={cn(
+									announcementGridClassName,
+									'font-medium whitespace-nowrap text-muted-foreground',
+								)}
+							>
+								<span className="pb-2">공지</span>
+								<span className="pb-2">본문</span>
+								<span className="pb-2 text-right">읽음</span>
+								<span className="pb-2">푸시</span>
+							</div>
 
-						<ul>
-							{announcementListData.data.map((announcement) => (
-								<AnnouncementRow
-									key={announcement.id}
-									announcement={announcement}
-									userCount={announcementListData.meta.user_count}
-									status="ended"
-									onOpen={() => setEditingAnnouncement(announcement)}
-								>
-									<p className="line-clamp-2 pr-5 text-[13px] text-muted-foreground max-xl:hidden">
-										{announcement.body ? koreanOrEnglishText(announcement.body) : '-'}
-									</p>
-								</AnnouncementRow>
-							))}
-						</ul>
-					</>
+							<ul>
+								{announcementListData.data.map((announcement) => (
+									<AnnouncementRow
+										key={announcement.id}
+										announcement={announcement}
+										userCount={announcementListData.meta.user_count}
+										status="ended"
+										onOpen={() => setEditingAnnouncement(announcement)}
+									>
+										<p className="line-clamp-2 pr-5 text-[13px] text-muted-foreground">
+											{announcement.body ? koreanOrEnglishText(announcement.body) : '-'}
+										</p>
+									</AnnouncementRow>
+								))}
+							</ul>
+						</div>
+					</div>
 				)}
 			</TitledCard>
 

@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { TriangleAlert } from 'lucide-react';
 
 import HighlightedText from '@/app/(main)/(backoffice)/_components/highlighted-text';
+import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import { formatRelativeTime, formatShortDateTime } from '@/utils/date';
 import { toPlatformName } from '@/utils/platform';
@@ -116,7 +117,8 @@ const FeedbackRow = ({ feedback, keyword, now }: Props) => {
 
 				<ul className="flex flex-wrap gap-x-3.5 gap-y-0.5 text-[13px] text-muted-foreground tabular-nums">
 					<li>{device.model}</li>
-					<li>
+					<li className="inline-flex items-center gap-1.5">
+						<PlatformIcon platform={device.platform} />
 						{toPlatformName(device.platform)} {device.os_version}
 					</li>
 

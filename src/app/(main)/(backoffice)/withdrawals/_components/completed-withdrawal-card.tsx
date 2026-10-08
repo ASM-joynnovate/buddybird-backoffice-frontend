@@ -66,11 +66,11 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 						<TableHeader>
 							<TableRow className="hover:bg-transparent">
 								<TableHead className="text-muted-foreground">사용자</TableHead>
-								<TableHead className="text-muted-foreground max-xl:hidden">계정</TableHead>
-								<TableHead className="pr-6 text-muted-foreground max-md:hidden">사용 기간</TableHead>
-								<TableHead className="pr-6 text-muted-foreground max-md:hidden">세션</TableHead>
-								<TableHead className="text-muted-foreground max-xl:hidden">기기</TableHead>
-								<TableHead className="text-muted-foreground max-md:hidden">피드백</TableHead>
+								<TableHead className="text-muted-foreground">계정</TableHead>
+								<TableHead className="pr-6 text-muted-foreground">사용 기간</TableHead>
+								<TableHead className="pr-6 text-muted-foreground">세션</TableHead>
+								<TableHead className="text-muted-foreground">기기</TableHead>
+								<TableHead className="text-muted-foreground">피드백</TableHead>
 								<TableHead className="text-right text-muted-foreground">요청</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -126,7 +126,7 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 												</Link>
 											</TableCell>
 
-											<TableCell className="max-xl:hidden">
+											<TableCell>
 												{providerSteps.length > 0 ? (
 													<div className="flex gap-1.5">
 														{providerSteps.map(({ step, status }) => (
@@ -142,14 +142,14 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 												)}
 											</TableCell>
 
-											<TableCell className="pr-6 tabular-nums max-md:hidden">
+											<TableCell className="pr-6 tabular-nums">
 												<strong className="block font-semibold">{usageDayCount}일</strong>
 												<small className="block text-[12.5px] text-muted-foreground">
 													가입 {formatShortDate(user.created_at)}
 												</small>
 											</TableCell>
 
-											<TableCell className="pr-6 tabular-nums max-md:hidden">
+											<TableCell className="pr-6 tabular-nums">
 												{user.session_count > 0 ? (
 													<>
 														<strong className="block font-semibold">
@@ -168,7 +168,7 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 												)}
 											</TableCell>
 
-											<TableCell className="tabular-nums max-xl:hidden">
+											<TableCell className="tabular-nums">
 												{user.last_seen_device ? (
 													<span className="inline-flex items-center gap-1.5">
 														<PlatformIcon platform={user.last_seen_device.platform} />
@@ -199,7 +199,7 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 												)}
 											</TableCell>
 
-											<TableCell className="tabular-nums max-md:hidden">
+											<TableCell className="tabular-nums">
 												{user.feedback_count > 0 ? (
 													<>
 														<strong className="block font-semibold">
