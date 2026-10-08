@@ -156,12 +156,17 @@ export const notificationDashboardSchema = z.object({
 	),
 });
 
+export const appUpdateDashboardSchema = z.object({
+	versions: z.array(z.object({ app_version: z.string(), count: z.number().int() })),
+});
+
 export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
 export type FeedbackDashboard = z.infer<typeof feedbackDashboardSchema>;
 export type WithdrawalDashboard = z.infer<typeof withdrawalDashboardSchema>;
 export type NotificationDashboard = z.infer<typeof notificationDashboardSchema>;
+export type AppUpdateDashboard = z.infer<typeof appUpdateDashboardSchema>;
 
 export interface DashboardParams {
 	date_from: string;

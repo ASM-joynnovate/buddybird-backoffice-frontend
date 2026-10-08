@@ -1,6 +1,6 @@
 import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
-import { getAppUpdate, putAppUpdate } from '@/apis/app-updates';
+import { getAppUpdateList, patchAppUpdate, postAppUpdate } from '@/apis/app-updates';
 
 import type { Platform } from '@/types/apis/app-updates';
 
@@ -10,28 +10,38 @@ import { apiErrorMessage } from '@/lib/api';
 
 import { useMessageStore } from '@/providers/stores/message';
 
-/** 앱 업데이트 정보 조회 Hook에 사용할 옵션 */
-export const getAppUpdateOptions = ({ platform }: { platform: Platform }) =>
-	queryOptions({ queryKey: apiKeys.appUpdates.detail(platform), queryFn: () => getAppUpdate({ platform }) });
-/** 앱 업데이트 정보 조회 Hook */
-export const useGetAppUpdate = ({ platform }: { platform: Platform }) => {
-	return useSuspenseQuery(getAppUpdateOptions({ platform }));
+/** 앱 업데이트 목록 조회 Hook에 사용할 옵션 */
+export const getAppUpdateListOptions = ({ platform }: { platform: Platform }) =>
+	queryOptions({ queryKey: apiKeys.appUpdates.list(platform), queryFn: () => getAppUpdateList({ platform }) });
+/** 앱 업데이트 목록 조회 Hook */
+export const useGetAppUpdateList = ({ platform }: { platform: Platform }) => {
+	return useSuspenseQuery(getAppUpdateListOptions({ platform }));
 };
 
-/** 앱 업데이트 정보 저장 Hook */
-export const useSaveAppUpdate = () => {
+/** 앱 업데이트 추가 Hook */
+export const useCreateAppUpdate = () => {
 	const queryClient = useQueryClient();
 
 	const openPopup = useMessageStore((state) => state.openPopup);
 
 	return useMutation({
-		mutationKey: apiKeys.mutation('app-updates', 'save'),
-		mutationFn: putAppUpdate,
-		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: apiKeys.appUpdates.all() });
+		mutationKey: apiKeys.mutation('app-updates', 'create'),
+		mutationFn: postAppUpdate,
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.appUpdates.all() }),
+		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+	});
+};
 
-			openPopup({ title: '저장했습니다.' });
-		},
+/** 앱 업데이트 수정 Hook */
+export const useUpdateAppUpdate = () => {
+	const queryClient = useQueryClient();
+
+	const openPopup = useMessageStore((state) => state.openPopup);
+
+	return useMutation({
+		mutationKey: apiKeys.mutation('app-updates', 'update'),
+		mutationFn: patchAppUpdate,
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.appUpdates.all() }),
 		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
 	});
 };

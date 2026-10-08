@@ -5,8 +5,7 @@ import { cn } from '@/lib/utils';
 import { TriangleAlert } from 'lucide-react';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-
-const VISIBLE_VERSION_COUNT = 5;
+import { VISIBLE_VERSION_COUNT } from '@/config';
 
 interface Props {
 	devices: Dashboard['devices'];

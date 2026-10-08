@@ -19,6 +19,7 @@ export const DASHBOARD_MAX_PERIOD_DAYS = 180;
 
 export const USER_RECENT_ITEM_COUNT = 5;
 export const VISIBLE_SPECIES_COUNT = 6;
+export const VISIBLE_VERSION_COUNT = 5;
 
 export const PHASE_CYCLE = [
 	{ phase: 'learning', durationMs: 10 * MINUTE },

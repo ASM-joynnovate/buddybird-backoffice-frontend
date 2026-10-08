@@ -1,4 +1,7 @@
+import type { Platform } from '@/types/apis/app-updates';
 import {
+	type AppUpdateDashboard,
+	appUpdateDashboardSchema,
 	type Dashboard,
 	type DashboardLive,
 	dashboardLiveSchema,
@@ -69,4 +72,14 @@ export const getWithdrawalDashboard = async ({ date_from, date_to }: DashboardPa
 	);
 
 	return withdrawalDashboard;
+};
+
+export const getAppUpdateDashboard = async ({ platform }: { platform: Platform }): Promise<AppUpdateDashboard> => {
+	const { data: appUpdateDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/app-updates',
+		appUpdateDashboardSchema,
+		{ searchParams: { platform } },
+	);
+
+	return appUpdateDashboard;
 };
