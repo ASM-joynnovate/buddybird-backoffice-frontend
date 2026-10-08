@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.10.0...v0.11.0) (2026-10-08)
+
+
+### Features
+
+* redesign the announcements tab ([e90721f](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/e90721f1f93bd424a6badb00d01f76814e402c43))
+* 공지 탭을 게시 일정 및 종료된 공지 카드로 재구성 [BB-644] ([b778494](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/b778494fd10c838d13248e05e22e390471861bf1))
+* 알림 탭을 발송 예정 및 보낸 알림 카드로 재구성 [BB-645] ([ea967b4](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ea967b4e72d85eb96fd4c2ea5348d4596c6f2622))
+* 알림 탭을 발송 예정 및 보낸 알림 카드로 재구성 [BB-645] ([9aea963](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/9aea9630ea45c83c7cb70b985254ce34111560f2))
+* 앱 업데이트 탭을 앱 버전 및 업데이트 내역 카드로 재구성 [BB-646] ([71785ed](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/71785ed2c69be22f66442ba495635c12601d01f7))
+* 앱 업데이트 탭을 앱 버전 및 업데이트 내역 카드로 재구성 [BB-646] ([1b6084d](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/1b6084df7b4ae2bed644c8066a708053e68adbaa))
+
 ## [0.10.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.9.0...v0.10.0) (2026-10-08)
 
 
