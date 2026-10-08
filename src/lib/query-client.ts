@@ -1,4 +1,10 @@
-import { environmentManager, MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
+import {
+	defaultShouldDehydrateQuery,
+	environmentManager,
+	MutationCache,
+	QueryCache,
+	QueryClient,
+} from '@tanstack/react-query';
 
 import { ApiError } from '@/types/apis/common';
 
@@ -32,6 +38,9 @@ const makeQueryClient = () => {
 				staleTime: DEFAULT_STALE_TIME_MS,
 				retry: retryPolicy,
 				throwOnError: true,
+			},
+			dehydrate: {
+				shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
 			},
 		},
 		queryCache: new QueryCache({ onError: handleUnauthorized }),

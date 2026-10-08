@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import SendNotificationDialog from '@/app/(main)/(backoffice)/notifications/_components/send-notification-dialog';
+import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
 
 import { Button } from '@/components/ui/button';
 

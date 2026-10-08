@@ -11,7 +11,7 @@ import { useBroadcastNotification } from '@/hooks/apis/notifications';
 
 import NotificationContentFields, {
 	initialNotificationContent,
-} from '@/app/(main)/(backoffice)/notifications/_components/notification-content-fields';
+} from '@/app/(main)/(backoffice)/_components/notification-content-fields';
 import { BROADCAST_MAX_USER_COUNT } from '@/config';
 import { useMessageStore } from '@/providers/stores/message';
 import { toLocalDateTime } from '@/utils/date';

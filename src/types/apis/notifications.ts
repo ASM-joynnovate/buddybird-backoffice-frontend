@@ -55,6 +55,7 @@ export type BroadcastNotificationRequest = z.infer<typeof broadcastNotificationR
 
 export interface NotificationListParams {
 	page: number;
+	count_by_page?: number;
 	user_id?: string;
 	kind?: NotificationKind;
 }

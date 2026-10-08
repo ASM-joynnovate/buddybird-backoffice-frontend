@@ -1,14 +1,27 @@
 import type { Platform } from '@/types/apis/app-updates';
+import type { DashboardParams } from '@/types/apis/dashboard';
+import type { FeedbackListParams } from '@/types/apis/feedback';
 import type { NotificationListParams, PushDeliveryListParams } from '@/types/apis/notifications';
 import type { UserListParams } from '@/types/apis/users';
 import type { WithdrawalListParams } from '@/types/apis/withdrawals';
 
 export const apiKeys = {
+	dashboard: {
+		detail: (dashboardParams: DashboardParams) => ['api', 'dashboard', dashboardParams] as const,
+		live: () => ['api', 'dashboard', 'live'] as const,
+		users: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'users', dashboardParams] as const,
+	},
 	users: {
 		all: () => ['api', 'users'] as const,
 		list: (listParams: UserListParams) => ['api', 'users', 'list', listParams] as const,
 		detail: (id: string) => ['api', 'users', id] as const,
 		sessionList: (id: string, page: number) => ['api', 'users', id, 'sessions', page] as const,
+		wordList: (id: string) => ['api', 'users', id, 'words'] as const,
+		consentList: (id: string) => ['api', 'users', id, 'consents'] as const,
+	},
+	sessions: {
+		eventList: (id: string) => ['api', 'sessions', id, 'events'] as const,
+		soundList: (id: string) => ['api', 'sessions', id, 'sounds'] as const,
 	},
 	announcements: {
 		all: () => ['api', 'announcements'] as const,
@@ -22,7 +35,7 @@ export const apiKeys = {
 		detail: (platform: Platform) => ['api', 'app-updates', platform] as const,
 	},
 	feedback: {
-		list: (page: number) => ['api', 'feedback', 'list', page] as const,
+		list: (listParams: FeedbackListParams) => ['api', 'feedback', 'list', listParams] as const,
 	},
 	notifications: {
 		all: () => ['api', 'notifications'] as const,

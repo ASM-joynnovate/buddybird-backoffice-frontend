@@ -15,6 +15,7 @@ export const deviceSchema = z.object({
 		app_version: z.string(),
 	}),
 	push_registered: z.boolean(),
+	is_deleted: z.boolean(),
 });
 
 export type Device = z.infer<typeof deviceSchema>;

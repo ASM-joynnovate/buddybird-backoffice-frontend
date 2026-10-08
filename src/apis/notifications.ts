@@ -20,11 +20,12 @@ import { z } from 'zod';
 
 export const getNotificationList = async ({
 	page,
+	count_by_page,
 	user_id,
 	kind,
 }: NotificationListParams): Promise<Page<Notification>> => {
 	const { data, meta } = await apiRequest('/api/v1/backoffice/notifications', z.array(notificationSchema), {
-		searchParams: { page, user_id, kind },
+		searchParams: { page, count_by_page, user_id, kind },
 	});
 
 	return { data, meta: pageMetaSchema.parse(meta) };

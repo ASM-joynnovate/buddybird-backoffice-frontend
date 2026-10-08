@@ -3,8 +3,27 @@ import { DAY, MINUTE, SECOND } from '@/config/units';
 export const API_TIMEOUT_MS = 30 * SECOND;
 
 export const DEFAULT_STALE_TIME_MS = MINUTE;
+export const DASHBOARD_LIVE_REFETCH_INTERVAL_MS = MINUTE;
+export const USER_SESSION_REFETCH_INTERVAL_MS = 10 * SECOND;
 
 export const PASSWORD_COOKIE_MAX_AGE_MS = 3 * DAY;
+export const THEME_COOKIE_MAX_AGE_MS = 365 * DAY;
+
+export const DASHBOARD_PERIODS = [7, 14, 30, 90];
+export const DEFAULT_DASHBOARD_PERIOD = 14;
+export const DASHBOARD_MAX_PERIOD_DAYS = 180;
+
+export const USER_RECENT_ITEM_COUNT = 5;
+export const VISIBLE_SPECIES_COUNT = 6;
+
+export const PHASE_CYCLE = [
+	{ phase: 'learning', durationMs: 10 * MINUTE },
+	{ phase: 'rest', durationMs: 5 * MINUTE },
+	{ phase: 'stress_care', durationMs: 5 * MINUTE },
+] as const;
+
+export const TIMELINE_MIN_VISIBLE_MS = 30 * MINUTE;
+export const TIMELINE_MAX_SOUND_BAR_COUNT = 480;
 
 export const DISPLAY_TIME_ZONE = 'Asia/Seoul';
 

@@ -82,3 +82,12 @@ export interface Page<T> {
 	data: T[];
 	meta: PageMeta;
 }
+
+export const countedPageMetaSchema = pageMetaSchema.extend({ total_count: z.number().int() });
+
+export type CountedPageMeta = z.infer<typeof countedPageMetaSchema>;
+
+export interface CountedPage<T> {
+	data: T[];
+	meta: CountedPageMeta;
+}

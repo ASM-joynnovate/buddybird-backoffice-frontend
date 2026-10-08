@@ -1,46 +1,80 @@
+import { redirect } from 'next/navigation';
+
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
+import { uuidSchema } from '@/types/apis/primitives';
+import { userSortSchema } from '@/types/apis/users';
+
+import { getUserDashboardOptions } from '@/hooks/apis/dashboard';
 import { getUserListOptions } from '@/hooks/apis/users';
 
 import { getQueryClient } from '@/lib/query-client';
 
-import UserList from '@/app/(main)/(backoffice)/users/_components/user-list';
-import UserSearchForm from '@/app/(main)/(backoffice)/users/_components/user-search-form';
-import { toOptionalBoolean, toOptionalText, toPageNumber } from '@/utils/search-params';
-
-import ContentSkeleton from '@/components/content-skeleton';
-import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
-import QueryError from '@/components/query-error';
+import Users from '@/app/(main)/(backoffice)/users/_components/users';
+import { addDays, formatToday, getNow } from '@/utils/date';
+import {
+	toDashboardParams,
+	toDashboardPeriod,
+	toOptionalText,
+	toPageNumber,
+	toUserFilterParams,
+	toUserFilters,
+} from '@/utils/search-params';
 
 /** 사용자 목록 페이지 */
 export default async function Page(props: PageProps<'/users'>) {
 	const searchParams = await props.searchParams;
+	const today = formatToday();
+	const keyword = toOptionalText(searchParams.keyword);
+
+	// 사용자 ID로 검색하면 상세 화면으로 이동
+	if (uuidSchema.safeParse(keyword).success) {
+		redirect(`/users/${keyword}`);
+	}
+
+	const period = toDashboardPeriod(searchParams.period);
+	// 직접 고른 날짜가 없으면 기간 버튼의 일수로 조회
+	const customDashboardParams = toDashboardParams(searchParams.date_from, searchParams.date_to);
+	const dashboardParams = customDashboardParams ?? { date_from: addDays(today, 1 - period), date_to: today };
+
+	const userFilters = toUserFilters(searchParams);
+	const is_deleted = searchParams.is_deleted === 'true';
+	const sort = userSortSchema.safeParse(searchParams.sort).data ?? 'created_at';
 	const listParams = {
 		page: toPageNumber(searchParams.page),
-		keyword: toOptionalText(searchParams.keyword),
-		is_deleted: toOptionalBoolean(searchParams.is_deleted),
+		keyword,
+		is_deleted,
+		sort,
+		...toUserFilterParams(userFilters, today),
 	};
+
+	// 링크가 유지할 현재 주소의 쿼리
+	const listQuery = {
+		keyword,
+		...userFilters,
+		is_deleted: is_deleted || undefined,
+		sort: sort === 'created_at' ? undefined : sort,
+	};
+	const query = { ...(customDashboardParams ?? { period }), ...listQuery };
 
 	const queryClient = getQueryClient();
 
-	await queryClient.prefetchQuery(getUserListOptions(listParams));
+	// 응답을 기다리지 않고 조회 시작
+	void queryClient.prefetchQuery(getUserDashboardOptions(dashboardParams));
+	void queryClient.prefetchQuery(getUserListOptions(listParams));
 
 	return (
-		<>
-			<h1 className="text-2xl font-bold">사용자</h1>
-
-			{/*조회 조건이 바뀌면 다시 마운트*/}
-			<UserSearchForm
-				key={[listParams.keyword, listParams.is_deleted].join(':')}
-				keyword={listParams.keyword}
-				is_deleted={listParams.is_deleted}
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<Users
+				period={customDashboardParams ? undefined : period}
+				dashboardParams={dashboardParams}
+				listParams={listParams}
+				userFilters={userFilters}
+				listQuery={listQuery}
+				query={query}
+				today={today}
+				now={getNow()}
 			/>
-
-			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-				<HydrationBoundary state={dehydrate(queryClient)}>
-					<UserList listParams={listParams} />
-				</HydrationBoundary>
-			</ErrorHandlingWrapper>
-		</>
+		</HydrationBoundary>
 	);
 }

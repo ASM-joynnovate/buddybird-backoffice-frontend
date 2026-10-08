@@ -2,12 +2,14 @@ import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import { getFeedbackList } from '@/apis/feedback';
 
+import type { FeedbackListParams } from '@/types/apis/feedback';
+
 import { apiKeys } from '@/hooks/apis/keys';
 
 /** 피드백 목록 조회 Hook에 사용할 옵션 */
-export const getFeedbackListOptions = ({ page }: { page: number }) =>
-	queryOptions({ queryKey: apiKeys.feedback.list(page), queryFn: () => getFeedbackList({ page }) });
+export const getFeedbackListOptions = (listParams: FeedbackListParams) =>
+	queryOptions({ queryKey: apiKeys.feedback.list(listParams), queryFn: () => getFeedbackList(listParams) });
 /** 피드백 목록 조회 Hook */
-export const useGetFeedbackList = ({ page }: { page: number }) => {
-	return useSuspenseQuery(getFeedbackListOptions({ page }));
+export const useGetFeedbackList = (listParams: FeedbackListParams) => {
+	return useSuspenseQuery(getFeedbackListOptions(listParams));
 };
