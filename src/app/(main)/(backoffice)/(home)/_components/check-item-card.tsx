@@ -25,7 +25,7 @@ const CheckItemCard = ({ dashboardLive }: Props) => {
 			label: '탈퇴 실패',
 			count: dashboardLive.withdrawals.failed_count,
 			dotClassName: 'bg-destructive-dot',
-			href: '/withdrawals?is_completed=false',
+			href: '/withdrawals',
 		},
 		{ label: '모사 판정 실패', count: judgment_failed_count, dotClassName: 'bg-warning-dot' },
 	];

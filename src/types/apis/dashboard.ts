@@ -112,10 +112,34 @@ export const feedbackDashboardSchema = z.object({
 	locales: z.array(z.object({ locale: z.string(), count: z.number().int() })),
 });
 
+export const withdrawalDashboardSchema = z.object({
+	withdrawals: z.object({ count: z.number().int(), previous_count: z.number().int() }),
+	signup_count: z.number().int(),
+	daily: z.array(dailyCountSchema),
+	accounts: z.object({
+		providers: z.array(z.object({ provider: providerSchema, count: z.number().int() })),
+		anonymous_count: z.number().int(),
+	}),
+	platforms: z.array(z.object({ platform: z.string(), count: z.number().int() })),
+	app_versions: z.array(z.object({ app_version: z.string(), count: z.number().int() })),
+	usage_periods: z.array(
+		z.object({
+			usage_period: z.enum(['same_day', 'within_7_days', 'within_30_days', 'over_30_days']),
+			count: z.number().int(),
+		}),
+	),
+	session_ranges: z.array(
+		z.object({ session_range: z.enum(['none', 'one_to_four', 'five_or_more']), count: z.number().int() }),
+	),
+	parrots: z.object({ registered_count: z.number().int(), unregistered_count: z.number().int() }),
+	errors: z.array(z.object({ error_code: z.string(), count: z.number().int() })),
+});
+
 export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
 export type FeedbackDashboard = z.infer<typeof feedbackDashboardSchema>;
+export type WithdrawalDashboard = z.infer<typeof withdrawalDashboardSchema>;
 
 export interface DashboardParams {
 	date_from: string;

@@ -559,12 +559,16 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Ratio row:** 한 행에 굵기 600의 이름, 굵기 700의 비율, 13px `muted-foreground`의 수량을 두고 그 아래에 비율 막대를 둔다. 행의 위아래 여백은 12px이다
 - **Legend row:** 한 행에 8px 점, 이름, 굵기 700의 건수, `muted-foreground`의 비율을 순서대로 둔다. 행의 위아래 여백은 6px이다
 - **Cell list:** 항목마다 재생, 수정, 삭제 같은 동작이 있는 목록은 구분선 없이 `muted` 배경의 칸으로 나열한다. 칸의 모서리는 `{rounded.lg}`, 최소 높이는 56px이고 칸 사이 간격은 8px이다. 안쪽 여백은 위아래 및 왼쪽 10px, 오른쪽 8px이다. 굵기 600의 이름은 한 줄로 적고 넘치면 말줄임으로 표시하며 `title`에 전체 이름을 넣는다. 이름 아래에는 Caption의 `muted-foreground` 보조 값을, 오른쪽 끝에는 28px 아이콘 버튼을 둔다. 아이콘 버튼은 `muted-foreground` 색이고 마우스를 올리면 배경을 `card`로 변경하며, 삭제 버튼은 아이콘도 `destructive`로 변경한다. 화면 폭 1280px 이상에서는 두 열로, 그보다 좁으면 `repeat(auto-fill, minmax(220px, 1fr))`로 배치한다
+- **Step track:** 순서가 있는 단계는 칩을 진행 순서대로 나란히 두고 칩 사이를 길이 12px의 `chart-neutral` 색 1px 선으로 잇는다. 화면 폭 768px 미만에서는 선을 숨기고 칩 사이에 6px 간격을 둔다
 
 ### Tags
 
-상태는 태그, 증감 표시, 경고 안내, 색 점으로 나타낸다.
+상태는 태그, 칩, 상태 아이콘, 증감 표시, 경고 안내, 색 점으로 나타낸다.
 
 - **Tag:** `{components.tag-success}`, `{components.tag-info}`. 글자는 상태 색이고 배경은 같은 상태 색의 10% 불투명도다
+- **Chip:** 로고 및 이름을 함께 표시하는 높이 28px의 끝이 둥근 칩이다. `card` 배경에 `border` 색 1px 외곽선을 두른다. 왼쪽부터 20px 로고, 13px 굵기 600의 이름, 14px 상태 아이콘을 6px 간격으로 둔다. 상태 아이콘은 상태를 알려야 할 때만 둔다
+- **Chip tone:** 실패한 칩 및 진행 중인 칩은 배경에 상태 색 8%를 `card`에 섞은 색을, 외곽선에 상태 색의 32% 불투명도를 사용한다. 대기 중인 칩은 이름을 굵기 500의 `muted-foreground`로 적는다
+- **Status icon:** 완료는 `success` 색 체크, 실패는 `destructive` 색 X, 진행 중은 `info` 색의 회전하는 원호, 확인하지 못한 상태는 `warning` 색 경고 삼각형, 대기는 `muted-foreground` 색 점선 원으로 표시한다. 선 굵기는 2px이다. `aria-label` 및 `title`에 상태 이름을 넣는다. `prefers-reduced-motion`에서는 원호를 회전시키지 않는다
 - **Change:** `{components.kpi-change}`. 14px 화살표 및 굵기 700의 비율을 둔다. 증가 및 감소는 화살표 방향으로 구분하고 색은 변경하지 않는다
 - **Warning note:** `{components.warning-note}`. 한 행에 `warning` 색 16px 아이콘, 문구, 오른쪽 끝의 굵기 700 수치를 둔다. 배경은 `warning`의 10% 불투명도다
 - **Dot:** 지름 8px의 원이다. "확인할 항목" 목록에는 `destructive-dot` 및 `warning-dot`를, 범례에는 데이터 색을 사용한다. 점 옆에는 이름을 글자로 적는다
@@ -582,6 +586,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Header:** 굵기 500의 `muted-foreground`로 적고 줄바꿈하지 않는다. 여백은 8px이다
 - **Cell:** 여백은 위아래 10px, 좌우 8px이고 내용을 위쪽에 맞춘다. 첫 열의 왼쪽 여백 및 마지막 행의 아래 여백은 0이다
 - **Meta cell:** 일시 및 버전처럼 보조 값인 열은 `muted-foreground`에 `tabular-nums`를 적용하고 줄바꿈하지 않는다
+- **Two-line cell:** 값 및 보조 설명을 함께 담는 칸은 첫 줄에 굵기 600의 `foreground` 값을, 둘째 줄에 12.5px `muted-foreground` 설명을 둔다
 - **Narrow screen:** 화면 폭 860px 이하에서는 우선순위가 가장 낮은 열을 숨긴다. "최근 피드백" 표는 "사용자" 열을 숨긴다
 
 ### Charts
@@ -597,6 +602,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Hourly bars:** 시간대별 막대는 폭 8px이고 위쪽 끝이 둥글다. 지난 시간은 `chart-1`의 38% 불투명도로, 현재 시간은 `chart-1`로 표시한다. 아직 지나지 않은 시간은 높이 4px의 `chart-neutral` 50% 불투명도로 표시한다. 화면 폭 860px 이하에서 막대 폭은 6px이다
 - **Ratio bar:** `{components.progress-track}` 위에 `{components.progress-fill}`을 둔다. 강조하지 않는 항목은 채운 부분에 `chart-neutral`을 사용한다
 - **Stacked ratio bar:** 순서가 있는 값의 비율을 한 줄에 나란히 놓는 막대는 데이터 색, 데이터 색의 62%, 데이터 색의 30%, `chart-neutral`, `chart-neutral`의 45%를 차례로 사용한다. 여섯 번째 값부터는 다섯 번째 색을 사용한다
+- **Stacked ratio groups:** 제목, 비율 막대, 범례를 묶은 그룹이 넷 이상이면 격자로 배치한다. 열은 카드 폭에 따라 두 개 또는 세 개이고 화면 폭 768px 미만에서는 한 개다. 간격은 세로 18px, 가로 24px이다
 - **Legend:** `CardHeader` 오른쪽에 8px 점, 13px `muted-foreground`의 계열 이름, 굵기 700 `foreground`의 합계를 순서대로 둔다. 화면 폭 860px 이하에서는 숨긴다
 - **Tooltip:** `{components.chart-tooltip}`. 계열마다 한 행에 8px 점, 13px 굵기 700의 값, 12px 계열 이름을 두고 마지막 행에 날짜를 둔다. 계열 이름 및 날짜는 `tooltip-foreground`의 75% 불투명도다. 가리키는 값의 12px 위에 표시하며 120ms 동안 나타난다
 

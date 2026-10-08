@@ -2,18 +2,13 @@ import type { FeedbackDashboard } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
 
-import CompositionGroup from '@/app/(main)/(backoffice)/_components/composition-group';
+import CompositionGroup, {
+	STACKED_RATIO_COLOR_CLASS_NAMES,
+} from '@/app/(main)/(backoffice)/_components/composition-group';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toFeedbackFilterGroups } from '@/utils/feedback';
 import { toToggledQuery } from '@/utils/search-params';
 
-const versionColorClassNames = [
-	'bg-chart-2',
-	'bg-chart-2/62',
-	'bg-chart-2/30',
-	'bg-chart-neutral',
-	'bg-chart-neutral/45',
-];
 const colorClassNames: Record<string, string> = {
 	ios: 'bg-chart-2',
 	android: 'bg-chart-3',
@@ -43,7 +38,8 @@ const CompositionCard = ({ feedbackDashboard, query }: Props) => {
 			percent: Math.round((count / feedbackCount) * 100),
 			// 앱 버전은 높은 버전부터 옅어지는 색
 			colorClassName:
-				colorClassNames[value] ?? versionColorClassNames[Math.min(index, versionColorClassNames.length - 1)],
+				colorClassNames[value] ??
+				STACKED_RATIO_COLOR_CLASS_NAMES[Math.min(index, STACKED_RATIO_COLOR_CLASS_NAMES.length - 1)],
 			// 다른 값을 골랐으면 옅게 표시
 			dimmed: !!query[filterGroup.name] && query[filterGroup.name] !== value,
 			href: { pathname: '/feedback', query: toToggledQuery(query, filterGroup.name, value) },
