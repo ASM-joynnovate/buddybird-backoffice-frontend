@@ -107,7 +107,7 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 							</button>
 							<span
 								aria-hidden
-								className="pointer-events-none absolute top-[calc(100%+8px)] right-0 z-10 rounded-md bg-tooltip px-2.5 py-1.5 text-xs leading-[1.4] font-semibold whitespace-nowrap text-tooltip-foreground opacity-0 shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] transition-opacity duration-120 peer-hover:opacity-100 peer-focus-visible:opacity-100"
+								className="pointer-events-none absolute top-[calc(100%+8px)] right-0 z-10 rounded-md bg-tooltip px-2.5 py-1.5 text-xs leading-[1.4] font-semibold whitespace-nowrap text-tooltip-foreground opacity-0 shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] transition-opacity duration-120 peer-focus-visible:opacity-100 peer-[:hover]:opacity-100"
 							>
 								이전 버전과 비교
 							</span>

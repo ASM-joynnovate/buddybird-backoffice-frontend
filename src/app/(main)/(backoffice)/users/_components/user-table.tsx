@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { ChevronDown, TriangleAlert } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
+import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
 import { SESSION_PHASES } from '@/config/session';
@@ -31,9 +32,9 @@ import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const sortColumns = {
-	recent_duration: { label: '최근 14일 세션', className: 'max-md:hidden' },
-	session_count: { label: '세션', className: 'max-xl:hidden' },
-	created_at: { label: '가입일', className: 'max-md:hidden' },
+	recent_duration: { label: '최근 14일 세션' },
+	session_count: { label: '세션' },
+	created_at: { label: '가입일' },
 };
 
 interface Props {
@@ -55,7 +56,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 
 	/** 정렬할 수 있는 열의 제목 */
 	const sortColumnHead = (sort: keyof typeof sortColumns) => (
-		<TableHead className={cn('text-muted-foreground', sortColumns[sort].className)}>
+		<TableHead className="text-muted-foreground">
 			<Link
 				href={{
 					pathname: '/users',
@@ -105,11 +106,11 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
 							<TableHead className="text-muted-foreground">사용자</TableHead>
-							<TableHead className="text-muted-foreground max-sm:hidden">앵무새</TableHead>
+							<TableHead className="text-muted-foreground">앵무새</TableHead>
 							<TableHead className="text-muted-foreground">상태</TableHead>
 							{sortColumnHead('recent_duration')}
 							{sortColumnHead('session_count')}
-							<TableHead className="text-muted-foreground max-xl:hidden">기기</TableHead>
+							<TableHead className="text-muted-foreground">기기</TableHead>
 							{sortColumnHead('created_at')}
 						</TableRow>
 					</TableHeader>
@@ -156,7 +157,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 											</Link>
 										</TableCell>
 
-										<TableCell className="max-sm:hidden">
+										<TableCell>
 											{user.first_parrot ? (
 												<div
 													className={cn(
@@ -218,7 +219,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 											)}
 										</TableCell>
 
-										<TableCell className="max-md:hidden">
+										<TableCell>
 											<div className="flex items-center gap-3">
 												<span aria-hidden className="flex h-7 shrink-0 items-end gap-0.5">
 													{user.daily_durations.map((dailyDuration, index) => (
@@ -251,13 +252,12 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 											</div>
 										</TableCell>
 
-										<TableCell className="tabular-nums max-xl:hidden">
-											{user.session_count}회
-										</TableCell>
+										<TableCell className="tabular-nums">{user.session_count}회</TableCell>
 
-										<TableCell className="tabular-nums max-xl:hidden">
+										<TableCell className="tabular-nums">
 											{user.last_seen_device ? (
-												<span className="inline-flex items-center gap-1">
+												<span className="inline-flex items-center gap-1.5">
+													<PlatformIcon platform={user.last_seen_device.platform} />
 													<span className="text-muted-foreground">
 														{toPlatformName(user.last_seen_device.platform)}
 													</span>
@@ -285,7 +285,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 											)}
 										</TableCell>
 
-										<TableCell className="text-muted-foreground tabular-nums max-md:hidden">
+										<TableCell className="text-muted-foreground tabular-nums">
 											{formatDate(user.created_at)}
 										</TableCell>
 									</TableRow>

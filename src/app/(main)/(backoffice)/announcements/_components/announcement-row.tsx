@@ -12,8 +12,10 @@ import { koreanOrEnglishText } from '@/utils/i18n-text';
 
 import { Badge } from '@/components/ui/badge';
 
-export const announcementGridClassName =
-	'grid grid-cols-[minmax(0,1fr)_auto_14px] items-center gap-x-3 md:grid-cols-[minmax(0,1fr)_64px_132px_14px] md:gap-x-5 xl:grid-cols-[300px_minmax(0,1fr)_64px_132px_14px]';
+export const announcementGridClassName = 'grid grid-cols-[300px_minmax(0,1fr)_64px_132px_14px] items-center gap-x-5';
+
+// 좁은 화면에서는 가로 스크롤
+export const announcementTableClassName = 'min-w-240';
 
 const statusTags = {
 	live: { label: '게시 중', className: 'bg-success/10 text-success' },
@@ -106,7 +108,7 @@ const AnnouncementRow = ({
 				</p>
 			)}
 
-			<p className="max-md:hidden">
+			<p>
 				<AnnouncementPushStatus announcement={announcement} />
 			</p>
 

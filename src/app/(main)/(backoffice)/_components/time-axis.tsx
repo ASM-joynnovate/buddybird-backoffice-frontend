@@ -60,7 +60,7 @@ const TimeAxis = ({ bars, range, now, color }: Props) => {
 						key={bar.sent_at}
 						className={cn(
 							// 마우스를 올리는 영역을 위로 넓힘
-							"group absolute bottom-0 z-1 w-[clamp(3px,calc(var(--hour-width)-2px),14px)] -translate-x-1/2 rounded-t-full before:absolute before:-inset-x-1 before:-top-7 before:bottom-0 before:content-[''] hover:z-4",
+							"group absolute bottom-0 z-1 w-[clamp(3px,calc(var(--hour-width)-2px),14px)] -translate-x-1/2 rounded-t-full before:absolute before:-inset-x-1 before:-top-7 before:bottom-0 before:content-[''] [&:hover]:z-4",
 							sentAt <= now
 								? 'bg-(--bar-color)'
 								: 'bg-[color-mix(in_srgb,var(--bar-color)_45%,var(--card))]',
@@ -79,7 +79,8 @@ const TimeAxis = ({ bars, range, now, color }: Props) => {
 							</b>
 						)}
 
-						<span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-3 -translate-x-1/2 rounded-lg bg-tooltip px-3 py-2 text-xs font-semibold whitespace-nowrap text-tooltip-foreground tabular-nums shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] group-hover:visible">
+						{/*터치 기기에서도 누르면 표시*/}
+						<span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-3 -translate-x-1/2 rounded-lg bg-tooltip px-3 py-2 text-xs font-semibold whitespace-nowrap text-tooltip-foreground tabular-nums shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] group-[:hover]:visible">
 							{barLabels[index]}
 						</span>
 					</span>

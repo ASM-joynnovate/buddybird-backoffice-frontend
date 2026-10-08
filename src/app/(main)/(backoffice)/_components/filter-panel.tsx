@@ -34,7 +34,7 @@ const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
 		<div
 			id="filter-panel"
 			className={cn(
-				'absolute top-[calc(100%+6px)] left-0 z-10 rounded-xl bg-card p-4 text-sm shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-1 ring-border',
+				'absolute top-[calc(100%+12px)] z-10 rounded-xl bg-card p-4 text-sm shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-1 ring-border max-md:inset-x-0 max-md:top-[calc(100%+4px)] md:right-0',
 				className,
 			)}
 		>

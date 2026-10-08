@@ -9,6 +9,8 @@ import type { Theme } from '@/types/theme';
 
 import { cn } from '@/lib/utils';
 
+import { Menu } from 'lucide-react';
+
 import SidebarLogoutButton from '@/components/sidebar/logout-button';
 import SidebarMenu from '@/components/sidebar/menu';
 import SidebarThemeSelect from '@/components/sidebar/theme-select';
@@ -25,7 +27,7 @@ const Sidebar = ({ theme }: Props) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
-		<aside className="flex shrink-0 flex-col gap-3 border-b border-sidebar-border bg-sidebar p-3 text-sidebar-foreground md:sticky md:top-0 md:h-dvh md:w-58 md:border-r md:border-b-0 md:py-5">
+		<aside className="sticky top-0 z-20 flex shrink-0 flex-col gap-3 border-b border-sidebar-border bg-sidebar p-3 text-sidebar-foreground max-md:max-h-dvh max-md:overflow-y-auto md:h-dvh md:w-58 md:border-r md:border-b-0 md:py-5">
 			<div className="flex items-center justify-between">
 				<Link href="/" className="flex items-center gap-2 px-2 font-bold">
 					<Image src="/images/mascot.svg" alt="" width={28} height={28} />
@@ -35,11 +37,12 @@ const Sidebar = ({ theme }: Props) => {
 
 				<button
 					type="button"
+					aria-label="메뉴"
 					aria-expanded={menuOpen}
-					className="h-9 rounded-lg border border-sidebar-border px-3 text-sm font-bold md:hidden"
+					className="grid size-9 place-items-center rounded-lg border border-sidebar-border md:hidden"
 					onClick={() => setMenuOpen(!menuOpen)}
 				>
-					메뉴
+					<Menu className="size-5" />
 				</button>
 			</div>
 

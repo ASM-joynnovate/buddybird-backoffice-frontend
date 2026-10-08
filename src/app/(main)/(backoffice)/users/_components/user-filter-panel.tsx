@@ -42,12 +42,7 @@ const UserFilterPanel = ({ dashboardParams, query }: Props) => {
 	];
 
 	return (
-		<FilterPanel
-			pathname="/users"
-			query={query}
-			filterGroups={filterGroups}
-			className="w-[min(560px,calc(100vw-32px))]"
-		/>
+		<FilterPanel pathname="/users" query={query} filterGroups={filterGroups} className="md:w-[min(560px,100cqw)]" />
 	);
 };
 

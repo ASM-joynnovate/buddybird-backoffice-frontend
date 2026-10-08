@@ -7,6 +7,7 @@ import type { Device } from '@/types/apis/devices';
 import { useGetUser, useGetUserSessionList } from '@/hooks/apis/users';
 import { useNow } from '@/hooks/use-now';
 
+import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import PushDeliveryDialog from '@/app/(main)/(backoffice)/users/[id]/_components/push-delivery-dialog';
 import { formatRelativeTime } from '@/utils/date';
@@ -67,8 +68,11 @@ const DeviceCard = ({ id, initialNow }: Props) => {
 						<dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] *:**:[dt]:whitespace-nowrap *:**:[dt]:text-muted-foreground">
 							<div className={infoClassName}>
 								<dt>OS</dt>
-								<dd className={infoValueClassName}>
-									{toPlatformName(device.client.platform)} {device.client.os_version}
+								<dd className="flex min-w-0 items-center gap-1.5">
+									<PlatformIcon platform={device.client.platform} />
+									<span className={infoValueClassName}>
+										{toPlatformName(device.client.platform)} {device.client.os_version}
+									</span>
 								</dd>
 							</div>
 							<div className={infoClassName}>

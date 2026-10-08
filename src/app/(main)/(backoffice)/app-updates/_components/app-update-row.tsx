@@ -61,7 +61,7 @@ const AppUpdateRow = ({ appUpdate, now, onOpen }: Props) => {
 		<li
 			className={cn(
 				appUpdateGridClassName,
-				'relative -mx-2 rounded-md px-2 py-2.5 tabular-nums transition-colors before:absolute before:inset-x-2 before:top-0 before:border-t before:border-border hover:bg-muted max-md:gap-y-0.5 max-md:first:before:hidden',
+				'relative -mx-2 rounded-md px-2 py-2.5 tabular-nums transition-colors before:absolute before:inset-x-2 before:top-0 before:border-t before:border-border hover:bg-muted max-md:gap-y-3 max-md:first:before:hidden',
 			)}
 		>
 			{/*누르는 영역을 행 전체로 넓힌 버튼*/}

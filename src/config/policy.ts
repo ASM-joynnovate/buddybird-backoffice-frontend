@@ -14,7 +14,7 @@ export const PASSWORD_COOKIE_MAX_AGE_MS = 3 * DAY;
 export const THEME_COOKIE_MAX_AGE_MS = 365 * DAY;
 
 export const DASHBOARD_PERIODS = [7, 14, 30, 90];
-export const DEFAULT_DASHBOARD_PERIOD = 14;
+export const DEFAULT_DASHBOARD_PERIOD = 7;
 export const DASHBOARD_MAX_PERIOD_DAYS = 180;
 
 export const USER_RECENT_ITEM_COUNT = 5;

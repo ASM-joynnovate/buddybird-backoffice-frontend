@@ -13,7 +13,7 @@ import SendNotificationForm from '@/app/(main)/(backoffice)/_components/send-not
 import ContentSkeleton from '@/components/content-skeleton';
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Props {
 	initialContent?: NotificationContent;
@@ -43,13 +43,15 @@ const SendNotificationDialog = ({ initialContent = initialNotificationContent, i
 					<DialogTitle className="font-bold">알림 보내기</DialogTitle>
 				</DialogHeader>
 
-				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-					<SendNotificationForm
-						initialContent={initialContent}
-						initialUserIds={initialUserId ? [initialUserId] : []}
-						onClose={onClose}
-					/>
-				</ErrorHandlingWrapper>
+				<DialogBody>
+					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
+						<SendNotificationForm
+							initialContent={initialContent}
+							initialUserIds={initialUserId ? [initialUserId] : []}
+							onClose={onClose}
+						/>
+					</ErrorHandlingWrapper>
+				</DialogBody>
 			</DialogContent>
 		</Dialog>
 	);

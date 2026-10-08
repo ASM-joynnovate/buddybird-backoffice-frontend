@@ -44,7 +44,7 @@ const ConsentCards = ({ kind, version, formMode, today, initialNow, onFormModeCh
 		return (
 			<Card className="items-center gap-2.5 px-4 pt-10 pb-8 text-center">
 				<p className="text-base font-bold">등록된 고지문이 없습니다</p>
-				<p className="max-w-[44ch] text-muted-foreground">
+				<p className="max-w-[44ch] text-muted-foreground md:max-w-none">
 					고지문을 등록하면 게시 일시부터 앱의 약관 동의 화면에 표시됩니다.
 				</p>
 				<Button className="mt-1.5" onClick={() => onFormModeChange('newConsent')}>

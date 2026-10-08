@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import Link from 'next/link';
 
 import type { SearchParamValue } from '@/lib/api';
@@ -17,6 +19,7 @@ interface Props {
 		value: string;
 		label: string;
 		percent: number;
+		icon?: ReactNode;
 		colorClassName: string;
 		dimmed: boolean;
 		href?: { pathname: string; query: Record<string, SearchParamValue> };
@@ -26,7 +29,7 @@ interface Props {
 /**
  * 값별 비율 막대 및 범례 컴포넌트
  * @param title 그룹 제목
- * @param parts 값별 비율, 색, 누르면 이동할 주소
+ * @param parts 값별 비율, 로고, 색, 누르면 이동할 주소
  */
 const CompositionGroup = ({ title, parts }: Props) => {
 	return (
@@ -65,6 +68,7 @@ const CompositionGroup = ({ title, parts }: Props) => {
 					const legendContent = (
 						<>
 							<span className={cn('size-2 shrink-0 rounded-full', part.colorClassName)} />
+							{part.icon}
 							{part.label}
 							<strong className="font-bold text-foreground tabular-nums">{part.percent}%</strong>
 						</>

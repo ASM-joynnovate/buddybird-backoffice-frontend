@@ -3,7 +3,8 @@ import type { WithdrawalDashboard } from '@/types/apis/dashboard';
 import CompositionGroup, {
 	STACKED_RATIO_COLOR_CLASS_NAMES,
 } from '@/app/(main)/(backoffice)/_components/composition-group';
-import { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
+import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
+import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toPlatformName } from '@/utils/platform';
 
@@ -46,6 +47,7 @@ const CompositionCard = ({ withdrawalDashboard }: Props) => {
 				...accountProviders.map(({ provider, colorClassName }) => ({
 					label: PROVIDER_LABELS[provider],
 					count: accounts.providers.find((providerCount) => providerCount.provider === provider)?.count ?? 0,
+					icon: <ProviderIcon provider={provider} className="size-4" />,
 					colorClassName,
 				})),
 				{ label: '익명', count: accounts.anonymous_count, colorClassName: 'bg-chart-neutral' },
@@ -58,6 +60,7 @@ const CompositionCard = ({ withdrawalDashboard }: Props) => {
 				count:
 					withdrawalDashboard.platforms.find((platformCount) => platformCount.platform === platform)?.count ??
 					0,
+				icon: <PlatformIcon platform={platform} />,
 				colorClassName,
 			})),
 		},
@@ -102,11 +105,10 @@ const CompositionCard = ({ withdrawalDashboard }: Props) => {
 			title,
 			parts: counts
 				.filter(({ count }) => count > 0)
-				.map(({ label, count, colorClassName }) => ({
-					value: label,
-					label,
+				.map(({ count, ...part }) => ({
+					...part,
+					value: part.label,
 					percent: Math.round((count / totalCount) * 100),
-					colorClassName,
 					dimmed: false,
 				})),
 		};

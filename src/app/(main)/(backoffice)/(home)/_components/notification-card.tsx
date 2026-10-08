@@ -56,6 +56,7 @@ const NotificationCard = ({ notifications }: Props) => {
 						}))}
 						value={`${Math.round((readCount / sentCount) * 100)}%`}
 						label="읽음"
+						unit="건"
 					/>
 
 					<ul className="mt-3.5 divide-y tabular-nums">

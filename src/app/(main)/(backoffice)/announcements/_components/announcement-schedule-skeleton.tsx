@@ -1,7 +1,10 @@
 import { cn } from '@/lib/utils';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-import { announcementGridClassName } from '@/app/(main)/(backoffice)/announcements/_components/announcement-row';
+import {
+	announcementGridClassName,
+	announcementTableClassName,
+} from '@/app/(main)/(backoffice)/announcements/_components/announcement-row';
 
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -15,19 +18,20 @@ const PLACEHOLDER_ROWS = [
 const AnnouncementScheduleSkeleton = () => {
 	return (
 		<TitledCard title="게시 일정">
-			{PLACEHOLDER_ROWS.map(({ titleWidth, barWidth }) => (
-				<div key={titleWidth} className={cn(announcementGridClassName, 'border-t py-2.5')}>
-					<div>
-						<Skeleton className="my-1 h-4" style={{ width: titleWidth }} />
-						<Skeleton className="my-1 h-3 w-36" />
-					</div>
+			<div className="-mx-2 overflow-x-auto px-2">
+				<div className={announcementTableClassName}>
+					{PLACEHOLDER_ROWS.map(({ titleWidth, barWidth }) => (
+						<div key={titleWidth} className={cn(announcementGridClassName, 'border-t py-2.5')}>
+							<div>
+								<Skeleton className="my-1 h-4" style={{ width: titleWidth }} />
+								<Skeleton className="my-1 h-3 w-36" />
+							</div>
 
-					<Skeleton
-						className="h-2 rounded-full max-xl:col-span-full max-xl:row-start-2 max-xl:my-3"
-						style={{ width: barWidth }}
-					/>
+							<Skeleton className="h-2 rounded-full" style={{ width: barWidth }} />
+						</div>
+					))}
 				</div>
-			))}
+			</div>
 		</TitledCard>
 	);
 };

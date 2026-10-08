@@ -1,17 +1,25 @@
 'use client';
 
-import { type SyntheticEvent, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
-import Form from 'next/form';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import type { DashboardParams } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
+import { cn } from '@/lib/utils';
 
-import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
+import dayjs from 'dayjs';
+import { CalendarDays } from 'lucide-react';
+import type { DateRange } from 'react-day-picker';
+import { ko } from 'react-day-picker/locale';
+
 import { DASHBOARD_MAX_PERIOD_DAYS, DASHBOARD_PERIODS } from '@/config';
-import { addDays } from '@/utils/date';
 import { toLinkQuery } from '@/utils/search-params';
+
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface Props {
 	pathname: string;
@@ -30,68 +38,105 @@ interface Props {
  * @param today 오늘 날짜
  */
 const PeriodFilter = ({ pathname, query = {}, period, dashboardParams, today }: Props) => {
-	const formRef = useRef<HTMLFormElement>(null);
+	const router = useRouter();
+
+	const [calendarOpen, setCalendarOpen] = useState(false);
+	const [selectedRange, setSelectedRange] = useState<DateRange>();
 
 	const linkQuery = toLinkQuery(query);
-	const maxPeriodEnd = addDays(dashboardParams.date_from, DASHBOARD_MAX_PERIOD_DAYS - 1);
+	// 시작일만 고른 동안에는 최대 기간 밖의 날짜를 막음
+	const rangeStart = selectedRange?.to ? undefined : selectedRange?.from;
 
-	/** 바뀐 조회 기간을 날짜 입력에 반영 */
-	useEffect(() => {
-		formRef.current?.reset();
-	}, [dashboardParams.date_from, dashboardParams.date_to]);
+	const handleOpenChange = (nextOpen: boolean) => {
+		if (nextOpen) {
+			setSelectedRange({
+				from: dayjs(dashboardParams.date_from).toDate(),
+				to: dayjs(dashboardParams.date_to).toDate(),
+			});
+		}
 
-	const handleChangePeriod = (event: SyntheticEvent<HTMLFormElement>) => {
-		if (!event.currentTarget.checkValidity()) {
+		setCalendarOpen(nextOpen);
+	};
+
+	const handleSelectDate = (date: Date) => {
+		if (!rangeStart) {
+			setSelectedRange({ from: date, to: undefined });
+
 			return;
 		}
 
-		event.currentTarget.requestSubmit();
+		const [dateFrom, dateTo] = [rangeStart, date].toSorted((a, b) => a.getTime() - b.getTime());
+		const searchParams = new URLSearchParams({
+			...Object.fromEntries(Object.entries(linkQuery).map(([name, value]) => [name, String(value)])),
+			date_from: dayjs(dateFrom).format('YYYY-MM-DD'),
+			date_to: dayjs(dateTo).format('YYYY-MM-DD'),
+		});
+
+		setCalendarOpen(false);
+		router.push(`${pathname}?${searchParams}`, { scroll: false });
 	};
 
 	return (
-		<div className="flex flex-wrap items-center gap-2.5 text-sm">
-			<SegmentedControl
-				label="조회 기간"
-				options={DASHBOARD_PERIODS.map((dashboardPeriod) => ({
-					value: dashboardPeriod,
-					label: `${dashboardPeriod}일`,
-					href: { pathname, query: { ...linkQuery, period: dashboardPeriod } },
-				}))}
-				value={period}
-			/>
-
-			<Form
-				ref={formRef}
-				action={pathname}
-				scroll={false}
-				className="inline-flex h-9 items-center gap-1.5 rounded-md border bg-card px-1.5 text-muted-foreground"
-				onChange={handleChangePeriod}
-			>
-				{Object.entries(linkQuery).map(([name, value]) => (
-					<input key={name} type="hidden" name={name} value={String(value)} />
+		<div className="ml-auto flex flex-wrap items-center justify-end gap-2.5 text-sm">
+			<nav aria-label="조회 기간" className="inline-flex h-9 rounded-md border bg-card p-0.5">
+				{DASHBOARD_PERIODS.map((dashboardPeriod) => (
+					<Link
+						key={dashboardPeriod}
+						href={{ pathname, query: { ...linkQuery, period: dashboardPeriod } }}
+						scroll={false}
+						aria-current={dashboardPeriod === period ? 'true' : undefined}
+						className={cn(
+							'inline-flex items-center rounded-sm px-3.5 font-semibold text-muted-foreground hover:text-foreground',
+							dashboardPeriod === period && 'bg-foreground text-card hover:text-card',
+						)}
+					>
+						{dashboardPeriod}일
+					</Link>
 				))}
-				<input
-					type="date"
-					name="date_from"
-					aria-label="조회 시작일"
-					required
-					defaultValue={dashboardParams.date_from}
-					min={addDays(dashboardParams.date_to, 1 - DASHBOARD_MAX_PERIOD_DAYS)}
-					max={dashboardParams.date_to}
-					className="h-7 rounded-sm bg-transparent px-1 font-semibold text-foreground tabular-nums hover:bg-muted"
-				/>
-				~
-				<input
-					type="date"
-					name="date_to"
-					aria-label="조회 종료일"
-					required
-					defaultValue={dashboardParams.date_to}
-					min={dashboardParams.date_from}
-					max={maxPeriodEnd < today ? maxPeriodEnd : today}
-					className="h-7 rounded-sm bg-transparent px-1 font-semibold text-foreground tabular-nums hover:bg-muted"
-				/>
-			</Form>
+			</nav>
+
+			<Popover open={calendarOpen} onOpenChange={handleOpenChange}>
+				<PopoverTrigger
+					aria-label="조회 기간 선택"
+					className="inline-flex h-9 items-center gap-1.5 rounded-md border bg-card px-3 font-semibold tabular-nums hover:bg-muted"
+				>
+					<CalendarDays className="size-4 text-muted-foreground" />
+					{dayjs(dashboardParams.date_from).format('YYYY. MM. DD.')}
+					<span className="text-muted-foreground">~</span>
+					{dayjs(dashboardParams.date_to).format('YYYY. MM. DD.')}
+				</PopoverTrigger>
+
+				<PopoverContent align="end" sideOffset={12} className="w-auto p-1">
+					{/*좁은 화면에서는 종료일이 있는 달만 표시*/}
+					<Calendar
+						mode="range"
+						locale={ko}
+						numberOfMonths={2}
+						showOutsideDays={false}
+						selected={selectedRange}
+						defaultMonth={dayjs(dashboardParams.date_to).subtract(1, 'month').toDate()}
+						className="max-md:[&_.rdp-month:has(+.rdp-month)]:hidden"
+						disabled={[
+							{ after: dayjs(today).toDate() },
+							...(rangeStart
+								? [
+										{
+											before: dayjs(rangeStart)
+												.subtract(DASHBOARD_MAX_PERIOD_DAYS - 1, 'day')
+												.toDate(),
+										},
+										{
+											after: dayjs(rangeStart)
+												.add(DASHBOARD_MAX_PERIOD_DAYS - 1, 'day')
+												.toDate(),
+										},
+									]
+								: []),
+						]}
+						onSelect={(_, date) => handleSelectDate(date)}
+					/>
+				</PopoverContent>
+			</Popover>
 		</div>
 	);
 };

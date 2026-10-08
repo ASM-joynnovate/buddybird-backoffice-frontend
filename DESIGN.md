@@ -553,8 +553,8 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 
 시안 7의 입력은 조회 기간의 시작일 및 종료일을 선택하는 날짜 입력이다.
 
-- **Date range:** `{components.date-range}`. `border` 색 1px 테두리 안에 시작일, "~" 글자, 종료일을 6px 간격으로 나란히 둔다
-- **Date:** `{components.date-range-input}`. 브라우저 기본 `<input type="date">`를 사용하고 `tabular-nums`를 적용한다
+- **Date range:** `{components.date-range}`. `border` 색 1px 테두리 안에 달력 아이콘, 시작일, "~" 글자, 종료일을 6px 간격으로 나란히 둔다
+- **Date:** `{components.date-range-input}`. 누르면 아래에 shadcn `Popover` 및 `Calendar`를 열고, 시작일과 종료일을 차례로 고르면 조회한다. 날짜에는 `tabular-nums`를 적용한다
 - **Hover:** 마우스를 올린 날짜의 배경을 `muted`로 변경한다
 - **File drop area:** 파일을 고르는 영역은 `chart-neutral` 색 1px 점선 테두리, `{rounded.lg}` 모서리, `card-inset` 배경으로 그린다. 가운데에 `muted-foreground` 색 18px 아이콘, 굵기 600의 안내 문구, 12.5px `muted-foreground`의 허용 형식 및 크기를 차례로 둔다. 영역을 누르거나 파일을 끌어다 놓으면 파일을 고른다. 마우스를 올리거나 파일을 영역 위로 끌어오면 테두리를 `muted-foreground`, 배경을 `muted`로 변경한다. 파일을 고른 뒤에는 영역 대신 굵기 600의 파일 이름, `muted-foreground`의 크기, 오른쪽 끝의 작은 "파일 변경" 버튼을 한 행에 둔다
 - **Field error:** 입력값의 오류는 해당 입력 아래 6px에 13px `destructive` 문구로 표시하고 `role="alert"`를 지정한다. 오류가 있는 입력에는 `aria-invalid`를 지정해 테두리를 `destructive`로 변경하고 `aria-describedby`로 문구를 연결한다. 입력값을 수정하면 문구를 지운다

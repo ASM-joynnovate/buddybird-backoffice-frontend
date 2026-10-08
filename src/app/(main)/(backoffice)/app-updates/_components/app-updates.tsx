@@ -24,19 +24,20 @@ interface Props {
 const AppUpdates = ({ platform, now }: Props) => {
 	return (
 		<>
-			<div className="flex flex-wrap items-center justify-between gap-2.5">
-				<h1 className="text-2xl font-bold">앱 업데이트</h1>
+			<div className="flex flex-wrap items-center gap-2.5">
+				<h1 className="mr-auto text-2xl font-bold">앱 업데이트</h1>
 
-				<div className="flex flex-wrap items-center gap-2.5">
+				{/*좁은 화면에서는 다음 줄에 표시*/}
+				<div className="max-md:order-last max-md:flex max-md:w-full max-md:justify-end">
 					<ErrorHandlingWrapper
 						fallbackComponent={QueryError}
 						suspenseFallback=<PlatformFilter platform={platform} />
 					>
 						<PlatformVersionFilter platform={platform} />
 					</ErrorHandlingWrapper>
-
-					<AddAppUpdateButton platform={platform} />
 				</div>
+
+				<AddAppUpdateButton platform={platform} />
 			</div>
 
 			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<DeviceGroupSkeleton />>

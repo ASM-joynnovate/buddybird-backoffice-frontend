@@ -14,7 +14,7 @@ const DashboardSkeleton = () => {
 	return (
 		<>
 			<div className="grid grid-cols-2 gap-2.5 md:gap-4 xl:grid-cols-4">
-				<KpiCard label="가입" icon={UsersRound} href="/users" linkLabel="사용자 화면 열기">
+				<KpiCard label="사용자" icon={UsersRound} href="/users" linkLabel="사용자 화면 열기">
 					<Skeleton className="h-8 w-24 md:h-9" />
 					<Skeleton className="h-5 w-32" />
 				</KpiCard>

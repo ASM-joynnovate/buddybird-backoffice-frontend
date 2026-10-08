@@ -12,7 +12,10 @@ import dayjs from 'dayjs';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import AnnouncementFormDialog from '@/app/(main)/(backoffice)/announcements/_components/announcement-form-dialog';
-import { announcementGridClassName } from '@/app/(main)/(backoffice)/announcements/_components/announcement-row';
+import {
+	announcementGridClassName,
+	announcementTableClassName,
+} from '@/app/(main)/(backoffice)/announcements/_components/announcement-row';
 import AnnouncementScheduleRow, {
 	scheduleGridClassName,
 } from '@/app/(main)/(backoffice)/announcements/_components/announcement-schedule-row';
@@ -111,55 +114,55 @@ const AnnouncementScheduleCard = ({ listParams, now }: Props) => {
 							} as CSSProperties
 						}
 					>
-						<div
-							className={cn(
-								announcementGridClassName,
-								'font-medium whitespace-nowrap text-muted-foreground',
-							)}
-						>
-							<span className="pb-2 max-md:hidden">공지</span>
+						<div className="-mx-2 overflow-x-auto px-2">
+							<div className={announcementTableClassName}>
+								<div
+									className={cn(
+										announcementGridClassName,
+										'font-medium whitespace-nowrap text-muted-foreground',
+									)}
+								>
+									<span className="pb-2">공지</span>
 
-							{/*7일 간격의 날짜 눈금*/}
-							<div
-								aria-hidden
-								className={cn(
-									scheduleGridClassName,
-									'relative h-7 self-stretch max-xl:col-span-full max-xl:row-start-2',
-								)}
-							>
-								{Array.from({ length: TICK_COUNT }, (_, index) => (
-									<span
-										key={index}
-										className={cn(
-											'absolute top-0 text-[11.5px] leading-5 font-normal tabular-nums max-md:even:hidden',
-											index === TODAY_TICK_INDEX && 'font-bold text-foreground',
-										)}
-										style={{ left: `calc(${index * TICK_PERCENT}% + 6px)` }}
-									>
-										{index === TODAY_TICK_INDEX
-											? '오늘'
-											: formatShortDate(now - SCHEDULE_PAST_MS + index * SCHEDULE_TICK_MS)}
-									</span>
-								))}
+									{/*7일 간격의 날짜 눈금*/}
+									<div aria-hidden className={cn(scheduleGridClassName, 'relative h-7 self-stretch')}>
+										{Array.from({ length: TICK_COUNT }, (_, index) => (
+											<span
+												key={index}
+												className={cn(
+													'absolute top-0 text-[11.5px] leading-5 font-normal tabular-nums',
+													index === TODAY_TICK_INDEX && 'font-bold text-foreground',
+												)}
+												style={{ left: `calc(${index * TICK_PERCENT}% + 6px)` }}
+											>
+												{index === TODAY_TICK_INDEX
+													? '오늘'
+													: formatShortDate(
+															now - SCHEDULE_PAST_MS + index * SCHEDULE_TICK_MS,
+														)}
+											</span>
+										))}
+									</div>
+
+									<span className="pb-2 text-right">읽음</span>
+									<span className="pb-2">푸시</span>
+								</div>
+
+								<ul>
+									{announcements.map((announcement) => (
+										<AnnouncementScheduleRow
+											key={announcement.id}
+											announcement={announcement}
+											userCount={announcementListData.meta.user_count}
+											now={now}
+											onOpen={() => setEditingAnnouncement(announcement)}
+											onTooltipShow={handleTooltipShow}
+											onTooltipHide={() => setTooltip(undefined)}
+										/>
+									))}
+								</ul>
 							</div>
-
-							<span className="pb-2 text-right max-md:hidden">읽음</span>
-							<span className="pb-2 max-md:hidden">푸시</span>
 						</div>
-
-						<ul>
-							{announcements.map((announcement) => (
-								<AnnouncementScheduleRow
-									key={announcement.id}
-									announcement={announcement}
-									userCount={announcementListData.meta.user_count}
-									now={now}
-									onOpen={() => setEditingAnnouncement(announcement)}
-									onTooltipShow={handleTooltipShow}
-									onTooltipHide={() => setTooltip(undefined)}
-								/>
-							))}
-						</ul>
 
 						{!!tooltip && <AnnouncementScheduleTooltip {...tooltip} now={now} />}
 					</div>

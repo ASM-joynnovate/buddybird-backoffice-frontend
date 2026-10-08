@@ -10,6 +10,7 @@ import { useCreateConsent, useUpdateConsent } from '@/hooks/apis/consents';
 
 import { TriangleAlert } from 'lucide-react';
 
+import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { CONSENT_KIND_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/config';
@@ -180,19 +181,23 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 					게시 일시
 				</label>
 
-				<Input
+				<DateTimePicker
 					id={publishedAtInputId}
-					type="datetime-local"
-					required
 					value={publishedAt}
-					className="w-60 tabular-nums max-md:w-full"
-					onChange={(event) => setPublishedAt(event.target.value)}
+					ariaLabel="게시 일시"
+					required
+					className="w-60 max-md:w-full"
+					onValueChange={setPublishedAt}
 				/>
 			</div>
 
 			<p className="flex items-start gap-2 rounded-lg bg-warning/10 px-3 py-2.5 text-[13px] md:ml-21">
 				<TriangleAlert className="mt-0.5 size-4 shrink-0 text-warning" />
-				{toPublishNotice(required, liveConsentExists)} 게시된 뒤에는 수정하거나 삭제할 수 없습니다.
+				{/*좁은 화면에서는 문장마다 줄바꿈*/}
+				<span>
+					<span className="max-md:block">{toPublishNotice(required, liveConsentExists)}</span>{' '}
+					<span className="max-md:block">게시된 뒤에는 수정하거나 삭제할 수 없습니다.</span>
+				</span>
 			</p>
 
 			<div className="flex justify-end gap-2 pt-1">

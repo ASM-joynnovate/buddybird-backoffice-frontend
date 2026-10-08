@@ -13,7 +13,7 @@ import { PRESET_WORD_NAME_MAX_LENGTH } from '@/config';
 import { toPresetLanguageName } from '@/utils/locale';
 
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -128,48 +128,53 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 	return (
 		<Dialog open onOpenChange={handleOpenChange}>
 			<DialogContent className="p-5 sm:max-w-110">
-				<form onSubmit={handleSave} className="grid gap-4">
+				<form onSubmit={handleSave} className="flex min-h-0 flex-col gap-4">
 					<DialogHeader>
 						<DialogTitle className="font-bold">
 							{languageName} 프리셋 {presetWord ? '수정' : '추가'}
 						</DialogTitle>
 					</DialogHeader>
 
-					<div>
-						<Label
-							htmlFor="preset-word-name"
-							className="mb-1.5 items-baseline justify-between text-[13px] leading-normal font-semibold"
-						>
-							이름
-							<span className="text-[12.5px] font-normal text-muted-foreground tabular-nums">
-								{name.length}/{PRESET_WORD_NAME_MAX_LENGTH}
-							</span>
-						</Label>
-						<Input
-							id="preset-word-name"
-							autoComplete="off"
-							maxLength={PRESET_WORD_NAME_MAX_LENGTH}
-							value={name}
-							aria-invalid={!!nameError}
-							aria-describedby={nameError ? NAME_ERROR_ID : undefined}
-							onChange={handleNameChange}
+					{/*포커스 테두리가 잘리지 않도록 여백 확보*/}
+					<DialogBody className="-m-1 grid gap-4 p-1">
+						<div>
+							<Label
+								htmlFor="preset-word-name"
+								className="mb-1.5 items-baseline justify-between text-[13px] leading-normal font-semibold"
+							>
+								이름
+								<span className="text-[12.5px] font-normal text-muted-foreground tabular-nums">
+									{name.length}/{PRESET_WORD_NAME_MAX_LENGTH}
+								</span>
+							</Label>
+							<Input
+								id="preset-word-name"
+								autoComplete="off"
+								maxLength={PRESET_WORD_NAME_MAX_LENGTH}
+								value={name}
+								aria-invalid={!!nameError}
+								aria-describedby={nameError ? NAME_ERROR_ID : undefined}
+								onChange={handleNameChange}
+							/>
+							{!!nameError && (
+								<p id={NAME_ERROR_ID} role="alert" className="mt-1.5 text-[13px] text-destructive">
+									{nameError}
+								</p>
+							)}
+						</div>
+
+						<PresetWordAudioField
+							pickedAudio={pickedAudio}
+							registeredAudioUrl={presetWord?.audio_file.url}
+							error={audioError}
+							onAudioPick={handleAudioPick}
+							onErrorChange={setAudioError}
 						/>
-						{!!nameError && (
-							<p id={NAME_ERROR_ID} role="alert" className="mt-1.5 text-[13px] text-destructive">
-								{nameError}
-							</p>
-						)}
-					</div>
 
-					<PresetWordAudioField
-						pickedAudio={pickedAudio}
-						registeredAudioUrl={presetWord?.audio_file.url}
-						error={audioError}
-						onAudioPick={handleAudioPick}
-						onErrorChange={setAudioError}
-					/>
-
-					<p className="text-[12.5px] text-muted-foreground">저장한 뒤에 가입하는 사용자부터 적용됩니다.</p>
+						<p className="text-[12.5px] text-muted-foreground">
+							저장한 뒤에 가입하는 사용자부터 적용됩니다.
+						</p>
+					</DialogBody>
 
 					<DialogFooter className="m-0 mt-1 flex-row justify-end border-0 bg-transparent p-0 *:flex-1 md:*:flex-none">
 						<Button type="button" variant="outline" disabled={saving} onClick={onClose}>

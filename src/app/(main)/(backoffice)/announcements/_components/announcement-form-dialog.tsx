@@ -1,6 +1,6 @@
 'use client';
 
-import { type ChangeEvent, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 
 import type { Announcement } from '@/types/apis/announcements';
 
@@ -10,6 +10,7 @@ import { useCreateAnnouncement, useSaveAnnouncementImages, useUpdateAnnouncement
 
 import dayjs from 'dayjs';
 
+import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import AnnouncementImageField, {
 	type PickedImage,
@@ -25,13 +26,10 @@ import { toDateTimeInputValue, toHourMinute, toTimestamp } from '@/utils/date';
 import { englishTextMissing, toI18nFieldValue, toI18nText, toOptionalI18nText } from '@/utils/i18n-text';
 
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const rowClassName = 'grid gap-1.5 @md:grid-cols-[72px_minmax(0,1fr)] @md:gap-3';
 const labelClassName = 'text-[13px] font-semibold text-muted-foreground';
-const dateTimeInputClassName =
-	'h-7 rounded-sm bg-transparent px-1 font-semibold text-foreground tabular-nums hover:bg-muted';
-
 interface Props {
 	announcement?: Announcement;
 	onClose: () => void;
@@ -87,13 +85,13 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		setPickedImages((prev) => prev.filter((pickedImage) => pickedImage !== removedImage));
 	};
 
-	const handleStartsAtChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setStartsAt(event.target.value);
+	const handleStartsAtChange = (value: string) => {
+		setStartsAt(value);
 		setEndsAtInvalid(false);
 	};
 
-	const handleEndsAtChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setEndsAt(event.target.value);
+	const handleEndsAtChange = (value: string) => {
+		setEndsAt(value);
 		setEndsAtInvalid(false);
 	};
 
@@ -160,12 +158,12 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 	return (
 		<Dialog open onOpenChange={handleOpenChange}>
 			<DialogContent className="gap-0 p-0 sm:max-w-280">
-				<form onSubmit={handleSave}>
+				<form onSubmit={handleSave} className="flex min-h-0 flex-col">
 					<DialogHeader className="border-b px-6 py-4">
 						<DialogTitle className="font-bold">{announcement ? '공지 수정' : '공지 작성'}</DialogTitle>
 					</DialogHeader>
 
-					<div className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_420px]">
+					<DialogBody className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_420px]">
 						<div className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
 							{/*언어마다 제목 및 본문을 한 상자에 입력*/}
 							<div className={rowClassName}>
@@ -222,23 +220,19 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 								<span className={`${labelClassName} @md:pt-2.5`}>게시 기간</span>
 
 								<div>
-									<div className="inline-flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-card px-1.5 py-0.5 text-muted-foreground">
-										<input
-											type="datetime-local"
-											aria-label="게시 시작"
-											required
+									<div className="flex flex-wrap items-center gap-1.5 text-muted-foreground">
+										<DateTimePicker
 											value={startsAt}
-											className={dateTimeInputClassName}
-											onChange={handleStartsAtChange}
+											ariaLabel="게시 시작"
+											required
+											onValueChange={handleStartsAtChange}
 										/>
 										~
-										<input
-											type="datetime-local"
-											aria-label="게시 종료"
+										<DateTimePicker
 											value={endsAt}
-											aria-invalid={endsAtInvalid}
-											className={dateTimeInputClassName}
-											onChange={handleEndsAtChange}
+											ariaLabel="게시 종료"
+											invalid={endsAtInvalid}
+											onValueChange={handleEndsAtChange}
 										/>
 									</div>
 
@@ -279,7 +273,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 							locale={previewLocale}
 							onLocaleChange={setPreviewLocale}
 						/>
-					</div>
+					</DialogBody>
 
 					<DialogFooter className="m-0 rounded-none border-t bg-card px-6 py-4">
 						{!!announcement && (

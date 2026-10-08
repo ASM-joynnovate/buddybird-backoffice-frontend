@@ -12,7 +12,7 @@ interface Props {
  */
 const ReferenceVersion = ({ name, version, description }: Props) => {
 	return (
-		<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 px-3 py-0.5 @min-[720px]:grid-cols-1 @min-[720px]:content-start @min-[720px]:px-0 @min-[720px]:pt-2.5 @min-[720px]:pb-0 @min-[720px]:text-center">
+		<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 px-3 py-0.5 @min-[720px]:grid-cols-1 @min-[720px]:content-center @min-[720px]:p-0 @min-[720px]:text-center">
 			<span className="text-[12.5px] leading-[19px] font-semibold">{name}</span>
 
 			{/*양옆 칸까지 이어지는 가로선 위에 버전 표시*/}

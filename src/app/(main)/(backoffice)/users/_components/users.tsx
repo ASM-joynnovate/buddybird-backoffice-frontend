@@ -73,6 +73,15 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				/>
 			</div>
 
+			{/*조회 기간이 바뀌면 다시 마운트*/}
+			<ErrorHandlingWrapper
+				key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
+				fallbackComponent={QueryError}
+				suspenseFallback=<UserDashboardSkeleton />
+			>
+				<UserDashboardCards dashboardParams={dashboardParams} query={query} today={today} />
+			</ErrorHandlingWrapper>
+
 			<SearchBar
 				pathname="/users"
 				placeholder="닉네임, 이메일, 사용자 ID"
@@ -82,15 +91,6 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				filterCount={selectedFilters.length}
 				filterPanel=<UserFilterPanel dashboardParams={dashboardParams} query={query} />
 			/>
-
-			{/*조회 기간이 바뀌면 다시 마운트*/}
-			<ErrorHandlingWrapper
-				key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
-				fallbackComponent={QueryError}
-				suspenseFallback=<UserDashboardSkeleton />
-			>
-				<UserDashboardCards dashboardParams={dashboardParams} query={query} today={today} />
-			</ErrorHandlingWrapper>
 
 			{/*조건이 바뀌어도 이전 목록을 유지해 행 이동 전환 실행*/}
 			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<UserTableSkeleton />>

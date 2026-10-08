@@ -32,6 +32,8 @@ const AppUpdateHistoryCard = ({ platform, now }: Props) => {
 		<>
 			<TitledCard
 				title="업데이트 내역"
+				// 출시 노트 툴팁이 카드 밖까지 표시되도록 허용
+				className="overflow-visible"
 				action={
 					appUpdateListData.length > 0 && (
 						<span className="text-[13px] text-muted-foreground tabular-nums">

@@ -7,7 +7,14 @@ import PushDeliveryList from '@/app/(main)/(backoffice)/users/[id]/_components/p
 import ContentSkeleton from '@/components/content-skeleton';
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+	Dialog,
+	DialogBody,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
 
 interface Props {
 	device: Device;
@@ -28,9 +35,11 @@ const PushDeliveryDialog = ({ device, onClose }: Props) => {
 					<DialogDescription className="text-[13px]">{device.client.model}</DialogDescription>
 				</DialogHeader>
 
-				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
-					<PushDeliveryList deviceId={device.id} />
-				</ErrorHandlingWrapper>
+				<DialogBody className="-mx-5 px-5">
+					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
+						<PushDeliveryList deviceId={device.id} />
+					</ErrorHandlingWrapper>
+				</DialogBody>
 			</DialogContent>
 		</Dialog>
 	);
