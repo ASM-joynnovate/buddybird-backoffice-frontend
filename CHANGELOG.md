@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.10.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.9.0...v0.10.0) (2026-10-08)
+
+
+### Features
+
+* redesign the preset words tab ([ec85650](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ec856509f12a74c9aaffe78e2d1b31ffa3c658f9))
+* redesign the withdrawals tab ([5df83cd](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/5df83cd1fd423c772f287867c9cdc5089d254e64))
+* 단어 프리셋 탭을 언어별 카드로 재구성 [BB-641] ([547e710](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/547e710a6d21bbedb4f441c383c7b74ea6ef6aae))
+* 탈퇴 탭을 처리 현황 및 대시보드로 재구성 [BB-643] ([7af0a8c](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/7af0a8cd0264fbea0ef5271d3b15dbe5462162c7))
+
 ## [0.9.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.8.0...v0.9.0) (2026-10-08)
 
 
