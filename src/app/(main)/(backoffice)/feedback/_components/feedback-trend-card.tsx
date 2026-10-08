@@ -60,8 +60,7 @@ const FeedbackTrendCard = ({ feedbackDashboard, selectedDate, query, today }: Pr
 				<DailyCountChart
 					daily={daily}
 					title="일별 피드백 수"
-					seriesName="피드백"
-					color="var(--chart-1)"
+					series={[{ dataKey: 'count', name: '피드백', color: 'var(--chart-1)' }]}
 					unit="건"
 					highlightedDate={selectedDate ?? today}
 					today={today}

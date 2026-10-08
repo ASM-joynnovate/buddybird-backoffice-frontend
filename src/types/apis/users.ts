@@ -36,6 +36,9 @@ export const userListItemSchema = userSchema.extend({
 	device_count: z.number().int(),
 	session_count: z.number().int(),
 	daily_durations: z.array(z.object({ date: localDateSchema, duration_ms: z.number().int() })),
+	is_pushable: z.boolean(),
+	is_announcement_enabled: z.boolean(),
+	is_marketing_enabled: z.boolean(),
 });
 
 const parrotSchema = z.object({
@@ -64,6 +67,8 @@ export type Parrot = z.infer<typeof parrotSchema>;
 
 export interface UserListParams {
 	page: number;
+	count_by_page?: number;
+	user_ids?: string[];
 	keyword?: string;
 	is_deleted?: boolean;
 	last_session?: UserLastSession;

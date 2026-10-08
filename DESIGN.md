@@ -549,6 +549,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Hover:** 마우스를 올린 날짜의 배경을 `muted`로 변경한다
 - **File drop area:** 파일을 고르는 영역은 `chart-neutral` 색 1px 점선 테두리, `{rounded.lg}` 모서리, `card-inset` 배경으로 그린다. 가운데에 `muted-foreground` 색 18px 아이콘, 굵기 600의 안내 문구, 12.5px `muted-foreground`의 허용 형식 및 크기를 차례로 둔다. 영역을 누르거나 파일을 끌어다 놓으면 파일을 고른다. 마우스를 올리거나 파일을 영역 위로 끌어오면 테두리를 `muted-foreground`, 배경을 `muted`로 변경한다. 파일을 고른 뒤에는 영역 대신 굵기 600의 파일 이름, `muted-foreground`의 크기, 오른쪽 끝의 작은 "파일 변경" 버튼을 한 행에 둔다
 - **Field error:** 입력값의 오류는 해당 입력 아래 6px에 13px `destructive` 문구로 표시하고 `role="alert"`를 지정한다. 오류가 있는 입력에는 `aria-invalid`를 지정해 테두리를 `destructive`로 변경하고 `aria-describedby`로 문구를 연결한다. 입력값을 수정하면 문구를 지운다
+- **Chip input:** 여러 항목을 검색해 고르는 입력은 높이 36px 이상의 상자 안에 16px 검색 아이콘, 고른 항목의 칩, 글자 입력을 한 줄에 두고 넘치면 줄을 바꾼다. 칩은 높이 28px의 `muted` 배경이고 20px 사진, 굵기 600의 이름, 20px 빼기 버튼 순서다. 검색 결과는 상자 아래 6px에 최대 높이 262px로 열고, 첫 줄에 12.5px `muted-foreground`의 건수 및 "모두 선택"을, 그 아래에 높이 44px의 행을 둔다. 행은 체크 아이콘, 28px 사진, 이름 및 Caption 보조 값, 16px 상태 아이콘 순서다
 - **Switch:** 켜고 끄는 설정에 사용한다. 폭 36px, 높이 20px의 끝이 둥근 막대 안에 지름 16px의 `card` 색 손잡이를 둔다. 꺼진 배경은 `muted-foreground`의 50% 불투명도, 켜진 배경은 `foreground`다. `aria-label`에 설정 이름을 넣는다
 
 ### Lists
@@ -561,6 +562,8 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Legend row:** 한 행에 8px 점, 이름, 굵기 700의 건수, `muted-foreground`의 비율을 순서대로 둔다. 행의 위아래 여백은 6px이다
 - **Cell list:** 항목마다 재생, 수정, 삭제 같은 동작이 있는 목록은 구분선 없이 `muted` 배경의 칸으로 나열한다. 칸의 모서리는 `{rounded.lg}`, 최소 높이는 56px이고 칸 사이 간격은 8px이다. 안쪽 여백은 위아래 및 왼쪽 10px, 오른쪽 8px이다. 굵기 600의 이름은 한 줄로 적고 넘치면 말줄임으로 표시하며 `title`에 전체 이름을 넣는다. 이름 아래에는 Caption의 `muted-foreground` 보조 값을, 오른쪽 끝에는 28px 아이콘 버튼을 둔다. 아이콘 버튼은 `muted-foreground` 색이고 마우스를 올리면 배경을 `card`로 변경하며, 삭제 버튼은 아이콘도 `destructive`로 변경한다. 화면 폭 1280px 이상에서는 두 열로, 그보다 좁으면 `repeat(auto-fill, minmax(220px, 1fr))`로 배치한다
 - **Step track:** 순서가 있는 단계는 칩을 진행 순서대로 나란히 두고 칩 사이를 길이 12px의 `chart-neutral` 색 1px 선으로 잇는다. 화면 폭 768px 미만에서는 선을 숨기고 칩 사이에 6px 간격을 둔다
+- **Expanded row:** 행을 누르면 그 아래에 펼치는 상세는 `card-inset` 배경, `{rounded.lg}` 모서리, `border` 색 1px 외곽선의 영역이다. 구역 사이를 `border` 색 1px 선으로 나누고 구역의 안쪽 여백은 16px이다. 목록 폭이 760px보다 넓으면 위 두 구역을 `minmax(0, 1fr) minmax(0, 1.2fr)`의 두 열로 둔다. 행 전체가 상세를 여닫는 버튼이며 한 번에 한 행만 펼친다
+- **Vertical steps:** 순서가 있는 단계를 위에서 아래로 나열할 때는 28px 원 안의 16px 아이콘, 13px `muted-foreground`의 이름, 굵기 600의 일시 순서로 한 행을 둔다. 일시가 있는 단계의 원은 데이터 색 14% 배경이고, 없는 단계는 `muted` 배경에 일시 자리에 "-"를 둔다. 단계 사이를 `chart-neutral` 색 2px 세로선으로 잇는다
 - **Dialog row:** 누르면 다이얼로그가 열리는 행은 제목을 `button`으로 두고 버튼의 누르는 영역을 행 전체로 넓힌다. 마우스를 올리면 배경을 `muted`로 변경하고 배경을 좌우로 8px 넓힌다. 모서리는 `{rounded.md}`이고 오른쪽 끝에 14px 화살표를 둔다. 키보드 포커스 표시는 행 전체에 그린다
 
 ### Tags
@@ -602,6 +605,8 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Hover:** 마우스를 올리거나 키보드로 포커스한 날짜에 툴팁을 표시한다. 선 그래프는 그 날짜에 `chart-neutral` 색 세로 보조선 및 계열별 점을 함께 표시한다
 - **Half donut:** 반원 도넛 그래프는 굵기 16px의 끝이 둥근 호로 그린다. 계열 사이에 5px 간격을 두고 뒤에 `muted` 색 호를 둔다. 가운데에는 28px 굵기 700의 값 및 12.5px `muted-foreground`의 이름을 적는다
 - **Hourly bars:** 시간대별 막대는 폭 8px이고 위쪽 끝이 둥글다. 지난 시간은 `chart-1`의 38% 불투명도로, 현재 시간은 `chart-1`로 표시한다. 아직 지나지 않은 시간은 높이 4px의 `chart-neutral` 50% 불투명도로 표시한다. 화면 폭 860px 이하에서 막대 폭은 6px이다
+- **Time axis:** 시각마다 값을 막대로 그리는 시간 축은 높이 64px이고 아래에 `border` 색 1px 선을 둔다. 범위는 한국 시간 0시, 6시, 12시, 18시 단위로 감싸고, 1시간마다 `border` 색 55% 불투명도, 6시간마다 `chart-neutral` 색 1px 세로선을 둔다. 막대는 그 시각이 속한 1시간 칸의 가운데에 3px 이상 14px 이하의 폭으로 두고, 높이는 가장 큰 값에 대한 비율의 제곱근에 36px을 곱한 값이며 6px 이상이다. 지난 막대는 데이터 색, 남은 막대는 데이터 색 45%를 `card`에 섞은 색이다. 현재 시각에는 `foreground` 색 1px 세로선 및 굵기 700의 "지금" 눈금을 둔다
+- **Funnel rows:** 첫 행의 값에 대한 비율을 나타내는 행은 13px `muted-foreground`의 이름, 높이 8px의 막대, 굵기 700의 값, 13px `muted-foreground`의 비율 순서다. 첫 행에는 비율을 적지 않는다
 - **Ratio bar:** `{components.progress-track}` 위에 `{components.progress-fill}`을 둔다. 강조하지 않는 항목은 채운 부분에 `chart-neutral`을 사용한다
 - **Stacked ratio bar:** 순서가 있는 값의 비율을 한 줄에 나란히 놓는 막대는 데이터 색, 데이터 색의 62%, 데이터 색의 30%, `chart-neutral`, `chart-neutral`의 45%를 차례로 사용한다. 여섯 번째 값부터는 다섯 번째 색을 사용한다
 - **Stacked ratio groups:** 제목, 비율 막대, 범례를 묶은 그룹이 넷 이상이면 격자로 배치한다. 열은 카드 폭에 따라 두 개 또는 세 개이고 화면 폭 768px 미만에서는 한 개다. 간격은 세로 18px, 가로 24px이다

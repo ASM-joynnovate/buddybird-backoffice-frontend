@@ -1,131 +1,105 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { type ChangeEvent, useRef } from 'react';
 
 import Image from 'next/image';
 
 import { useUploadNotificationImage } from '@/hooks/apis/notifications';
 
-import { Upload, X } from 'lucide-react';
+import { ImageIcon, X } from 'lucide-react';
 
 import { IMAGE_CONTENT_TYPES } from '@/config';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 interface Props {
-	imageFileId: string | null;
 	imagePreviewUrl: string | null;
 	onImageChange: (image: { imageFileId: string | null; imagePreviewUrl: string | null }) => void;
 }
 
 /**
  * 알림 사진 업로드 컴포넌트
- * @param imageFileId 업로드한 사진의 file_id
  * @param imagePreviewUrl 고른 사진을 표시할 주소
  * @param onImageChange 사진이 바뀔 때 실행할 함수
  */
-const NotificationImageField = ({ imageFileId, imagePreviewUrl, onImageChange }: Props) => {
+const NotificationImageField = ({ imagePreviewUrl, onImageChange }: Props) => {
 	const imageInputRef = useRef<HTMLInputElement>(null);
-
-	const [imageFile, setImageFile] = useState<File>();
 
 	const { isPending, mutate } = useUploadNotificationImage();
 
-	/** 사진을 다시 고르거나 지우면 file_id 비우기 */
-	const changeImageFile = (nextImageFile?: File) => {
+	/** 이전 미리보기 주소를 지우고 사진 변경 */
+	const changeImage = (image: { imageFileId: string | null; imagePreviewUrl: string | null }) => {
 		if (imagePreviewUrl) {
 			URL.revokeObjectURL(imagePreviewUrl);
 		}
 
-		setImageFile(nextImageFile);
-
-		onImageChange({
-			imageFileId: null,
-			imagePreviewUrl: nextImageFile ? URL.createObjectURL(nextImageFile) : null,
-		});
+		onImageChange(image);
 	};
 
-	const handleClearImage = () => {
-		if (imageInputRef.current) {
-			imageInputRef.current.value = '';
-		}
+	const handleImagePick = (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event.currentTarget.files?.[0];
 
-		changeImageFile();
-	};
+		// 같은 파일도 다시 선택 가능
+		event.currentTarget.value = '';
 
-	const handleUploadImage = () => {
-		if (isPending || !imageFile) {
+		if (isPending || !file) {
 			return;
 		}
 
+		const pickedImageUrl = URL.createObjectURL(file);
+
+		changeImage({ imageFileId: null, imagePreviewUrl: pickedImageUrl });
+
+		// 업로드에 실패하면 사진을 지움
 		mutate(
-			{ file: imageFile },
-			{ onSuccess: (uploadedFileId) => onImageChange({ imageFileId: uploadedFileId, imagePreviewUrl }) },
+			{ file },
+			{
+				onSuccess: (imageFileId) => onImageChange({ imageFileId, imagePreviewUrl: pickedImageUrl }),
+				onError: () => {
+					URL.revokeObjectURL(pickedImageUrl);
+					onImageChange({ imageFileId: null, imagePreviewUrl: null });
+				},
+			},
 		);
 	};
 
 	return (
-		<div>
+		<div className="flex min-h-9 flex-wrap items-center gap-2.5">
 			<input
 				ref={imageInputRef}
 				type="file"
-				aria-label="사진"
+				hidden
 				accept={IMAGE_CONTENT_TYPES.join(',')}
-				disabled={isPending}
-				className="sr-only"
-				onChange={(event) => changeImageFile(event.target.files?.[0])}
+				onChange={handleImagePick}
 			/>
 
-			{imageFile ? (
-				<div className="flex items-center gap-2.5 rounded-lg border p-2">
-					{!!imagePreviewUrl && (
-						<Image
-							src={imagePreviewUrl}
-							alt=""
-							width={36}
-							height={36}
-							unoptimized
-							className="size-9 shrink-0 rounded-sm object-cover"
-						/>
-					)}
-					<strong className="truncate font-semibold">{imageFile.name}</strong>
+			{!!imagePreviewUrl && (
+				<span className="relative h-14 w-24">
+					<Image
+						src={imagePreviewUrl}
+						alt=""
+						width={96}
+						height={56}
+						unoptimized
+						className="size-full rounded-md object-cover"
+					/>
 
-					{imageFileId ? (
-						<Badge className="rounded-sm bg-success/10 font-bold text-success">업로드됨</Badge>
-					) : (
-						<Button type="button" size="sm" disabled={isPending} onClick={handleUploadImage}>
-							업로드
-						</Button>
-					)}
-
-					<Button
+					<button
 						type="button"
-						variant="outline"
-						size="sm"
-						className="ml-auto"
-						disabled={isPending}
-						onClick={() => imageInputRef.current?.click()}
-					>
-						변경
-					</Button>
-					<Button
-						type="button"
-						variant="ghost"
-						size="icon-sm"
 						aria-label="사진 지우기"
 						disabled={isPending}
-						onClick={handleClearImage}
+						className="absolute top-1 right-1 grid size-5 place-items-center rounded-sm bg-tooltip text-tooltip-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+						onClick={() => changeImage({ imageFileId: null, imagePreviewUrl: null })}
 					>
-						<X />
-					</Button>
-				</div>
-			) : (
-				<Button type="button" variant="outline" onClick={() => imageInputRef.current?.click()}>
-					<Upload />
-					사진 선택
-				</Button>
+						<X className="size-3" strokeWidth={2.5} />
+					</button>
+				</span>
 			)}
+
+			<Button type="button" variant="outline" disabled={isPending} onClick={() => imageInputRef.current?.click()}>
+				<ImageIcon />
+				{imagePreviewUrl ? '사진 변경' : '사진 추가'}
+			</Button>
 		</div>
 	);
 };

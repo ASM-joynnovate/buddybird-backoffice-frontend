@@ -6,6 +6,8 @@ import {
 	dashboardSchema,
 	type FeedbackDashboard,
 	feedbackDashboardSchema,
+	type NotificationDashboard,
+	notificationDashboardSchema,
 	type UserDashboard,
 	userDashboardSchema,
 	type WithdrawalDashboard,
@@ -44,6 +46,19 @@ export const getFeedbackDashboard = async ({ date_from, date_to }: DashboardPara
 	);
 
 	return feedbackDashboard;
+};
+
+export const getNotificationDashboard = async ({
+	date_from,
+	date_to,
+}: DashboardParams): Promise<NotificationDashboard> => {
+	const { data: notificationDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/notifications',
+		notificationDashboardSchema,
+		{ searchParams: { date_from, date_to } },
+	);
+
+	return notificationDashboard;
 };
 
 export const getWithdrawalDashboard = async ({ date_from, date_to }: DashboardParams): Promise<WithdrawalDashboard> => {

@@ -10,7 +10,7 @@ export type SearchParamValue = string | number | boolean | undefined;
 
 interface ApiOptions {
 	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-	searchParams?: Record<string, SearchParamValue>;
+	searchParams?: Record<string, SearchParamValue | string[]>;
 	json?: unknown;
 	body?: FormData;
 	password?: string;
@@ -83,11 +83,14 @@ const knownErrorCode = (code: string) => {
 };
 
 /** URL 쿼리 문자열 생성 함수 */
-const queryString = (searchParams: Record<string, SearchParamValue> | undefined) => {
+const queryString = (searchParams: Record<string, SearchParamValue | string[]> | undefined) => {
 	const params = new URLSearchParams();
 
 	for (const [name, value] of Object.entries(searchParams ?? {})) {
-		if (value !== undefined) {
+		// 배열은 같은 이름으로 반복
+		if (Array.isArray(value)) {
+			value.forEach((item) => params.append(name, item));
+		} else if (value !== undefined) {
 			params.set(name, String(value));
 		}
 	}

@@ -16,7 +16,7 @@ const rowClassName = 'grid gap-1.5 @md:grid-cols-[72px_minmax(0,1fr)] @md:gap-3'
 const labelClassName = 'text-[13px] font-semibold text-muted-foreground';
 
 export interface NotificationContent {
-	kind: SendableNotificationKind | null;
+	kind: SendableNotificationKind;
 	title: I18nFieldValue;
 	body: I18nFieldValue;
 	imageFileId: string | null;
@@ -24,7 +24,7 @@ export interface NotificationContent {
 }
 
 export const initialNotificationContent: NotificationContent = {
-	kind: null,
+	kind: 'announcement',
 	title: toI18nFieldValue(null),
 	body: toI18nFieldValue(null),
 	imageFileId: null,
@@ -51,7 +51,7 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 					{sendableNotificationKindSchema.options.map((sendableNotificationKind) => (
 						<label
 							key={sendableNotificationKind}
-							className="inline-flex cursor-pointer items-center rounded-sm px-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground has-checked:bg-foreground has-checked:text-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand"
+							className="inline-flex cursor-pointer items-center gap-1.5 rounded-sm px-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground has-checked:bg-foreground has-checked:text-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand"
 						>
 							<input
 								type="radio"
@@ -62,6 +62,10 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 								onChange={() =>
 									onContentChange((prev) => ({ ...prev, kind: sendableNotificationKind }))
 								}
+							/>
+							<span
+								className="size-2 rounded-full"
+								style={{ backgroundColor: NOTIFICATION_KINDS[sendableNotificationKind].color }}
 							/>
 							{NOTIFICATION_KINDS[sendableNotificationKind].label}
 						</label>
@@ -112,7 +116,6 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 				</span>
 
 				<NotificationImageField
-					imageFileId={content.imageFileId}
 					imagePreviewUrl={content.imagePreviewUrl}
 					onImageChange={(image) => onContentChange((prev) => ({ ...prev, ...image }))}
 				/>

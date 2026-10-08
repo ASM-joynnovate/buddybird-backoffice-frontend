@@ -38,8 +38,7 @@ const WithdrawalTrendCard = ({ withdrawalDashboard, today }: Props) => {
 				<DailyCountChart
 					daily={daily}
 					title="일별 탈퇴 수"
-					seriesName="탈퇴"
-					color="var(--chart-2)"
+					series={[{ dataKey: 'count', name: '탈퇴', color: 'var(--chart-2)' }]}
 					unit="명"
 					highlightedDate={today}
 					today={today}

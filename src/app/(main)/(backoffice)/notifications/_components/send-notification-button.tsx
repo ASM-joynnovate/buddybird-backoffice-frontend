@@ -2,17 +2,29 @@
 
 import { useState } from 'react';
 
+import { Send } from 'lucide-react';
+
 import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
 
 import { Button } from '@/components/ui/button';
 
-/** 알림 개별 발송 버튼 컴포넌트 */
-const SendNotificationButton = () => {
+interface Props {
+	className?: string;
+}
+
+/**
+ * 알림 보내기 버튼 컴포넌트
+ * @param className 버튼의 위치를 정하는 class
+ */
+const SendNotificationButton = ({ className }: Props) => {
 	const [sendDialogOpen, setSendDialogOpen] = useState(false);
 
 	return (
 		<>
-			<Button onClick={() => setSendDialogOpen(true)}>개별 발송</Button>
+			<Button className={className} onClick={() => setSendDialogOpen(true)}>
+				<Send />
+				알림 보내기
+			</Button>
 
 			{sendDialogOpen && <SendNotificationDialog onClose={() => setSendDialogOpen(false)} />}
 		</>

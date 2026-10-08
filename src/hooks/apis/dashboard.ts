@@ -4,6 +4,7 @@ import {
 	getDashboard,
 	getDashboardLive,
 	getFeedbackDashboard,
+	getNotificationDashboard,
 	getUserDashboard,
 	getWithdrawalDashboard,
 } from '@/apis/dashboard';
@@ -57,6 +58,17 @@ export const getFeedbackDashboardOptions = (dashboardParams: DashboardParams) =>
 /** 피드백 대시보드 조회 Hook */
 export const useGetFeedbackDashboard = (dashboardParams: DashboardParams) => {
 	return useSuspenseQuery(getFeedbackDashboardOptions(dashboardParams));
+};
+
+/** 알림 대시보드 조회 Hook에 사용할 옵션 */
+export const getNotificationDashboardOptions = (dashboardParams: DashboardParams) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.notifications(dashboardParams),
+		queryFn: () => getNotificationDashboard(dashboardParams),
+	});
+/** 알림 대시보드 조회 Hook */
+export const useGetNotificationDashboard = (dashboardParams: DashboardParams) => {
+	return useSuspenseQuery(getNotificationDashboardOptions(dashboardParams));
 };
 
 /** 탈퇴 대시보드 조회 Hook에 사용할 옵션 */

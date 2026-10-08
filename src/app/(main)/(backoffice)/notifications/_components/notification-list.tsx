@@ -1,77 +1,61 @@
 'use client';
 
-import Link from 'next/link';
-
 import type { NotificationListParams } from '@/types/apis/notifications';
 
 import { useGetNotificationList } from '@/hooks/apis/notifications';
 
-import { formatDateTime } from '@/utils/date';
-import { koreanOrEnglishText } from '@/utils/i18n-text';
+import type { SearchParamValue } from '@/lib/api';
+
+import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
+import NotificationEmptyState from '@/app/(main)/(backoffice)/notifications/_components/notification-empty-state';
+import NotificationRow from '@/app/(main)/(backoffice)/notifications/_components/notification-row';
 
 import PageNavigation from '@/components/page-navigation';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface Props {
+	title: string;
 	listParams: NotificationListParams;
+	filterSelected: boolean;
+	query: Record<string, SearchParamValue>;
+	expandedRowId: string | null;
+	now: number;
+	onToggleRow: (rowId: string) => void;
 }
 
 /**
- * 알림 발송 이력 목록 컴포넌트
- * @param listParams 조회 조건
+ * 받는 사람마다 한 건인 알림 목록 컴포넌트
+ * @param title 카드 제목
+ * @param listParams 목록 조회 조건
+ * @param filterSelected 받는 사람, 종류, 날짜 조건을 골랐는지 여부
+ * @param query 현재 주소의 쿼리
+ * @param expandedRowId 펼친 행의 id
+ * @param now 현재 시각
+ * @param onToggleRow 행을 누르면 실행할 함수
  */
-const NotificationList = ({ listParams }: Props) => {
+const NotificationList = ({ title, listParams, filterSelected, query, expandedRowId, now, onToggleRow }: Props) => {
 	const { data: notificationListData } = useGetNotificationList(listParams);
+
+	if (notificationListData.data.length === 0) {
+		return <NotificationEmptyState title={title} keyword={listParams.keyword} filterSelected={filterSelected} />;
+	}
 
 	return (
 		<>
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead>발송 일시</TableHead>
-						<TableHead>사용자</TableHead>
-						<TableHead>종류</TableHead>
-						<TableHead>제목</TableHead>
-						<TableHead>본문</TableHead>
-						<TableHead>사진</TableHead>
-						<TableHead>읽은 일시</TableHead>
-					</TableRow>
-				</TableHeader>
+			<TitledCard title={title}>
+				{notificationListData.data.map((notification) => (
+					<NotificationRow
+						key={notification.id}
+						notification={notification}
+						keyword={listParams.keyword}
+						recipientListed={!!listParams.user_id}
+						expanded={expandedRowId === notification.id}
+						now={now}
+						onToggle={() => onToggleRow(notification.id)}
+					/>
+				))}
+			</TitledCard>
 
-				<TableBody>
-					{notificationListData.data.map((notification) => (
-						<TableRow key={notification.id}>
-							<TableCell>{formatDateTime(notification.sent_at)}</TableCell>
-							<TableCell>
-								<Link href={`/users/${notification.user_id}`}>{notification.user_id}</Link>
-							</TableCell>
-							<TableCell>{notification.kind}</TableCell>
-							<TableCell>{koreanOrEnglishText(notification.title)}</TableCell>
-							<TableCell>{koreanOrEnglishText(notification.body)}</TableCell>
-							<TableCell>
-								{notification.image ? (
-									<Link href={notification.image.url} target="_blank">
-										보기
-									</Link>
-								) : (
-									'-'
-								)}
-							</TableCell>
-							<TableCell>{notification.read_at ? formatDateTime(notification.read_at) : '-'}</TableCell>
-						</TableRow>
-					))}
-				</TableBody>
-			</Table>
-
-			{notificationListData.data.length === 0 && (
-				<p className="text-sm text-muted-foreground">알림이 없습니다.</p>
-			)}
-
-			<PageNavigation
-				meta={notificationListData.meta}
-				pathname="/notifications"
-				query={{ user_id: listParams.user_id, kind: listParams.kind }}
-			/>
+			<PageNavigation meta={notificationListData.meta} pathname="/notifications" query={query} />
 		</>
 	);
 };
