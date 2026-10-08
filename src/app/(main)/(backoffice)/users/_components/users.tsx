@@ -1,15 +1,19 @@
 import type { DashboardParams } from '@/types/apis/dashboard';
 import type { UserListParams } from '@/types/apis/users';
 
+import type { SelectedFilter } from '@/types/filter';
+
 import type { SearchParamValue } from '@/lib/api';
 
 import PeriodFilter from '@/app/(main)/(backoffice)/_components/period-filter';
+import SearchBar from '@/app/(main)/(backoffice)/_components/search-bar';
 import UserDashboardCards from '@/app/(main)/(backoffice)/users/_components/user-dashboard-cards';
 import UserDashboardSkeleton from '@/app/(main)/(backoffice)/users/_components/user-dashboard-skeleton';
-import UserSearchBar from '@/app/(main)/(backoffice)/users/_components/user-search-bar';
+import UserFilterIcon from '@/app/(main)/(backoffice)/users/_components/user-filter-icon';
+import UserFilterPanel from '@/app/(main)/(backoffice)/users/_components/user-filter-panel';
 import UserTable from '@/app/(main)/(backoffice)/users/_components/user-table';
 import UserTableSkeleton from '@/app/(main)/(backoffice)/users/_components/user-table-skeleton';
-import type { UserFilters } from '@/config/user-filters';
+import { USER_FILTER_GROUPS, type UserFilters } from '@/config/user-filters';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
@@ -37,6 +41,24 @@ interface Props {
  * @param now 서버가 화면을 그린 시각
  */
 const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, query, today, now }: Props) => {
+	const selectedFilters: SelectedFilter[] = [
+		...USER_FILTER_GROUPS.flatMap((filterGroup) => {
+			const filterOption = filterGroup.options.find(({ value }) => value === userFilters[filterGroup.name]);
+
+			return filterOption
+				? [
+						{
+							name: filterGroup.name,
+							groupLabel: filterGroup.label,
+							label: filterOption.label,
+							icon: <UserFilterIcon listParams={filterOption.listParams} />,
+						},
+					]
+				: [];
+		}),
+		...(query.is_deleted ? [{ name: 'is_deleted', label: '삭제됨' }] : []),
+	];
+
 	return (
 		<>
 			<div className="flex flex-wrap items-center justify-between gap-2.5">
@@ -51,11 +73,14 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				/>
 			</div>
 
-			<UserSearchBar
-				dashboardParams={dashboardParams}
+			<SearchBar
+				pathname="/users"
+				placeholder="닉네임, 이메일, 사용자 ID"
 				keyword={listParams.keyword}
-				userFilters={userFilters}
 				query={query}
+				selectedFilters={selectedFilters}
+				filterCount={selectedFilters.length}
+				filterPanel=<UserFilterPanel dashboardParams={dashboardParams} query={query} />
 			/>
 
 			{/*조회 기간이 바뀌면 다시 마운트*/}

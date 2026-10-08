@@ -1,6 +1,6 @@
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
-import { getDashboard, getDashboardLive, getUserDashboard } from '@/apis/dashboard';
+import { getDashboard, getDashboardLive, getFeedbackDashboard, getUserDashboard } from '@/apis/dashboard';
 
 import type { DashboardParams } from '@/types/apis/dashboard';
 
@@ -40,4 +40,15 @@ export const getUserDashboardOptions = (dashboardParams: DashboardParams) =>
 /** 사용자 대시보드 조회 Hook */
 export const useGetUserDashboard = (dashboardParams: DashboardParams) => {
 	return useSuspenseQuery(getUserDashboardOptions(dashboardParams));
+};
+
+/** 피드백 대시보드 조회 Hook에 사용할 옵션 */
+export const getFeedbackDashboardOptions = (dashboardParams: DashboardParams) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.feedback(dashboardParams),
+		queryFn: () => getFeedbackDashboard(dashboardParams),
+	});
+/** 피드백 대시보드 조회 Hook */
+export const useGetFeedbackDashboard = (dashboardParams: DashboardParams) => {
+	return useSuspenseQuery(getFeedbackDashboardOptions(dashboardParams));
 };

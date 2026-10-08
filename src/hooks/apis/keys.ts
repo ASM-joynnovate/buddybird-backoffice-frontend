@@ -10,6 +10,7 @@ export const apiKeys = {
 		detail: (dashboardParams: DashboardParams) => ['api', 'dashboard', dashboardParams] as const,
 		live: () => ['api', 'dashboard', 'live'] as const,
 		users: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'users', dashboardParams] as const,
+		feedback: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'feedback', dashboardParams] as const,
 	},
 	users: {
 		all: () => ['api', 'users'] as const,

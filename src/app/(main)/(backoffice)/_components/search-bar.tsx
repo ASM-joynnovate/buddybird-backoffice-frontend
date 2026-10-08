@@ -1,21 +1,17 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
 import Form from 'next/form';
 import Link from 'next/link';
 
-import type { DashboardParams } from '@/types/apis/dashboard';
-import { providerSchema } from '@/types/apis/users';
+import type { SelectedFilter } from '@/types/filter';
 
 import type { SearchParamValue } from '@/lib/api';
 
 import { ListFilter, Search, X } from 'lucide-react';
 
-import ProviderIcon from '@/app/(main)/(backoffice)/_components/provider-icon';
-import UserFilterPanel from '@/app/(main)/(backoffice)/users/_components/user-filter-panel';
-import { USER_KEYWORD_MAX_LENGTH } from '@/config';
-import { USER_FILTER_GROUPS, type UserFilters } from '@/config/user-filters';
+import { KEYWORD_MAX_LENGTH } from '@/config';
 import { toLinkQuery } from '@/utils/search-params';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
@@ -23,31 +19,41 @@ import QueryError from '@/components/query-error';
 import { Button } from '@/components/ui/button';
 
 interface Props {
-	dashboardParams: DashboardParams;
+	pathname: string;
+	placeholder: string;
 	keyword?: string;
-	userFilters: UserFilters;
 	query: Record<string, SearchParamValue>;
+	selectedFilters: SelectedFilter[];
+	filterCount: number;
+	filterPanel: ReactNode;
+	children?: ReactNode;
 }
 
 /**
- * 사용자 검색 및 필터 컴포넌트
- * @param dashboardParams 조회 기간의 시작일 및 종료일
+ * 검색 및 필터 컴포넌트
+ * @param pathname 검색하면 이동할 경로
+ * @param placeholder 검색 입력의 안내 문구
  * @param keyword 조회 조건의 검색어
- * @param userFilters 필터에서 고른 값
  * @param query 현재 주소의 쿼리
+ * @param selectedFilters 칩으로 표시할 고른 조건
+ * @param filterCount "필터" 버튼에 표시할 조건의 개수
+ * @param filterPanel "필터" 버튼을 누르면 열리는 패널
+ * @param children 칩 오른쪽에 표시할 내용
  */
-const UserSearchBar = ({ dashboardParams, keyword, userFilters, query }: Props) => {
+const SearchBar = ({
+	pathname,
+	placeholder,
+	keyword,
+	query,
+	selectedFilters,
+	filterCount,
+	filterPanel,
+	children,
+}: Props) => {
 	const keywordInputRef = useRef<HTMLInputElement>(null);
 	const filterRef = useRef<HTMLDivElement>(null);
 
 	const [filterPanelOpen, setFilterPanelOpen] = useState(false);
-
-	const selectedFilters = USER_FILTER_GROUPS.flatMap((filterGroup) => {
-		const filterOption = filterGroup.options.find(({ value }) => value === userFilters[filterGroup.name]);
-
-		return filterOption ? [{ filterGroup, filterOption }] : [];
-	});
-	const selectedCount = selectedFilters.length + Number(!!query.is_deleted);
 
 	/** "/" 키로 검색창 포커스, Esc 및 바깥 클릭으로 필터 닫기 */
 	useEffect(() => {
@@ -93,7 +99,7 @@ const UserSearchBar = ({ dashboardParams, keyword, userFilters, query }: Props) 
 			{/*검색어가 바뀌면 입력값을 새로 채움*/}
 			<Form
 				key={keyword}
-				action="/users"
+				action={pathname}
 				className="flex h-9 max-w-130 flex-[1_1_280px] items-center gap-2 rounded-md border bg-card pr-1 pl-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand hover:border-chart-neutral"
 			>
 				{Object.entries(toLinkQuery({ ...query, keyword: undefined })).map(([name, value]) => (
@@ -106,10 +112,10 @@ const UserSearchBar = ({ dashboardParams, keyword, userFilters, query }: Props) 
 					type="search"
 					name="keyword"
 					aria-label="검색어"
-					placeholder="닉네임, 이메일, 사용자 ID"
+					placeholder={placeholder}
 					autoComplete="off"
 					defaultValue={keyword}
-					maxLength={USER_KEYWORD_MAX_LENGTH}
+					maxLength={KEYWORD_MAX_LENGTH}
 					className="peer h-full min-w-0 flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground [&::-webkit-search-cancel-button]:hidden"
 				/>
 				<button
@@ -135,63 +141,48 @@ const UserSearchBar = ({ dashboardParams, keyword, userFilters, query }: Props) 
 				<Button
 					variant="outline"
 					aria-expanded={filterPanelOpen}
-					aria-controls="user-filter-panel"
+					aria-controls="filter-panel"
 					onClick={() => setFilterPanelOpen((prev) => !prev)}
 				>
 					<ListFilter />
 					필터
-					{selectedCount > 0 && (
+					{filterCount > 0 && (
 						<b className="grid h-5 min-w-5 place-items-center rounded-full bg-foreground px-1.5 text-xs font-bold text-card">
-							{selectedCount}
+							{filterCount}
 						</b>
 					)}
 				</Button>
 
 				{filterPanelOpen && (
 					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
-						<UserFilterPanel
-							dashboardParams={dashboardParams}
-							userFilters={userFilters}
-							selectedCount={selectedCount}
-							query={query}
-						/>
+						{filterPanel}
 					</ErrorHandlingWrapper>
 				)}
 			</div>
 
 			{/*고른 조건, 누르면 그 조건을 지움*/}
-			{selectedFilters.map(({ filterGroup, filterOption }) => {
-				const provider = providerSchema.safeParse(filterOption.value).data;
-
-				return (
-					<Link
-						key={filterGroup.name}
-						href={{ pathname: '/users', query: toLinkQuery({ ...query, [filterGroup.name]: undefined }) }}
-						scroll={false}
-						aria-label={`${filterOption.label} 조건 지우기`}
-						className="inline-flex h-7 items-center gap-1.5 rounded-md bg-card pr-1.5 pl-2.5 text-[13px] font-semibold whitespace-nowrap ring-1 ring-border hover:bg-muted"
-					>
-						<small className="text-[12.5px] font-medium text-muted-foreground">{filterGroup.label}</small>
-						{!!provider && <ProviderIcon provider={provider} className="size-4" />}
-						{filterOption.label}
-						<X className="size-3.5 text-muted-foreground" />
-					</Link>
-				);
-			})}
-
-			{!!query.is_deleted && (
+			{selectedFilters.map((selectedFilter) => (
 				<Link
-					href={{ pathname: '/users', query: toLinkQuery({ ...query, is_deleted: undefined }) }}
+					key={selectedFilter.name}
+					href={{ pathname, query: toLinkQuery({ ...query, [selectedFilter.name]: undefined }) }}
 					scroll={false}
-					aria-label="삭제됨 조건 지우기"
+					aria-label={`${selectedFilter.label} 조건 지우기`}
 					className="inline-flex h-7 items-center gap-1.5 rounded-md bg-card pr-1.5 pl-2.5 text-[13px] font-semibold whitespace-nowrap ring-1 ring-border hover:bg-muted"
 				>
-					삭제됨
+					{!!selectedFilter.groupLabel && (
+						<small className="text-[12.5px] font-medium text-muted-foreground">
+							{selectedFilter.groupLabel}
+						</small>
+					)}
+					{selectedFilter.icon}
+					{selectedFilter.label}
 					<X className="size-3.5 text-muted-foreground" />
 				</Link>
-			)}
+			))}
+
+			{children}
 		</div>
 	);
 };
 
-export default UserSearchBar;
+export default SearchBar;

@@ -10,8 +10,8 @@ import { Bell, Copy, Trash2, TriangleAlert } from 'lucide-react';
 
 import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
+import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import DeleteUserDialog from '@/app/(main)/(backoffice)/users/[id]/_components/delete-user-dialog';
-import UserAvatar from '@/app/(main)/(backoffice)/users/_components/user-avatar';
 import { formatDateTime, formatRelativeTime } from '@/utils/date';
 
 import { Badge } from '@/components/ui/badge';
