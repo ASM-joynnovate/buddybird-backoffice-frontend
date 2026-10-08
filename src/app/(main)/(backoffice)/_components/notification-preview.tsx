@@ -1,54 +1,69 @@
-import type { NotificationContent } from '@/app/(main)/(backoffice)/_components/notification-content-fields';
-import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
+'use client';
 
-const MARKETING_PREFIX = '(광고) ';
-const KOREAN_UNSUBSCRIBE_TEXT = '무료 수신거부: 프로필 > 설정 > 알림에서 마케팅 알림 Off';
-const ENGLISH_UNSUBSCRIBE_TEXT = 'Unsubscribe for free: Profile > Settings > Notifications > turn off Marketing alerts';
+import { useState } from 'react';
+
+import type { I18nText } from '@/types/apis/common';
+import type { NotificationKind } from '@/types/apis/notifications';
+
+import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
+import { UNSUBSCRIBE_TEXTS } from '@/config/notification';
+
+const PREVIEW_LOCALES = [
+	{ locale: 'ko_kr', label: '한국어' },
+	{ locale: 'en_us', label: '영어' },
+] satisfies { locale: keyof I18nText; label: string }[];
 
 interface Props {
-	content: NotificationContent;
+	kind: NotificationKind;
+	title: I18nText;
+	body: I18nText;
+	imageUrl?: string | null;
 }
 
 /**
- * 수신 기기에 표시되는 알림의 미리보기 컴포넌트
- * @param content 알림 내용 입력값
+ * 고른 언어의 푸시 알림 미리보기 컴포넌트
+ * @param kind 알림 종류
+ * @param title 표시할 제목
+ * @param body 표시할 본문
+ * @param imageUrl 알림 사진의 주소
  */
-const NotificationPreview = ({ content }: Props) => {
-	const marketing = content.kind === 'marketing';
-	const koreanBody = content.body.ko_kr.trim();
-	const englishTitle = content.title.en_us.trim();
-	const englishBody = content.body.en_us.trim();
+const NotificationPreview = ({ kind, title, body, imageUrl }: Props) => {
+	const [previewLocale, setPreviewLocale] = useState<keyof I18nText>('ko_kr');
 
 	// 한국어가 비어 있으면 영어 문구 발송
-	const pushes = [
-		{
-			label: '한국어',
-			title: content.title.ko_kr.trim() || englishTitle,
-			body: koreanBody || englishBody,
-			unsubscribeText: koreanBody ? KOREAN_UNSUBSCRIBE_TEXT : ENGLISH_UNSUBSCRIBE_TEXT,
-		},
-		{ label: '영어', title: englishTitle, body: englishBody, unsubscribeText: ENGLISH_UNSUBSCRIBE_TEXT },
-	];
+	const textLocale = previewLocale === 'ko_kr' && body.ko_kr !== null ? 'ko_kr' : 'en_us';
+	const previewTitle = (previewLocale === 'ko_kr' ? title.ko_kr : null) ?? title.en_us;
 
 	return (
-		<aside className="grid content-start gap-3.5 border-t bg-card-inset p-4 md:border-t-0 md:border-l md:p-5">
-			<h3 className="text-base font-bold">미리보기</h3>
+		<section className="grid gap-2.5">
+			<div className="flex min-h-7 items-center justify-between gap-3">
+				<h4 className="text-[13px] font-semibold">미리보기</h4>
 
-			{pushes.map((push) => (
-				<section key={push.label} className="grid gap-1.5">
-					<h4 className="text-[13px] font-semibold text-muted-foreground">{push.label}</h4>
+				<fieldset className="inline-flex h-7 min-w-0 rounded-md border bg-card p-0.5">
+					<legend className="sr-only">미리보기 언어</legend>
 
-					{/*마케팅 알림은 서버가 앞뒤에 문구를 붙여 발송*/}
-					<PushPreviewCard
-						title={push.title}
-						body={push.body}
-						prefix={marketing ? MARKETING_PREFIX : undefined}
-						bodySuffix={marketing ? `\n${push.unsubscribeText}` : undefined}
-						imageUrl={content.imagePreviewUrl}
-					/>
-				</section>
-			))}
-		</aside>
+					{PREVIEW_LOCALES.map((localeOption) => (
+						<button
+							key={localeOption.locale}
+							type="button"
+							aria-pressed={localeOption.locale === previewLocale}
+							className="inline-flex items-center rounded-sm px-2.5 text-[13px] font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-pressed:bg-foreground aria-pressed:text-card"
+							onClick={() => setPreviewLocale(localeOption.locale)}
+						>
+							{localeOption.label}
+						</button>
+					))}
+				</fieldset>
+			</div>
+
+			{/*마케팅 알림은 본문 아래에 수신거부 문구 발송*/}
+			<PushPreviewCard
+				title={previewTitle}
+				body={body[textLocale] ?? ''}
+				bodySuffix={kind === 'marketing' ? `\n${UNSUBSCRIBE_TEXTS[textLocale]}` : undefined}
+				imageUrl={imageUrl}
+			/>
+		</section>
 	);
 };
 

@@ -24,8 +24,8 @@ interface Props {
 	keyword?: string;
 	query: Record<string, SearchParamValue>;
 	selectedFilters: SelectedFilter[];
-	filterCount: number;
-	filterPanel: ReactNode;
+	filterCount?: number;
+	filterPanel?: ReactNode;
 	children?: ReactNode;
 }
 
@@ -137,28 +137,30 @@ const SearchBar = ({
 				</Button>
 			</Form>
 
-			<div ref={filterRef} className="relative">
-				<Button
-					variant="outline"
-					aria-expanded={filterPanelOpen}
-					aria-controls="filter-panel"
-					onClick={() => setFilterPanelOpen((prev) => !prev)}
-				>
-					<ListFilter />
-					필터
-					{filterCount > 0 && (
-						<b className="grid h-5 min-w-5 place-items-center rounded-full bg-foreground px-1.5 text-xs font-bold text-card">
-							{filterCount}
-						</b>
-					)}
-				</Button>
+			{!!filterPanel && (
+				<div ref={filterRef} className="relative">
+					<Button
+						variant="outline"
+						aria-expanded={filterPanelOpen}
+						aria-controls="filter-panel"
+						onClick={() => setFilterPanelOpen((prev) => !prev)}
+					>
+						<ListFilter />
+						필터
+						{!!filterCount && (
+							<b className="grid h-5 min-w-5 place-items-center rounded-full bg-foreground px-1.5 text-xs font-bold text-card">
+								{filterCount}
+							</b>
+						)}
+					</Button>
 
-				{filterPanelOpen && (
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
-						{filterPanel}
-					</ErrorHandlingWrapper>
-				)}
-			</div>
+					{filterPanelOpen && (
+						<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
+							{filterPanel}
+						</ErrorHandlingWrapper>
+					)}
+				</div>
+			)}
 
 			{/*고른 조건, 누르면 그 조건을 지움*/}
 			{selectedFilters.map((selectedFilter) => (

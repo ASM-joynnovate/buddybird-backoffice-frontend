@@ -2,7 +2,12 @@ import type { AnnouncementListParams } from '@/types/apis/announcements';
 import type { Platform } from '@/types/apis/app-updates';
 import type { DashboardParams } from '@/types/apis/dashboard';
 import type { FeedbackListParams } from '@/types/apis/feedback';
-import type { NotificationListParams, PushDeliveryListParams } from '@/types/apis/notifications';
+import type {
+	NotificationDispatchListParams,
+	NotificationListParams,
+	PushDeliveryListParams,
+	SendableNotificationKind,
+} from '@/types/apis/notifications';
 import type { UserListParams } from '@/types/apis/users';
 import type { WithdrawalListParams } from '@/types/apis/withdrawals';
 
@@ -14,6 +19,8 @@ export const apiKeys = {
 		feedback: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'feedback', dashboardParams] as const,
 		withdrawals: (dashboardParams: DashboardParams) =>
 			['api', 'dashboard', 'withdrawals', dashboardParams] as const,
+		notifications: (dashboardParams: DashboardParams) =>
+			['api', 'dashboard', 'notifications', dashboardParams] as const,
 	},
 	users: {
 		all: () => ['api', 'users'] as const,
@@ -46,6 +53,10 @@ export const apiKeys = {
 		list: (listParams: NotificationListParams) => ['api', 'notifications', 'list', listParams] as const,
 		deliveryList: (listParams: PushDeliveryListParams) =>
 			['api', 'notifications', 'deliveries', listParams] as const,
+		dispatchList: (listParams: NotificationDispatchListParams) =>
+			['api', 'notifications', 'dispatches', 'list', listParams] as const,
+		dispatchDetail: (id: string) => ['api', 'notifications', 'dispatches', id] as const,
+		audience: (kind: SendableNotificationKind) => ['api', 'notifications', 'audience', kind] as const,
 	},
 	presetWords: {
 		all: () => ['api', 'preset-words'] as const,

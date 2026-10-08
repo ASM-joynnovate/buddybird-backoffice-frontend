@@ -135,11 +135,33 @@ export const withdrawalDashboardSchema = z.object({
 	errors: z.array(z.object({ error_code: z.string(), count: z.number().int() })),
 });
 
+export const notificationDashboardSchema = z.object({
+	notifications: z.object({ count: z.number().int(), previous_count: z.number().int() }),
+	kinds: z.array(
+		z.object({
+			kind: notificationKindSchema,
+			sent_count: z.number().int(),
+			read_count: z.number().int(),
+			push_sent_count: z.number().int(),
+		}),
+	),
+	daily: z.array(
+		z.object({
+			date: localDateSchema,
+			report_count: z.number().int(),
+			announcement_count: z.number().int(),
+			marketing_count: z.number().int(),
+			urgent_count: z.number().int(),
+		}),
+	),
+});
+
 export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
 export type FeedbackDashboard = z.infer<typeof feedbackDashboardSchema>;
 export type WithdrawalDashboard = z.infer<typeof withdrawalDashboardSchema>;
+export type NotificationDashboard = z.infer<typeof notificationDashboardSchema>;
 
 export interface DashboardParams {
 	date_from: string;

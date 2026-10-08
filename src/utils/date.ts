@@ -123,6 +123,27 @@ export const formatDaysOrHours = (durationMs: number) => {
 	return `${Math.max(1, Math.floor(durationMs / HOUR))}시간`;
 };
 
+/** ms를 "1시간 30분 뒤" 같은 문구로 변환하는 함수 */
+export const formatDurationLater = (durationMs: number) => {
+	const minutes = Math.max(1, Math.round(durationMs / MINUTE));
+	const hours = Math.floor(minutes / 60);
+
+	if (hours >= 24) {
+		return `${Math.floor(hours / 24)}일 ${hours % 24}시간 뒤`;
+	}
+
+	if (hours === 0) {
+		return `${minutes}분 뒤`;
+	}
+
+	return minutes % 60 ? `${hours}시간 ${minutes % 60}분 뒤` : `${hours}시간 뒤`;
+};
+
+/** offset 없는 시각을 변환 없이 'M.D HH:mm'으로 변환하는 함수 */
+export const formatLocalShortDateTime = (localDateTime: string) => {
+	return dayjs(localDateTime).format('M.D HH:mm');
+};
+
 /** 시각을 datetime-local 입력값으로 변환하는 함수 */
 export const toDateTimeInputValue = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('YYYY-MM-DDTHH:mm');
