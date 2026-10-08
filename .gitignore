@@ -400,3 +400,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,jetbrains,visualstudiocode,linux,nextjs,yarn,node,dotenv
 
 .idea
+.impeccable
