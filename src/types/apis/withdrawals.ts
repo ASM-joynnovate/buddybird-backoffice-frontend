@@ -1,3 +1,4 @@
+import { fileSchema } from '@/types/apis/common';
 import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
@@ -17,9 +18,43 @@ export const withdrawalSchema = z.object({
 	created_at: timestampSchema,
 });
 
-export type Withdrawal = z.infer<typeof withdrawalSchema>;
+export const withdrawalListItemSchema = withdrawalSchema.extend({
+	status: z.enum(['running', 'retrying', 'stopped', 'completed']),
+	steps: z.array(
+		z.object({
+			step: z.enum(['apple', 'google', 'kakao', 'account']),
+			status: z.enum(['waiting', 'running', 'failed', 'completed', 'unconfirmed']),
+		}),
+	),
+	user: z.object({
+		nickname: z.string().nullable(),
+		email: z.string().nullable(),
+		is_anonymous: z.boolean(),
+		photo_file: fileSchema.nullable(),
+		created_at: timestampSchema,
+		session_count: z.number().int(),
+		last_session_started_at: timestampSchema.nullable(),
+		last_seen_device: z
+			.object({
+				platform: z.string(),
+				app_version: z.string(),
+				is_unsupported: z.boolean(),
+				last_seen_at: timestampSchema.nullable(),
+			})
+			.nullable(),
+		device_count: z.number().int(),
+		feedback_count: z.number().int(),
+		last_feedback_message: z.string().nullable(),
+	}),
+});
+
+export type WithdrawalListItem = z.infer<typeof withdrawalListItemSchema>;
+export type WithdrawalStep = WithdrawalListItem['steps'][number];
 
 export interface WithdrawalListParams {
 	page: number;
+	count_by_page?: number;
 	is_completed?: boolean;
+	created_from?: string;
+	created_to?: string;
 }

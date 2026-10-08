@@ -6,22 +6,11 @@ import type { FeedbackDashboard } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
 
-import { Bar, BarChart, LabelList, Rectangle, XAxis, YAxis } from 'recharts';
-
 import CountChange from '@/app/(main)/(backoffice)/_components/count-change';
-import DailyCountTooltip from '@/app/(main)/(backoffice)/_components/daily-count-tooltip';
+import DailyCountChart from '@/app/(main)/(backoffice)/_components/daily-count-chart';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-import { toChartDateLabel } from '@/utils/date';
 import { toToggledQuery } from '@/utils/search-params';
-
-import { type ChartConfig, ChartContainer, ChartTooltip } from '@/components/ui/chart';
-
-const MIN_AXIS_COUNT = 4;
-
-const chartConfig = {
-	count: { label: '피드백', color: 'var(--chart-1)' },
-} satisfies ChartConfig;
 
 interface Props {
 	feedbackDashboard: FeedbackDashboard;
@@ -42,25 +31,9 @@ const FeedbackTrendCard = ({ feedbackDashboard, selectedDate, query, today }: Pr
 
 	const { feedback, daily } = feedbackDashboard;
 
-	// 고른 날짜, 없으면 오늘만 진하게 표시
-	const dailyCounts = daily.map((dailyCount, index) => ({
-		...dailyCount,
-		fillOpacity: dailyCount.date === (selectedDate ?? today) ? 1 : 0.42,
-		cursor: dailyCount.count > 0 ? 'pointer' : undefined,
-		lastCount: index === daily.length - 1 ? dailyCount.count : undefined,
-	}));
-	const maxAxisCount = Math.max(MIN_AXIS_COUNT, ...daily.map((dailyCount) => dailyCount.count));
-
-	const handleToggleDate = (dailyCount: FeedbackDashboard['daily'][number]) => {
-		if (dailyCount.count === 0) {
-			return;
-		}
-
+	const handleToggleDate = (date: string) => {
 		const searchParams = new URLSearchParams(
-			Object.entries(toToggledQuery(query, 'date', dailyCount.date)).map(([name, value]) => [
-				name,
-				String(value),
-			]),
+			Object.entries(toToggledQuery(query, 'date', date)).map(([name, value]) => [name, String(value)]),
 		);
 
 		router.push(`/feedback?${searchParams.toString()}`, { scroll: false });
@@ -82,46 +55,19 @@ const FeedbackTrendCard = ({ feedbackDashboard, selectedDate, query, today }: Pr
 				/>
 			</div>
 
-			<ChartContainer config={chartConfig} className="mt-3.5 aspect-auto h-38 w-full">
-				<BarChart
-					accessibilityLayer
+			<div className="mt-3.5">
+				{/*고른 날짜, 없으면 오늘만 진하게 표시*/}
+				<DailyCountChart
+					daily={daily}
 					title="일별 피드백 수"
-					data={dailyCounts}
-					margin={{ top: 20, right: 12, bottom: 0, left: 0 }}
-				>
-					<XAxis
-						dataKey="date"
-						tickLine={false}
-						axisLine={{ stroke: 'var(--border)', strokeOpacity: 0.5 }}
-						tickMargin={8}
-						interval="equidistantPreserveEnd"
-						tickFormatter={(date: string) => toChartDateLabel(date, today)}
-					/>
-					<YAxis
-						width={30}
-						tickLine={false}
-						axisLine={false}
-						domain={[0, maxAxisCount]}
-						ticks={[0, maxAxisCount]}
-					/>
-					<ChartTooltip cursor={false} content=<DailyCountTooltip unit="건" /> />
-					<Bar
-						dataKey="count"
-						name="피드백"
-						fill="var(--color-count)"
-						radius={[7, 7, 0, 0]}
-						maxBarSize={14}
-						background={{ fill: 'var(--muted)', radius: 7 }}
-						activeBar={{ fillOpacity: 1 }}
-						isAnimationActive={false}
-						// 건수가 0인 날짜에도 배경 막대 표시
-						shape=<Rectangle />
-						onClick={({ originalDataIndex }) => handleToggleDate(daily[originalDataIndex])}
-					>
-						<LabelList dataKey="lastCount" position="top" className="fill-foreground text-xs font-bold" />
-					</Bar>
-				</BarChart>
-			</ChartContainer>
+					seriesName="피드백"
+					color="var(--chart-1)"
+					unit="건"
+					highlightedDate={selectedDate ?? today}
+					today={today}
+					onSelectDate={handleToggleDate}
+				/>
+			</div>
 
 			<dl className="mt-3.5 grid grid-cols-2 gap-2">
 				<StatCell label="하루 평균">{(feedback.count / daily.length).toFixed(1)}건</StatCell>

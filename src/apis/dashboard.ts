@@ -8,6 +8,8 @@ import {
 	feedbackDashboardSchema,
 	type UserDashboard,
 	userDashboardSchema,
+	type WithdrawalDashboard,
+	withdrawalDashboardSchema,
 } from '@/types/apis/dashboard';
 
 import { apiRequest } from '@/lib/api';
@@ -42,4 +44,14 @@ export const getFeedbackDashboard = async ({ date_from, date_to }: DashboardPara
 	);
 
 	return feedbackDashboard;
+};
+
+export const getWithdrawalDashboard = async ({ date_from, date_to }: DashboardParams): Promise<WithdrawalDashboard> => {
+	const { data: withdrawalDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/withdrawals',
+		withdrawalDashboardSchema,
+		{ searchParams: { date_from, date_to } },
+	);
+
+	return withdrawalDashboard;
 };

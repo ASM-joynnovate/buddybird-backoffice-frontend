@@ -44,15 +44,6 @@ export const toOptionalText = (value: UrlSearchParam) => {
 	return value.trim() || undefined;
 };
 
-/** 'true', 'false' 쿼리 값을 boolean으로 변환하는 함수 */
-export const toOptionalBoolean = (value: UrlSearchParam) => {
-	if (value === 'true') {
-		return true;
-	}
-
-	return value === 'false' ? false : undefined;
-};
-
 /** 쿼리에서 사용자 필터로 고른 값을 꺼내는 함수 */
 export const toUserFilters = (searchParams: Record<string, UrlSearchParam>) => {
 	const userFilters: UserFilters = {};
