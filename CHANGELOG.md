@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.15.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.14.0...v0.15.0) (2026-10-09)
+
+
+### Features
+
+* 저장 흐름 및 로딩 화면 개선 ([599c4a3](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/599c4a33044e68fdd2f26180290ad9cea3825bbf))
+* 저장 흐름 및 로딩 화면 개선 ([f425035](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/f42503547184494da03b11fa1cd89c9c38547ca6))
+
 ## [0.14.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.13.1...v0.14.0) (2026-10-09)
 
 
