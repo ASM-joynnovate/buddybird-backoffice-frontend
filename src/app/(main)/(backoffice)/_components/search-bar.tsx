@@ -100,7 +100,7 @@ const SearchBar = ({
 			<Form
 				key={keyword}
 				action={pathname}
-				className="flex h-9 max-w-130 flex-[1_1_280px] items-center gap-2 rounded-md border bg-card pr-1 pl-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand hover:border-chart-neutral"
+				className="flex h-9 max-w-130 min-w-0 flex-[1_1_280px] items-center gap-2 rounded-md border bg-card pr-1 pl-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand hover:border-chart-neutral"
 			>
 				{Object.entries(toLinkQuery({ ...query, keyword: undefined })).map(([name, value]) => (
 					<input key={name} type="hidden" name={name} value={String(value)} />
