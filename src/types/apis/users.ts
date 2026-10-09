@@ -1,4 +1,4 @@
-import { fileSchema } from '@/types/apis/common';
+import { fileSchema, type SortOrder } from '@/types/apis/common';
 import { deviceSchema } from '@/types/apis/devices';
 import { localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { sessionPhaseSchema } from '@/types/apis/sessions';
@@ -9,7 +9,14 @@ import { z } from 'zod';
 
 export const providerSchema = z.enum(['google', 'apple', 'kakao']);
 export const userLastSessionSchema = z.enum(['today', 'within_7_days', 'within_30_days', 'over_30_days', 'none']);
-export const userSortSchema = z.enum(['created_at', 'recent_duration', 'session_count']);
+export const userSortSchema = z.enum([
+	'created_at',
+	'recent_duration',
+	'session_count',
+	'status',
+	'app_version',
+	'parrot_count',
+]);
 
 const userSchema = z.object({
 	id: uuidSchema,
@@ -82,4 +89,5 @@ export interface UserListParams {
 	is_marketing_enabled?: boolean;
 	issue?: 'heartbeat_expired' | 'emergency_detected' | 'withdrawal_failed';
 	sort?: UserSort;
+	order?: SortOrder;
 }

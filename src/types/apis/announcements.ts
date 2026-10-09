@@ -1,7 +1,9 @@
-import { i18nSchema, pageMetaSchema } from '@/types/apis/common';
+import { i18nSchema, pageMetaSchema, type SortOrder } from '@/types/apis/common';
 import { timeSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
+
+export const announcementSortSchema = z.enum(['starts_at', 'read_count']);
 
 export const announcementSchema = z.object({
 	id: uuidSchema,
@@ -33,6 +35,7 @@ const createAnnouncementRequestSchema = updateAnnouncementRequestSchema.extend({
 	push_local_time: timeSchema.nullable(),
 });
 
+export type AnnouncementSort = z.infer<typeof announcementSortSchema>;
 export type Announcement = z.infer<typeof announcementSchema>;
 export type AnnouncementListItem = z.infer<typeof announcementListItemSchema>;
 export type AnnouncementPageMeta = z.infer<typeof announcementPageMetaSchema>;
@@ -48,4 +51,6 @@ export interface AnnouncementListParams {
 	page: number;
 	count_by_page?: number;
 	is_ended: boolean;
+	sort?: AnnouncementSort;
+	order?: SortOrder;
 }

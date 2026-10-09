@@ -1,7 +1,9 @@
-import { fileSchema } from '@/types/apis/common';
+import { fileSchema, type SortOrder } from '@/types/apis/common';
 import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
+
+export const withdrawalSortSchema = z.enum(['created_at', 'usage_period', 'session_count']);
 
 export const withdrawalSchema = z.object({
 	user_id: uuidSchema,
@@ -48,6 +50,7 @@ export const withdrawalListItemSchema = withdrawalSchema.extend({
 	}),
 });
 
+export type WithdrawalSort = z.infer<typeof withdrawalSortSchema>;
 export type WithdrawalListItem = z.infer<typeof withdrawalListItemSchema>;
 export type WithdrawalStep = WithdrawalListItem['steps'][number];
 
@@ -57,4 +60,6 @@ export interface WithdrawalListParams {
 	is_completed?: boolean;
 	created_from?: string;
 	created_to?: string;
+	sort?: WithdrawalSort;
+	order?: SortOrder;
 }
