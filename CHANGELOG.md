@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.13.1...v0.14.0) (2026-10-09)
+
+
+### Features
+
+* 사용자, 탈퇴 및 공지 목록 정렬 추가 [BB-650] ([e4a9298](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/e4a929853923bb09ab7c83b54a12e7e0c8349498))
+* 사용자, 탈퇴 및 공지 목록 정렬 추가 [BB-650] ([0391767](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/039176726fd72089f7c8d3360ea2702543f136bb))
+
 ## [0.13.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.13.0...v0.13.1) (2026-10-09)
 
 
