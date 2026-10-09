@@ -12,10 +12,11 @@ import { useNow } from '@/hooks/use-now';
 import type { SearchParamValue } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
-import { ChevronDown, TriangleAlert } from 'lucide-react';
+import { TriangleAlert } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
+import SortLink from '@/app/(main)/(backoffice)/_components/sort-link';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
 import { SESSION_PHASES } from '@/config/session';
@@ -32,8 +33,11 @@ import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const sortColumns = {
+	parrot_count: { label: '앵무새' },
+	status: { label: '상태' },
 	recent_duration: { label: '최근 14일 세션' },
 	session_count: { label: '세션' },
+	app_version: { label: '기기' },
 	created_at: { label: '가입일' },
 };
 
@@ -57,18 +61,9 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 	/** 정렬할 수 있는 열의 제목 */
 	const sortColumnHead = (sort: keyof typeof sortColumns) => (
 		<TableHead className="text-muted-foreground">
-			<Link
-				href={{
-					pathname: '/users',
-					query: toLinkQuery({ ...query, sort: sort === 'created_at' ? undefined : sort }),
-				}}
-				scroll={false}
-				aria-current={listParams.sort === sort ? 'true' : undefined}
-				className="group inline-flex items-center gap-0.5 rounded-sm hover:text-foreground aria-[current]:font-bold aria-[current]:text-foreground"
-			>
+			<SortLink pathname="/users" query={query} sort={sort} defaultSort="created_at">
 				{sortColumns[sort].label}
-				<ChevronDown className="size-3.5 opacity-0 group-hover:opacity-50 group-aria-[current]:opacity-100" />
-			</Link>
+			</SortLink>
 		</TableHead>
 	);
 
@@ -106,11 +101,11 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
 							<TableHead className="text-muted-foreground">사용자</TableHead>
-							<TableHead className="text-muted-foreground">앵무새</TableHead>
-							<TableHead className="text-muted-foreground">상태</TableHead>
+							{sortColumnHead('parrot_count')}
+							{sortColumnHead('status')}
 							{sortColumnHead('recent_duration')}
 							{sortColumnHead('session_count')}
-							<TableHead className="text-muted-foreground">기기</TableHead>
+							{sortColumnHead('app_version')}
 							{sortColumnHead('created_at')}
 						</TableRow>
 					</TableHeader>

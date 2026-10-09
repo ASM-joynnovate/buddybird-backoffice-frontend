@@ -1,5 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
+import { sortOrderSchema } from '@/types/apis/common';
+import { withdrawalSortSchema } from '@/types/apis/withdrawals';
+
 import { getWithdrawalDashboardOptions } from '@/hooks/apis/dashboard';
 import { getWithdrawalListOptions } from '@/hooks/apis/withdrawals';
 
@@ -21,15 +24,24 @@ export default async function Page(props: PageProps<'/withdrawals'>) {
 
 	// 완료되지 않은 탈퇴는 조회 기간과 관계없이 조회
 	const incompleteListParams = { page: 1, count_by_page: 100, is_completed: false };
+
+	const sort = withdrawalSortSchema.safeParse(searchParams.sort).data ?? 'created_at';
+	const order = sortOrderSchema.safeParse(searchParams.order).data ?? 'desc';
 	const completedListParams = {
 		page: toPageNumber(searchParams.page),
 		is_completed: true,
 		created_from: dashboardParams.date_from,
 		created_to: dashboardParams.date_to,
+		sort,
+		order,
 	};
 
 	// 링크가 유지할 현재 주소의 쿼리
-	const query = customDashboardParams ?? { period };
+	const listQuery = {
+		sort: sort === 'created_at' ? undefined : sort,
+		order: order === 'desc' ? undefined : order,
+	};
+	const query = { ...(customDashboardParams ?? { period }), ...listQuery };
 
 	const queryClient = getQueryClient();
 
@@ -45,6 +57,7 @@ export default async function Page(props: PageProps<'/withdrawals'>) {
 				dashboardParams={dashboardParams}
 				incompleteListParams={incompleteListParams}
 				completedListParams={completedListParams}
+				listQuery={listQuery}
 				query={query}
 				today={today}
 				now={getNow()}

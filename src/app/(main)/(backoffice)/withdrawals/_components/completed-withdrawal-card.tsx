@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import { TriangleAlert } from 'lucide-react';
 
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
+import SortLink from '@/app/(main)/(backoffice)/_components/sort-link';
 import StepChip from '@/app/(main)/(backoffice)/_components/step-chip';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
@@ -67,11 +68,40 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 							<TableRow className="hover:bg-transparent">
 								<TableHead className="text-muted-foreground">사용자</TableHead>
 								<TableHead className="text-muted-foreground">계정</TableHead>
-								<TableHead className="pr-6 text-muted-foreground">사용 기간</TableHead>
-								<TableHead className="pr-6 text-muted-foreground">세션</TableHead>
+								<TableHead className="pr-6 text-muted-foreground">
+									<SortLink
+										pathname="/withdrawals"
+										query={query}
+										sort="usage_period"
+										defaultSort="created_at"
+									>
+										사용 기간
+									</SortLink>
+								</TableHead>
+								<TableHead className="pr-6 text-muted-foreground">
+									<SortLink
+										pathname="/withdrawals"
+										query={query}
+										sort="session_count"
+										defaultSort="created_at"
+									>
+										세션
+									</SortLink>
+								</TableHead>
 								<TableHead className="text-muted-foreground">기기</TableHead>
 								<TableHead className="text-muted-foreground">피드백</TableHead>
-								<TableHead className="text-right text-muted-foreground">요청</TableHead>
+								<TableHead className="text-right text-muted-foreground">
+									<SortLink
+										pathname="/withdrawals"
+										query={query}
+										sort="created_at"
+										defaultSort="created_at"
+										// 값의 오른쪽 끝에 맞추게 아이콘을 앞에 배치
+										className="flex-row-reverse"
+									>
+										요청
+									</SortLink>
+								</TableHead>
 							</TableRow>
 						</TableHeader>
 

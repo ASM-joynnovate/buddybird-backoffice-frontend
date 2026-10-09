@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
+import { sortOrderSchema } from '@/types/apis/common';
 import { uuidSchema } from '@/types/apis/primitives';
 import { userSortSchema } from '@/types/apis/users';
 
@@ -40,11 +41,13 @@ export default async function Page(props: PageProps<'/users'>) {
 	const userFilters = toUserFilters(searchParams);
 	const is_deleted = searchParams.is_deleted === 'true';
 	const sort = userSortSchema.safeParse(searchParams.sort).data ?? 'created_at';
+	const order = sortOrderSchema.safeParse(searchParams.order).data ?? 'desc';
 	const listParams = {
 		page: toPageNumber(searchParams.page),
 		keyword,
 		is_deleted,
 		sort,
+		order,
 		...toUserFilterParams(userFilters, today),
 	};
 
@@ -54,6 +57,7 @@ export default async function Page(props: PageProps<'/users'>) {
 		...userFilters,
 		is_deleted: is_deleted || undefined,
 		sort: sort === 'created_at' ? undefined : sort,
+		order: order === 'desc' ? undefined : order,
 	};
 	const query = { ...(customDashboardParams ?? { period }), ...listQuery };
 

@@ -19,6 +19,7 @@ interface Props {
 	dashboardParams: DashboardParams;
 	incompleteListParams: WithdrawalListParams;
 	completedListParams: WithdrawalListParams;
+	listQuery: Record<string, SearchParamValue>;
 	query: Record<string, SearchParamValue>;
 	today: string;
 	now: number;
@@ -30,6 +31,7 @@ interface Props {
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param incompleteListParams 완료되지 않은 탈퇴의 조회 조건
  * @param completedListParams 완료된 탈퇴의 조회 조건
+ * @param listQuery 기간을 뺀 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
  * @param now 서버가 화면을 그린 시각
@@ -39,6 +41,7 @@ const Withdrawals = ({
 	dashboardParams,
 	incompleteListParams,
 	completedListParams,
+	listQuery,
 	query,
 	today,
 	now,
@@ -48,7 +51,13 @@ const Withdrawals = ({
 			<div className="flex flex-wrap items-center justify-between gap-2.5">
 				<h1 className="text-2xl font-bold">탈퇴</h1>
 
-				<PeriodFilter pathname="/withdrawals" period={period} dashboardParams={dashboardParams} today={today} />
+				<PeriodFilter
+					pathname="/withdrawals"
+					query={listQuery}
+					period={period}
+					dashboardParams={dashboardParams}
+					today={today}
+				/>
 			</div>
 
 			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<IncompleteWithdrawalSkeleton />>

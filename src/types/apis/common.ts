@@ -75,8 +75,11 @@ export const fileSchema = z.object({ url: z.string(), status: z.enum(['pending',
 
 export const i18nSchema = z.object({ ko_kr: z.string().nullable(), en_us: z.string() });
 
+export const sortOrderSchema = z.enum(['asc', 'desc']);
+
 export type PageMeta = z.infer<typeof pageMetaSchema>;
 export type I18nText = z.infer<typeof i18nSchema>;
+export type SortOrder = z.infer<typeof sortOrderSchema>;
 
 export interface Page<T> {
 	data: T[];
