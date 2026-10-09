@@ -23,10 +23,17 @@ export const getAnnouncementList = async (listParams: AnnouncementListParams): P
 	return { data, meta: announcementPageMetaSchema.parse(meta) };
 };
 
-export const postAnnouncement = async ({ data }: { data: CreateAnnouncementRequest }): Promise<Announcement> => {
+export const postAnnouncement = async ({
+	data,
+	idempotencyKey,
+}: {
+	data: CreateAnnouncementRequest;
+	idempotencyKey: string;
+}): Promise<Announcement> => {
 	const { data: announcement } = await apiRequest('/api/v1/backoffice/announcements', announcementSchema, {
 		method: 'POST',
 		json: data,
+		idempotencyKey,
 	});
 
 	return announcement;
@@ -35,24 +42,41 @@ export const postAnnouncement = async ({ data }: { data: CreateAnnouncementReque
 export const patchAnnouncement = async ({
 	id,
 	data,
+	idempotencyKey,
 }: {
 	id: string;
 	data: UpdateAnnouncementRequest;
+	idempotencyKey: string;
 }): Promise<Announcement> => {
 	const { data: announcement } = await apiRequest(`/api/v1/backoffice/announcements/${id}`, announcementSchema, {
 		method: 'PATCH',
 		json: data,
+		idempotencyKey,
 	});
 
 	return announcement;
 };
 
-export const deleteAnnouncement = async ({ id }: { id: string }): Promise<void> => {
-	await apiRequest(`/api/v1/backoffice/announcements/${id}`, z.unknown(), { method: 'DELETE' });
+export const deleteAnnouncement = async ({
+	id,
+	idempotencyKey,
+}: {
+	id: string;
+	idempotencyKey: string;
+}): Promise<void> => {
+	await apiRequest(`/api/v1/backoffice/announcements/${id}`, z.unknown(), { method: 'DELETE', idempotencyKey });
 };
 
-export const postAnnouncementImage = async ({ id, file }: { id: string; file: File }): Promise<void> => {
-	const upload = await postAnnouncementImageUpload({ id, file });
+export const postAnnouncementImage = async ({
+	id,
+	file,
+	idempotencyKey,
+}: {
+	id: string;
+	file: File;
+	idempotencyKey: string;
+}): Promise<void> => {
+	const upload = await postAnnouncementImageUpload({ id, file, idempotencyKey });
 
 	await putUploadFile({ upload, file });
 };
@@ -60,14 +84,16 @@ export const postAnnouncementImage = async ({ id, file }: { id: string; file: Fi
 export const deleteAnnouncementImage = async ({
 	id,
 	imageId,
+	idempotencyKey,
 }: {
 	id: string;
 	imageId: string;
+	idempotencyKey: string;
 }): Promise<Announcement> => {
 	const { data: announcement } = await apiRequest(
 		`/api/v1/backoffice/announcements/${id}/images/${imageId}`,
 		announcementSchema,
-		{ method: 'DELETE' },
+		{ method: 'DELETE', idempotencyKey },
 	);
 
 	return announcement;

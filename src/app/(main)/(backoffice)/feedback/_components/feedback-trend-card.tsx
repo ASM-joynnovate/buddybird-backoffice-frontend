@@ -10,7 +10,7 @@ import CountChange from '@/app/(main)/(backoffice)/_components/count-change';
 import DailyCountChart from '@/app/(main)/(backoffice)/_components/daily-count-chart';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-import { toToggledQuery } from '@/utils/search-params';
+import { toToggledQuery, toUrlSearchParams } from '@/utils/search-params';
 
 interface Props {
 	feedbackDashboard: FeedbackDashboard;
@@ -32,11 +32,7 @@ const FeedbackTrendCard = ({ feedbackDashboard, selectedDate, query, today }: Pr
 	const { feedback, daily } = feedbackDashboard;
 
 	const handleToggleDate = (date: string) => {
-		const searchParams = new URLSearchParams(
-			Object.entries(toToggledQuery(query, 'date', date)).map(([name, value]) => [name, String(value)]),
-		);
-
-		router.push(`/feedback?${searchParams.toString()}`, { scroll: false });
+		router.push(`/feedback?${toUrlSearchParams(toToggledQuery(query, 'date', date))}`, { scroll: false });
 	};
 
 	return (

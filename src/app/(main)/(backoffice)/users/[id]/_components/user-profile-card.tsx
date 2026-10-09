@@ -7,6 +7,7 @@ import { useNow } from '@/hooks/use-now';
 
 import dayjs from 'dayjs';
 import { Bell, Copy, Trash2, TriangleAlert } from 'lucide-react';
+import { toast } from 'sonner';
 
 import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
@@ -40,7 +41,6 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 
 	const [sendDialogOpen, setSendDialogOpen] = useState(false);
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-	const [idCopied, setIdCopied] = useState(false);
 
 	const { withdrawal } = userData;
 	const lastSeenDevice = userData.devices
@@ -48,9 +48,10 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 		.toSorted((a, b) => dayjs(b.last_seen_at).valueOf() - dayjs(a.last_seen_at).valueOf())[0];
 
 	const handleCopyId = () => {
-		void navigator.clipboard.writeText(userData.id);
-
-		setIdCopied(true);
+		navigator.clipboard
+			.writeText(userData.id)
+			.then(() => toast.success('사용자 ID를 복사했습니다.'))
+			.catch(() => toast.error('사용자 ID를 복사하지 못했습니다.'));
 	};
 
 	return (
@@ -66,12 +67,8 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 					<div>
 						<h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold">
 							{userData.nickname ?? '닉네임 없음'}
-							{userData.is_anonymous && (
-								<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">익명</Badge>
-							)}
-							{userData.is_deleted && (
-								<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">삭제됨</Badge>
-							)}
+							{userData.is_anonymous && <Badge variant="muted">익명</Badge>}
+							{userData.is_deleted && <Badge variant="muted">삭제됨</Badge>}
 						</h1>
 						{!!userData.email && <p className="text-muted-foreground">{userData.email}</p>}
 					</div>
@@ -96,14 +93,15 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 						<dd className={`${factValueClassName} wrap-anywhere`}>{userData.id}</dd>
 						<dd className={factNoteClassName}>Sentry 및 피드백에 표시되는 값</dd>
 
-						<button
-							type="button"
-							aria-label={idCopied ? '사용자 ID 복사됨' : '사용자 ID 복사'}
-							className="absolute top-2 right-2 grid size-6 place-items-center rounded-sm text-muted-foreground hover:bg-card hover:text-foreground"
+						<Button
+							variant="ghost"
+							size="icon-xs"
+							aria-label="사용자 ID 복사"
+							className="absolute top-2 right-2 text-muted-foreground hover:bg-card"
 							onClick={handleCopyId}
 						>
 							<Copy className="size-4" />
-						</button>
+						</Button>
 					</div>
 
 					<div className={factClassName}>

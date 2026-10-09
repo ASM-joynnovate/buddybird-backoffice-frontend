@@ -1,4 +1,4 @@
-import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQueryClient, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import {
 	deleteUser,
@@ -12,11 +12,13 @@ import {
 import type { UserListParams } from '@/types/apis/users';
 
 import { apiKeys } from '@/hooks/apis/keys';
+import { useIdempotentMutation } from '@/hooks/apis/use-idempotent-mutation';
 
 import { apiErrorMessage } from '@/lib/api';
 
+import { toast } from 'sonner';
+
 import { USER_SESSION_REFETCH_INTERVAL_MS } from '@/config';
-import { useMessageStore } from '@/providers/stores/message';
 
 /** 사용자 목록 조회 Hook에 사용할 옵션 */
 export const getUserListOptions = (listParams: UserListParams) =>
@@ -24,6 +26,16 @@ export const getUserListOptions = (listParams: UserListParams) =>
 /** 사용자 목록 조회 Hook */
 export const useGetUserList = (listParams: UserListParams) => {
 	return useSuspenseQuery(getUserListOptions(listParams));
+};
+
+/** 사용자 목록을 페이지마다 이어서 조회하는 Hook */
+export const useGetUserInfiniteList = (listParams: Omit<UserListParams, 'page'>) => {
+	return useSuspenseInfiniteQuery({
+		queryKey: apiKeys.users.infiniteList(listParams),
+		queryFn: ({ pageParam }) => getUserList({ ...listParams, page: pageParam }),
+		initialPageParam: 1,
+		getNextPageParam: ({ meta }) => (meta.is_last ? undefined : meta.current_page + 1),
+	});
 };
 
 /** 사용자 상세 조회 Hook에 사용할 옵션 */
@@ -70,16 +82,17 @@ export const useGetUserConsentList = ({ id }: { id: string }) => {
 export const useDeleteUser = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('users', 'delete'),
 		mutationFn: deleteUser,
-		onSuccess: () =>
-			Promise.all([
+		onSuccess: async () => {
+			await Promise.all([
 				queryClient.invalidateQueries({ queryKey: apiKeys.users.all() }),
 				queryClient.invalidateQueries({ queryKey: apiKeys.withdrawals.all() }),
-			]),
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+			]);
+
+			toast.success('사용자 삭제를 요청했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };

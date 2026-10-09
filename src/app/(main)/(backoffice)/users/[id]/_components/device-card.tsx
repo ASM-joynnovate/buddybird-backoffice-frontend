@@ -57,12 +57,8 @@ const DeviceCard = ({ id, initialNow }: Props) => {
 						<div className="mb-2 flex flex-wrap items-center justify-between gap-2">
 							<strong className="font-semibold">{device.client.model}</strong>
 
-							{device.id === stationDeviceId && (
-								<Badge className="rounded-sm bg-info/10 font-bold text-info">스테이션</Badge>
-							)}
-							{device.is_deleted && (
-								<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">로그아웃</Badge>
-							)}
+							{device.id === stationDeviceId && <Badge variant="info">스테이션</Badge>}
+							{device.is_deleted && <Badge variant="muted">로그아웃</Badge>}
 						</div>
 
 						<dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] *:**:[dt]:whitespace-nowrap *:**:[dt]:text-muted-foreground">

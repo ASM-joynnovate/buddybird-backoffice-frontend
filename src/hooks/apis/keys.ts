@@ -13,6 +13,7 @@ import type { WithdrawalListParams } from '@/types/apis/withdrawals';
 
 export const apiKeys = {
 	dashboard: {
+		all: () => ['api', 'dashboard'] as const,
 		detail: (dashboardParams: DashboardParams) => ['api', 'dashboard', dashboardParams] as const,
 		live: () => ['api', 'dashboard', 'live'] as const,
 		users: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'users', dashboardParams] as const,
@@ -28,6 +29,8 @@ export const apiKeys = {
 	users: {
 		all: () => ['api', 'users'] as const,
 		list: (listParams: UserListParams) => ['api', 'users', 'list', listParams] as const,
+		infiniteList: (listParams: Omit<UserListParams, 'page'>) =>
+			['api', 'users', 'infinite-list', listParams] as const,
 		detail: (id: string) => ['api', 'users', id] as const,
 		sessionList: (id: string, page: number) => ['api', 'users', id, 'sessions', page] as const,
 		wordList: (id: string) => ['api', 'users', id, 'words'] as const,

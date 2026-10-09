@@ -38,7 +38,10 @@ const Announcements = ({ activeListParams, endedListParams, query, now }: Props)
 				<AnnouncementScheduleCard listParams={activeListParams} now={now} />
 			</ErrorHandlingWrapper>
 
-			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<EndedAnnouncementSkeleton />>
+			<ErrorHandlingWrapper
+				fallbackComponent={QueryError}
+				suspenseFallback=<EndedAnnouncementSkeleton query={query} />
+			>
 				<EndedAnnouncementCard listParams={endedListParams} query={query} />
 			</ErrorHandlingWrapper>
 		</>

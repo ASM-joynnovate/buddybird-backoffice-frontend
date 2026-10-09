@@ -20,14 +20,16 @@ import { countDays } from '@/utils/date';
 interface Props {
 	dashboardParams: DashboardParams;
 	today: string;
+	now: number;
 }
 
 /**
  * 기간별 카드 목록 컴포넌트
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param today 오늘 날짜
+ * @param now 서버가 화면을 그린 시각
  */
-const DashboardCards = ({ dashboardParams, today }: Props) => {
+const DashboardCards = ({ dashboardParams, today, now }: Props) => {
 	const { data: dashboardData } = useGetDashboard(dashboardParams);
 
 	const dayCount = countDays(dashboardParams.date_from, dashboardParams.date_to);
@@ -83,6 +85,7 @@ const DashboardCards = ({ dashboardParams, today }: Props) => {
 					<AnnouncementCard
 						announcements={dashboardData.announcements}
 						userCount={dashboardData.users.total_count}
+						now={now}
 					/>
 					<AppVersionCard devices={dashboardData.devices} />
 					<NotificationCard notifications={dashboardData.notifications} />

@@ -2,7 +2,11 @@
 
 import { Component, type ComponentType, type ReactNode } from 'react';
 
+import { ApiError } from '@/types/apis/common';
+
 import type { ErrorFallbackProps } from '@/types/error-boundary';
+
+import * as Sentry from '@sentry/nextjs';
 
 interface Props {
 	FallbackComponent: ComponentType<ErrorFallbackProps>;
@@ -26,6 +30,13 @@ class QueryErrorBoundary extends Component<Props, State> {
 	/** 오류 상태 변경 */
 	static getDerivedStateFromError = (error: Error) => {
 		return { error };
+	};
+
+	/** API 오류가 아닌 오류를 Sentry에 보고 */
+	componentDidCatch = (error: Error) => {
+		if (!(error instanceof ApiError)) {
+			Sentry.captureException(error);
+		}
 	};
 
 	/** 오류 상태 초기화 */

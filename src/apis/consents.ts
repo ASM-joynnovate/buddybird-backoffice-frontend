@@ -15,24 +15,40 @@ export const getConsentList = async (): Promise<Consent[]> => {
 	return consents;
 };
 
-export const postConsent = async ({ data }: { data: CreateConsentRequest }): Promise<Consent> => {
+export const postConsent = async ({
+	data,
+	idempotencyKey,
+}: {
+	data: CreateConsentRequest;
+	idempotencyKey: string;
+}): Promise<Consent> => {
 	const { data: consent } = await apiRequest('/api/v1/backoffice/consents', consentSchema, {
 		method: 'POST',
 		json: data,
+		idempotencyKey,
 	});
 
 	return consent;
 };
 
-export const patchConsent = async ({ id, data }: { id: string; data: UpdateConsentRequest }): Promise<Consent> => {
+export const patchConsent = async ({
+	id,
+	data,
+	idempotencyKey,
+}: {
+	id: string;
+	data: UpdateConsentRequest;
+	idempotencyKey: string;
+}): Promise<Consent> => {
 	const { data: consent } = await apiRequest(`/api/v1/backoffice/consents/${id}`, consentSchema, {
 		method: 'PATCH',
 		json: data,
+		idempotencyKey,
 	});
 
 	return consent;
 };
 
-export const deleteConsent = async ({ id }: { id: string }): Promise<void> => {
-	await apiRequest(`/api/v1/backoffice/consents/${id}`, z.unknown(), { method: 'DELETE' });
+export const deleteConsent = async ({ id, idempotencyKey }: { id: string; idempotencyKey: string }): Promise<void> => {
+	await apiRequest(`/api/v1/backoffice/consents/${id}`, z.unknown(), { method: 'DELETE', idempotencyKey });
 };

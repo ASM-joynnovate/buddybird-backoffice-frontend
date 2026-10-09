@@ -4,6 +4,8 @@ import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { toPlatformName } from '@/utils/platform';
 
+import { Skeleton } from '@/components/ui/skeleton';
+
 interface Props {
 	platform: Platform;
 	latestVersions?: Partial<Record<Platform, string>>;
@@ -25,11 +27,13 @@ const PlatformFilter = ({ platform, latestVersions }: Props) => {
 						<PlatformIcon platform={platformOption} selected={platformOption === platform} />
 						{toPlatformName(platformOption)}
 
-						{/*로딩 중에는 버전을 표시하지 않음*/}
-						{!!latestVersions && (
+						{/*로딩 중에는 버전 자리만 표시*/}
+						{latestVersions ? (
 							<span className="font-medium tabular-nums opacity-72">
 								{latestVersions[platformOption] ?? '등록 전'}
 							</span>
+						) : (
+							<Skeleton className="h-3.5 w-8.5" />
 						)}
 					</>
 				),

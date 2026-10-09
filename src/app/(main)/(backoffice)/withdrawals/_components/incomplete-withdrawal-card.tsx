@@ -1,9 +1,12 @@
 'use client';
 
-import { ViewTransition } from 'react';
+import { useEffect, useRef, ViewTransition } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 import type { WithdrawalListParams } from '@/types/apis/withdrawals';
 
+import { apiKeys } from '@/hooks/apis/keys';
 import { useGetWithdrawalList } from '@/hooks/apis/withdrawals';
 import { useNow } from '@/hooks/use-now';
 
@@ -24,9 +27,26 @@ interface Props {
  * @param initialNow 서버가 화면을 그린 시각
  */
 const IncompleteWithdrawalCard = ({ listParams, initialNow }: Props) => {
+	const queryClient = useQueryClient();
+
 	const { data: withdrawalListData } = useGetWithdrawalList(listParams);
 
 	const now = useNow(initialNow);
+
+	const userIdsRef = useRef(withdrawalListData.data.map((withdrawal) => withdrawal.user_id));
+
+	/** 처리 중 목록에서 빠진 탈퇴가 있으면 완료 목록 및 대시보드 다시 조회 */
+	useEffect(() => {
+		const userIds = withdrawalListData.data.map((withdrawal) => withdrawal.user_id);
+		const withdrawalFinished = userIdsRef.current.some((userId) => !userIds.includes(userId));
+
+		userIdsRef.current = userIds;
+
+		if (withdrawalFinished) {
+			void queryClient.invalidateQueries({ queryKey: apiKeys.withdrawals.all() });
+			void queryClient.invalidateQueries({ queryKey: apiKeys.dashboard.all() });
+		}
+	}, [queryClient, withdrawalListData.data]);
 
 	const statusGroups = INCOMPLETE_WITHDRAWAL_STATUSES.map((withdrawalStatus) => ({
 		...withdrawalStatus,

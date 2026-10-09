@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
 
 import AuthProvider from '@/providers/auth';
-import MessageProvider from '@/providers/message';
 import ReactQueryProvider from '@/providers/react-query';
-import { MessageStoreProvider } from '@/providers/stores/message';
+
+import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 interface Props {
 	children: ReactNode;
@@ -16,11 +17,11 @@ interface Props {
 const Providers = ({ children }: Props) => {
 	return (
 		<ReactQueryProvider>
-			<MessageStoreProvider>
-				<AuthProvider>
-					<MessageProvider>{children}</MessageProvider>
-				</AuthProvider>
-			</MessageStoreProvider>
+			<TooltipProvider>
+				<AuthProvider>{children}</AuthProvider>
+			</TooltipProvider>
+
+			<Toaster />
 		</ReactQueryProvider>
 	);
 };

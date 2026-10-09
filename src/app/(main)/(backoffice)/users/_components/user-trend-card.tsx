@@ -110,7 +110,12 @@ const UserTrendCard = ({ userDashboard, today }: Props) => {
 									</linearGradient>
 								</defs>
 
-								<XAxis dataKey="date" hide />
+								<XAxis
+									dataKey="date"
+									hide
+									// 점을 아래 막대 칸의 가운데에 표시
+									scale="band"
+								/>
 								<YAxis
 									width={48}
 									tickLine={false}

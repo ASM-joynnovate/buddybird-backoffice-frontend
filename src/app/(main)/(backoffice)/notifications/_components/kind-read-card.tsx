@@ -63,11 +63,7 @@ const KindReadCard = ({ notificationDashboard, query }: Props) => {
 										<span className="group-hover:underline group-hover:underline-offset-3">
 											{NOTIFICATION_KINDS[kindCount.kind].label}
 										</span>
-										{kindCount.kind === 'report' && (
-											<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">
-												자동
-											</Badge>
-										)}
+										{kindCount.kind === 'report' && <Badge variant="muted">자동</Badge>}
 									</span>
 
 									<b className="font-bold">{readPercent}%</b>

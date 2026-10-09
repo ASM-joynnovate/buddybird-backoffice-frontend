@@ -95,7 +95,10 @@ const SearchBar = ({
 	};
 
 	return (
-		<div className="@container relative z-10 -mt-2 mb-2 flex flex-wrap items-center gap-2 bg-background py-2 md:sticky md:top-0">
+		<div
+			// 목록 행 전환 중에도 위에 표시
+			className="@container relative z-10 -mt-2 mb-2 flex flex-wrap items-center gap-2 bg-background py-2 [view-transition-name:search-bar] md:sticky md:top-0"
+		>
 			{/*검색어가 바뀌면 입력값을 새로 채움*/}
 			<Form
 				key={keyword}
@@ -118,14 +121,16 @@ const SearchBar = ({
 					maxLength={KEYWORD_MAX_LENGTH}
 					className="peer h-full min-w-0 flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground [&::-webkit-search-cancel-button]:hidden"
 				/>
-				<button
+				<Button
 					type="button"
+					variant="ghost"
+					size="icon-xs"
 					aria-label="검색어 지우기"
-					className="grid size-6 place-items-center rounded-sm peer-placeholder-shown:hidden hover:bg-muted hover:text-foreground"
+					className="peer-placeholder-shown:hidden"
 					onClick={handleClearKeyword}
 				>
 					<X className="size-3.5" />
-				</button>
+				</Button>
 				<kbd
 					title="/ 키를 누르면 검색창으로 이동합니다"
 					className="hidden h-5 min-w-5 place-items-center rounded-sm bg-muted px-1.5 font-sans text-xs font-semibold peer-placeholder-shown:grid"

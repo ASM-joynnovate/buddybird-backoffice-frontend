@@ -1,23 +1,14 @@
 'use client';
 
 import type { Dashboard } from '@/types/apis/dashboard';
-import type { NotificationKind } from '@/types/apis/notifications';
 
 import HalfDonutChart from '@/app/(main)/(backoffice)/_components/half-donut-chart';
+import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { formatDateTime } from '@/utils/date';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
-import type { ChartConfig } from '@/components/ui/chart';
-
-const chartConfig = {
-	report: { label: '리포트', color: 'var(--chart-1)' },
-	announcement: { label: '공지', color: 'var(--chart-2)' },
-	marketing: { label: '마케팅', color: 'var(--chart-3)' },
-	urgent: { label: '긴급', color: 'var(--chart-4)' },
-} satisfies ChartConfig;
-
-const notificationKinds: NotificationKind[] = ['report', 'announcement', 'marketing', 'urgent'];
+const KIND_ORDER = Object.keys(NOTIFICATION_KINDS);
 
 interface Props {
 	notifications: Dashboard['notifications'];
@@ -30,9 +21,7 @@ interface Props {
 const NotificationCard = ({ notifications }: Props) => {
 	const sentCount = notifications.kinds.reduce((total, kindCount) => total + kindCount.sent_count, 0);
 	const readCount = notifications.kinds.reduce((total, kindCount) => total + kindCount.read_count, 0);
-	const kindCounts = notifications.kinds.toSorted(
-		(a, b) => notificationKinds.indexOf(a.kind) - notificationKinds.indexOf(b.kind),
-	);
+	const kindCounts = notifications.kinds.toSorted((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind));
 
 	// 건수가 없는 목록은 제외
 	const notificationSections = [
@@ -50,9 +39,9 @@ const NotificationCard = ({ notifications }: Props) => {
 					<HalfDonutChart
 						title="알림의 종류별 건수"
 						parts={kindCounts.map((kindCount) => ({
-							name: chartConfig[kindCount.kind].label,
+							name: NOTIFICATION_KINDS[kindCount.kind].label,
 							count: kindCount.sent_count,
-							color: chartConfig[kindCount.kind].color,
+							color: NOTIFICATION_KINDS[kindCount.kind].color,
 						}))}
 						value={`${Math.round((readCount / sentCount) * 100)}%`}
 						label="읽음"
@@ -64,9 +53,9 @@ const NotificationCard = ({ notifications }: Props) => {
 							<li key={kindCount.kind} className="flex items-center gap-2 py-1.5">
 								<span
 									className="size-2 rounded-full"
-									style={{ backgroundColor: chartConfig[kindCount.kind].color }}
+									style={{ backgroundColor: NOTIFICATION_KINDS[kindCount.kind].color }}
 								/>
-								{chartConfig[kindCount.kind].label}
+								{NOTIFICATION_KINDS[kindCount.kind].label}
 								<strong className="ml-auto font-bold">
 									{kindCount.sent_count.toLocaleString('ko-KR')}
 								</strong>
@@ -102,9 +91,9 @@ const NotificationCard = ({ notifications }: Props) => {
 								<p className="col-span-2 flex items-center gap-1.5 text-[13px] text-muted-foreground">
 									<span
 										className="size-2 rounded-full"
-										style={{ backgroundColor: chartConfig[notification.kind].color }}
+										style={{ backgroundColor: NOTIFICATION_KINDS[notification.kind].color }}
 									/>
-									{chartConfig[notification.kind].label}
+									{NOTIFICATION_KINDS[notification.kind].label}
 									<span className="ml-1">{formatDateTime(notification.sent_at)}</span>
 
 									{notificationSection.readRateVisible && (

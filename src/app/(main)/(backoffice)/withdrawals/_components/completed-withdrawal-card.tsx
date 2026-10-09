@@ -18,12 +18,11 @@ import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import SortLink from '@/app/(main)/(backoffice)/_components/sort-link';
 import StepChip from '@/app/(main)/(backoffice)/_components/step-chip';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
+import UserSummary from '@/app/(main)/(backoffice)/_components/user-summary';
 import { countDays, formatDate, formatDuration, formatShortDate, formatShortDateTime } from '@/utils/date';
 import { toPlatformName } from '@/utils/platform';
 
 import PageNavigation from '@/components/page-navigation';
-import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
@@ -126,33 +125,7 @@ const CompletedWithdrawalCard = ({ listParams, query }: Props) => {
 													href={`/users/${withdrawal.user_id}`}
 													className="flex max-w-60 min-w-0 items-center gap-2.5 after:absolute after:inset-0 max-md:max-w-50"
 												>
-													<UserAvatar
-														photoUrl={user.photo_file?.url}
-														nickname={user.nickname}
-														className="transition-colors group-hover:bg-card"
-													/>
-
-													<span className="min-w-0">
-														{user.nickname ? (
-															<strong className="block truncate font-semibold">
-																{user.nickname}
-															</strong>
-														) : (
-															<span className="block text-muted-foreground">
-																닉네임 없음
-															</span>
-														)}
-
-														{user.is_anonymous ? (
-															<Badge className="rounded-sm bg-muted font-bold text-muted-foreground group-hover:bg-card">
-																익명
-															</Badge>
-														) : (
-															<span className="block truncate text-[13px] text-muted-foreground">
-																{user.email}
-															</span>
-														)}
-													</span>
+													<UserSummary user={user} />
 												</Link>
 											</TableCell>
 

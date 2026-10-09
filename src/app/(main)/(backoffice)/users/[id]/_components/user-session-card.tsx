@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import SessionTimeline from '@/app/(main)/(backoffice)/users/[id]/_components/session-timeline';
+import SessionTimelineSkeleton from '@/app/(main)/(backoffice)/users/[id]/_components/session-timeline-skeleton';
 import SessionTrack from '@/app/(main)/(backoffice)/users/[id]/_components/session-track';
 import { SESSION_ENDED_REASONS } from '@/config/session';
 import { formatDateTime, toHoursAndMinutes } from '@/utils/date';
@@ -21,9 +22,6 @@ import QueryError from '@/components/query-error';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-
-const PLACEHOLDER_ROW_COUNT = 7;
 
 interface Props {
 	id: string;
@@ -91,14 +89,9 @@ const UserSessionCard = ({ id, page, initialNow }: Props) => {
 							</strong>
 
 							{session.status === 'running' ? (
-								<Badge className="rounded-sm bg-success/10 font-bold text-success">실행 중</Badge>
+								<Badge variant="success">실행 중</Badge>
 							) : (
-								<Badge
-									className={cn(
-										'rounded-sm bg-muted font-bold text-muted-foreground',
-										endedReason === 'heartbeat_expired' && 'bg-destructive/10 text-destructive',
-									)}
-								>
+								<Badge variant={endedReason === 'heartbeat_expired' ? 'destructive' : 'muted'}>
 									{endedReason ? SESSION_ENDED_REASONS[endedReason].label : '종료'}
 								</Badge>
 							)}
@@ -147,11 +140,7 @@ const UserSessionCard = ({ id, page, initialNow }: Props) => {
 			<ErrorHandlingWrapper
 				key={selectedSession.session.id}
 				fallbackComponent={QueryError}
-				suspenseFallback=<div className="grid content-start gap-3 p-4 md:px-5.5 md:py-5">
-					{Array.from({ length: PLACEHOLDER_ROW_COUNT }, (_, index) => (
-						<Skeleton key={index} className="h-6" />
-					))}
-				</div>
+				suspenseFallback=<SessionTimelineSkeleton />
 			>
 				<SessionTimeline
 					session={selectedSession.session}

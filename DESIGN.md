@@ -466,22 +466,22 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 
 ## Elevation & Depth
 
-깊이는 배경의 밝기 차이 및 1px 선으로 표현하고, 그림자는 그래프 툴팁에만 사용한다.
+깊이는 배경의 밝기 차이 및 1px 선으로 표현하고, 그림자는 다른 내용 위에 겹쳐 표시하는 요소에만 사용한다.
 배경은 `background`, `card`, 카드 안의 `muted` 및 `card-inset` 순서로 겹친다.
 `card`는 밝은 화면 및 어두운 화면에서 모두 `background`보다 밝고, `card-inset`은 두 화면에서 모두 `card`보다 어둡다.
-`muted`는 밝은 화면에서 `card`보다 어둡고 어두운 화면에서는 `card`보다 밝다.
+`muted`는 밝은 화면에서 `card`보다 어둡고, 어두운 화면에서는 `card`보다 밝다.
 
 ### Shadow Vocabulary
 
 `box-shadow`에는 아래 값을 사용한다.
 
 - **Card outline**: `box-shadow: 0 0 0 1px var(--border)`. 카드 경계를 표시하는 1px 선
-- **Tooltip shadow**: `box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.4)`. 그래프 위에 표시하는 툴팁, Icon toggle의 툴팁, 칸 위에 겹쳐 놓는 Paging button
+- **Tooltip shadow**: `box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.4)`. 다이얼로그, 그래프 위에 표시하는 툴팁, Icon toggle의 툴팁 및 칸 위에 겹쳐 표시하는 Paging button
 
 ### Named Rules
 
 **The Flat Surface Rule.** 카드, 버튼, 입력에는 그림자를 적용하지 않는다.
-그림자는 다른 내용 위에 겹쳐 표시하는 툴팁 및 Paging button에만 사용한다.
+그림자는 다른 내용 위에 겹쳐 표시하는 툴팁, Paging button 및 다이얼로그에만 사용한다.
 
 ## Shapes
 

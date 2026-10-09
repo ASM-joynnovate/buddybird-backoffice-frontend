@@ -10,8 +10,8 @@ import { apiKeys } from '@/hooks/apis/keys';
 
 import AppUpdateForm from '@/app/(main)/(backoffice)/app-updates/_components/app-update-form';
 
-import ContentSkeleton from '@/components/content-skeleton';
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
+import FormDialogSkeleton from '@/components/form-dialog-skeleton';
 import QueryError from '@/components/query-error';
 import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -46,7 +46,7 @@ const AppUpdateFormDialog = ({ platform, appUpdate, onClose }: Props) => {
 				</DialogHeader>
 
 				<DialogBody>
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
+					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<FormDialogSkeleton />>
 						<AppUpdateForm
 							platform={platform}
 							appUpdate={appUpdate}

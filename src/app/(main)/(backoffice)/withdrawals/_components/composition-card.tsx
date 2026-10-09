@@ -7,6 +7,7 @@ import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toPlatformName } from '@/utils/platform';
+import { compareVersions } from '@/utils/version';
 
 const accountProviders = [
 	{ provider: 'google', colorClassName: 'bg-chart-2' },
@@ -83,7 +84,7 @@ const CompositionCard = ({ withdrawalDashboard }: Props) => {
 			title: '앱 버전',
 			// 높은 버전부터 옅어지는 색
 			counts: app_versions
-				.toSorted((a, b) => b.app_version.localeCompare(a.app_version, undefined, { numeric: true }))
+				.toSorted((a, b) => compareVersions(b.app_version, a.app_version))
 				.map(({ app_version, count }, index) => ({
 					label: app_version,
 					count,

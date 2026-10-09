@@ -56,11 +56,17 @@ export const getNotificationDispatch = async ({ id }: { id: string }): Promise<N
 	return notificationDispatch;
 };
 
-export const postNotificationDispatchCancel = async ({ id }: { id: string }): Promise<DispatchCancelResult> => {
+export const postNotificationDispatchCancel = async ({
+	id,
+	idempotencyKey,
+}: {
+	id: string;
+	idempotencyKey: string;
+}): Promise<DispatchCancelResult> => {
 	const { data: dispatchCancelResult } = await apiRequest(
 		`/api/v1/backoffice/notifications/dispatches/${id}/cancel`,
 		dispatchCancelResultSchema,
-		{ method: 'POST' },
+		{ method: 'POST', idempotencyKey },
 	);
 
 	return dispatchCancelResult;
@@ -92,20 +98,28 @@ export const getPushDeliveryList = async ({ device_id, page }: PushDeliveryListP
 
 export const postNotificationBroadcast = async ({
 	data,
+	idempotencyKey,
 }: {
 	data: BroadcastNotificationRequest;
+	idempotencyKey: string;
 }): Promise<BroadcastResult> => {
 	const { data: broadcastResult } = await apiRequest(
 		'/api/v1/backoffice/notifications/broadcast',
 		broadcastResultSchema,
-		{ method: 'POST', json: data },
+		{ method: 'POST', json: data, idempotencyKey },
 	);
 
 	return broadcastResult;
 };
 
-export const postNotificationImage = async ({ file }: { file: File }): Promise<string> => {
-	const upload = await postNotificationImageUpload({ file });
+export const postNotificationImage = async ({
+	file,
+	idempotencyKey,
+}: {
+	file: File;
+	idempotencyKey: string;
+}): Promise<string> => {
+	const upload = await postNotificationImageUpload({ file, idempotencyKey });
 
 	await putUploadFile({ upload, file });
 

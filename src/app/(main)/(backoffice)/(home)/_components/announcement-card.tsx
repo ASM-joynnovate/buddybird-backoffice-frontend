@@ -11,16 +11,16 @@ import { Badge } from '@/components/ui/badge';
 interface Props {
 	announcements: Dashboard['announcements'];
 	userCount: number;
+	now: number;
 }
 
 /**
  * 공지 카드 컴포넌트
  * @param announcements 끝나지 않은 공지 목록
  * @param userCount 전체 사용자 수
+ * @param now 서버가 화면을 그린 시각
  */
-const AnnouncementCard = ({ announcements, userCount }: Props) => {
-	const now = dayjs();
-
+const AnnouncementCard = ({ announcements, userCount, now }: Props) => {
 	return (
 		<TitledCard title="공지" href="/announcements" linkLabel="공지 관리">
 			{announcements.length === 0 && (
@@ -35,16 +35,16 @@ const AnnouncementCard = ({ announcements, userCount }: Props) => {
 					>
 						<p className="font-semibold">{koreanOrEnglishText(announcement.title)}</p>
 
-						{now.isBefore(announcement.starts_at) ? (
+						{dayjs(now).isBefore(announcement.starts_at) ? (
 							<>
-								<Badge className="rounded-sm bg-info/10 font-bold text-info">예약</Badge>
+								<Badge variant="info">예약</Badge>
 								<p className="col-span-2 text-[13px] text-muted-foreground">
 									{formatDateTime(announcement.starts_at)} 시작
 								</p>
 							</>
 						) : (
 							<>
-								<Badge className="rounded-sm bg-success/10 font-bold text-success">게시 중</Badge>
+								<Badge variant="success">게시 중</Badge>
 								<p className="col-span-2 text-[13px] text-muted-foreground">
 									사용자의 {userCount ? Math.round((announcement.read_count / userCount) * 100) : 0}
 									%가 읽음

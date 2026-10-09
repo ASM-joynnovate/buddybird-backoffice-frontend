@@ -14,10 +14,12 @@ import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-co
 import { diffLines, type LineChange } from '@/utils/diff';
 
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const changedLinesClassName =
 	'relative -mr-5 -ml-8 block pr-5 pl-8 no-underline before:absolute before:top-0 before:left-3.5 before:font-bold max-md:-mr-4 max-md:-ml-7 max-md:pr-4 max-md:pl-7 max-md:before:left-2.5';
-const summaryTagClassName = 'gap-0.5 rounded-sm pl-1.5 font-bold tabular-nums';
+const summaryTagClassName = 'gap-0.5 pl-1.5 tabular-nums';
 
 interface Props {
 	consent: Consent;
@@ -79,14 +81,11 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 					{compared && !!previousConsent && (
 						<p title={lineChangeSummary} className="flex gap-1.5 max-md:gap-1">
 							<span className="sr-only">{lineChangeSummary}</span>
-							<Badge aria-hidden className={cn(summaryTagClassName, 'bg-success/10 text-success')}>
+							<Badge aria-hidden variant="success" className={summaryTagClassName}>
 								<Plus strokeWidth={2.5} />
 								{addedLineCount}
 							</Badge>
-							<Badge
-								aria-hidden
-								className={cn(summaryTagClassName, 'bg-destructive/10 text-destructive')}
-							>
+							<Badge aria-hidden variant="destructive" className={summaryTagClassName}>
 								<Minus strokeWidth={2.5} />
 								{removedLineCount}
 							</Badge>
@@ -95,23 +94,20 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 
 					{/*비교 버튼은 key를 고정*/}
 					{!!previousConsent && (
-						<div key="compare" className="relative">
-							<button
-								type="button"
+						<Tooltip key="compare">
+							<TooltipTrigger
+								render=<Button variant="outline" size="icon-sm" />
 								aria-label="이전 버전과 비교"
 								aria-pressed={compared}
-								className="peer grid size-7 place-items-center rounded-sm border bg-card transition-colors hover:border-chart-neutral hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-card"
+								className="aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-card"
 								onClick={() => onComparedChange(!compared)}
 							>
-								<Diff className="size-4" />
-							</button>
-							<span
-								aria-hidden
-								className="pointer-events-none absolute top-[calc(100%+8px)] right-0 z-10 rounded-md bg-tooltip px-2.5 py-1.5 text-xs leading-[1.4] font-semibold whitespace-nowrap text-tooltip-foreground opacity-0 shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] transition-opacity duration-120 peer-focus-visible:opacity-100 peer-[:hover]:opacity-100"
-							>
+								<Diff />
+							</TooltipTrigger>
+							<TooltipContent side="bottom" align="end" sideOffset={8}>
 								이전 버전과 비교
-							</span>
-						</div>
+							</TooltipContent>
+						</Tooltip>
 					)}
 				</div>
 			</div>

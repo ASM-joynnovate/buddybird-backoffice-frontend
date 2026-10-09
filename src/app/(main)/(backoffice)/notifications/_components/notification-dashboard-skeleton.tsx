@@ -1,6 +1,7 @@
+import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_KIND_COUNT = 4;
 
@@ -9,18 +10,28 @@ const NotificationDashboardSkeleton = () => {
 	return (
 		<>
 			<TitledCard title="알림 추이">
-				<Skeleton className="h-12 w-35" />
-				<Skeleton className="mt-2 h-5 w-37.5" />
+				<SkeletonText className="w-35 text-[44px] leading-[1.1]" />
+				<SkeletonText className="mt-1.5 w-37.5 text-[13px]" />
 				<Skeleton className="mt-3.5 h-38" />
-				<Skeleton className="mt-3.5 h-15.5" />
+				<dl className="mt-3.5 grid grid-cols-2 gap-2">
+					<StatCell label="읽음">
+						<SkeletonText className="w-12" />
+					</StatCell>
+					<StatCell label="푸시 발송">
+						<SkeletonText className="w-12" />
+					</StatCell>
+				</dl>
 			</TitledCard>
 
 			<TitledCard title="종류별 읽음">
-				<div className="grid gap-2">
+				<ul className="divide-y">
 					{Array.from({ length: PLACEHOLDER_KIND_COUNT }, (_, index) => (
-						<Skeleton key={index} className="h-11" />
+						<li key={index} className="grid gap-2 py-3 first:pt-0 last:pb-0">
+							<SkeletonText className="h-5.25" />
+							<Skeleton className="h-2 rounded-full" />
+						</li>
 					))}
-				</div>
+				</ul>
 			</TitledCard>
 		</>
 	);

@@ -4,6 +4,8 @@ import useAudioPlayer from '@/hooks/use-audio-player';
 
 import { Play, Square } from 'lucide-react';
 
+import { formatAudioDuration } from '@/utils/audio';
+
 interface Props {
 	audioUrl: string;
 	label: string;
@@ -41,9 +43,7 @@ const RecordingItem = ({ audioUrl, label, wordName }: Props) => {
 			</span>
 
 			{durationSeconds !== null && (
-				<time className="text-muted-foreground tabular-nums">
-					{Math.floor(durationSeconds / 60)}:{String(Math.round(durationSeconds % 60)).padStart(2, '0')}
-				</time>
+				<time className="text-muted-foreground tabular-nums">{formatAudioDuration(durationSeconds)}</time>
 			)}
 		</li>
 	);

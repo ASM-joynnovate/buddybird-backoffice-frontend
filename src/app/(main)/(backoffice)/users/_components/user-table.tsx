@@ -17,7 +17,7 @@ import { TriangleAlert } from 'lucide-react';
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import SortLink from '@/app/(main)/(backoffice)/_components/sort-link';
-import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
+import UserSummary from '@/app/(main)/(backoffice)/_components/user-summary';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
 import { SESSION_PHASES } from '@/config/session';
 import { DAY, HOUR } from '@/config/units';
@@ -128,27 +128,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 													user.is_deleted && 'opacity-55',
 												)}
 											>
-												<UserAvatar photoUrl={user.photo_file?.url} nickname={user.nickname} />
-
-												<span className="min-w-0">
-													{user.nickname ? (
-														<strong className="block truncate font-semibold">
-															{user.nickname}
-														</strong>
-													) : (
-														<span className="block text-muted-foreground">닉네임 없음</span>
-													)}
-
-													{user.is_anonymous ? (
-														<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">
-															익명
-														</Badge>
-													) : (
-														<span className="block truncate text-[13px] text-muted-foreground">
-															{user.email}
-														</span>
-													)}
-												</span>
+												<UserSummary user={user} />
 											</Link>
 										</TableCell>
 
@@ -185,11 +165,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 										</TableCell>
 
 										<TableCell>
-											{user.is_deleted && (
-												<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">
-													삭제됨
-												</Badge>
-											)}
+											{user.is_deleted && <Badge variant="muted">삭제됨</Badge>}
 
 											{!user.is_deleted && !!user.running_session && (
 												<ColorTag

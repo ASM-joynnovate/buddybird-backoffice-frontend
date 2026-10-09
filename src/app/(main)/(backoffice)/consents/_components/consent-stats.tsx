@@ -180,7 +180,7 @@ const ConsentStats = ({ consent, dashboardParams, today }: Props) => {
 											barPercent={row.percent}
 											percent={row.percent}
 											barClassName={row.barClassName}
-											className="grid-cols-[52px_minmax(0,1fr)_36px] gap-2 text-[13px]"
+											className="grid-cols-[52px_minmax(0,1fr)_40px] gap-2 text-[13px]"
 										/>
 									))}
 								</ul>

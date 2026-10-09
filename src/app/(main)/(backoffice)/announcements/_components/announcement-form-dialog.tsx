@@ -25,6 +25,7 @@ import { DEFAULT_PUSH_LOCAL_TIME, TITLE_MAX_LENGTH } from '@/config';
 import { toDateTimeInputValue, toHourMinute, toTimestamp } from '@/utils/date';
 import { englishTextMissing, toI18nFieldValue, toI18nText, toOptionalI18nText } from '@/utils/i18n-text';
 
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -59,6 +60,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 	});
 
 	const [previewLocale, setPreviewLocale] = useState<keyof I18nFieldValue>('ko_kr');
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
 	const createAnnouncement = useCreateAnnouncement();
@@ -103,13 +105,18 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			return;
 		}
 
+		// 사진 요청마다 idempotency key
 		saveAnnouncementImages.mutate(
-			{ id, deletedImageIds, addedImageFiles: pickedImages.map(({ file }) => file) },
+			{
+				id,
+				deletedImages: deletedImageIds.map((imageId) => ({ imageId, idempotencyKey: crypto.randomUUID() })),
+				addedImages: pickedImages.map(({ file }) => ({ file, idempotencyKey: crypto.randomUUID() })),
+			},
 			{ onSettled: onClose },
 		);
 	};
 
-	const handleSave = (event: SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		if (saving) {
@@ -123,6 +130,14 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		setEndsAtInvalid(nextEndsAtInvalid);
 
 		if (nextEnglishBodyMissing || nextEndsAtInvalid) {
+			return;
+		}
+
+		setConfirmDialogOpen(true);
+	};
+
+	const handleSave = () => {
+		if (saving) {
 			return;
 		}
 
@@ -146,19 +161,22 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 						? announcementRequest
 						: { ...announcementRequest, ...pushRequest },
 				},
-				{ onSuccess: saveImages },
+				{ onSuccess: saveImages, onError: () => setConfirmDialogOpen(false) },
 			);
 
 			return;
 		}
 
-		createAnnouncement.mutate({ data: { ...announcementRequest, ...pushRequest } }, { onSuccess: saveImages });
+		createAnnouncement.mutate(
+			{ data: { ...announcementRequest, ...pushRequest } },
+			{ onSuccess: saveImages, onError: () => setConfirmDialogOpen(false) },
+		);
 	};
 
 	return (
 		<Dialog open onOpenChange={handleOpenChange}>
 			<DialogContent className="gap-0 p-0 sm:max-w-280">
-				<form onSubmit={handleSave} className="flex min-h-0 flex-col">
+				<form onSubmit={handleSubmit} className="flex min-h-0 flex-col">
 					<DialogHeader className="border-b px-6 py-4">
 						<DialogTitle className="font-bold">{announcement ? '공지 수정' : '공지 작성'}</DialogTitle>
 					</DialogHeader>
@@ -290,12 +308,25 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 						<Button type="button" variant="outline" disabled={saving} onClick={onClose}>
 							취소
 						</Button>
-						<Button type="submit" disabled={saving}>
+						<Button type="submit" loading={saving}>
 							저장
 						</Button>
 					</DialogFooter>
 				</form>
 			</DialogContent>
+
+			<ConfirmDialog
+				open={confirmDialogOpen}
+				text={
+					announcement
+						? { title: '공지를 수정할까요?', confirm: '저장' }
+						: { title: '공지를 게시할까요?', confirm: '게시' }
+				}
+				confirmVariant="default"
+				busy={saving}
+				onConfirm={handleSave}
+				onClose={() => setConfirmDialogOpen(false)}
+			/>
 
 			{!!announcement && (
 				<DeleteAnnouncementDialog

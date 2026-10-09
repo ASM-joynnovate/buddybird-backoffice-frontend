@@ -15,7 +15,13 @@ export const getPresetWordList = async (): Promise<PresetWord[]> => {
 	return presetWords;
 };
 
-export const postPresetWord = async ({ data }: { data: CreatePresetWordRequest }): Promise<PresetWord> => {
+export const postPresetWord = async ({
+	data,
+	idempotencyKey,
+}: {
+	data: CreatePresetWordRequest;
+	idempotencyKey: string;
+}): Promise<PresetWord> => {
 	const formData = new FormData();
 
 	formData.append('language', data.language);
@@ -25,6 +31,7 @@ export const postPresetWord = async ({ data }: { data: CreatePresetWordRequest }
 	const { data: presetWord } = await apiRequest('/api/v1/backoffice/preset-words', presetWordSchema, {
 		method: 'POST',
 		body: formData,
+		idempotencyKey,
 	});
 
 	return presetWord;
@@ -33,9 +40,11 @@ export const postPresetWord = async ({ data }: { data: CreatePresetWordRequest }
 export const patchPresetWord = async ({
 	id,
 	data,
+	idempotencyKey,
 }: {
 	id: string;
 	data: UpdatePresetWordRequest;
+	idempotencyKey: string;
 }): Promise<PresetWord> => {
 	const formData = new FormData();
 
@@ -50,11 +59,18 @@ export const patchPresetWord = async ({
 	const { data: presetWord } = await apiRequest(`/api/v1/backoffice/preset-words/${id}`, presetWordSchema, {
 		method: 'PATCH',
 		body: formData,
+		idempotencyKey,
 	});
 
 	return presetWord;
 };
 
-export const deletePresetWord = async ({ id }: { id: string }): Promise<void> => {
-	await apiRequest(`/api/v1/backoffice/preset-words/${id}`, z.unknown(), { method: 'DELETE' });
+export const deletePresetWord = async ({
+	id,
+	idempotencyKey,
+}: {
+	id: string;
+	idempotencyKey: string;
+}): Promise<void> => {
+	await apiRequest(`/api/v1/backoffice/preset-words/${id}`, z.unknown(), { method: 'DELETE', idempotencyKey });
 };

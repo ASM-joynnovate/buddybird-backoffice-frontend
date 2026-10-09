@@ -1,7 +1,12 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
+
 import type { NotificationDispatchListParams } from '@/types/apis/notifications';
 
+import { apiKeys } from '@/hooks/apis/keys';
 import { useGetNotificationDispatchList } from '@/hooks/apis/notifications';
 
 import { cn } from '@/lib/utils';
@@ -30,7 +35,27 @@ interface Props {
  * @param onToggleRow 행을 누르면 실행할 함수
  */
 const ScheduledDispatchCard = ({ listParams, expandedRowId, now, onToggleRow }: Props) => {
+	const queryClient = useQueryClient();
+
 	const { data: dispatchListData } = useGetNotificationDispatchList(listParams);
+
+	// 발송이 진행되면 바뀌는 값
+	const sendProgress = dispatchListData.data
+		.map((notificationDispatch) => `${notificationDispatch.id}:${notificationDispatch.sent_count}`)
+		.join(',');
+	const sendProgressRef = useRef(sendProgress);
+
+	/** 발송이 진행되면 보낸 알림 및 대시보드 다시 조회 */
+	useEffect(() => {
+		if (sendProgressRef.current === sendProgress) {
+			return;
+		}
+
+		sendProgressRef.current = sendProgress;
+
+		void queryClient.invalidateQueries({ queryKey: apiKeys.notifications.all() });
+		void queryClient.invalidateQueries({ queryKey: apiKeys.dashboard.all() });
+	}, [queryClient, sendProgress]);
 
 	if (dispatchListData.data.length === 0) {
 		return null;

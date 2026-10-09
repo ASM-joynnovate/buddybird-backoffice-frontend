@@ -22,6 +22,7 @@ import { englishTextMissing, toI18nFieldValue, toOptionalI18nText } from '@/util
 import { toPlatformName } from '@/utils/platform';
 import { isAppVersion } from '@/utils/version';
 
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -57,6 +58,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 	const [forced, setForced] = useState(appUpdate?.is_forced ?? false);
 	const [releaseNotes, setReleaseNotes] = useState(toI18nFieldValue(appUpdate?.release_notes ?? null));
 	const [englishReleaseNotesMissing, setEnglishReleaseNotesMissing] = useState(false);
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
 	const forcedLabelId = useId();
 
@@ -95,7 +97,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 		setEnglishReleaseNotesMissing(false);
 	};
 
-	const handleSave = (event: SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		if (saving) {
@@ -111,6 +113,14 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 			return;
 		}
 
+		setConfirmDialogOpen(true);
+	};
+
+	const handleSave = () => {
+		if (saving) {
+			return;
+		}
+
 		const appUpdateRequest = {
 			version: trimmedVersion,
 			is_forced: forced,
@@ -118,7 +128,10 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 		};
 
 		if (appUpdate) {
-			updateAppUpdate.mutate({ id: appUpdate.id, data: appUpdateRequest }, { onSuccess: onClose });
+			updateAppUpdate.mutate(
+				{ id: appUpdate.id, data: appUpdateRequest },
+				{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
+			);
 
 			return;
 		}
@@ -134,12 +147,13 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 						router.push(`/app-updates?platform=${selectedPlatform}`, { scroll: false });
 					}
 				},
+				onError: () => setConfirmDialogOpen(false),
 			},
 		);
 	};
 
 	return (
-		<form onSubmit={handleSave}>
+		<form onSubmit={handleSubmit}>
 			<div className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_380px]">
 				<div className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
 					<div className={`${rowClassName} items-center`}>
@@ -265,10 +279,23 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 				<Button type="button" variant="outline" disabled={saving} onClick={onClose}>
 					취소
 				</Button>
-				<Button type="submit" disabled={saving}>
+				<Button type="submit" loading={saving}>
 					{appUpdate ? '저장' : '추가'}
 				</Button>
 			</DialogFooter>
+
+			<ConfirmDialog
+				open={confirmDialogOpen}
+				text={
+					appUpdate
+						? { title: '업데이트를 수정할까요?', confirm: '저장' }
+						: { title: '업데이트를 추가할까요?', confirm: '추가' }
+				}
+				confirmVariant="default"
+				busy={saving}
+				onConfirm={handleSave}
+				onClose={() => setConfirmDialogOpen(false)}
+			/>
 		</form>
 	);
 };

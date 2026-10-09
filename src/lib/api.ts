@@ -14,11 +14,12 @@ interface ApiOptions {
 	json?: unknown;
 	body?: FormData;
 	password?: string;
+	idempotencyKey?: string;
 }
 
 /** 응답을 스키마로 검사하는 API 요청 함수 */
 export const apiRequest = async <T>(path: string, schema: z.ZodType<T>, options: ApiOptions = {}) => {
-	const { method = 'GET', searchParams, json, body } = options;
+	const { method = 'GET', searchParams, json, body, idempotencyKey } = options;
 
 	if (!env.apiUrl) {
 		throw new ApiError(0, 'CLIENT__NETWORK', 'API 주소가 설정되지 않았습니다.');
@@ -29,6 +30,10 @@ export const apiRequest = async <T>(path: string, schema: z.ZodType<T>, options:
 
 	if (password) {
 		headers.set(PASSWORD_HEADER_NAME, password);
+	}
+
+	if (idempotencyKey) {
+		headers.set('Idempotency-Key', idempotencyKey);
 	}
 
 	if (json !== undefined) {

@@ -9,12 +9,10 @@ import { apiKeys } from '@/hooks/apis/keys';
 import { apiErrorMessage } from '@/lib/api';
 import { savePassword } from '@/lib/auth';
 
-import { useMessageStore } from '@/providers/stores/message';
+import { toast } from 'sonner';
 
 /** 로그인 Hook */
 export const useLogin = () => {
-	const openPopup = useMessageStore((state) => state.openPopup);
-
 	return useMutation({
 		mutationKey: apiKeys.mutation('auth', 'login'),
 		mutationFn: checkPassword,
@@ -22,7 +20,7 @@ export const useLogin = () => {
 		onSuccess: (_data, { password }) => savePassword(password),
 		onError: (error) => {
 			if (!(error instanceof ApiError && error.passwordRejected)) {
-				openPopup({ title: apiErrorMessage(error) });
+				toast.error(apiErrorMessage(error));
 			}
 		},
 	});

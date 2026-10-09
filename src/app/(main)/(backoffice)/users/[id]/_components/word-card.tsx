@@ -45,7 +45,7 @@ const WordCard = ({ id }: Props) => {
 
 							{userWord.id === learningWordId && <ColorTag color="var(--chart-1)">학습 중</ColorTag>}
 							{userWord.recordings.some((recording) => recording.is_preset) && (
-								<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">프리셋</Badge>
+								<Badge variant="muted">프리셋</Badge>
 							)}
 
 							<span className="ml-auto text-muted-foreground">녹음 {userWord.recordings.length}개</span>

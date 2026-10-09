@@ -73,8 +73,13 @@ export default async function Page(props: PageProps<'/notifications'>) {
 		void queryClient.prefetchQuery(getNotificationListOptions(notificationListParams));
 	}
 
-	// "받는 사람" 칩에 표시할 닉네임
-	const recipient = user_id ? await queryClient.fetchQuery(getUserOptions({ id: user_id })) : undefined;
+	// "받는 사람" 칩에 표시할 닉네임, 조회에 실패하면 사용자 ID 앞부분
+	const recipientNickname = user_id
+		? await queryClient
+				.fetchQuery(getUserOptions({ id: user_id }))
+				.then((recipient) => recipient.nickname ?? '닉네임 없음')
+				.catch(() => user_id.slice(0, 8))
+		: undefined;
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
@@ -84,7 +89,7 @@ export default async function Page(props: PageProps<'/notifications'>) {
 				scheduledListParams={scheduledListParams}
 				dispatchListParams={dispatchListParams}
 				notificationListParams={notificationListParams}
-				recipientNickname={recipient && (recipient.nickname ?? '닉네임 없음')}
+				recipientNickname={recipientNickname}
 				date={date}
 				listQuery={listQuery}
 				query={query}

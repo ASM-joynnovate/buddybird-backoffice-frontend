@@ -4,14 +4,16 @@ import { useIsMutating } from '@tanstack/react-query';
 
 import { apiKeys } from '@/hooks/apis/keys';
 
+import { cn } from '@/lib/utils';
+
 import {
 	initialNotificationContent,
 	type NotificationContent,
 } from '@/app/(main)/(backoffice)/_components/notification-content-fields';
 import SendNotificationForm from '@/app/(main)/(backoffice)/_components/send-notification-form';
 
-import ContentSkeleton from '@/components/content-skeleton';
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
+import FormDialogSkeleton from '@/components/form-dialog-skeleton';
 import QueryError from '@/components/query-error';
 import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -28,10 +30,11 @@ interface Props {
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */
 const SendNotificationDialog = ({ initialContent = initialNotificationContent, initialUserId, onClose }: Props) => {
-	const broadcasting = useIsMutating({ mutationKey: apiKeys.mutation('notifications', 'broadcast') }) > 0;
+	// 사진 업로드 및 발송 요청
+	const sending = useIsMutating({ mutationKey: apiKeys.mutation('notifications') }) > 0;
 
 	const handleOpenChange = (nextOpen: boolean) => {
-		if (!nextOpen && !broadcasting) {
+		if (!nextOpen && !sending) {
 			onClose();
 		}
 	};
@@ -44,7 +47,13 @@ const SendNotificationDialog = ({ initialContent = initialNotificationContent, i
 				</DialogHeader>
 
 				<DialogBody>
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
+					{/*미리 보기 칸은 400px, 받는 사람을 고른 채 열면 폼이 그 줄만큼 높음*/}
+					<ErrorHandlingWrapper
+						fallbackComponent={QueryError}
+						suspenseFallback=<FormDialogSkeleton
+							className={cn('md:grid-cols-[minmax(0,1fr)_400px]', initialUserId && 'lg:min-h-144')}
+						/>
+					>
 						<SendNotificationForm
 							initialContent={initialContent}
 							initialUserIds={initialUserId ? [initialUserId] : []}

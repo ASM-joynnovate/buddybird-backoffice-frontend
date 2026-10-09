@@ -49,11 +49,9 @@ const ConsentCard = ({ id }: Props) => {
 								</TableCell>
 								<TableCell className="py-2.5">
 									{userConsent.status === 'granted' ? (
-										<Badge className="rounded-sm bg-success/10 font-bold text-success">동의</Badge>
+										<Badge variant="success">동의</Badge>
 									) : (
-										<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">
-											거부
-										</Badge>
+										<Badge variant="muted">거부</Badge>
 									)}
 								</TableCell>
 							</TableRow>

@@ -27,7 +27,10 @@ const Sidebar = ({ theme }: Props) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
-		<aside className="sticky top-0 z-20 flex shrink-0 flex-col gap-3 border-b border-sidebar-border bg-sidebar p-3 text-sidebar-foreground max-md:max-h-dvh max-md:overflow-y-auto md:h-dvh md:w-58 md:border-r md:border-b-0 md:py-5">
+		<aside
+			// 목록 행 전환 중에도 위에 표시
+			className="sticky top-0 z-20 flex shrink-0 flex-col gap-3 border-b border-sidebar-border bg-sidebar p-3 text-sidebar-foreground [view-transition-name:sidebar] max-md:max-h-dvh max-md:overflow-y-auto md:h-dvh md:w-58 md:border-r md:border-b-0 md:py-5"
+		>
 			<div className="flex items-center justify-between">
 				<Link href="/" className="flex items-center gap-2 px-2 font-bold">
 					<Image src="/images/mascot.svg" alt="" width={28} height={28} />

@@ -37,8 +37,8 @@ const makeQueryClient = () => {
 			queries: {
 				staleTime: DEFAULT_STALE_TIME_MS,
 				retry: retryPolicy,
-				throwOnError: true,
 			},
+			mutations: { retry: retryPolicy },
 			dehydrate: {
 				shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
 			},

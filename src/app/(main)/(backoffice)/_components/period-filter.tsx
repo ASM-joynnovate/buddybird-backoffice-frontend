@@ -2,21 +2,20 @@
 
 import { useState } from 'react';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import type { DashboardParams } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
-import { cn } from '@/lib/utils';
 
 import dayjs from 'dayjs';
 import { CalendarDays } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 import { ko } from 'react-day-picker/locale';
 
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { DASHBOARD_MAX_PERIOD_DAYS, DASHBOARD_PERIODS } from '@/config';
-import { toLinkQuery } from '@/utils/search-params';
+import { toLinkQuery, toUrlSearchParams } from '@/utils/search-params';
 
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -66,8 +65,8 @@ const PeriodFilter = ({ pathname, query = {}, period, dashboardParams, today }: 
 		}
 
 		const [dateFrom, dateTo] = [rangeStart, date].toSorted((a, b) => a.getTime() - b.getTime());
-		const searchParams = new URLSearchParams({
-			...Object.fromEntries(Object.entries(linkQuery).map(([name, value]) => [name, String(value)])),
+		const searchParams = toUrlSearchParams({
+			...linkQuery,
 			date_from: dayjs(dateFrom).format('YYYY-MM-DD'),
 			date_to: dayjs(dateTo).format('YYYY-MM-DD'),
 		});
@@ -78,22 +77,15 @@ const PeriodFilter = ({ pathname, query = {}, period, dashboardParams, today }: 
 
 	return (
 		<div className="ml-auto flex flex-wrap items-center justify-end gap-2.5 text-sm">
-			<nav aria-label="조회 기간" className="inline-flex h-9 rounded-md border bg-card p-0.5">
-				{DASHBOARD_PERIODS.map((dashboardPeriod) => (
-					<Link
-						key={dashboardPeriod}
-						href={{ pathname, query: { ...linkQuery, period: dashboardPeriod } }}
-						scroll={false}
-						aria-current={dashboardPeriod === period ? 'true' : undefined}
-						className={cn(
-							'inline-flex items-center rounded-sm px-3.5 font-semibold text-muted-foreground hover:text-foreground',
-							dashboardPeriod === period && 'bg-foreground text-card hover:text-card',
-						)}
-					>
-						{dashboardPeriod}일
-					</Link>
-				))}
-			</nav>
+			<SegmentedControl
+				label="조회 기간"
+				options={DASHBOARD_PERIODS.map((dashboardPeriod) => ({
+					value: dashboardPeriod,
+					label: `${dashboardPeriod}일`,
+					href: { pathname, query: { ...linkQuery, period: dashboardPeriod } },
+				}))}
+				value={period}
+			/>
 
 			<Popover open={calendarOpen} onOpenChange={handleOpenChange}>
 				<PopoverTrigger

@@ -74,16 +74,21 @@ const FeedbackRow = ({ feedback, keyword, now }: Props) => {
 						<span className="block text-muted-foreground">닉네임 없음</span>
 					)}
 
+					{/*배지 줄도 이메일 줄과 같은 높이*/}
 					{user.is_deleted && (
-						<Badge className="rounded-sm bg-muted font-bold text-muted-foreground group-hover:bg-card">
-							삭제됨
-						</Badge>
+						<span className="flex h-lh items-center text-[13px]">
+							<Badge variant="muted" className="group-hover:bg-card">
+								삭제됨
+							</Badge>
+						</span>
 					)}
 
 					{!user.is_deleted && user.is_anonymous && (
-						<Badge className="rounded-sm bg-muted font-bold text-muted-foreground group-hover:bg-card">
-							익명
-						</Badge>
+						<span className="flex h-lh items-center text-[13px]">
+							<Badge variant="muted" className="group-hover:bg-card">
+								익명
+							</Badge>
+						</span>
 					)}
 
 					{!user.is_deleted && !user.is_anonymous && !!user.email && (
@@ -95,23 +100,38 @@ const FeedbackRow = ({ feedback, keyword, now }: Props) => {
 			</Link>
 
 			<div className="grid min-w-0 justify-items-start gap-1.5 max-md:col-span-full">
-				<p
-					ref={messageRef}
-					id={messageId}
-					className={cn('max-w-160 whitespace-pre-line', messageClamped && 'line-clamp-5')}
-				>
-					<HighlightedText text={feedback.message} keyword={keyword} />
-				</p>
+				<div className="relative max-w-160">
+					<p
+						ref={messageRef}
+						id={messageId}
+						className={cn('whitespace-pre-line', messageClamped && 'line-clamp-5')}
+					>
+						<HighlightedText text={feedback.message} keyword={keyword} />
+					</p>
 
-				{!keyword && messageOverflowing && (
+					{/*다섯째 줄 끝에 겹쳐 행 높이 유지*/}
+					{messageClamped && messageOverflowing && (
+						<button
+							type="button"
+							aria-expanded={false}
+							aria-controls={messageId}
+							className="absolute right-0 bottom-0 rounded-sm bg-[linear-gradient(to_right,transparent,var(--card)_2rem)] pl-8 text-[13px] font-semibold text-muted-foreground hover:underline hover:underline-offset-3"
+							onClick={() => setMessageExpanded(true)}
+						>
+							더 보기
+						</button>
+					)}
+				</div>
+
+				{!keyword && messageExpanded && (
 					<button
 						type="button"
-						aria-expanded={messageExpanded}
+						aria-expanded
 						aria-controls={messageId}
 						className="rounded-sm text-[13px] font-semibold text-muted-foreground hover:underline hover:underline-offset-3"
-						onClick={() => setMessageExpanded((prev) => !prev)}
+						onClick={() => setMessageExpanded(false)}
 					>
-						{messageExpanded ? '접기' : '더 보기'}
+						접기
 					</button>
 				)}
 
