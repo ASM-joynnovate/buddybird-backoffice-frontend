@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.13.0...v0.13.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* 모바일에서 검색창이 화면 밖으로 넘치는 문제 수정 [BB-649] ([f258ab6](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/f258ab638837321c7cce1c15b4096a18e2e04673))
+* 모바일에서 검색창이 화면 밖으로 넘치는 문제 수정 [BB-649] ([5c3e098](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/5c3e098a99158dc256d50157288da6921b8cc47c))
+
 ## [0.13.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.12.0...v0.13.0) (2026-10-08)
 
 
