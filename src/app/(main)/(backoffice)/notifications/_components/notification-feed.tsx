@@ -12,7 +12,6 @@ import DispatchList from '@/app/(main)/(backoffice)/notifications/_components/di
 import NotificationList from '@/app/(main)/(backoffice)/notifications/_components/notification-list';
 import NotificationListSkeleton from '@/app/(main)/(backoffice)/notifications/_components/notification-list-skeleton';
 import ScheduledDispatchCard from '@/app/(main)/(backoffice)/notifications/_components/scheduled-dispatch-card';
-import ScheduledDispatchSkeleton from '@/app/(main)/(backoffice)/notifications/_components/scheduled-dispatch-skeleton';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
@@ -60,7 +59,7 @@ const NotificationFeed = ({
 	return (
 		<div className="min-w-0 space-y-4">
 			{!!scheduledListParams && (
-				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ScheduledDispatchSkeleton />>
+				<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
 					<ScheduledDispatchCard
 						listParams={scheduledListParams}
 						expandedRowId={expandedRowId}

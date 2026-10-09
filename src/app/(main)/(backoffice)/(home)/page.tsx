@@ -6,7 +6,7 @@ import { getFeedbackListOptions } from '@/hooks/apis/feedback';
 import { getQueryClient } from '@/lib/query-client';
 
 import Home from '@/app/(main)/(backoffice)/(home)/_components/home';
-import { addDays, formatToday } from '@/utils/date';
+import { addDays, formatToday, getNow } from '@/utils/date';
 import { toDashboardParams, toDashboardPeriod } from '@/utils/search-params';
 
 /** 홈 페이지 */
@@ -27,7 +27,12 @@ export default async function Page(props: PageProps<'/'>) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Home period={customDashboardParams ? undefined : period} dashboardParams={dashboardParams} today={today} />
+			<Home
+				period={customDashboardParams ? undefined : period}
+				dashboardParams={dashboardParams}
+				today={today}
+				now={getNow()}
+			/>
 		</HydrationBoundary>
 	);
 }

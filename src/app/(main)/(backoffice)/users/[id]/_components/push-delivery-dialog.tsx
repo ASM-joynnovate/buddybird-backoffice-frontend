@@ -3,8 +3,8 @@
 import type { Device } from '@/types/apis/devices';
 
 import PushDeliveryList from '@/app/(main)/(backoffice)/users/[id]/_components/push-delivery-list';
+import PushDeliveryListSkeleton from '@/app/(main)/(backoffice)/users/[id]/_components/push-delivery-list-skeleton';
 
-import ContentSkeleton from '@/components/content-skeleton';
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
 import {
@@ -36,7 +36,7 @@ const PushDeliveryDialog = ({ device, onClose }: Props) => {
 				</DialogHeader>
 
 				<DialogBody className="-mx-5 px-5">
-					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ContentSkeleton />>
+					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<PushDeliveryListSkeleton />>
 						<PushDeliveryList deviceId={device.id} />
 					</ErrorHandlingWrapper>
 				</DialogBody>

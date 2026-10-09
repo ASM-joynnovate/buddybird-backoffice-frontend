@@ -9,11 +9,25 @@ import { SECOND } from '@/config/units';
 export const useNow = (initialNow: number) => {
 	const [now, setNow] = useState(initialNow);
 
-	/** 1초마다 현재 시각 갱신 */
+	/** 문서를 다 받은 뒤부터 1초마다 현재 시각 갱신 */
 	useEffect(() => {
-		const timer = setInterval(() => setNow(Date.now()), SECOND);
+		let timer: ReturnType<typeof setInterval> | undefined;
 
-		return () => clearInterval(timer);
+		const startTimer = () => {
+			timer = setInterval(() => setNow(Date.now()), SECOND);
+		};
+
+		// 서버가 아직 보내는 영역이 시각 갱신으로 브라우저에서 다시 그려지지 않도록 대기
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', startTimer, { once: true });
+		} else {
+			startTimer();
+		}
+
+		return () => {
+			document.removeEventListener('DOMContentLoaded', startTimer);
+			clearInterval(timer);
+		};
 	}, []);
 
 	return now;

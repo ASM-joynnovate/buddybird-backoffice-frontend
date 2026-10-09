@@ -13,6 +13,7 @@ interface Props {
 	period?: number;
 	dashboardParams: DashboardParams;
 	today: string;
+	now: number;
 }
 
 /**
@@ -20,8 +21,9 @@ interface Props {
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param today 오늘 날짜
+ * @param now 서버가 화면을 그린 시각
  */
-const Home = ({ period, dashboardParams, today }: Props) => {
+const Home = ({ period, dashboardParams, today, now }: Props) => {
 	return (
 		<>
 			<h1 className="text-2xl font-bold">홈</h1>
@@ -38,7 +40,7 @@ const Home = ({ period, dashboardParams, today }: Props) => {
 				fallbackComponent={QueryError}
 				suspenseFallback=<DashboardSkeleton />
 			>
-				<DashboardCards dashboardParams={dashboardParams} today={today} />
+				<DashboardCards dashboardParams={dashboardParams} today={today} now={now} />
 			</ErrorHandlingWrapper>
 		</>
 	);

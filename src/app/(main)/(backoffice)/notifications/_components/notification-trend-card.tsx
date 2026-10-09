@@ -11,7 +11,7 @@ import DailyCountChart from '@/app/(main)/(backoffice)/_components/daily-count-c
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-import { toToggledQuery } from '@/utils/search-params';
+import { toToggledQuery, toUrlSearchParams } from '@/utils/search-params';
 
 // 아래부터 리포트, 공지, 마케팅, 긴급 순서로 쌓음
 const KIND_SERIES = Object.entries(NOTIFICATION_KINDS).map(([kind, { label, color }]) => ({
@@ -55,11 +55,7 @@ const NotificationTrendCard = ({ notificationDashboard, selectedDate, query, tod
 	};
 
 	const handleToggleDate = (date: string) => {
-		const searchParams = new URLSearchParams(
-			Object.entries(toToggledQuery(query, 'date', date)).map(([name, value]) => [name, String(value)]),
-		);
-
-		router.push(`/notifications?${searchParams.toString()}`, { scroll: false });
+		router.push(`/notifications?${toUrlSearchParams(toToggledQuery(query, 'date', date))}`, { scroll: false });
 	};
 
 	return (

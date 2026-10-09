@@ -73,11 +73,10 @@ const PresetWordItem = ({ presetWord }: Props) => {
 				<strong title={presetWord.name} className="block truncate font-semibold">
 					{presetWord.name}
 				</strong>
-				{durationSeconds !== null && (
-					<time className="block text-[13px] text-muted-foreground tabular-nums">
-						{formatAudioDuration(durationSeconds)}
-					</time>
-				)}
+				{/*음성 길이를 읽기 전에도 줄 높이 유지*/}
+				<time className="block min-h-lh text-[13px] text-muted-foreground tabular-nums">
+					{durationSeconds !== null && formatAudioDuration(durationSeconds)}
+				</time>
 			</div>
 
 			<div className="flex gap-0.5">

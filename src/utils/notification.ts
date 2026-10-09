@@ -50,6 +50,7 @@ export const toCopiedContent = (notification: {
 		title: toFieldValue(notification.title),
 		body: toFieldValue(notification.body),
 		imageFileId: notification.image_file_id,
+		imageFile: null,
 		imagePreviewUrl: notification.image?.url ?? null,
 	};
 };

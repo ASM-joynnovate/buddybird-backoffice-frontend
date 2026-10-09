@@ -2,9 +2,11 @@
 
 import { type PointerEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+import { useSuspenseQueries } from '@tanstack/react-query';
+
 import type { Session } from '@/types/apis/sessions';
 
-import { useGetSessionEventList, useGetSessionSoundList } from '@/hooks/apis/sessions';
+import { getSessionEventListOptions, getSessionSoundListOptions } from '@/hooks/apis/sessions';
 
 import { cn } from '@/lib/utils';
 
@@ -45,9 +47,9 @@ interface Props {
  * @param timeZone 스테이션 기기의 시간대
  */
 const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
-	const { data: sessionEventListData } = useGetSessionEventList({ id: session.id });
-
-	const { data: sessionSoundListData } = useGetSessionSoundList({ id: session.id });
+	const [{ data: sessionEventListData }, { data: sessionSoundListData }] = useSuspenseQueries({
+		queries: [getSessionEventListOptions({ id: session.id }), getSessionSoundListOptions({ id: session.id })],
+	});
 
 	const viewRef = useRef<HTMLDivElement>(null);
 	const zoomAnchorRef = useRef({ contentRatio: 0, viewOffset: 0 });

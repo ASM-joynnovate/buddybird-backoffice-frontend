@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
+
 interface Props {
 	name: string;
-	version: string;
+	version: ReactNode;
 	description: string;
 }
 

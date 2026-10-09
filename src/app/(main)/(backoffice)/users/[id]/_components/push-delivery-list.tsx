@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 
 import { useGetPushDeliveryList } from '@/hooks/apis/notifications';
 
@@ -21,6 +21,8 @@ interface Props {
  */
 const PushDeliveryList = ({ deviceId }: Props) => {
 	const [page, setPage] = useState(1);
+	// 다음 페이지를 받는 동안 이전 목록 유지
+	const [pagePending, startPageTransition] = useTransition();
 
 	const { data: pushDeliveryListData } = useGetPushDeliveryList({ device_id: deviceId, page });
 
@@ -64,16 +66,16 @@ const PushDeliveryList = ({ deviceId }: Props) => {
 				<Button
 					variant="outline"
 					size="sm"
-					disabled={pushDeliveryListData.meta.is_first}
-					onClick={() => setPage((prev) => prev - 1)}
+					disabled={pagePending || pushDeliveryListData.meta.is_first}
+					onClick={() => startPageTransition(() => setPage((prev) => prev - 1))}
 				>
 					이전
 				</Button>
 				<Button
 					variant="outline"
 					size="sm"
-					disabled={pushDeliveryListData.meta.is_last}
-					onClick={() => setPage((prev) => prev + 1)}
+					disabled={pagePending || pushDeliveryListData.meta.is_last}
+					onClick={() => startPageTransition(() => setPage((prev) => prev + 1))}
 				>
 					다음
 				</Button>

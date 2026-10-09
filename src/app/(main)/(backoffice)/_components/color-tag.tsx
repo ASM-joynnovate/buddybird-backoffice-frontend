@@ -15,7 +15,7 @@ interface Props {
 const ColorTag = ({ color, children }: Props) => {
 	return (
 		<Badge
-			className="gap-1.5 rounded-sm bg-(--tag-color)/12 font-bold text-foreground"
+			className="gap-1.5 bg-(--tag-color)/12 text-foreground"
 			style={{ '--tag-color': color } as CSSProperties}
 		>
 			<span className="size-2 rounded-full bg-(--tag-color)" />

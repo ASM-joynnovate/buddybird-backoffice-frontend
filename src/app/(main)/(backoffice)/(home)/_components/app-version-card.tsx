@@ -6,6 +6,7 @@ import { TriangleAlert } from 'lucide-react';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { VISIBLE_VERSION_COUNT } from '@/config';
+import { compareVersions } from '@/utils/version';
 
 interface Props {
 	devices: Dashboard['devices'];
@@ -17,9 +18,7 @@ interface Props {
  */
 const AppVersionCard = ({ devices }: Props) => {
 	const deviceCount = devices.versions.reduce((total, version) => total + version.count, 0);
-	const sortedVersions = devices.versions.toSorted((a, b) =>
-		b.app_version.localeCompare(a.app_version, undefined, { numeric: true }),
-	);
+	const sortedVersions = devices.versions.toSorted((a, b) => compareVersions(b.app_version, a.app_version));
 	const olderVersions = sortedVersions.slice(VISIBLE_VERSION_COUNT);
 
 	// 최신 버전은 따로, 나머지는 한 줄로 합침

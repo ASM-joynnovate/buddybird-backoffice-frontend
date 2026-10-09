@@ -4,11 +4,9 @@ import type { WithdrawalListItem } from '@/types/apis/withdrawals';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import StepChip from '@/app/(main)/(backoffice)/_components/step-chip';
-import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
+import UserSummary from '@/app/(main)/(backoffice)/_components/user-summary';
 import { WITHDRAWAL_ERRORS } from '@/config/withdrawal';
 import { formatRelativeTime, formatShortDateTime, formatTime, formatTimeFromNow } from '@/utils/date';
-
-import { Badge } from '@/components/ui/badge';
 
 interface Props {
 	withdrawal: WithdrawalListItem;
@@ -36,27 +34,7 @@ const IncompleteWithdrawalRow = ({ withdrawal, statusLabel, statusColor, now }: 
 				href={`/users/${withdrawal.user_id}`}
 				className="group -mx-1.5 -my-1 flex min-w-0 items-center gap-2.5 rounded-md px-1.5 py-1 transition-colors hover:bg-muted"
 			>
-				<UserAvatar
-					photoUrl={user.photo_file?.url}
-					nickname={user.nickname}
-					className="transition-colors group-hover:bg-card"
-				/>
-
-				<span className="min-w-0">
-					{user.nickname ? (
-						<strong className="block truncate font-semibold">{user.nickname}</strong>
-					) : (
-						<span className="block text-muted-foreground">닉네임 없음</span>
-					)}
-
-					{user.is_anonymous ? (
-						<Badge className="rounded-sm bg-muted font-bold text-muted-foreground group-hover:bg-card">
-							익명
-						</Badge>
-					) : (
-						<span className="block truncate text-[13px] text-muted-foreground">{user.email}</span>
-					)}
-				</span>
+				<UserSummary user={user} />
 			</Link>
 
 			<div className="grid min-w-0 justify-items-start gap-2.5 max-md:col-span-full">

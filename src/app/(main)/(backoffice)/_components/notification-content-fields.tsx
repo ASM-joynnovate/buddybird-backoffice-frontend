@@ -21,6 +21,7 @@ export interface NotificationContent {
 	title: I18nFieldValue;
 	body: I18nFieldValue;
 	imageFileId: string | null;
+	imageFile: File | null;
 	imagePreviewUrl: string | null;
 }
 
@@ -29,6 +30,7 @@ export const initialNotificationContent: NotificationContent = {
 	title: toI18nFieldValue(null),
 	body: toI18nFieldValue(null),
 	imageFileId: null,
+	imageFile: null,
 	imagePreviewUrl: null,
 };
 
@@ -111,7 +113,8 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 
 				<NotificationImageField
 					imagePreviewUrl={content.imagePreviewUrl}
-					onImageChange={(image) => onContentChange((prev) => ({ ...prev, ...image }))}
+					// 복사한 사진 대신 고른 사진 사용
+					onImageChange={(image) => onContentChange((prev) => ({ ...prev, ...image, imageFileId: null }))}
 				/>
 			</div>
 		</>

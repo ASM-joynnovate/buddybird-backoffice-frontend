@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { Plus } from 'lucide-react';
 
@@ -17,6 +17,7 @@ interface Props {
 	version?: string;
 	today: string;
 	now: number;
+	statsPrefetch: ReactNode;
 }
 
 /**
@@ -25,8 +26,9 @@ interface Props {
  * @param version 주소에서 고른 버전
  * @param today 오늘 날짜
  * @param now 서버가 화면을 그린 시각
+ * @param statsPrefetch 처음 보여 줄 버전의 통계를 미리 조회하는 컴포넌트
  */
-const Consents = ({ kind, version, today, now }: Props) => {
+const Consents = ({ kind, version, today, now, statsPrefetch }: Props) => {
 	const [formMode, setFormMode] = useState<ConsentFormMode | null>(null);
 
 	return (
@@ -41,6 +43,7 @@ const Consents = ({ kind, version, today, now }: Props) => {
 			</div>
 
 			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<ConsentCardsSkeleton />>
+				{statsPrefetch}
 				<ConsentCards
 					kind={kind}
 					version={version}

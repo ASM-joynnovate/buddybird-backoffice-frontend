@@ -54,7 +54,7 @@ const LoginForm = () => {
 				)}
 			</div>
 
-			<Button type="submit" disabled={isPending || isSuccess} className="w-full">
+			<Button type="submit" loading={isPending || isSuccess} className="w-full">
 				로그인
 			</Button>
 		</form>

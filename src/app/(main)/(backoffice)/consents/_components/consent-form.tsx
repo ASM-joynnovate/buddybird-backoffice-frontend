@@ -16,8 +16,9 @@ import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-co
 import { CONSENT_KIND_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/config';
 import { toPublishNotice } from '@/utils/consent';
 import { toDateTimeInputValue, toTimestamp } from '@/utils/date';
-import { toI18nFieldValue, toI18nText } from '@/utils/i18n-text';
+import { koreanOrEnglishText, toI18nFieldValue, toI18nText } from '@/utils/i18n-text';
 
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -51,6 +52,7 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 	const [publishedAt, setPublishedAt] = useState(
 		formMode === 'edit' && sourceConsent ? toDateTimeInputValue(sourceConsent.published_at) : '',
 	);
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
 	const kindInputId = useId();
 	const publishedAtInputId = useId();
@@ -60,9 +62,17 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 
 	const saving = createConsent.isPending || updateConsent.isPending;
 
-	const handleSave = (event: SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
+		if (saving) {
+			return;
+		}
+
+		setConfirmDialogOpen(true);
+	};
+
+	const handleSave = () => {
 		if (saving) {
 			return;
 		}
@@ -85,19 +95,31 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 		};
 
 		if (formMode === 'edit' && sourceConsent) {
-			updateConsent.mutate({ id: sourceConsent.id, data: consentRequest }, { onSuccess: handleSaved });
+			updateConsent.mutate(
+				{ id: sourceConsent.id, data: consentRequest },
+				{ onSuccess: handleSaved, onError: () => setConfirmDialogOpen(false) },
+			);
 
 			return;
 		}
 
 		createConsent.mutate(
 			{ data: { ...consentRequest, kind: sourceConsent?.kind ?? kind } },
-			{ onSuccess: handleSaved },
+			{ onSuccess: handleSaved, onError: () => setConfirmDialogOpen(false) },
 		);
 	};
 
+	const confirmText =
+		formMode === 'edit' && sourceConsent
+			? {
+					title: '이 버전을 수정할까요?',
+					message: `${koreanOrEnglishText(sourceConsent.title)} 버전 ${sourceConsent.version}`,
+					confirm: '저장',
+				}
+			: { title: formMode === 'newVersion' ? '새 버전을 저장할까요?' : '고지문을 저장할까요?', confirm: '저장' };
+
 	return (
-		<form className="grid gap-3" onSubmit={handleSave}>
+		<form className="grid gap-3" onSubmit={handleSubmit}>
 			{formMode === 'newConsent' ? (
 				<div className={rowClassName}>
 					<label htmlFor={kindInputId} className={labelClassName}>
@@ -204,10 +226,19 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 				<Button type="button" variant="outline" disabled={saving} className="max-md:flex-1" onClick={onClose}>
 					취소
 				</Button>
-				<Button type="submit" disabled={saving} className="max-md:flex-1">
+				<Button type="submit" loading={saving} className="max-md:flex-1">
 					저장
 				</Button>
 			</div>
+
+			<ConfirmDialog
+				open={confirmDialogOpen}
+				text={confirmText}
+				confirmVariant="default"
+				busy={saving}
+				onConfirm={handleSave}
+				onClose={() => setConfirmDialogOpen(false)}
+			/>
 		</form>
 	);
 };

@@ -38,15 +38,9 @@ const WithdrawalCard = ({ id }: Props) => {
 						</dt>
 						<dd>
 							{status === 'not_required' && <span className="text-muted-foreground">해당 없음</span>}
-							{status === 'pending' && (
-								<Badge className="rounded-sm bg-info/10 font-bold text-info">대기 중</Badge>
-							)}
-							{status === 'completed' && (
-								<Badge className="rounded-sm bg-success/10 font-bold text-success">완료</Badge>
-							)}
-							{status === 'unconfirmed' && (
-								<Badge className="rounded-sm bg-warning/10 font-bold text-warning">확인 필요</Badge>
-							)}
+							{status === 'pending' && <Badge variant="info">대기 중</Badge>}
+							{status === 'completed' && <Badge variant="success">완료</Badge>}
+							{status === 'unconfirmed' && <Badge variant="warning">확인 필요</Badge>}
 						</dd>
 					</div>
 				))}

@@ -15,15 +15,15 @@ import { cn } from '@/lib/utils';
 
 import { Combobox } from '@base-ui/react/combobox';
 import { Search, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import UserOptionList from '@/app/(main)/(backoffice)/_components/user-option-list';
 import { SEARCH_DEBOUNCE_MS } from '@/config';
-import { useMessageStore } from '@/providers/stores/message';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const USER_IDS_PER_REQUEST = 100;
 
@@ -48,8 +48,6 @@ interface Props {
  */
 const UserPicker = ({ selectedUsers, onSelectedUsersChange, isUserMuted, renderUserIcon }: Props) => {
 	const queryClient = useQueryClient();
-
-	const openPopup = useMessageStore((state) => state.openPopup);
 
 	const [keyword, setKeyword] = useState('');
 	const [optionListOpen, setOptionListOpen] = useState(false);
@@ -93,7 +91,7 @@ const UserPicker = ({ selectedUsers, onSelectedUsersChange, isUserMuted, renderU
 					),
 				),
 			)
-			.catch((error: unknown) => openPopup({ title: apiErrorMessage(error) }));
+			.catch((error: unknown) => toast.error(apiErrorMessage(error)));
 	};
 
 	return (
@@ -160,7 +158,7 @@ const UserPicker = ({ selectedUsers, onSelectedUsersChange, isUserMuted, renderU
 						<ErrorHandlingWrapper
 							fallbackComponent={QueryError}
 							suspenseFallback=<div className="grid gap-1 p-1">
-								<Skeleton className="h-5 w-16" />
+								<SkeletonText className="h-5 w-16" />
 								<Skeleton className="h-10" />
 								<Skeleton className="h-10" />
 							</div>

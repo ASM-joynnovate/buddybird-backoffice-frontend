@@ -14,6 +14,8 @@ import { apiRequest } from '@/lib/api';
 
 import { z } from 'zod';
 
+import { USER_RECENT_ITEM_COUNT } from '@/config';
+
 export const getUserList = async (listParams: UserListParams): Promise<CountedPage<UserListItem>> => {
 	const { data, meta } = await apiRequest('/api/v1/backoffice/users', z.array(userListItemSchema), {
 		searchParams: { ...listParams },
@@ -28,13 +30,13 @@ export const getUser = async ({ id }: { id: string }): Promise<UserDetail> => {
 	return user;
 };
 
-export const deleteUser = async ({ id }: { id: string }): Promise<void> => {
-	await apiRequest(`/api/v1/backoffice/users/${id}`, z.unknown(), { method: 'DELETE' });
+export const deleteUser = async ({ id, idempotencyKey }: { id: string; idempotencyKey: string }): Promise<void> => {
+	await apiRequest(`/api/v1/backoffice/users/${id}`, z.unknown(), { method: 'DELETE', idempotencyKey });
 };
 
 export const getUserSessionList = async ({ id, page }: { id: string; page: number }): Promise<CountedPage<Session>> => {
 	const { data, meta } = await apiRequest(`/api/v1/backoffice/users/${id}/sessions`, z.array(sessionSchema), {
-		searchParams: { page },
+		searchParams: { page, count_by_page: USER_RECENT_ITEM_COUNT },
 	});
 
 	return { data, meta: countedPageMetaSchema.parse(meta) };

@@ -12,10 +12,11 @@ import {
 import type { AnnouncementListParams } from '@/types/apis/announcements';
 
 import { apiKeys } from '@/hooks/apis/keys';
+import { useIdempotentMutation } from '@/hooks/apis/use-idempotent-mutation';
 
 import { apiErrorMessage } from '@/lib/api';
 
-import { useMessageStore } from '@/providers/stores/message';
+import { toast } from 'sonner';
 
 /** 공지 목록 조회 Hook에 사용할 옵션 */
 export const getAnnouncementListOptions = (listParams: AnnouncementListParams) =>
@@ -32,13 +33,15 @@ export const useGetAnnouncementList = (listParams: AnnouncementListParams) => {
 export const useCreateAnnouncement = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('announcements', 'create'),
 		mutationFn: postAnnouncement,
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() }),
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() });
+
+			toast.success('공지를 작성했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };
 
@@ -46,13 +49,15 @@ export const useCreateAnnouncement = () => {
 export const useUpdateAnnouncement = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('announcements', 'update'),
 		mutationFn: patchAnnouncement,
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() }),
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() });
+
+			toast.success('공지를 수정했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };
 
@@ -60,13 +65,15 @@ export const useUpdateAnnouncement = () => {
 export const useDeleteAnnouncement = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('announcements', 'delete'),
 		mutationFn: deleteAnnouncement,
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() }),
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() });
+
+			toast.success('공지를 삭제했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };
 
@@ -74,32 +81,29 @@ export const useDeleteAnnouncement = () => {
 export const useSaveAnnouncementImages = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
 	return useMutation({
 		mutationKey: apiKeys.mutation('announcements', 'images', 'save'),
 		mutationFn: async ({
 			id,
-			deletedImageIds,
-			addedImageFiles,
+			deletedImages,
+			addedImages,
 		}: {
 			id: string;
-			deletedImageIds: string[];
-			addedImageFiles: File[];
+			deletedImages: { imageId: string; idempotencyKey: string }[];
+			addedImages: { file: File; idempotencyKey: string }[];
 		}) => {
-			for (const imageId of deletedImageIds) {
-				await deleteAnnouncementImage({ id, imageId });
+			for (const { imageId, idempotencyKey } of deletedImages) {
+				await deleteAnnouncementImage({ id, imageId, idempotencyKey });
 			}
 
 			// 고른 순서대로 업로드
-			for (const file of addedImageFiles) {
-				await postAnnouncementImage({ id, file });
+			for (const { file, idempotencyKey } of addedImages) {
+				await postAnnouncementImage({ id, file, idempotencyKey });
 			}
 		},
 		onError: () =>
-			openPopup({
-				title: '사진을 저장하지 못했습니다.',
-				content: '공지 내용은 저장됐습니다. 공지를 다시 열어 사진을 확인해 주세요.',
+			toast.error('사진을 저장하지 못했습니다.', {
+				description: '공지 내용은 저장됐습니다. 공지를 다시 열어 사진을 확인해 주세요.',
 			}),
 		onSettled: () => queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() }),
 	});

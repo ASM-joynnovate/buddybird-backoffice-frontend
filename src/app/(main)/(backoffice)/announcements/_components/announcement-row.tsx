@@ -18,10 +18,10 @@ export const announcementGridClassName = 'grid grid-cols-[300px_minmax(0,1fr)_64
 export const announcementTableClassName = 'min-w-240';
 
 const statusTags = {
-	live: { label: '게시 중', className: 'bg-success/10 text-success' },
-	scheduled: { label: '예약', className: 'bg-info/10 text-info' },
+	live: { label: '게시 중', variant: 'success' },
+	scheduled: { label: '예약', variant: 'info' },
 	ended: undefined,
-};
+} as const;
 
 interface Props {
 	announcement: AnnouncementListItem;
@@ -83,9 +83,7 @@ const AnnouncementRow = ({
 						{title}
 					</button>
 
-					{!!statusTag && (
-						<Badge className={cn('rounded-sm font-bold', statusTag.className)}>{statusTag.label}</Badge>
-					)}
+					{!!statusTag && <Badge variant={statusTag.variant}>{statusTag.label}</Badge>}
 				</p>
 
 				<small className="block text-[13px] text-muted-foreground tabular-nums">

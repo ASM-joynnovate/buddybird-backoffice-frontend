@@ -12,6 +12,7 @@ import PresetWordAudioField, {
 import { PRESET_WORD_NAME_MAX_LENGTH } from '@/config';
 import { toPresetLanguageName } from '@/utils/locale';
 
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -36,6 +37,7 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 	const [nameError, setNameError] = useState('');
 	const [pickedAudio, setPickedAudio] = useState<PickedAudio>();
 	const [audioError, setAudioError] = useState('');
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
 	const { data: presetWordListData } = useGetPresetWordList();
 
@@ -65,7 +67,7 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 		setAudioError('');
 	};
 
-	const handleSave = (event: SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		if (saving) {
@@ -97,18 +99,30 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 			return;
 		}
 
+		// 바뀐 값이 없는 수정은 요청 없이 닫음
+		if (presetWord && trimmedName === presetWord.name && !pickedAudio) {
+			onClose();
+
+			return;
+		}
+
+		setConfirmDialogOpen(true);
+	};
+
+	const handleSave = () => {
+		if (saving) {
+			return;
+		}
+
+		const trimmedName = name.trim();
+
 		if (presetWord) {
-			const nameChanged = trimmedName !== presetWord.name;
-
-			if (!nameChanged && !pickedAudio) {
-				onClose();
-
-				return;
-			}
-
 			updatePresetWord.mutate(
-				{ id: presetWord.id, data: { name: nameChanged ? trimmedName : undefined, file: pickedAudio?.file } },
-				{ onSuccess: onClose },
+				{
+					id: presetWord.id,
+					data: { name: trimmedName !== presetWord.name ? trimmedName : undefined, file: pickedAudio?.file },
+				},
+				{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
 			);
 
 			return;
@@ -121,14 +135,14 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 
 		createPresetWord.mutate(
 			{ data: { language, name: trimmedName, file: pickedAudio.file } },
-			{ onSuccess: onClose },
+			{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
 		);
 	};
 
 	return (
 		<Dialog open onOpenChange={handleOpenChange}>
 			<DialogContent className="p-5 sm:max-w-110">
-				<form onSubmit={handleSave} className="flex min-h-0 flex-col gap-4">
+				<form onSubmit={handleSubmit} className="flex min-h-0 flex-col gap-4">
 					<DialogHeader>
 						<DialogTitle className="font-bold">
 							{languageName} 프리셋 {presetWord ? '수정' : '추가'}
@@ -180,12 +194,25 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 						<Button type="button" variant="outline" disabled={saving} onClick={onClose}>
 							취소
 						</Button>
-						<Button type="submit" disabled={saving}>
-							{saving ? '저장 중' : '저장'}
+						<Button type="submit" loading={saving}>
+							저장
 						</Button>
 					</DialogFooter>
 				</form>
 			</DialogContent>
+
+			<ConfirmDialog
+				open={confirmDialogOpen}
+				text={
+					presetWord
+						? { title: '프리셋을 수정할까요?', confirm: '저장' }
+						: { title: '프리셋을 추가할까요?', confirm: '추가' }
+				}
+				confirmVariant="default"
+				busy={saving}
+				onConfirm={handleSave}
+				onClose={() => setConfirmDialogOpen(false)}
+			/>
 		</Dialog>
 	);
 };

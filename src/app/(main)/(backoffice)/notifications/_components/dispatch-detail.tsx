@@ -21,7 +21,7 @@ import { toTimeAxisRange } from '@/utils/time-axis';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 interface Props {
 	notificationDispatch: NotificationDispatch;
@@ -107,7 +107,10 @@ const DispatchDetail = ({ notificationDispatch, now }: Props) => {
 					<ErrorHandlingWrapper
 						fallbackComponent={QueryError}
 						suspenseFallback=<>
-							<h4 className="min-h-7 text-[13px] leading-7 font-semibold">읽음 추이</h4>
+							<div className="flex min-h-7 items-center justify-between gap-3">
+								<h4 className="text-[13px] font-semibold">읽음 추이</h4>
+								<SkeletonText className="w-20 text-[13px]" />
+							</div>
 							<Skeleton className="h-30" />
 						</>
 					>

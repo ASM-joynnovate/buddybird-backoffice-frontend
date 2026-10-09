@@ -4,8 +4,6 @@ import { type ChangeEvent, useRef } from 'react';
 
 import Image from 'next/image';
 
-import { useUploadNotificationImage } from '@/hooks/apis/notifications';
-
 import { ImageIcon, X } from 'lucide-react';
 
 import { IMAGE_CONTENT_TYPES } from '@/config';
@@ -14,21 +12,19 @@ import { Button } from '@/components/ui/button';
 
 interface Props {
 	imagePreviewUrl: string | null;
-	onImageChange: (image: { imageFileId: string | null; imagePreviewUrl: string | null }) => void;
+	onImageChange: (image: { imageFile: File | null; imagePreviewUrl: string | null }) => void;
 }
 
 /**
- * 알림 사진 업로드 컴포넌트
+ * 알림 사진 선택 컴포넌트
  * @param imagePreviewUrl 고른 사진을 표시할 주소
  * @param onImageChange 사진이 바뀔 때 실행할 함수
  */
 const NotificationImageField = ({ imagePreviewUrl, onImageChange }: Props) => {
 	const imageInputRef = useRef<HTMLInputElement>(null);
 
-	const { isPending, mutate } = useUploadNotificationImage();
-
 	/** 이전 미리보기 주소를 지우고 사진 변경 */
-	const changeImage = (image: { imageFileId: string | null; imagePreviewUrl: string | null }) => {
+	const changeImage = (image: { imageFile: File | null; imagePreviewUrl: string | null }) => {
 		if (imagePreviewUrl) {
 			URL.revokeObjectURL(imagePreviewUrl);
 		}
@@ -42,25 +38,11 @@ const NotificationImageField = ({ imagePreviewUrl, onImageChange }: Props) => {
 		// 같은 파일도 다시 선택 가능
 		event.currentTarget.value = '';
 
-		if (isPending || !file) {
+		if (!file) {
 			return;
 		}
 
-		const pickedImageUrl = URL.createObjectURL(file);
-
-		changeImage({ imageFileId: null, imagePreviewUrl: pickedImageUrl });
-
-		// 업로드에 실패하면 사진을 지움
-		mutate(
-			{ file },
-			{
-				onSuccess: (imageFileId) => onImageChange({ imageFileId, imagePreviewUrl: pickedImageUrl }),
-				onError: () => {
-					URL.revokeObjectURL(pickedImageUrl);
-					onImageChange({ imageFileId: null, imagePreviewUrl: null });
-				},
-			},
-		);
+		changeImage({ imageFile: file, imagePreviewUrl: URL.createObjectURL(file) });
 	};
 
 	return (
@@ -87,16 +69,15 @@ const NotificationImageField = ({ imagePreviewUrl, onImageChange }: Props) => {
 					<button
 						type="button"
 						aria-label="사진 지우기"
-						disabled={isPending}
 						className="absolute top-1 right-1 grid size-5 place-items-center rounded-sm bg-tooltip text-tooltip-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-						onClick={() => changeImage({ imageFileId: null, imagePreviewUrl: null })}
+						onClick={() => changeImage({ imageFile: null, imagePreviewUrl: null })}
 					>
 						<X className="size-3" strokeWidth={2.5} />
 					</button>
 				</span>
 			)}
 
-			<Button type="button" variant="outline" disabled={isPending} onClick={() => imageInputRef.current?.click()}>
+			<Button type="button" variant="outline" onClick={() => imageInputRef.current?.click()}>
 				<ImageIcon />
 				{imagePreviewUrl ? '사진 변경' : '사진 추가'}
 			</Button>

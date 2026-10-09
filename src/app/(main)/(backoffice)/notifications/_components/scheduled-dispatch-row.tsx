@@ -54,14 +54,7 @@ const ScheduledDispatchRow = ({ notificationDispatch, range, expanded, now, onTo
 				<div className="grid min-w-0 gap-1">
 					<p className="flex gap-1.5">
 						<NotificationKindTag kind={notificationDispatch.kind} />
-						<Badge
-							className={cn(
-								'rounded-sm font-bold',
-								sending ? 'bg-success/10 text-success' : 'bg-info/10 text-info',
-							)}
-						>
-							{sending ? '발송 중' : '예약'}
-						</Badge>
+						<Badge variant={sending ? 'success' : 'info'}>{sending ? '발송 중' : '예약'}</Badge>
 					</p>
 
 					<h3 className="font-semibold">

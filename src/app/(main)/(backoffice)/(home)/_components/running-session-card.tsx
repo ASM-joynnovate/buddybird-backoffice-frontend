@@ -1,22 +1,15 @@
 import type { CSSProperties } from 'react';
 
 import type { DashboardLive } from '@/types/apis/dashboard';
-import type { SessionPhase } from '@/types/apis/sessions';
 
 import { cn } from '@/lib/utils';
 
+import { SESSION_PHASES } from '@/config/session';
 import { formatTime, toHoursAndMinutes } from '@/utils/date';
 
 import { Card, CardTitle } from '@/components/ui/card';
 
 const HOURS_PER_DAY = 24;
-
-const phaseConfig = {
-	learning: { label: '학습', color: 'var(--chart-1)' },
-	rest: { label: '휴식', color: 'var(--chart-2)' },
-	stress_care: { label: '스트레스 케어', color: 'var(--chart-3)' },
-	sleeping: { label: '수면', color: 'var(--chart-4)' },
-} satisfies Record<SessionPhase, { label: string; color: string }>;
 
 interface Props {
 	dashboardLive: DashboardLive;
@@ -55,12 +48,12 @@ const RunningSessionCard = ({ dashboardLive }: Props) => {
 							return (
 								<li
 									key={phase}
-									style={{ '--phase-color': phaseConfig[phase].color } as CSSProperties}
+									style={{ '--phase-color': SESSION_PHASES[phase].color } as CSSProperties}
 									className="grid gap-0.5 rounded-lg bg-(--phase-color)/9 px-3 pt-2.5 pb-3"
 								>
 									<span className="flex items-center gap-1.5 text-[13px] font-semibold whitespace-nowrap">
 										<span className="size-2 shrink-0 rounded-full bg-(--phase-color)" />
-										{phaseConfig[phase].label}
+										{SESSION_PHASES[phase].label}
 									</span>
 
 									<p className="text-[26px] leading-[1.15] font-bold tracking-tight">

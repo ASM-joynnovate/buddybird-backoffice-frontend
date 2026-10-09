@@ -2,12 +2,15 @@
 
 import { type SubmitEvent, useDeferredValue, useId, useState } from 'react';
 
-import { useIsMutating, useSuspenseQueries } from '@tanstack/react-query';
+import { useSuspenseQueries } from '@tanstack/react-query';
 
 import type { UserListItem } from '@/types/apis/users';
 
-import { apiKeys } from '@/hooks/apis/keys';
-import { getNotificationAudienceOptions, useBroadcastNotification } from '@/hooks/apis/notifications';
+import {
+	getNotificationAudienceOptions,
+	useBroadcastNotification,
+	useUploadNotificationImage,
+} from '@/hooks/apis/notifications';
 import { getUserListOptions } from '@/hooks/apis/users';
 
 import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
@@ -22,11 +25,11 @@ import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-co
 import UserPicker from '@/app/(main)/(backoffice)/_components/user-picker';
 import { BROADCAST_MAX_USER_COUNT } from '@/config';
 import { AUDIENCE_HELP_TEXTS } from '@/config/notification';
-import { useMessageStore } from '@/providers/stores/message';
 import { toLocalDateTime } from '@/utils/date';
 import { toI18nText } from '@/utils/i18n-text';
 import { receivesNotification, toSentText } from '@/utils/notification';
 
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
@@ -59,17 +62,15 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 		combine: (results) => results.flatMap((result) => result.data.data),
 	});
 
-	const { isPending, mutate } = useBroadcastNotification();
-
-	const imageUploading = useIsMutating({ mutationKey: apiKeys.mutation('notifications', 'images', 'upload') }) > 0;
-
-	const openPopup = useMessageStore((state) => state.openPopup);
+	const broadcastNotification = useBroadcastNotification();
+	const uploadNotificationImage = useUploadNotificationImage();
 
 	const [target, setTarget] = useState<'all' | 'selected'>(initialUsers.length > 0 ? 'selected' : 'all');
 	const [selectedUsers, setSelectedUsers] = useState<UserListItem[]>(initialUsers);
 	const [content, setContent] = useState(initialContent);
 	const [scheduled, setScheduled] = useState(false);
 	const [recipientLocalDatetime, setRecipientLocalDatetime] = useState('');
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
 	const scheduleLabelId = useId();
 
@@ -87,39 +88,64 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 		? [audience.user_count, audience.recipient_count, audience.pushable_count]
 		: [selectedUsers.length, receivers.length, receivers.filter((user) => user.is_pushable).length];
 	const recipientCount = reachCounts[1];
+	const sending = uploadNotificationImage.isPending || broadcastNotification.isPending;
 
-	const handleBroadcast = (event: SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (isPending || imageUploading || recipientCount === 0) {
+		if (sending || recipientCount === 0) {
 			return;
 		}
 
-		mutate(
+		setConfirmDialogOpen(true);
+	};
+
+	/** 사진 파일 ID를 넣어 알림 발송 */
+	const broadcast = (imageFileId: string | null) => {
+		broadcastNotification.mutate(
 			{
 				data: {
 					kind: content.kind,
 					title: toI18nText(content.title),
 					body: toI18nText(content.body),
-					image_file_id: content.imageFileId,
+					image_file_id: imageFileId,
 					...(target === 'all'
 						? { all_users: true }
 						: { user_ids: selectedUsers.map((user) => user.id), all_users: false }),
 					recipient_local_datetime: scheduleOn ? toLocalDateTime(recipientLocalDatetime) : null,
 				},
 			},
-			{
-				onSuccess: (broadcastResult) => {
-					openPopup({ title: `${broadcastResult.notification_count}건의 알림을 만들었습니다.` });
-
-					onClose();
-				},
-			},
+			{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
 		);
 	};
 
+	const handleBroadcast = () => {
+		if (sending) {
+			return;
+		}
+
+		// 새로 고른 사진은 발송 직전에 업로드
+		if (content.imageFile) {
+			uploadNotificationImage.mutate(
+				{ file: content.imageFile },
+				{
+					onSuccess: (imageFileId) => {
+						// 발송에 실패해도 다시 업로드하지 않음
+						setContent((prev) => ({ ...prev, imageFileId, imageFile: null }));
+						broadcast(imageFileId);
+					},
+					onError: () => setConfirmDialogOpen(false),
+				},
+			);
+
+			return;
+		}
+
+		broadcast(content.imageFileId);
+	};
+
 	return (
-		<form onSubmit={handleBroadcast}>
+		<form onSubmit={handleSubmit}>
 			<div className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_400px]">
 				{/*받는 사람, 내용, 예약 입력*/}
 				<div className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
@@ -210,13 +236,25 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 			</div>
 
 			<DialogFooter className="m-0 rounded-none border-t bg-card px-6 py-4">
-				<Button type="button" variant="outline" disabled={isPending} onClick={onClose}>
+				<Button type="button" variant="outline" disabled={sending} onClick={onClose}>
 					취소
 				</Button>
-				<Button type="submit" disabled={isPending || imageUploading || recipientCount === 0}>
+				<Button type="submit" loading={sending} disabled={recipientCount === 0}>
 					{recipientCount.toLocaleString('ko-KR')}명에게 {scheduleOn ? '예약' : '발송'}
 				</Button>
 			</DialogFooter>
+
+			<ConfirmDialog
+				open={confirmDialogOpen}
+				text={{
+					title: `${recipientCount.toLocaleString('ko-KR')}명에게 ${scheduleOn ? '예약할까요?' : '보낼까요?'}`,
+					confirm: scheduleOn ? '예약' : '발송',
+				}}
+				confirmVariant="default"
+				busy={sending}
+				onConfirm={handleBroadcast}
+				onClose={() => setConfirmDialogOpen(false)}
+			/>
 		</form>
 	);
 };

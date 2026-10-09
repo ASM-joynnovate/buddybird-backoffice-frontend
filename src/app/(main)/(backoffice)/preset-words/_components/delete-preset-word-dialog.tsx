@@ -3,12 +3,20 @@
 import type { PresetWord } from '@/types/apis/preset-words';
 
 import { useDeletePresetWord } from '@/hooks/apis/preset-words';
+import { useConfirmOnce } from '@/hooks/use-confirm-once';
 
 import { toPresetLanguageName } from '@/utils/locale';
 
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Props {
 	open: boolean;
@@ -39,32 +47,34 @@ const DeletePresetWordDialog = ({ open, presetWord, onClose }: Props) => {
 		mutate({ id: presetWord.id }, { onSuccess: onClose });
 	};
 
+	const handleConfirm = useConfirmOnce(handleDeletePresetWord, open, isPending);
+
 	return (
-		<Dialog open={open} onOpenChange={handleOpenChange}>
-			<DialogContent showCloseButton={false} className="p-5 sm:max-w-110">
-				<DialogHeader>
-					<DialogTitle className="font-bold">프리셋을 삭제할까요?</DialogTitle>
-				</DialogHeader>
+		<AlertDialog open={open} onOpenChange={handleOpenChange}>
+			<AlertDialogContent className="gap-0 p-0 data-[size=default]:max-w-[calc(100%-2rem)] data-[size=default]:sm:max-w-110">
+				<AlertDialogHeader className="place-items-start gap-0 border-b px-4 py-3 text-left">
+					<AlertDialogTitle className="font-bold">프리셋을 삭제할까요?</AlertDialogTitle>
+				</AlertDialogHeader>
 
-				<p className="flex items-center gap-2">
-					<strong className="truncate font-semibold">{presetWord.name}</strong>
-					<Badge className="rounded-sm bg-muted font-bold text-muted-foreground">
-						{toPresetLanguageName(presetWord.language)}
-					</Badge>
-				</p>
+				<div className="grid gap-4 p-4">
+					<p className="flex items-center gap-2">
+						<strong className="truncate font-semibold">{presetWord.name}</strong>
+						<Badge variant="muted">{toPresetLanguageName(presetWord.language)}</Badge>
+					</p>
 
-				<p className="text-[12.5px] text-muted-foreground">이미 가입한 사용자의 단어는 삭제되지 않습니다.</p>
+					<p className="text-[12.5px] text-muted-foreground">
+						이미 가입한 사용자의 단어는 삭제되지 않습니다.
+					</p>
+				</div>
 
-				<DialogFooter className="m-0 mt-1 flex-row justify-end border-0 bg-transparent p-0 *:flex-1 md:*:flex-none">
-					<Button variant="outline" disabled={isPending} onClick={onClose}>
-						취소
-					</Button>
-					<Button variant="destructive" disabled={isPending} onClick={handleDeletePresetWord}>
+				<AlertDialogFooter className="m-0 bg-card px-4 py-3">
+					<AlertDialogCancel disabled={isPending}>취소</AlertDialogCancel>
+					<AlertDialogAction variant="destructive" loading={isPending} onClick={handleConfirm}>
 						삭제
-					</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
 	);
 };
 

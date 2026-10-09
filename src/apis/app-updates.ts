@@ -18,10 +18,17 @@ export const getAppUpdateList = async ({ platform }: { platform: Platform }): Pr
 	return appUpdates;
 };
 
-export const postAppUpdate = async ({ data }: { data: CreateAppUpdateRequest }): Promise<AppUpdate> => {
+export const postAppUpdate = async ({
+	data,
+	idempotencyKey,
+}: {
+	data: CreateAppUpdateRequest;
+	idempotencyKey: string;
+}): Promise<AppUpdate> => {
 	const { data: appUpdate } = await apiRequest('/api/v1/backoffice/app-updates', appUpdateSchema, {
 		method: 'POST',
 		json: data,
+		idempotencyKey,
 	});
 
 	return appUpdate;
@@ -30,13 +37,16 @@ export const postAppUpdate = async ({ data }: { data: CreateAppUpdateRequest }):
 export const patchAppUpdate = async ({
 	id,
 	data,
+	idempotencyKey,
 }: {
 	id: string;
 	data: UpdateAppUpdateRequest;
+	idempotencyKey: string;
 }): Promise<AppUpdate> => {
 	const { data: appUpdate } = await apiRequest(`/api/v1/backoffice/app-updates/${id}`, appUpdateSchema, {
 		method: 'PATCH',
 		json: data,
+		idempotencyKey,
 	});
 
 	return appUpdate;

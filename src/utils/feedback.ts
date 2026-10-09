@@ -5,6 +5,7 @@ import { feedbackLocaleSchema } from '@/types/apis/feedback';
 import { FEEDBACK_FILTER_LABELS } from '@/config/feedback-filters';
 import { toLocaleName } from '@/utils/locale';
 import { toPlatformName } from '@/utils/platform';
+import { compareVersions } from '@/utils/version';
 
 /** 피드백 대시보드의 건수를 필터 그룹으로 변환하는 함수 */
 export const toFeedbackFilterGroups = (feedbackDashboard: FeedbackDashboard) => {
@@ -16,7 +17,7 @@ export const toFeedbackFilterGroups = (feedbackDashboard: FeedbackDashboard) => 
 			label: FEEDBACK_FILTER_LABELS.app_version,
 			// 높은 버전부터 나열
 			options: app_versions
-				.toSorted((a, b) => b.app_version.localeCompare(a.app_version, undefined, { numeric: true }))
+				.toSorted((a, b) => compareVersions(b.app_version, a.app_version))
 				.map(({ app_version, count }) => ({ value: app_version, label: app_version, count })),
 		},
 		{

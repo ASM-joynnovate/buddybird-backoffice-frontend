@@ -28,15 +28,25 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 	// 응답을 기다리지 않고 조회 시작
 	void queryClient.prefetchQuery(getUserOptions({ id }));
 	void queryClient.prefetchQuery(getUserSessionListOptions({ id, page: 1 }));
-	void queryClient.prefetchQuery(getUserSessionListOptions({ id, page: sessionPage }));
 	void queryClient.prefetchQuery(getNotificationListOptions(recentListParams));
 	void queryClient.prefetchQuery(getFeedbackListOptions(recentListParams));
 	void queryClient.prefetchQuery(getUserWordListOptions({ id }));
 	void queryClient.prefetchQuery(getUserConsentListOptions({ id }));
 
+	// 세션 목록은 첫 세션의 타임라인 조회에도 사용, 실패는 세션 카드가 표시
+	const sessionList = queryClient
+		.fetchQuery(getUserSessionListOptions({ id, page: sessionPage }))
+		.catch(() => undefined);
+
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<UserDetail id={id} sessionPage={sessionPage} today={formatToday()} now={getNow()} />
+			<UserDetail
+				id={id}
+				sessionPage={sessionPage}
+				sessionList={sessionList}
+				today={formatToday()}
+				now={getNow()}
+			/>
 		</HydrationBoundary>
 	);
 }

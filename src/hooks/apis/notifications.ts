@@ -1,4 +1,4 @@
-import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 import {
 	getNotificationAudience,
@@ -19,11 +19,13 @@ import type {
 } from '@/types/apis/notifications';
 
 import { apiKeys } from '@/hooks/apis/keys';
+import { useIdempotentMutation } from '@/hooks/apis/use-idempotent-mutation';
 
 import { apiErrorMessage } from '@/lib/api';
 
+import { toast } from 'sonner';
+
 import { NOTIFICATION_DISPATCH_REFETCH_INTERVAL_MS } from '@/config';
-import { useMessageStore } from '@/providers/stores/message';
 
 /** 알림 목록 조회 Hook에 사용할 옵션 */
 export const getNotificationListOptions = (listParams: NotificationListParams) =>
@@ -85,13 +87,18 @@ export const useGetPushDeliveryList = (listParams: PushDeliveryListParams) => {
 export const useBroadcastNotification = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('notifications', 'broadcast'),
 		mutationFn: postNotificationBroadcast,
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.notifications.all() }),
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+		onSuccess: async (broadcastResult) => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: apiKeys.notifications.all() }),
+				queryClient.invalidateQueries({ queryKey: apiKeys.dashboard.all() }),
+			]);
+
+			toast.success(`${broadcastResult.notification_count.toLocaleString('ko-KR')}건의 알림을 만들었습니다.`);
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };
 
@@ -99,23 +106,26 @@ export const useBroadcastNotification = () => {
 export const useCancelNotificationDispatch = () => {
 	const queryClient = useQueryClient();
 
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('notifications', 'dispatches', 'cancel'),
 		mutationFn: postNotificationDispatchCancel,
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: apiKeys.notifications.all() }),
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+		onSuccess: async (dispatchCancelResult) => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: apiKeys.notifications.all() }),
+				queryClient.invalidateQueries({ queryKey: apiKeys.dashboard.all() }),
+			]);
+
+			toast.success(`${dispatchCancelResult.canceled_count.toLocaleString('ko-KR')}건의 발송을 취소했습니다.`);
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };
 
 /** 알림 사진 업로드 Hook */
 export const useUploadNotificationImage = () => {
-	const openPopup = useMessageStore((state) => state.openPopup);
-
-	return useMutation({
+	return useIdempotentMutation({
 		mutationKey: apiKeys.mutation('notifications', 'images', 'upload'),
 		mutationFn: postNotificationImage,
-		onError: (error) => openPopup({ title: apiErrorMessage(error) }),
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };
