@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.16.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.15.0...v0.16.0) (2026-10-10)
+
+
+### Features
+
+* 세션 녹음 소리 재생 추가 [BB-653] ([d13b005](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/d13b00589527a8f2c424a3bf622a135ce949fba8))
+* 세션 녹음 소리 재생 추가 [BB-653] ([4355b25](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/4355b25b54a3520ad16a8aa6dd8d16e6d1a666e4))
+* 타임라인 응급 상황 구간 및 재생 위치 이동 추가 [BB-653] ([190bcbd](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/190bcbd59343d22ffc2719b4557eb3eb8ceefdb2))
+
 ## [0.15.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.14.0...v0.15.0) (2026-10-09)
 
 
