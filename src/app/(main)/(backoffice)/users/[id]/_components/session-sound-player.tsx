@@ -143,11 +143,11 @@ const SessionSoundPlayer = ({ currentSound, emergencySoundIds, player }: Props) 
 							{durationSeconds !== null && (
 								<time className="tabular-nums">{formatAudioDuration(durationSeconds)}</time>
 							)}
-							{currentSound.is_mimic && <ColorTag color="var(--foreground)">따라 함</ColorTag>}
+							{currentSound.is_mimic && <ColorTag color="var(--foreground)">모사 성공</ColorTag>}
 							{emergencySoundIds.has(currentSound.id) && (
-								<Badge variant="destructive" className="dark:bg-destructive/10">
+								<Badge variant="destructive" className="max-md:pr-1.5 dark:bg-destructive/10">
 									<Siren data-icon="inline-start" />
-									응급 상황
+									<span className="max-md:sr-only">응급 상황</span>
 								</Badge>
 							)}
 						</>

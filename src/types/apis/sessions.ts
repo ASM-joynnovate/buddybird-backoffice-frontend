@@ -61,6 +61,7 @@ export const sessionEventSchema = z.object({
 		'session_finished',
 	]),
 	occurred_at: timestampSchema,
+	ended_at: timestampSchema.nullable(),
 	word: sessionWordSchema.nullable(),
 	sound_ids: z.array(uuidSchema),
 	is_learning: z.boolean().nullable(),

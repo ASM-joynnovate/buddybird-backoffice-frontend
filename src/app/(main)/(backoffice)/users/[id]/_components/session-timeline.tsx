@@ -24,6 +24,7 @@ import { Play, Siren } from 'lucide-react';
 
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
+import SessionPlayhead from '@/app/(main)/(backoffice)/users/[id]/_components/session-playhead';
 import SessionSoundPlayer from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-player';
 import SessionTrack from '@/app/(main)/(backoffice)/users/[id]/_components/session-track';
 import { TIMELINE_MAX_SOUND_BAR_COUNT, TIMELINE_MIN_VISIBLE_MS } from '@/config';
@@ -49,7 +50,7 @@ const legends = [
 	{ label: '수면 시간', className: 'bg-[color-mix(in_srgb,var(--chart-4)_46%,var(--card))]' },
 	{ label: '연결 끊김', className: 'bg-destructive-dot' },
 	{ label: '응급 상황', className: 'text-destructive-dot', icon: Siren },
-	{ label: '따라 함', className: 'bg-foreground' },
+	{ label: '모사 성공', className: 'bg-foreground' },
 ];
 const laneLabelClassName = 'sticky left-0 -mb-2 w-max text-[12.5px] text-muted-foreground';
 
@@ -115,6 +116,11 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		sessionEventListData.flatMap((sessionEvent) =>
 			sessionEvent.kind === 'emergency_detected' ? sessionEvent.sound_ids : [],
 		),
+	);
+	const emergencyPeriods = sessionEventListData.flatMap((sessionEvent) =>
+		sessionEvent.kind === 'emergency_detected' && sessionEvent.ended_at
+			? [{ startMs: dayjs(sessionEvent.occurred_at).valueOf(), endMs: dayjs(sessionEvent.ended_at).valueOf() }]
+			: [],
 	);
 
 	// 확대 배율에 맞춘 시간 구간별 소리 수
@@ -348,7 +354,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 				</StatCell>
 				<StatCell label="단어">{session.word.name}</StatCell>
 				<StatCell label="앵무새 소리">{session.sounds.parrot_count}회</StatCell>
-				<StatCell label="따라 한 횟수">{session.sounds.mimic_count}회</StatCell>
+				<StatCell label="모사 성공">{session.sounds.mimic_count}회</StatCell>
 			</dl>
 
 			<div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-muted-foreground">
@@ -388,6 +394,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 							session={session}
 							sessionPeriod={sessionPeriod}
 							timeZone={timeZone}
+							emergencyPeriods={emergencyPeriods}
 							className="h-4"
 						>
 							{sessionEvents.map((sessionEvent) =>
@@ -436,7 +443,28 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 									/>
 								),
 							)}
+
+							{sessionSoundListData
+								.filter((sessionSound) => sessionSound.is_mimic)
+								.map((sessionSound) => (
+									<button
+										key={sessionSound.id}
+										type="button"
+										aria-label={`${formatShortDateTimeWithSeconds(sessionSound.captured_at)} 모사 성공 소리 재생`}
+										className={cn(
+											'absolute top-1 -ml-1 size-2 rounded-full bg-foreground transition-transform after:absolute after:-inset-2 hover:scale-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
+											sessionSound.id === currentSound?.id &&
+												'scale-125 ring-[1.5px] ring-foreground ring-offset-2 ring-offset-card',
+										)}
+										style={{
+											left: `${toPeriodPercent(dayjs(sessionSound.captured_at).valueOf(), sessionPeriod)}%`,
+										}}
+										onClick={() => player.playSound(sessionSound)}
+									/>
+								))}
 						</SessionTrack>
+
+						<hr className="-mx-1.5" />
 
 						<p className={laneLabelClassName}>앵무새 소리</p>
 						{/*누르면 그 시각의 소리부터 재생*/}
@@ -459,28 +487,6 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 									style={{ height: `${(soundCount / maxSoundCount) * 100}%` }}
 								/>
 							))}
-						</div>
-
-						<p className={laneLabelClassName}>따라 함</p>
-						<div className="relative h-2.5">
-							{sessionSoundListData
-								.filter((sessionSound) => sessionSound.is_mimic)
-								.map((sessionSound) => (
-									<button
-										key={sessionSound.id}
-										type="button"
-										aria-label={`${formatShortDateTimeWithSeconds(sessionSound.captured_at)} 따라 한 소리 재생`}
-										className={cn(
-											'absolute top-px -ml-1 size-2 rounded-full bg-foreground transition-transform after:absolute after:-inset-2 hover:scale-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
-											sessionSound.id === currentSound?.id &&
-												'scale-125 ring-[1.5px] ring-foreground ring-offset-2 ring-offset-card',
-										)}
-										style={{
-											left: `${toPeriodPercent(dayjs(sessionSound.captured_at).valueOf(), sessionPeriod)}%`,
-										}}
-										onClick={() => player.playSound(sessionSound)}
-									/>
-								))}
 						</div>
 
 						<ol className="flex justify-between text-[11.5px] whitespace-nowrap text-muted-foreground tabular-nums">
@@ -507,11 +513,13 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 							</div>
 						)}
 
-						{/*재생할 차례인 소리의 시각*/}
-						{currentSoundPercent !== null && (
-							<span
-								className="absolute inset-y-0 -ml-px w-0.5 rounded-full bg-foreground transition-[left] duration-200 ease-out before:absolute before:-top-0.75 before:-left-0.75 before:size-2 before:rounded-full before:bg-foreground before:ring-2 before:ring-card motion-reduce:transition-none"
-								style={{ left: `${currentSoundPercent}%` }}
+						{/*재생 위치*/}
+						{currentSound && (
+							<SessionPlayhead
+								startMs={dayjs(currentSound.captured_at).valueOf()}
+								sessionPeriod={sessionPeriod}
+								player={player}
+								className="absolute inset-y-0 -ml-px w-0.5 rounded-full bg-foreground before:absolute before:-top-0.75 before:-left-0.75 before:size-2 before:rounded-full before:bg-foreground before:ring-2 before:ring-card"
 							/>
 						)}
 					</div>
@@ -521,6 +529,8 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			{sessionSoundListData.length > 0 && (
 				<SessionSoundPlayer currentSound={currentSound} emergencySoundIds={emergencySoundIds} player={player} />
 			)}
+
+			<hr />
 
 			{/*전체 구간 및 현재 보이는 범위*/}
 			<div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 text-[12.5px] text-muted-foreground">
@@ -534,16 +544,19 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 						session={session}
 						sessionPeriod={sessionPeriod}
 						timeZone={timeZone}
+						emergencyPeriods={emergencyPeriods}
 						className="h-1.5"
 					/>
 					<span
 						className="pointer-events-none absolute inset-y-0 rounded-sm bg-foreground/6 ring-2 ring-foreground ring-inset"
 						style={{ left: `${visibleRange.leftPercent}%`, width: `${visibleRange.widthPercent}%` }}
 					/>
-					{currentSoundPercent !== null && (
-						<span
+					{currentSound && (
+						<SessionPlayhead
+							startMs={dayjs(currentSound.captured_at).valueOf()}
+							sessionPeriod={sessionPeriod}
+							player={player}
 							className="pointer-events-none absolute inset-y-0.75 -ml-px w-0.5 rounded-full bg-foreground"
-							style={{ left: `${currentSoundPercent}%` }}
 						/>
 					)}
 				</div>

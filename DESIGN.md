@@ -549,7 +549,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Icon link:** 숫자 카드의 16px 화살표 링크는 `muted-foreground` 색이며 `aria-label`에 이동할 화면을 적는다
 - **Add cell:** 칸으로 표시하는 목록의 마지막 칸은 항목을 추가하는 버튼이다. 크기 및 모서리는 다른 칸과 같고 `chart-neutral` 색 1px 점선 테두리를 두른다. 가운데에 16px 더하기 아이콘 및 굵기 600의 "추가"를 `muted-foreground`로 둔다. 마우스를 올리면 테두리를 `muted-foreground`, 배경을 `muted`, 글자를 `foreground`로 변경한다. 항목이 없는 목록에서는 한 행 전체를 차지한다
 - **Play button:** 음성을 재생하는 버튼은 지름 36px의 원이다. 배경은 `card`, 아이콘은 `foreground` 색의 재생 아이콘이다. 마우스를 올리면 둘레 3px를 남기고 안쪽 배경을 `chart-neutral`로 변경한다. 재생 중에는 배경을 `foreground`, 아이콘을 `card` 색의 정지 아이콘으로 변경하고 둘레 3px에 진행한 만큼 `chart-1`을 채운다. 재생이 끝나면 처음 모양으로 되돌린다. `aria-label`에는 대상의 이름 뒤에 "재생" 또는 "정지"를 적는다
-- **Sound player:** 소리 목록을 차례로 재생하는 칸은 Cell list의 칸 모양을 따르고 Play button을 둔다. 높이는 60px이다. 이름 자리에는 굵기 600의 녹음 시각을, 그 아래에는 13px `muted-foreground`의 길이 및 태그를 둔다. 따라 한 소리에는 `foreground` 색 점이 있는 태그를, 응급 상황 소리에는 Emergency icon이 있는 `destructive` 태그를 둔다. 오른쪽 끝에는 이전 소리 버튼, 다음 소리 버튼, 이어 듣기 Icon toggle을 28px 크기로 둔다. 이어 듣기를 켜면 소리가 끝나고 400ms 뒤에 다음 소리를 재생한다. 소리를 고르기 전에는 녹음 시각 자리에 "처음부터 듣기"를 적는다. 재생하지 못하면 길이 대신 `destructive` 색 문구를 적고 `role="alert"`를 지정한다. 소리를 고른 뒤에는 입력창 및 다이얼로그 밖에서 Space로 재생하거나 정지한다
+- **Sound player:** 소리 목록을 차례로 재생하는 칸은 Cell list의 칸 모양을 따르고 Play button을 둔다. 높이는 60px이다. 이름 자리에는 굵기 600의 녹음 시각을, 그 아래에는 13px `muted-foreground`의 길이 및 태그를 둔다. 모사에 성공한 소리에는 `foreground` 색 점이 있는 태그를, 응급 상황 소리에는 Emergency icon이 있는 `destructive` 태그를 둔다. 화면 폭 768px 미만에서는 응급 상황 태그에 아이콘만 표시하고 글자는 화면 읽기 프로그램에만 남긴다. 오른쪽 끝에는 이전 소리 버튼, 다음 소리 버튼, 이어 듣기 Icon toggle을 28px 크기로 둔다. 이어 듣기를 켜면 소리가 끝나고 400ms 뒤에 다음 소리를 재생한다. 소리를 고르기 전에는 녹음 시각 자리에 "처음부터 듣기"를 적는다. 재생하지 못하면 길이 대신 `destructive` 색 문구를 적고 `role="alert"`를 지정한다. 소리를 고른 뒤에는 입력창 및 다이얼로그 밖에서 Space로 재생하거나 정지한다
 
 ### Inputs
 
@@ -586,7 +586,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Chip:** 로고 및 이름을 함께 표시하는 높이 28px의 끝이 둥근 칩이다. `card` 배경에 `border` 색 1px 외곽선을 두른다. 왼쪽부터 20px 로고, 13px 굵기 600의 이름, 14px 상태 아이콘을 6px 간격으로 둔다. 상태 아이콘은 상태를 알려야 할 때만 둔다
 - **Chip tone:** 실패한 칩 및 진행 중인 칩은 배경에 상태 색 8%를 `card`에 섞은 색을, 외곽선에 상태 색의 32% 불투명도를 사용한다. 대기 중인 칩은 이름을 굵기 500의 `muted-foreground`로 적는다
 - **Status icon:** 완료는 `success` 색 체크, 실패는 `destructive` 색 X, 진행 중은 `info` 색의 회전하는 원호, 확인하지 못한 상태는 `warning` 색 경고 삼각형, 대기는 `muted-foreground` 색 점선 원으로 표시한다. 예정은 `info` 색 시계, 꺼짐은 `muted-foreground` 색 꺼진 종으로 표시한다. 선 굵기는 2px이다. `aria-label` 및 `title`에 상태 이름을 넣는다. `prefers-reduced-motion`에서는 원호를 회전시키지 않는다
-- **Emergency icon:** 응급 상황은 lucide `Siren` 아이콘으로 표시한다. 타임라인의 이벤트 핀에는 지름 20px `destructive-dot` 원 안에 12px `card` 색 아이콘을 둔다. 이벤트 버튼 및 범례에는 14px `destructive-dot` 색 아이콘을 둔다. 응급 상황 이벤트를 누르면 감지된 소리 중 첫 소리부터 재생한다
+- **Emergency icon:** 응급 상황은 lucide `Siren` 아이콘으로 표시한다. 타임라인의 이벤트 핀에는 지름 20px의 `destructive-dot` 색 원 안에 12px `card` 색 아이콘을 둔다. 이벤트 버튼 및 범례에는 14px `destructive-dot` 색 아이콘을 둔다. 응급 상황으로 감지된 구간은 타임라인의 세션 막대에 연결 끊김 구간처럼 `destructive-dot` 색으로 그린다. 최소 폭은 3px이다. 응급 상황 이벤트를 누르면 감지된 소리 중 첫 소리부터 재생한다
 - **Change:** `{components.kpi-change}`. 14px 화살표 및 굵기 700의 비율을 둔다. 증가 및 감소는 화살표 방향으로 구분하고 색은 변경하지 않는다
 - **Warning note:** `{components.warning-note}`. 한 행에 `warning` 색 16px 아이콘, 문구, 오른쪽 끝의 굵기 700 수치를 둔다. 배경은 `warning`의 10% 불투명도다
 - **Dot:** 지름 8px의 원이다. "확인할 항목" 목록에는 `destructive-dot` 및 `warning-dot`를, 범례에는 데이터 색을 사용한다. 점 옆에는 이름을 글자로 적는다
@@ -626,7 +626,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Legend:** `CardHeader` 오른쪽에 8px 점, 13px `muted-foreground`의 계열 이름, 굵기 700 `foreground`의 합계를 순서대로 둔다. 화면 폭 860px 이하에서는 숨긴다
 - **Tooltip:** `{components.chart-tooltip}`. 계열마다 한 행에 8px 점, 13px 굵기 700의 값, 12px 계열 이름을 두고 마지막 행에 날짜를 둔다. 계열 이름 및 날짜는 `tooltip-foreground`의 75% 불투명도다. 가리키는 값의 12px 위에 표시하며 120ms 동안 나타난다
 - **Schedule bar:** 기간은 높이 8px의 끝이 둥근 막대로 그린다. 바탕은 `chart-2`의 22% 불투명도이고 시작부터 현재 시각까지를 `chart-2`로 채운다. 현재 시각에는 `foreground` 색 1px 세로선을, 7일마다 `border`의 50% 불투명도 1px 세로선을 둔다. 영역을 넘는 막대는 그 끝에서 자르고 잘린 쪽의 모서리는 둥글게 하지 않는다
-- **Sound lane:** 세션의 시간 구간마다 소리 수를 나타내는 막대는 `chart-1`의 70% 불투명도로 그린다. 막대를 누르면 그 구간의 첫 소리부터 재생하고, 마우스를 올린 막대는 `chart-1`로 표시한다. 소리를 고르면 그 소리까지의 막대는 `chart-1`, 뒤의 막대는 `chart-1`의 38% 불투명도로 변경한다. 고른 소리의 시각에는 `foreground` 색 2px 세로선을 두고 선의 위쪽 끝에 지름 8px 점을 둔다. 전체 구간 막대에도 같은 색 2px 세로선을 둔다
+- **Sound lane:** 세션의 시간 구간마다 소리 수를 나타내는 막대는 `chart-1`의 70% 불투명도로 그린다. 막대를 누르면 그 구간의 첫 소리부터 재생하고, 마우스를 올린 막대는 `chart-1`로 표시한다. 소리를 고르면 그 소리까지의 막대는 `chart-1`, 뒤의 막대는 `chart-1`의 38% 불투명도로 변경한다. 고른 소리의 녹음 시각에 재생한 시간을 더한 위치에는 `foreground` 색 2px 세로선을 두고 선의 위쪽 끝에 지름 8px 점을 둔다. 전체 구간 막대에도 같은 색 2px 세로선을 둔다. 타임라인의 세션 막대와 소리 막대 사이, 재생 칸과 전체 구간 막대 사이에는 `border` 색 1px 구분선을 둔다. 모사에 성공한 소리는 세션 막대 안의 그 시각에 지름 8px `foreground` 색 점으로 표시하고, 점을 누르면 그 소리를 재생한다. 고른 소리의 점에는 `foreground` 색 테두리를 두른다
 
 ## Do's and Don'ts
 
