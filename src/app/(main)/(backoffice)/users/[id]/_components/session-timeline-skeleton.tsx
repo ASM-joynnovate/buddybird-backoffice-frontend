@@ -3,7 +3,7 @@ import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const STAT_LABELS = ['단어', '앵무새 소리', '따라 한 횟수'];
-const LEGEND_LABELS = ['세션', '수면 시간', '연결 끊김', '따라 함'];
+const LEGEND_LABELS = ['세션', '수면 시간', '연결 끊김', '응급 상황', '따라 함'];
 const PLACEHOLDER_EVENT_WIDTHS = ['w-39.5', 'w-46', 'w-39.5', 'w-39.5', 'w-39', 'w-38.5', 'w-49', 'w-46', 'w-39.5'];
 const laneLabelClassName = '-mb-2 text-[12.5px] text-muted-foreground';
 
@@ -50,6 +50,8 @@ const SessionTimelineSkeleton = () => {
 				<Skeleton className="h-2.5" />
 				<SkeletonText className="text-[11.5px]" />
 			</div>
+
+			<Skeleton className="h-15 rounded-lg" />
 
 			<div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 text-[12.5px] text-muted-foreground">
 				전체 구간

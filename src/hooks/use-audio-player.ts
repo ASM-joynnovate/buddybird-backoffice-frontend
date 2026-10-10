@@ -1,6 +1,6 @@
 import { type SyntheticEvent, useEffect, useRef, useState } from 'react';
 
-let playingAudio: HTMLAudioElement | null = null;
+import { stopOtherAudio } from '@/lib/audio';
 
 /** 음성 재생 Hook */
 const useAudioPlayer = () => {
@@ -68,13 +68,7 @@ const useAudioPlayer = () => {
 	};
 
 	const handlePlay = (event: SyntheticEvent<HTMLAudioElement>) => {
-		// 재생 중인 다른 음성 정지
-		if (playingAudio && playingAudio !== event.currentTarget) {
-			playingAudio.pause();
-			playingAudio.currentTime = 0;
-		}
-
-		playingAudio = event.currentTarget;
+		stopOtherAudio(event.currentTarget);
 
 		setPlaying(true);
 	};
