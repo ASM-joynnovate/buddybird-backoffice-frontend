@@ -26,6 +26,11 @@ export const formatShortDateTime = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M.D HH:mm');
 };
 
+/** 시각을 'M.D HH:mm:ss' 형식의 한국 시간으로 변환하는 함수 */
+export const formatShortDateTimeWithSeconds = (date: ConfigType) => {
+	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M.D HH:mm:ss');
+};
+
 /** 시각을 'M.D' 형식의 한국 날짜로 변환하는 함수 */
 export const formatShortDate = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M.D');

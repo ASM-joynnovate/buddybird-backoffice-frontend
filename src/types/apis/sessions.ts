@@ -1,3 +1,4 @@
+import { fileSchema } from '@/types/apis/common';
 import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { sleepSchema } from '@/types/apis/settings';
 
@@ -37,7 +38,11 @@ export const sessionSchema = z.object({
 		ended_reason: sessionEndedReasonSchema.nullable(),
 	}),
 	judgment: z.object({ status: z.enum(['pending', 'done']) }),
-	sounds: z.object({ parrot_count: z.number().int(), mimicry_count: z.number().int() }),
+	sounds: z.object({
+		vad_count: z.number().int(),
+		parrot_count: z.number().int(),
+		mimic_count: z.number().int(),
+	}),
 	disconnections: z.array(z.object({ started_at: timestampSchema, ended_at: timestampSchema.nullable() })),
 	emergency_detections: z.array(timestampSchema),
 });
@@ -56,11 +61,18 @@ export const sessionEventSchema = z.object({
 		'session_finished',
 	]),
 	occurred_at: timestampSchema,
+	ended_at: timestampSchema.nullable(),
 	word: sessionWordSchema.nullable(),
+	sound_ids: z.array(uuidSchema),
 	is_learning: z.boolean().nullable(),
 });
 
-export const sessionSoundSchema = z.object({ captured_at: timestampSchema, is_mimicry: z.boolean() });
+export const sessionSoundSchema = z.object({
+	id: uuidSchema,
+	captured_at: timestampSchema,
+	audio_file: fileSchema,
+	is_mimic: z.boolean(),
+});
 
 export type SessionPhase = z.infer<typeof sessionPhaseSchema>;
 export type SessionEndedReason = z.infer<typeof sessionEndedReasonSchema>;
