@@ -1,8 +1,10 @@
-import { queryOptions } from '@tanstack/react-query';
+import { queryOptions, useMutation } from '@tanstack/react-query';
 
-import { getSessionEventList, getSessionSoundList } from '@/apis/sessions';
+import { getSessionEventList, getSessionSoundFiles, getSessionSoundList } from '@/apis/sessions';
 
 import { apiKeys } from '@/hooks/apis/keys';
+
+import { toast } from 'sonner';
 
 import { SESSION_SOUND_REFETCH_INTERVAL_MS } from '@/config';
 
@@ -19,3 +21,12 @@ export const getSessionSoundListOptions = ({ id }: { id: string }) =>
 		refetchInterval: SESSION_SOUND_REFETCH_INTERVAL_MS,
 		refetchIntervalInBackground: true,
 	});
+
+/** 세션 소리 파일 다운로드 Hook */
+export const useDownloadSessionSoundFiles = () => {
+	return useMutation({
+		mutationKey: apiKeys.mutation('sessions', 'sound-files'),
+		mutationFn: getSessionSoundFiles,
+		onError: () => toast.error('소리를 다운로드하지 못했습니다.'),
+	});
+};

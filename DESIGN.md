@@ -586,7 +586,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - **Chip:** 로고 및 이름을 함께 표시하는 높이 28px의 끝이 둥근 칩이다. `card` 배경에 `border` 색 1px 외곽선을 두른다. 왼쪽부터 20px 로고, 13px 굵기 600의 이름, 14px 상태 아이콘을 6px 간격으로 둔다. 상태 아이콘은 상태를 알려야 할 때만 둔다
 - **Chip tone:** 실패한 칩 및 진행 중인 칩은 배경에 상태 색 8%를 `card`에 섞은 색을, 외곽선에 상태 색의 32% 불투명도를 사용한다. 대기 중인 칩은 이름을 굵기 500의 `muted-foreground`로 적는다
 - **Status icon:** 완료는 `success` 색 체크, 실패는 `destructive` 색 X, 진행 중은 `info` 색의 회전하는 원호, 확인하지 못한 상태는 `warning` 색 경고 삼각형, 대기는 `muted-foreground` 색 점선 원으로 표시한다. 예정은 `info` 색 시계, 꺼짐은 `muted-foreground` 색 꺼진 종으로 표시한다. 선 굵기는 2px이다. `aria-label` 및 `title`에 상태 이름을 넣는다. `prefers-reduced-motion`에서는 원호를 회전시키지 않는다
-- **Emergency icon:** 응급 상황은 lucide `Siren` 아이콘으로 표시한다. 타임라인의 이벤트 핀에는 지름 20px의 `destructive-dot` 색 원 안에 12px `card` 색 아이콘을 둔다. 이벤트 버튼 및 범례에는 14px `destructive-dot` 색 아이콘을 둔다. 응급 상황으로 감지된 구간은 타임라인의 세션 막대에 연결 끊김 구간처럼 `destructive-dot` 색으로 그린다. 최소 폭은 3px이다. 응급 상황 이벤트를 누르면 감지된 소리 중 첫 소리부터 재생한다
+- **Emergency icon:** 응급 상황은 lucide `Siren` 아이콘으로 표시한다. 타임라인의 이벤트 핀에는 지름 20px의 `destructive-dot` 색 원 안에 12px `card` 색 아이콘을 둔다. 이벤트 버튼 및 범례에는 14px `destructive-dot` 색 아이콘을 둔다. 응급 상황으로 감지된 구간은 타임라인의 세션 막대에 연결 끊김 구간처럼 `destructive-dot` 색으로 그린다. 최소 폭은 3px이다. 응급 상황 이벤트를 누르면 감지된 소리를 순서대로 끝까지 재생하고, 재생 중에 다시 누르면 정지한다
 - **Change:** `{components.kpi-change}`. 14px 화살표 및 굵기 700의 비율을 둔다. 증가 및 감소는 화살표 방향으로 구분하고 색은 변경하지 않는다
 - **Warning note:** `{components.warning-note}`. 한 행에 `warning` 색 16px 아이콘, 문구, 오른쪽 끝의 굵기 700 수치를 둔다. 배경은 `warning`의 10% 불투명도다
 - **Dot:** 지름 8px의 원이다. "확인할 항목" 목록에는 `destructive-dot` 및 `warning-dot`를, 범례에는 데이터 색을 사용한다. 점 옆에는 이름을 글자로 적는다

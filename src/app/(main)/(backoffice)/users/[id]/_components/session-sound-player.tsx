@@ -10,6 +10,8 @@ import { ListMusic, Siren, SkipBack, SkipForward } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import PlayButton from '@/app/(main)/(backoffice)/_components/play-button';
+import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
+import { SECOND } from '@/config/units';
 import { formatAudioDuration } from '@/utils/audio';
 import { formatShortDateTimeWithSeconds } from '@/utils/date';
 
@@ -20,6 +22,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 interface Props {
 	currentSound: SessionSound | null;
 	emergencySoundIds: ReadonlySet<string>;
+	judging: boolean;
 	player: AudioPlaylist;
 }
 
@@ -27,9 +30,10 @@ interface Props {
  * 세션 소리 재생 컴포넌트
  * @param currentSound 재생할 차례인 소리
  * @param emergencySoundIds 응급 상황으로 감지된 소리 ID
+ * @param judging 모사 판정이 끝나지 않았는지 여부
  * @param player useAudioPlaylist 결과
  */
-const SessionSoundPlayer = ({ currentSound, emergencySoundIds, player }: Props) => {
+const SessionSoundPlayer = ({ currentSound, emergencySoundIds, judging, player }: Props) => {
 	const spaceKeyHandledRef = useRef(false);
 
 	const [progressPercent, setProgressPercent] = useState(0);
@@ -37,6 +41,8 @@ const SessionSoundPlayer = ({ currentSound, emergencySoundIds, player }: Props) 
 	const { playing, playbackFailed, durationSeconds, continuousPlayEnabled, previousSound, nextSound, audioProps } =
 		player;
 	const soundTime = currentSound && formatShortDateTimeWithSeconds(currentSound.captured_at);
+	// 길이를 저장하기 전의 녹음은 파일에서 읽은 길이 표시
+	const soundDurationSeconds = currentSound?.duration_ms ? currentSound.duration_ms / SECOND : durationSeconds;
 
 	/** 재생 중 매 프레임 진행 비율 갱신 */
 	useEffect(() => {
@@ -123,8 +129,8 @@ const SessionSoundPlayer = ({ currentSound, emergencySoundIds, player }: Props) 
 			<div className="mr-auto min-w-0">
 				<strong className="block font-semibold tabular-nums">{soundTime ?? '처음부터 듣기'}</strong>
 
-				{/*소리 길이 및 태그*/}
-				<div className="flex min-h-5 flex-wrap items-center gap-x-2 gap-y-0.5 text-[13px] text-muted-foreground">
+				{/*소리 길이, 점수, 태그*/}
+				<div className="flex min-h-5 flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] text-muted-foreground">
 					{/*좁은 화면에서는 한 줄로 줄임*/}
 					{!currentSound && (
 						<span>
@@ -140,9 +146,20 @@ const SessionSoundPlayer = ({ currentSound, emergencySoundIds, player }: Props) 
 
 					{!!currentSound && !playbackFailed && (
 						<>
-							{durationSeconds !== null && (
-								<time className="tabular-nums">{formatAudioDuration(durationSeconds)}</time>
+							{soundDurationSeconds !== null && (
+								<time className="tabular-nums">{formatAudioDuration(soundDurationSeconds)}</time>
 							)}
+							<SessionSoundScore
+								label="앵무새 소리"
+								score={currentSound.analysis?.score ?? null}
+								barClassName="bg-chart-1"
+							/>
+							<SessionSoundScore
+								label="모사"
+								score={currentSound.judgment?.score ?? null}
+								judging={judging}
+								barClassName="bg-foreground"
+							/>
 							{currentSound.is_mimic && <ColorTag color="var(--foreground)">모사 성공</ColorTag>}
 							{emergencySoundIds.has(currentSound.id) && (
 								<Badge variant="destructive" className="max-md:pr-1.5 dark:bg-destructive/10">
