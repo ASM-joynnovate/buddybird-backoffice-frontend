@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.17.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.16.0...v0.17.0) (2026-10-12)
+
+
+### Features
+
+* 다국어 문구 입력에 일본어, 러시아어 및 스페인어 추가 ([b003332](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/b003332da5579ee1e4a743a7e2eaa884a9dee4a4))
+* 분석 탭 및 활성 사용자 카드 추가 ([6cfb8e0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/6cfb8e007d92092a19b5b81472adb3e285e1afd7))
+* 분석 탭, 다국어 입력 및 세션 소리 점수 추가 [BB-669][BB-670][BB-671] ([2e44d2d](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/2e44d2d35c77a801fe35d3be132276e3b78ab2ab))
+* 세션 소리 점수 및 다운로드 추가 ([9443675](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/9443675c2ecca4dc2c604dd884333f998cf9b9fe))
+
 ## [0.16.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.15.0...v0.16.0) (2026-10-10)
 
 
