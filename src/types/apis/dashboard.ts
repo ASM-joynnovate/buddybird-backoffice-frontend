@@ -85,8 +85,12 @@ export const userDashboardSchema = z.object({
 			signup_count: z.number().int(),
 			withdrawal_count: z.number().int(),
 			running_user_count: z.number().int(),
+			dau: z.number().int(),
+			wau: z.number().int(),
+			mau: z.number().int(),
 		}),
 	),
+	countries: z.array(z.object({ country: z.string().nullable(), count: z.number().int() })),
 	last_sessions: z.array(z.object({ last_session: userLastSessionSchema, count: z.number().int() })),
 	accounts: z.object({
 		providers: z.array(z.object({ provider: providerSchema, count: z.number().int() })),
@@ -179,6 +183,47 @@ export const consentDashboardSchema = z.object({
 	locales: z.array(z.object({ locale: z.string(), granted_count: z.number().int(), user_count: z.number().int() })),
 });
 
+export const analyticsDashboardSchema = z.object({
+	platforms: z.array(z.object({ platform: z.string(), count: z.number().int() })),
+	app_versions: z.array(z.object({ app_version: z.string(), count: z.number().int() })),
+	events: z.array(z.object({ name: z.string(), count: z.number().int(), user_count: z.number().int() })),
+	onboarding: z.array(
+		z.object({ step: z.string(), viewed_count: z.number().int(), completed_count: z.number().int() }),
+	),
+});
+
+export const stabilityIssueSortSchema = z.enum(['date', 'freq', 'user']);
+
+export const stabilityDashboardSchema = z.object({
+	projects: z.array(
+		z.object({
+			project: z.string(),
+			crash_free_user_rate: z.number().nullable(),
+			crash_free_session_rate: z.number().nullable(),
+			error_count: z.number().int(),
+		}),
+	),
+	releases: z.array(
+		z.object({
+			release: z.string(),
+			crash_free_user_rate: z.number().nullable(),
+			user_count: z.number().int(),
+		}),
+	),
+	issues: z.array(
+		z.object({
+			project: z.string(),
+			title: z.string(),
+			level: z.string(),
+			count: z.number().int(),
+			user_count: z.number().int(),
+			first_seen: timestampSchema,
+			last_seen: timestampSchema,
+			url: z.string(),
+		}),
+	),
+});
+
 export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
@@ -187,6 +232,9 @@ export type WithdrawalDashboard = z.infer<typeof withdrawalDashboardSchema>;
 export type NotificationDashboard = z.infer<typeof notificationDashboardSchema>;
 export type AppUpdateDashboard = z.infer<typeof appUpdateDashboardSchema>;
 export type ConsentDashboard = z.infer<typeof consentDashboardSchema>;
+export type AnalyticsDashboard = z.infer<typeof analyticsDashboardSchema>;
+export type StabilityIssueSort = z.infer<typeof stabilityIssueSortSchema>;
+export type StabilityDashboard = z.infer<typeof stabilityDashboardSchema>;
 
 export interface DashboardParams {
 	date_from: string;

@@ -35,7 +35,7 @@ const UserDashboardCards = ({ dashboardParams, query, today }: Props) => {
 				userCount={userDashboardData.users.total_count}
 				query={query}
 			/>
-			<ActiveUserCard daily={userDashboardData.daily} today={today} />
+			<ActiveUserCard daily={userDashboardData.daily} countries={userDashboardData.countries} today={today} />
 			<CompositionCard userDashboard={userDashboardData} query={query} />
 			<SpeciesCard parrots={userDashboardData.parrots} />
 		</div>

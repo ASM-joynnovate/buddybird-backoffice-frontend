@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 
 import {
 	Bell,
+	ChartNoAxesColumn,
 	FileText,
 	House,
 	Megaphone,
@@ -24,6 +25,7 @@ const menuGroups = [
 		{ href: '/users', label: '사용자', icon: UserRound },
 		{ href: '/feedback', label: '피드백', icon: MessageSquare },
 		{ href: '/withdrawals', label: '탈퇴', icon: UserRoundX },
+		{ href: '/analytics', label: '분석', icon: ChartNoAxesColumn },
 	],
 	[
 		{ href: '/announcements', label: '공지', icon: Megaphone },

@@ -1,18 +1,20 @@
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import {
+	getAnalyticsDashboard,
 	getAppUpdateDashboard,
 	getConsentDashboard,
 	getDashboard,
 	getDashboardLive,
 	getFeedbackDashboard,
 	getNotificationDashboard,
+	getStabilityDashboard,
 	getUserDashboard,
 	getWithdrawalDashboard,
 } from '@/apis/dashboard';
 
 import type { Platform } from '@/types/apis/app-updates';
-import type { DashboardParams } from '@/types/apis/dashboard';
+import type { DashboardParams, StabilityIssueSort } from '@/types/apis/dashboard';
 
 import { apiKeys } from '@/hooks/apis/keys';
 
@@ -83,6 +85,40 @@ export const getWithdrawalDashboardOptions = (dashboardParams: DashboardParams) 
 /** 탈퇴 대시보드 조회 Hook */
 export const useGetWithdrawalDashboard = (dashboardParams: DashboardParams) => {
 	return useSuspenseQuery(getWithdrawalDashboardOptions(dashboardParams));
+};
+
+/** Google Analytics 대시보드 조회 Hook에 사용할 옵션 */
+export const getAnalyticsDashboardOptions = (dashboardParams: DashboardParams) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.analytics(dashboardParams),
+		queryFn: () => getAnalyticsDashboard(dashboardParams),
+	});
+/** Google Analytics 대시보드 조회 Hook */
+export const useGetAnalyticsDashboard = (dashboardParams: DashboardParams) => {
+	return useSuspenseQuery(getAnalyticsDashboardOptions(dashboardParams));
+};
+
+/** 안정성 대시보드 조회 Hook에 사용할 옵션 */
+export const getStabilityDashboardOptions = ({
+	dashboardParams,
+	sort,
+}: {
+	dashboardParams: DashboardParams;
+	sort: StabilityIssueSort;
+}) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.stability(dashboardParams, sort),
+		queryFn: () => getStabilityDashboard({ dashboardParams, sort }),
+	});
+/** 안정성 대시보드 조회 Hook */
+export const useGetStabilityDashboard = ({
+	dashboardParams,
+	sort,
+}: {
+	dashboardParams: DashboardParams;
+	sort: StabilityIssueSort;
+}) => {
+	return useSuspenseQuery(getStabilityDashboardOptions({ dashboardParams, sort }));
 };
 
 /** 앱 업데이트 대시보드 조회 Hook에 사용할 옵션 */

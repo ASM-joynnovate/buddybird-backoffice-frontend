@@ -1,5 +1,7 @@
 import type { Platform } from '@/types/apis/app-updates';
 import {
+	type AnalyticsDashboard,
+	analyticsDashboardSchema,
 	type AppUpdateDashboard,
 	appUpdateDashboardSchema,
 	type ConsentDashboard,
@@ -13,6 +15,9 @@ import {
 	feedbackDashboardSchema,
 	type NotificationDashboard,
 	notificationDashboardSchema,
+	type StabilityDashboard,
+	stabilityDashboardSchema,
+	type StabilityIssueSort,
 	type UserDashboard,
 	userDashboardSchema,
 	type WithdrawalDashboard,
@@ -74,6 +79,32 @@ export const getWithdrawalDashboard = async ({ date_from, date_to }: DashboardPa
 	);
 
 	return withdrawalDashboard;
+};
+
+export const getAnalyticsDashboard = async ({ date_from, date_to }: DashboardParams): Promise<AnalyticsDashboard> => {
+	const { data: analyticsDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/analytics',
+		analyticsDashboardSchema,
+		{ searchParams: { date_from, date_to } },
+	);
+
+	return analyticsDashboard;
+};
+
+export const getStabilityDashboard = async ({
+	dashboardParams: { date_from, date_to },
+	sort,
+}: {
+	dashboardParams: DashboardParams;
+	sort: StabilityIssueSort;
+}): Promise<StabilityDashboard> => {
+	const { data: stabilityDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/stability',
+		stabilityDashboardSchema,
+		{ searchParams: { date_from, date_to, sort } },
+	);
+
+	return stabilityDashboard;
 };
 
 export const getAppUpdateDashboard = async ({ platform }: { platform: Platform }): Promise<AppUpdateDashboard> => {
