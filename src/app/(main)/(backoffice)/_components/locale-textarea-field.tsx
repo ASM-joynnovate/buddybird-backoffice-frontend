@@ -6,6 +6,8 @@ import type { I18nFieldValue } from '@/types/i18n';
 
 import { cn } from '@/lib/utils';
 
+import { toI18nLocaleName } from '@/utils/i18n-text';
+
 interface Props {
 	locale: keyof I18nFieldValue;
 	value: string;
@@ -28,15 +30,15 @@ const LocaleTextareaField = ({ locale, value, placeholder, invalid = false, onVa
 	return (
 		<div
 			className={cn(
-				'rounded-lg border bg-card focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand',
+				'flex h-60.5 min-w-0 flex-col rounded-lg border bg-card focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand',
 				invalid ? 'border-destructive' : 'focus-within:border-chart-neutral hover:border-chart-neutral',
 			)}
 		>
 			<label
 				htmlFor={textareaId}
-				className="flex h-9 items-center rounded-t-lg border-b bg-card-inset px-3 text-[13px] font-semibold"
+				className="flex h-9 shrink-0 items-center rounded-t-lg border-b bg-card-inset px-3 text-[13px] font-semibold"
 			>
-				{locale === 'en_us' ? '영어' : '한국어'}
+				{toI18nLocaleName(locale)}
 			</label>
 
 			<textarea
@@ -44,7 +46,7 @@ const LocaleTextareaField = ({ locale, value, placeholder, invalid = false, onVa
 				placeholder={placeholder}
 				value={value}
 				aria-invalid={invalid}
-				className="block h-44 w-full resize-none [scrollbar-width:thin] bg-transparent px-3 pt-2.5 pb-3 leading-normal outline-none placeholder:text-muted-foreground"
+				className="block min-h-0 w-full flex-1 resize-none [scrollbar-width:thin] bg-transparent px-3 pt-2.5 pb-3 leading-normal outline-none placeholder:text-muted-foreground"
 				onChange={(event) => onValueChange(event.target.value)}
 			/>
 		</div>

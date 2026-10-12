@@ -11,6 +11,7 @@ import { useCreateAnnouncement, useSaveAnnouncementImages, useUpdateAnnouncement
 import dayjs from 'dayjs';
 
 import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
+import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import AnnouncementImageField, {
 	type PickedImage,
@@ -42,8 +43,10 @@ interface Props {
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */
 const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
+	const [locale, setLocale] = useState<keyof I18nFieldValue>('ko_kr');
 	const [title, setTitle] = useState(toI18nFieldValue(announcement?.title ?? null));
 	const [body, setBody] = useState(toI18nFieldValue(announcement?.body ?? null));
+	const [englishTitleMissing, setEnglishTitleMissing] = useState(false);
 	const [englishBodyMissing, setEnglishBodyMissing] = useState(false);
 
 	const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
@@ -59,7 +62,6 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		localTime: announcement?.push_local_time ? toHourMinute(announcement.push_local_time) : DEFAULT_PUSH_LOCAL_TIME,
 	});
 
-	const [previewLocale, setPreviewLocale] = useState<keyof I18nFieldValue>('ko_kr');
 	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -76,7 +78,12 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		}
 	};
 
-	const handleBodyChange = (locale: keyof I18nFieldValue, localeBody: string) => {
+	const handleTitleChange = (localeTitle: string) => {
+		setTitle((prev) => ({ ...prev, [locale]: localeTitle }));
+		setEnglishTitleMissing(false);
+	};
+
+	const handleBodyChange = (localeBody: string) => {
 		setBody((prev) => ({ ...prev, [locale]: localeBody }));
 		setEnglishBodyMissing(false);
 	};
@@ -123,13 +130,20 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			return;
 		}
 
+		const nextEnglishTitleMissing = !title.en_us.trim();
 		const nextEnglishBodyMissing = englishTextMissing(body);
 		const nextEndsAtInvalid = !!endsAt && !dayjs(endsAt).isAfter(startsAt);
 
+		setEnglishTitleMissing(nextEnglishTitleMissing);
 		setEnglishBodyMissing(nextEnglishBodyMissing);
 		setEndsAtInvalid(nextEndsAtInvalid);
 
-		if (nextEnglishBodyMissing || nextEndsAtInvalid) {
+		// 빠진 영어 문구를 입력하도록 영어 선택
+		if (nextEnglishTitleMissing || nextEnglishBodyMissing) {
+			setLocale('en_us');
+		}
+
+		if (nextEnglishTitleMissing || nextEnglishBodyMissing || nextEndsAtInvalid) {
 			return;
 		}
 
@@ -183,37 +197,33 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 
 					<DialogBody className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_420px]">
 						<div className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
-							{/*언어마다 제목 및 본문을 한 상자에 입력*/}
+							{/*선택한 언어의 제목 및 본문을 한 상자에 입력*/}
 							<div className={rowClassName}>
 								<span className={`${labelClassName} @md:pt-2.5`}>내용</span>
 
 								<div>
-									<div className="grid gap-3 @md:grid-cols-2">
+									<LocaleFieldGroup
+										locale={locale}
+										summaryTexts={title}
+										englishRequired
+										onLocaleChange={setLocale}
+									>
 										<LocaleTextField
-											locale="ko_kr"
-											title={title.ko_kr}
-											body={body.ko_kr}
+											locale={locale}
+											title={title[locale]}
+											body={body[locale]}
 											englishBodyRequired={false}
-											lengthText={`제목 ${title.ko_kr.length}/${TITLE_MAX_LENGTH}`}
-											onTitleChange={(ko_kr) => setTitle((prev) => ({ ...prev, ko_kr }))}
-											onBodyChange={(ko_kr) => handleBodyChange('ko_kr', ko_kr)}
-											onFocus={() => setPreviewLocale('ko_kr')}
+											lengthText={`제목 ${title[locale].length}/${TITLE_MAX_LENGTH}`}
+											onTitleChange={handleTitleChange}
+											onBodyChange={handleBodyChange}
 										/>
-										<LocaleTextField
-											locale="en_us"
-											title={title.en_us}
-											body={body.en_us}
-											englishBodyRequired={false}
-											lengthText={`제목 ${title.en_us.length}/${TITLE_MAX_LENGTH}`}
-											onTitleChange={(en_us) => setTitle((prev) => ({ ...prev, en_us }))}
-											onBodyChange={(en_us) => handleBodyChange('en_us', en_us)}
-											onFocus={() => setPreviewLocale('en_us')}
-										/>
-									</div>
+									</LocaleFieldGroup>
 
-									{englishBodyMissing && (
+									{(englishTitleMissing || englishBodyMissing) && (
 										<p role="alert" className="mt-1.5 text-[13px] text-destructive">
-											영어 본문을 입력해 주세요.
+											{englishTitleMissing
+												? '영어 제목을 입력해 주세요.'
+												: '영어 본문을 입력해 주세요.'}
 										</p>
 									)}
 								</div>
@@ -288,8 +298,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 							body={body}
 							imageUrl={savedImages[0]?.url ?? pickedImages[0]?.url}
 							pushEnabled={pushSetting.enabled}
-							locale={previewLocale}
-							onLocaleChange={setPreviewLocale}
+							locale={locale}
 						/>
 					</DialogBody>
 

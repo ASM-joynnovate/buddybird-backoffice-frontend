@@ -6,11 +6,14 @@ import { useRouter } from 'next/navigation';
 
 import type { Consent } from '@/types/apis/consents';
 
+import type { I18nFieldValue } from '@/types/i18n';
+
 import { useCreateConsent, useUpdateConsent } from '@/hooks/apis/consents';
 
 import { TriangleAlert } from 'lucide-react';
 
 import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
+import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { CONSENT_KIND_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/config';
@@ -24,7 +27,6 @@ import { Input } from '@/components/ui/input';
 
 const rowClassName = 'grid gap-1.5 md:grid-cols-[72px_minmax(0,1fr)] md:items-center md:gap-3';
 const labelClassName = 'text-[13px] font-semibold text-muted-foreground';
-const bodyClassName = 'h-80 min-h-30 resize-y leading-[1.75] max-md:h-55';
 
 export type ConsentFormMode = 'newConsent' | 'newVersion' | 'edit';
 
@@ -46,8 +48,10 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 	const router = useRouter();
 
 	const [kind, setKind] = useState('');
+	const [locale, setLocale] = useState<keyof I18nFieldValue>('ko_kr');
 	const [title, setTitle] = useState(toI18nFieldValue(sourceConsent?.title ?? null));
 	const [body, setBody] = useState(toI18nFieldValue(sourceConsent?.body ?? null));
+	const [saveTried, setSaveTried] = useState(false);
 	const [required, setRequired] = useState(sourceConsent?.is_required ?? true);
 	const [publishedAt, setPublishedAt] = useState(
 		formMode === 'edit' && sourceConsent ? toDateTimeInputValue(sourceConsent.published_at) : '',
@@ -61,11 +65,21 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 	const updateConsent = useUpdateConsent();
 
 	const saving = createConsent.isPending || updateConsent.isPending;
+	const englishTextMissing = !title.en_us.trim() || !body.en_us.trim();
 
 	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		if (saving) {
+			return;
+		}
+
+		setSaveTried(true);
+
+		// 빠진 영어 문구를 입력하도록 영어 선택
+		if (englishTextMissing) {
+			setLocale('en_us');
+
 			return;
 		}
 
@@ -156,31 +170,30 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 				</div>
 			)}
 
-			{/*언어마다 제목 및 본문을 한 상자에 입력*/}
+			{/*선택한 언어의 제목 및 본문을 한 상자에 입력*/}
 			<div className={`${rowClassName} md:items-start`}>
 				<span className={`${labelClassName} md:pt-2`}>내용</span>
 
-				<div className="grid gap-3 md:grid-cols-2">
-					<LocaleTextField
-						locale="ko_kr"
-						title={title.ko_kr}
-						body={body.ko_kr}
-						bodyClassName={bodyClassName}
-						englishBodyRequired
-						lengthText={`${title.ko_kr.length}/${TITLE_MAX_LENGTH}`}
-						onTitleChange={(ko_kr) => setTitle((prev) => ({ ...prev, ko_kr }))}
-						onBodyChange={(ko_kr) => setBody((prev) => ({ ...prev, ko_kr }))}
-					/>
-					<LocaleTextField
-						locale="en_us"
-						title={title.en_us}
-						body={body.en_us}
-						bodyClassName={bodyClassName}
-						englishBodyRequired
-						lengthText={`${title.en_us.length}/${TITLE_MAX_LENGTH}`}
-						onTitleChange={(en_us) => setTitle((prev) => ({ ...prev, en_us }))}
-						onBodyChange={(en_us) => setBody((prev) => ({ ...prev, en_us }))}
-					/>
+				<div>
+					<LocaleFieldGroup locale={locale} summaryTexts={title} englishRequired onLocaleChange={setLocale}>
+						<LocaleTextField
+							locale={locale}
+							title={title[locale]}
+							body={body[locale]}
+							className="h-105 max-md:h-80"
+							bodyClassName="leading-[1.75]"
+							englishBodyRequired
+							lengthText={`${title[locale].length}/${TITLE_MAX_LENGTH}`}
+							onTitleChange={(localeTitle) => setTitle((prev) => ({ ...prev, [locale]: localeTitle }))}
+							onBodyChange={(localeBody) => setBody((prev) => ({ ...prev, [locale]: localeBody }))}
+						/>
+					</LocaleFieldGroup>
+
+					{saveTried && englishTextMissing && (
+						<p role="alert" className="mt-1.5 text-[13px] text-destructive">
+							영어 제목 및 본문을 입력해 주세요.
+						</p>
+					)}
 				</div>
 			</div>
 

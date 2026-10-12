@@ -6,6 +6,7 @@ import { type SendableNotificationKind, sendableNotificationKindSchema } from '@
 
 import type { I18nFieldValue } from '@/types/i18n';
 
+import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import NotificationImageField from '@/app/(main)/(backoffice)/_components/notification-image-field';
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
@@ -36,15 +37,21 @@ export const initialNotificationContent: NotificationContent = {
 
 interface Props {
 	content: NotificationContent;
+	locale: keyof I18nFieldValue;
+	englishTextMissing: boolean;
 	onContentChange: Dispatch<SetStateAction<NotificationContent>>;
+	onLocaleChange: (locale: keyof I18nFieldValue) => void;
 }
 
 /**
  * 알림 내용 입력 컴포넌트
  * @param content 알림 내용 입력값
+ * @param locale 입력할 언어
+ * @param englishTextMissing 영어 제목이나 본문이 빠졌는지 여부
  * @param onContentChange 입력값을 변경할 때 실행할 함수
+ * @param onLocaleChange 언어를 선택하면 실행할 함수
  */
-const NotificationContentFields = ({ content, onContentChange }: Props) => {
+const NotificationContentFields = ({ content, locale, englishTextMissing, onContentChange, onLocaleChange }: Props) => {
 	return (
 		<>
 			<div className={`${rowClassName} items-center`}>
@@ -69,39 +76,41 @@ const NotificationContentFields = ({ content, onContentChange }: Props) => {
 				/>
 			</div>
 
-			{/*언어마다 제목 및 본문을 한 상자에 입력*/}
+			{/*선택한 언어의 제목 및 본문을 한 상자에 입력*/}
 			<div className={`${rowClassName} mt-2 border-t pt-5`}>
 				<span className={`${labelClassName} @md:pt-2.5`}>내용</span>
 
-				<div className="grid gap-3 @md:grid-cols-2">
-					<LocaleTextField
-						locale="ko_kr"
-						title={content.title.ko_kr}
-						body={content.body.ko_kr}
-						bodyMaxLength={NOTIFICATION_BODY_MAX_LENGTH}
-						englishBodyRequired
-						lengthText={`${content.title.ko_kr.length}/${TITLE_MAX_LENGTH}, ${content.body.ko_kr.length}/${NOTIFICATION_BODY_MAX_LENGTH}`}
-						onTitleChange={(ko_kr) =>
-							onContentChange((prev) => ({ ...prev, title: { ...prev.title, ko_kr } }))
-						}
-						onBodyChange={(ko_kr) =>
-							onContentChange((prev) => ({ ...prev, body: { ...prev.body, ko_kr } }))
-						}
-					/>
-					<LocaleTextField
-						locale="en_us"
-						title={content.title.en_us}
-						body={content.body.en_us}
-						bodyMaxLength={NOTIFICATION_BODY_MAX_LENGTH}
-						englishBodyRequired
-						lengthText={`${content.title.en_us.length}/${TITLE_MAX_LENGTH}, ${content.body.en_us.length}/${NOTIFICATION_BODY_MAX_LENGTH}`}
-						onTitleChange={(en_us) =>
-							onContentChange((prev) => ({ ...prev, title: { ...prev.title, en_us } }))
-						}
-						onBodyChange={(en_us) =>
-							onContentChange((prev) => ({ ...prev, body: { ...prev.body, en_us } }))
-						}
-					/>
+				<div>
+					<LocaleFieldGroup
+						locale={locale}
+						summaryTexts={content.title}
+						englishRequired
+						onLocaleChange={onLocaleChange}
+					>
+						<LocaleTextField
+							locale={locale}
+							title={content.title[locale]}
+							body={content.body[locale]}
+							bodyMaxLength={NOTIFICATION_BODY_MAX_LENGTH}
+							englishBodyRequired
+							lengthText={`${content.title[locale].length}/${TITLE_MAX_LENGTH}, ${content.body[locale].length}/${NOTIFICATION_BODY_MAX_LENGTH}`}
+							onTitleChange={(localeTitle) =>
+								onContentChange((prev) => ({
+									...prev,
+									title: { ...prev.title, [locale]: localeTitle },
+								}))
+							}
+							onBodyChange={(localeBody) =>
+								onContentChange((prev) => ({ ...prev, body: { ...prev.body, [locale]: localeBody } }))
+							}
+						/>
+					</LocaleFieldGroup>
+
+					{englishTextMissing && (
+						<p role="alert" className="mt-1.5 text-[13px] text-destructive">
+							영어 제목 및 본문을 입력해 주세요.
+						</p>
+					)}
 				</div>
 			</div>
 

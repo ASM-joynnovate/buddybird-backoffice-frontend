@@ -89,14 +89,13 @@ const ConsentStats = ({ consent, dashboardParams, today }: Props) => {
 		},
 		{
 			name: '언어',
-			rows: ['ko-KR', 'en-US'].flatMap((locale) =>
-				locales
-					.filter((localeDecision) => localeDecision.locale === locale)
-					.map((localeDecision) => ({
-						label: toLocaleName(locale),
-						percent: toGrantedPercent(localeDecision),
-					})),
-			),
+			// 사용자가 많은 언어부터 나열
+			rows: locales
+				.toSorted((a, b) => b.user_count - a.user_count)
+				.map((localeDecision) => ({
+					label: toLocaleName(localeDecision.locale),
+					percent: toGrantedPercent(localeDecision),
+				})),
 		},
 	];
 

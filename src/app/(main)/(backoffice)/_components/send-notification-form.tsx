@@ -6,6 +6,8 @@ import { useSuspenseQueries } from '@tanstack/react-query';
 
 import type { UserListItem } from '@/types/apis/users';
 
+import type { I18nFieldValue } from '@/types/i18n';
+
 import {
 	getNotificationAudienceOptions,
 	useBroadcastNotification,
@@ -68,6 +70,8 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 	const [target, setTarget] = useState<'all' | 'selected'>(initialUsers.length > 0 ? 'selected' : 'all');
 	const [selectedUsers, setSelectedUsers] = useState<UserListItem[]>(initialUsers);
 	const [content, setContent] = useState(initialContent);
+	const [locale, setLocale] = useState<keyof I18nFieldValue>('ko_kr');
+	const [sendTried, setSendTried] = useState(false);
 	const [scheduled, setScheduled] = useState(false);
 	const [recipientLocalDatetime, setRecipientLocalDatetime] = useState('');
 	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -88,12 +92,22 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 		? [audience.user_count, audience.recipient_count, audience.pushable_count]
 		: [selectedUsers.length, receivers.length, receivers.filter((user) => user.is_pushable).length];
 	const recipientCount = reachCounts[1];
+	const englishTextMissing = !content.title.en_us.trim() || !content.body.en_us.trim();
 	const sending = uploadNotificationImage.isPending || broadcastNotification.isPending;
 
 	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		if (sending || recipientCount === 0) {
+			return;
+		}
+
+		setSendTried(true);
+
+		// 빠진 영어 문구를 입력하도록 영어 선택
+		if (englishTextMissing) {
+			setLocale('en_us');
+
 			return;
 		}
 
@@ -176,7 +190,13 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 						</div>
 					</div>
 
-					<NotificationContentFields content={content} onContentChange={setContent} />
+					<NotificationContentFields
+						content={content}
+						locale={locale}
+						englishTextMissing={sendTried && englishTextMissing}
+						onContentChange={setContent}
+						onLocaleChange={setLocale}
+					/>
 
 					<div className={`${rowClassName} mt-2 items-center border-t pt-5`}>
 						<span id={scheduleLabelId} className={labelClassName}>
@@ -216,6 +236,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 						title={toSentText(content.title, content.kind)}
 						body={toSentText(content.body, content.kind)}
 						imageUrl={content.imagePreviewUrl}
+						locale={locale}
 					/>
 
 					<section className="mt-2 grid gap-3 border-t pt-4.5">

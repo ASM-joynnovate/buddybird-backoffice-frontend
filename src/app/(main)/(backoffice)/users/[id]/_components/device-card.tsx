@@ -11,6 +11,7 @@ import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import PushDeliveryDialog from '@/app/(main)/(backoffice)/users/[id]/_components/push-delivery-dialog';
 import { formatRelativeTime } from '@/utils/date';
+import { toLocaleName } from '@/utils/locale';
 import { toPlatformName } from '@/utils/platform';
 
 import { Badge } from '@/components/ui/badge';
@@ -90,9 +91,7 @@ const DeviceCard = ({ id, initialNow }: Props) => {
 								<>
 									<div className={infoClassName}>
 										<dt>언어</dt>
-										<dd className={infoValueClassName}>
-											{device.locale === 'ko-KR' ? '한국어' : '영어'}
-										</dd>
+										<dd className={infoValueClassName}>{toLocaleName(device.locale)}</dd>
 									</div>
 									<div className={infoClassName}>
 										<dt>시간대</dt>

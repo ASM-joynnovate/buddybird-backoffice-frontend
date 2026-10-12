@@ -4,7 +4,11 @@ import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
 
-export const feedbackLocaleSchema = z.enum(['ko-KR', 'en-US']);
+// 서버의 기기 언어 형식과 같음
+export const feedbackLocaleSchema = z
+	.string()
+	.max(35)
+	.regex(/^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$/);
 
 export const feedbackSchema = z.object({
 	id: uuidSchema,

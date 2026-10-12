@@ -1,6 +1,5 @@
 import { platformSchema } from '@/types/apis/app-updates';
 import type { FeedbackDashboard } from '@/types/apis/dashboard';
-import { feedbackLocaleSchema } from '@/types/apis/feedback';
 
 import { FEEDBACK_FILTER_LABELS } from '@/config/feedback-filters';
 import { toLocaleName } from '@/utils/locale';
@@ -30,8 +29,9 @@ export const toFeedbackFilterGroups = (feedbackDashboard: FeedbackDashboard) => 
 		{
 			name: 'locale',
 			label: FEEDBACK_FILTER_LABELS.locale,
-			options: feedbackLocaleSchema.options
-				.flatMap((locale) => locales.filter((localeCount) => localeCount.locale === locale))
+			// 건수가 많은 언어부터 나열
+			options: locales
+				.toSorted((a, b) => b.count - a.count)
 				.map(({ locale, count }) => ({ value: locale, label: toLocaleName(locale), count })),
 		},
 	];

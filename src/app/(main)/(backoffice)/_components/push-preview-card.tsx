@@ -1,8 +1,11 @@
 import Image from 'next/image';
 
+import type { I18nFieldValue } from '@/types/i18n';
+
 import { cn } from '@/lib/utils';
 
 interface Props {
+	locale: keyof I18nFieldValue;
 	title: string;
 	body: string;
 	prefix?: string;
@@ -12,18 +15,20 @@ interface Props {
 
 /**
  * 수신 기기에 표시되는 푸시 알림 모양의 컴포넌트
+ * @param locale 수신 기기의 언어
  * @param title 알림 제목
  * @param body 알림 본문
  * @param prefix 제목 및 본문 앞에 붙는 문구
  * @param bodySuffix 본문 뒤에 붙는 문구
  * @param imageUrl 알림 사진의 주소
  */
-const PushPreviewCard = ({ title, body, prefix = '', bodySuffix = '', imageUrl }: Props) => {
+const PushPreviewCard = ({ locale, title, body, prefix = '', bodySuffix = '', imageUrl }: Props) => {
 	return (
 		<div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2.5 rounded-xl bg-card p-3 ring-1 ring-border">
 			<p className="col-span-2 flex items-center gap-1.5 text-xs text-muted-foreground">
 				<Image src="/images/mascot.svg" alt="" width={18} height={18} />
-				버디버드
+				{/*앱 이름은 기기 언어가 한국어일 때만 한글*/}
+				{locale === 'ko_kr' ? '버디버드' : 'BuddyBird'}
 				<span className="ml-auto">지금</span>
 			</p>
 

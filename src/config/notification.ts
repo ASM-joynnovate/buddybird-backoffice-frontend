@@ -1,7 +1,18 @@
-export const MARKETING_PREFIX = '(광고) ';
-export const UNSUBSCRIBE_TEXTS = {
+import type { I18nFieldValue } from '@/types/i18n';
+
+export const MARKETING_PREFIXES: I18nFieldValue = {
+	ko_kr: '(광고) ',
+	en_us: '(광고) ',
+	ja_jp: '(広告) ',
+	ru_ru: '(Реклама) ',
+	es_es: '(Publicidad) ',
+};
+export const UNSUBSCRIBE_TEXTS: I18nFieldValue = {
 	ko_kr: '무료 수신거부: 프로필 > 설정 > 알림에서 마케팅 알림 Off',
 	en_us: 'Unsubscribe for free: Profile > Settings > Notifications > turn off Marketing alerts',
+	ja_jp: '無料配信停止: プロフィール > 設定 > 通知でマーケティング通知をオフ',
+	ru_ru: 'Бесплатная отписка: Профиль > Настройки > Уведомления > отключите маркетинг',
+	es_es: 'Baja gratuita: Perfil > Ajustes > Notificaciones > desactiva las de marketing',
 };
 
 export const AUDIENCE_HELP_TEXTS = {

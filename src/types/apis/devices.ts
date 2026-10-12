@@ -6,7 +6,7 @@ export const deviceSchema = z.object({
 	id: uuidSchema,
 	client_device_id: uuidSchema,
 	timezone: z.string().nullable(),
-	locale: z.enum(['ko-KR', 'en-US']),
+	locale: z.string(),
 	last_seen_at: timestampSchema.nullable(),
 	client: z.object({
 		platform: z.string(),
