@@ -6,12 +6,16 @@ import { cn } from '@/lib/utils';
 
 import AppDialogPreview from '@/app/(main)/(backoffice)/_components/app-dialog-preview';
 import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
-import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
+import { toI18nLocaleName } from '@/utils/i18n-text';
 
-const PREVIEW_LOCALES = [
-	{ locale: 'ko_kr', label: '한국어', closeLabel: '닫기', detailLabel: '자세히' },
-	{ locale: 'en_us', label: '영어', closeLabel: 'CLOSE', detailLabel: 'DETAILS' },
-] satisfies { locale: keyof I18nFieldValue; label: string; closeLabel: string; detailLabel: string }[];
+// 문구는 앱의 공지 팝업과 같음
+const POPUP_TEXTS = {
+	ko_kr: { closeLabel: '닫기', detailLabel: '자세히' },
+	en_us: { closeLabel: 'CLOSE', detailLabel: 'DETAILS' },
+	ja_jp: { closeLabel: '閉じる', detailLabel: '詳しく見る' },
+	ru_ru: { closeLabel: 'ЗАКРЫТЬ', detailLabel: 'ПОДРОБНЕЕ' },
+	es_es: { closeLabel: 'CERRAR', detailLabel: 'VER MÁS' },
+} satisfies Record<keyof I18nFieldValue, { closeLabel: string; detailLabel: string }>;
 
 interface Props {
 	title: I18nFieldValue;
@@ -19,7 +23,6 @@ interface Props {
 	imageUrl?: string;
 	pushEnabled: boolean;
 	locale: keyof I18nFieldValue;
-	onLocaleChange: (locale: keyof I18nFieldValue) => void;
 }
 
 /**
@@ -29,31 +32,17 @@ interface Props {
  * @param imageUrl 첫 번째 사진의 주소
  * @param pushEnabled 푸시 발송 여부
  * @param locale 미리보기에 표시할 언어
- * @param onLocaleChange 언어를 고르면 실행할 함수
  */
-const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale, onLocaleChange }: Props) => {
-	const previewLocale = PREVIEW_LOCALES.find((localeOption) => localeOption.locale === locale) ?? PREVIEW_LOCALES[0];
-
-	// 한국어가 비어 있으면 영어 문구 표시
+const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale }: Props) => {
+	// 선택한 언어가 비어 있으면 영어 문구 표시
 	const previewTitle = title[locale].trim() || title.en_us.trim();
 	const previewBody = body[locale].trim() || body.en_us.trim();
 
 	return (
 		<aside className="grid content-start gap-3.5 border-t bg-card-inset p-4 md:border-t-0 md:border-l md:p-5">
-			<div className="flex items-center justify-between">
+			<div className="flex min-h-7 items-center justify-between gap-2">
 				<h3 className="text-base font-bold">미리보기</h3>
-
-				<SegmentedControl
-					label="미리보기 언어"
-					size="sm"
-					options={PREVIEW_LOCALES.map((localeOption) => ({
-						value: localeOption.locale,
-						label: localeOption.label,
-					}))}
-					value={locale}
-					className="border-border"
-					onValueChange={onLocaleChange}
-				/>
+				<p className="text-[13px] text-muted-foreground">{toI18nLocaleName(locale)}</p>
 			</div>
 
 			<section className="grid gap-1.5">
@@ -64,8 +53,8 @@ const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale, onLoc
 					title={
 						<span className={cn(!previewTitle && 'font-normal text-[#777]')}>{previewTitle || '제목'}</span>
 					}
-					closeLabel={previewLocale.closeLabel}
-					acceptLabel={previewLocale.detailLabel}
+					closeLabel={POPUP_TEXTS[locale].closeLabel}
+					acceptLabel={POPUP_TEXTS[locale].detailLabel}
 				>
 					<div className="grid gap-3">
 						{!!imageUrl && (
@@ -95,7 +84,7 @@ const AnnouncementPreview = ({ title, body, imageUrl, pushEnabled, locale, onLoc
 				<section className="grid gap-1.5">
 					<h4 className="text-[13px] font-semibold text-muted-foreground">푸시 알림</h4>
 
-					<PushPreviewCard title={previewTitle} body={previewBody} imageUrl={imageUrl} />
+					<PushPreviewCard locale={locale} title={previewTitle} body={previewBody} imageUrl={imageUrl} />
 				</section>
 			)}
 		</aside>

@@ -12,7 +12,7 @@ import {
 
 import { useSuspenseQueries } from '@tanstack/react-query';
 
-import type { Session } from '@/types/apis/sessions';
+import type { Session, SessionSound } from '@/types/apis/sessions';
 
 import { getSessionEventListOptions, getSessionSoundListOptions } from '@/hooks/apis/sessions';
 import useAudioPlaylist from '@/hooks/use-audio-playlist';
@@ -24,10 +24,15 @@ import { Play, Siren } from 'lucide-react';
 
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
+import SessionEmergencyList from '@/app/(main)/(backoffice)/users/[id]/_components/session-emergency-list';
 import SessionPlayhead from '@/app/(main)/(backoffice)/users/[id]/_components/session-playhead';
+import SessionScoreTooltip, {
+	type ScoreTooltip,
+} from '@/app/(main)/(backoffice)/users/[id]/_components/session-score-tooltip';
 import SessionSoundPlayer from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-player';
+import SessionSoundTable from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-table';
 import SessionTrack from '@/app/(main)/(backoffice)/users/[id]/_components/session-track';
-import { TIMELINE_MAX_SOUND_BAR_COUNT, TIMELINE_MIN_VISIBLE_MS } from '@/config';
+import { TIMELINE_MAX_SOUND_BAR_COUNT, TIMELINE_MIN_VISIBLE_MS, TIMELINE_SOUND_BAR_DURATIONS_MS } from '@/config';
 import { SESSION_EVENTS } from '@/config/session';
 import { HOUR } from '@/config/units';
 import {
@@ -84,7 +89,9 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 	const [hoveredPercent, setHoveredPercent] = useState<number | null>(null);
 	const [hoveredSoundBarIndex, setHoveredSoundBarIndex] = useState<number | null>(null);
 	const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
+	const [scoreTooltip, setScoreTooltip] = useState<ScoreTooltip | null>(null);
 
+	const judging = session.judgment.status === 'pending';
 	const durationMs = sessionPeriod.endMs - sessionPeriod.startMs;
 	const duration = toHoursAndMinutes(durationMs);
 	const maxZoom = Math.max(1, durationMs / TIMELINE_MIN_VISIBLE_MS);
@@ -109,9 +116,12 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			color: heartbeatExpired ? 'var(--destructive-dot)' : SESSION_EVENTS[sessionEvent.kind].color,
 			emergencyDetected: sessionEvent.kind === 'emergency_detected',
 			// 앵무새 소리가 아닌 녹음은 소리 목록에 없음
-			firstSound: sessionSoundListData.find((sessionSound) => sessionEvent.sound_ids.includes(sessionSound.id)),
+			sounds: sessionSoundListData.filter((sessionSound) => sessionEvent.sound_ids.includes(sessionSound.id)),
 		};
 	});
+	const emergencies = sessionEvents.filter(
+		(sessionEvent) => sessionEvent.emergencyDetected && sessionEvent.sounds.length > 0,
+	);
 	const emergencySoundIds = new Set(
 		sessionEventListData.flatMap((sessionEvent) =>
 			sessionEvent.kind === 'emergency_detected' ? sessionEvent.sound_ids : [],
@@ -123,23 +133,34 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			: [],
 	);
 
-	// 확대 배율에 맞춘 시간 구간별 소리 수
-	const soundBarCount = Math.round(Math.min(TIMELINE_MAX_SOUND_BAR_COUNT, 80 * zoom));
+	// 실행 중인 세션이 길어져도 막대가 바뀌지 않도록 시작 시각부터 정해진 길이로 나눔
+	const maxSoundBarCount = Math.min(TIMELINE_MAX_SOUND_BAR_COUNT, 80 * zoom);
+	const soundBarDurationMs =
+		TIMELINE_SOUND_BAR_DURATIONS_MS.find((barDurationMs) => durationMs / barDurationMs <= maxSoundBarCount) ??
+		durationMs;
+	const soundBarCount = Math.ceil(durationMs / soundBarDurationMs);
 
 	/** 시각이 속한 소리 막대의 순서를 반환하는 함수 */
 	const toSoundBarIndex = (time: string) =>
 		Math.min(
 			soundBarCount - 1,
-			Math.floor((toPeriodPercent(dayjs(time).valueOf(), sessionPeriod) / 100) * soundBarCount),
+			Math.max(0, Math.floor((dayjs(time).valueOf() - sessionPeriod.startMs) / soundBarDurationMs)),
 		);
 
-	const soundCounts = Array.from({ length: soundBarCount }, () => 0);
+	const soundBars = Array.from({ length: soundBarCount }, (_, index) => ({
+		// 마지막 막대는 세션이 끝난 시각까지
+		durationMs: Math.min(soundBarDurationMs, durationMs - index * soundBarDurationMs),
+		sounds: [] as SessionSound[],
+	}));
 
 	for (const sessionSound of sessionSoundListData) {
-		soundCounts[toSoundBarIndex(sessionSound.captured_at)] += 1;
+		soundBars[toSoundBarIndex(sessionSound.captured_at)].sounds.push(sessionSound);
 	}
 
-	const maxSoundCount = Math.max(1, ...soundCounts);
+	const maxSoundCount = Math.max(1, ...soundBars.map((soundBar) => soundBar.sounds.length));
+	const mimicScores = sessionSoundListData.flatMap((sessionSound) =>
+		sessionSound.is_mimic && sessionSound.judgment ? [sessionSound.judgment.score] : [],
+	);
 	const tickCount = Math.round(Math.min(60, 5 * zoom));
 
 	const currentSound = sessionSoundListData.find((sessionSound) => sessionSound.id === player.currentSoundId) ?? null;
@@ -244,6 +265,32 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		scrollToCurrentSound();
 	}, [player.currentSoundId]);
 
+	const scoreTooltipShown = !!scoreTooltip;
+
+	/** 화면이 스크롤되면 점수 툴팁 숨김 */
+	useEffect(() => {
+		if (!scoreTooltipShown) {
+			return;
+		}
+
+		const handleScroll = () => setScoreTooltip(null);
+
+		window.addEventListener('scroll', handleScroll, { capture: true, passive: true });
+
+		return () => window.removeEventListener('scroll', handleScroll, { capture: true });
+	}, [scoreTooltipShown]);
+
+	/** 가리킨 표시 위에 소리의 점수 툴팁 표시 */
+	const showScoreTooltip = (anchor: Element, sounds: SessionSound[], title?: string) => {
+		const anchorRect = anchor.getBoundingClientRect();
+
+		setScoreTooltip({ title, sounds, left: anchorRect.left + anchorRect.width / 2, top: anchorRect.top });
+	};
+
+	const hideScoreTooltip = () => {
+		setScoreTooltip(null);
+	};
+
 	const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
 		pointerDownClientXRef.current = event.clientX;
 
@@ -288,9 +335,9 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 	/** 누른 이벤트의 시점으로 이동 */
 	const handleSelectEvent = (sessionEvent: (typeof sessionEvents)[number]) => {
-		// 연결된 소리가 있으면 첫 소리부터 재생
-		if (sessionEvent.firstSound) {
-			player.playSound(sessionEvent.firstSound);
+		// 감지된 소리가 있으면 순서대로 끝까지 재생
+		if (sessionEvent.sounds.length > 0) {
+			player.handleToggleSoundGroup(sessionEvent);
 
 			return;
 		}
@@ -301,13 +348,46 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 	/** 소리 줄에서 가리킨 막대의 순서를 반환하는 함수 */
 	const toPointedSoundBarIndex = (event: MouseEvent<HTMLDivElement>) => {
 		const laneRect = event.currentTarget.getBoundingClientRect();
-		const index = Math.floor(((event.clientX - laneRect.left) / laneRect.width) * soundBarCount);
+		const pointedMs = ((event.clientX - laneRect.left) / laneRect.width) * durationMs;
 
-		return Math.min(soundBarCount - 1, Math.max(0, index));
+		return Math.min(soundBarCount - 1, Math.max(0, Math.floor(pointedMs / soundBarDurationMs)));
 	};
 
 	const handleSoundLanePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-		setHoveredSoundBarIndex(toPointedSoundBarIndex(event));
+		const barIndex = toPointedSoundBarIndex(event);
+		const barSounds = soundBars[barIndex].sounds;
+
+		setHoveredSoundBarIndex(barIndex);
+
+		if (barSounds.length === 0) {
+			hideScoreTooltip();
+
+			return;
+		}
+
+		showScoreTooltip(
+			event.currentTarget.children[barIndex],
+			barSounds,
+			barSounds.length > 1 ? `소리 ${barSounds.length}개` : undefined,
+		);
+	};
+
+	const handleSoundLanePointerLeave = () => {
+		setHoveredSoundBarIndex(null);
+		hideScoreTooltip();
+	};
+
+	const handleEmergencyPinEnter = (pin: Element, sessionEvent: (typeof sessionEvents)[number]) => {
+		setHighlightedEventId(sessionEvent.id);
+
+		if (sessionEvent.sounds.length > 0) {
+			showScoreTooltip(pin, sessionEvent.sounds, `응급 상황 소리 ${sessionEvent.sounds.length}개`);
+		}
+	};
+
+	const handleEmergencyPinLeave = () => {
+		setHighlightedEventId(null);
+		hideScoreTooltip();
 	};
 
 	/** 누른 막대의 첫 소리부터 재생 */
@@ -354,7 +434,14 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 				</StatCell>
 				<StatCell label="단어">{session.word.name}</StatCell>
 				<StatCell label="앵무새 소리">{session.sounds.parrot_count}회</StatCell>
-				<StatCell label="모사 성공">{session.sounds.mimic_count}회</StatCell>
+				<StatCell label={mimicScores.length > 0 ? '모사 성공, 최고 점수' : '모사 성공'}>
+					{session.sounds.mimic_count}회
+					{mimicScores.length > 0 && (
+						<span className="ml-1.5 font-semibold text-muted-foreground">
+							{Math.round(Math.max(...mimicScores) * 100)}%
+						</span>
+					)}
+				</StatCell>
 			</dl>
 
 			<div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] text-muted-foreground">
@@ -402,8 +489,11 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 									<button
 										key={sessionEvent.id}
 										type="button"
-										aria-label={`${formatShortDateTime(sessionEvent.occurredAt)} ${sessionEvent.label}`}
-										title={sessionEvent.firstSound ? '감지된 첫 소리부터 재생' : undefined}
+										aria-label={`${formatShortDateTime(sessionEvent.occurredAt)} ${sessionEvent.label}${
+											sessionEvent.sounds.length > 0
+												? `, 소리 ${player.playingSoundGroupId === sessionEvent.id ? '정지' : '이어 듣기'}`
+												: ''
+										}`}
 										className={cn(
 											'group absolute -inset-y-1.5 -ml-px w-0.5 rounded-full after:absolute after:-inset-x-2 after:-inset-y-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
 											highlightedEventId === sessionEvent.id && 'z-10',
@@ -413,8 +503,12 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 											backgroundColor: sessionEvent.color,
 										}}
 										onClick={() => handleSelectEvent(sessionEvent)}
-										onPointerEnter={() => setHighlightedEventId(sessionEvent.id)}
-										onPointerLeave={() => setHighlightedEventId(null)}
+										onPointerEnter={(event) =>
+											handleEmergencyPinEnter(event.currentTarget, sessionEvent)
+										}
+										onPointerLeave={handleEmergencyPinLeave}
+										onFocus={(event) => handleEmergencyPinEnter(event.currentTarget, sessionEvent)}
+										onBlur={handleEmergencyPinLeave}
 									>
 										<span
 											className={cn(
@@ -460,6 +554,12 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 											left: `${toPeriodPercent(dayjs(sessionSound.captured_at).valueOf(), sessionPeriod)}%`,
 										}}
 										onClick={() => player.playSound(sessionSound)}
+										onPointerEnter={(event) =>
+											showScoreTooltip(event.currentTarget, [sessionSound])
+										}
+										onPointerLeave={hideScoreTooltip}
+										onFocus={(event) => showScoreTooltip(event.currentTarget, [sessionSound])}
+										onBlur={hideScoreTooltip}
 									/>
 								))}
 						</SessionTrack>
@@ -473,18 +573,21 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 							className="flex h-10 cursor-pointer items-end gap-px"
 							onClick={handleSoundLaneClick}
 							onPointerMove={handleSoundLanePointerMove}
-							onPointerLeave={() => setHoveredSoundBarIndex(null)}
+							onPointerLeave={handleSoundLanePointerLeave}
 						>
-							{soundCounts.map((soundCount, index) => (
+							{soundBars.map((soundBar, index) => (
 								<span
 									key={index}
 									className={cn(
-										'min-w-0 flex-1 rounded-t-xs bg-chart-1/70 transition-colors',
+										'min-w-0 basis-0 rounded-t-xs bg-chart-1/70 transition-colors',
 										currentSoundBarIndex !== null &&
 											(index <= currentSoundBarIndex ? 'bg-chart-1' : 'bg-chart-1/38'),
 										index === hoveredSoundBarIndex && 'bg-chart-1',
 									)}
-									style={{ height: `${(soundCount / maxSoundCount) * 100}%` }}
+									style={{
+										flexGrow: soundBar.durationMs,
+										height: `${(soundBar.sounds.length / maxSoundCount) * 100}%`,
+									}}
 								/>
 							))}
 						</div>
@@ -527,7 +630,21 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			</div>
 
 			{sessionSoundListData.length > 0 && (
-				<SessionSoundPlayer currentSound={currentSound} emergencySoundIds={emergencySoundIds} player={player} />
+				<SessionSoundPlayer
+					currentSound={currentSound}
+					emergencySoundIds={emergencySoundIds}
+					judging={judging}
+					player={player}
+				/>
+			)}
+
+			{emergencies.length > 0 && (
+				<SessionEmergencyList
+					emergencies={emergencies}
+					player={player}
+					onScoreTooltipShow={showScoreTooltip}
+					onScoreTooltipHide={hideScoreTooltip}
+				/>
 			)}
 
 			<hr />
@@ -568,7 +685,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 					<button
 						key={sessionEvent.id}
 						type="button"
-						title={sessionEvent.firstSound ? '감지된 첫 소리부터 재생' : undefined}
+						title={sessionEvent.sounds.length > 0 ? '감지된 소리 이어 듣기' : undefined}
 						className={cn(
 							'inline-flex h-7 items-center gap-2 rounded-md border bg-card px-2.5 text-[13px] font-semibold hover:bg-muted',
 							highlightedEventId === sessionEvent.id && 'bg-muted',
@@ -590,6 +707,21 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 					</button>
 				))}
 			</div>
+
+			{sessionSoundListData.length > 0 && (
+				<>
+					<hr />
+
+					<SessionSoundTable
+						sounds={sessionSoundListData}
+						emergencySoundIds={emergencySoundIds}
+						judging={judging}
+						player={player}
+					/>
+				</>
+			)}
+
+			{!!scoreTooltip && <SessionScoreTooltip scoreTooltip={scoreTooltip} judging={judging} />}
 		</div>
 	);
 };

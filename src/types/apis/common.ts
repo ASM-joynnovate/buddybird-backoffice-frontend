@@ -73,7 +73,13 @@ export const pageMetaSchema = z.object({
 
 export const fileSchema = z.object({ url: z.string(), status: z.enum(['pending', 'uploaded', 'rejected']) });
 
-export const i18nSchema = z.object({ ko_kr: z.string().nullable(), en_us: z.string() });
+export const i18nSchema = z.object({
+	ko_kr: z.string().nullable(),
+	en_us: z.string(),
+	ja_jp: z.string().nullable(),
+	ru_ru: z.string().nullable(),
+	es_es: z.string().nullable(),
+});
 
 export const sortOrderSchema = z.enum(['asc', 'desc']);
 

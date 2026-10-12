@@ -1,4 +1,4 @@
-import { DAY, MEGABYTE, MINUTE, SECOND } from '@/config/units';
+import { DAY, HOUR, MEGABYTE, MINUTE, SECOND } from '@/config/units';
 
 export const API_TIMEOUT_MS = 30 * SECOND;
 
@@ -21,6 +21,10 @@ export const DASHBOARD_MAX_PERIOD_DAYS = 180;
 export const USER_RECENT_ITEM_COUNT = 5;
 export const VISIBLE_SPECIES_COUNT = 6;
 export const VISIBLE_VERSION_COUNT = 5;
+export const VISIBLE_COUNTRY_COUNT = 5;
+export const VISIBLE_EVENT_COUNT = 10;
+
+export const ACTIVE_USER_RECORD_START_DATE = '2026-10-11';
 
 export const PHASE_CYCLE = [
 	{ phase: 'learning', durationMs: 10 * MINUTE },
@@ -30,6 +34,26 @@ export const PHASE_CYCLE = [
 
 export const TIMELINE_MIN_VISIBLE_MS = 30 * MINUTE;
 export const TIMELINE_MAX_SOUND_BAR_COUNT = 480;
+export const TIMELINE_SOUND_BAR_DURATIONS_MS = [
+	SECOND,
+	2 * SECOND,
+	5 * SECOND,
+	10 * SECOND,
+	15 * SECOND,
+	30 * SECOND,
+	MINUTE,
+	2 * MINUTE,
+	5 * MINUTE,
+	10 * MINUTE,
+	15 * MINUTE,
+	30 * MINUTE,
+	HOUR,
+	2 * HOUR,
+	3 * HOUR,
+	6 * HOUR,
+	12 * HOUR,
+	DAY,
+];
 export const NEXT_SOUND_DELAY_MS = 400;
 
 export const SCHEDULE_PAST_MS = 14 * DAY;

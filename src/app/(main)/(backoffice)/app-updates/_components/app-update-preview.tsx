@@ -1,51 +1,82 @@
-'use client';
-
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 
 import type { I18nFieldValue } from '@/types/i18n';
 
 import AppDialogPreview from '@/app/(main)/(backoffice)/_components/app-dialog-preview';
-import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
+import { toI18nLocaleName } from '@/utils/i18n-text';
 import { compareVersions, isAppVersion } from '@/utils/version';
 
+interface UpdateTexts {
+	title: string;
+	message: (version: ReactNode) => ReactNode;
+}
+
 // 문구는 앱의 업데이트 다이얼로그와 같음
-const PREVIEW_LOCALES = [
-	{
-		locale: 'ko_kr',
-		label: '한국어',
+const DIALOG_TEXTS = {
+	ko_kr: {
 		closeLabel: '닫기',
 		acceptLabel: '업데이트',
 		optional: {
 			title: '업데이트 알림',
-			message: (version: ReactNode) => <>버디버드 {version} 버전을 사용할 수 있어요.</>,
+			message: (version) => <>버디버드 {version} 버전을 사용할 수 있어요.</>,
 		},
 		forced: {
 			title: '업데이트가 필요해요',
-			message: (version: ReactNode) => <>계속 사용하려면 {version} 버전으로 업데이트해 주세요.</>,
+			message: (version) => <>계속 사용하려면 {version} 버전으로 업데이트해 주세요.</>,
 		},
 	},
-	{
-		locale: 'en_us',
-		label: '영어',
+	en_us: {
 		closeLabel: 'Close',
 		acceptLabel: 'Update',
 		optional: {
 			title: 'Update available',
-			message: (version: ReactNode) => <>BuddyBird {version} is available.</>,
+			message: (version) => <>BuddyBird {version} is available.</>,
 		},
 		forced: {
 			title: 'Update needed',
-			message: (version: ReactNode) => <>Update to {version} to keep using BuddyBird.</>,
+			message: (version) => <>Update to {version} to keep using BuddyBird.</>,
 		},
 	},
-] satisfies {
-	locale: keyof I18nFieldValue;
-	label: string;
-	closeLabel: string;
-	acceptLabel: string;
-	optional: { title: string; message: (version: ReactNode) => ReactNode };
-	forced: { title: string; message: (version: ReactNode) => ReactNode };
-}[];
+	ja_jp: {
+		closeLabel: '閉じる',
+		acceptLabel: 'アップデート',
+		optional: {
+			title: 'アップデートのお知らせ',
+			message: (version) => <>BuddyBird {version} が利用できます。</>,
+		},
+		forced: {
+			title: 'アップデートが必要です',
+			message: (version) => <>引き続き使うには、バージョン{version}にアップデートしてください。</>,
+		},
+	},
+	ru_ru: {
+		closeLabel: 'Закрыть',
+		acceptLabel: 'Обновить',
+		optional: {
+			title: 'Доступно обновление',
+			message: (version) => <>Доступна версия BuddyBird {version}.</>,
+		},
+		forced: {
+			title: 'Нужно обновление',
+			message: (version) => <>Чтобы пользоваться приложением дальше, обнови его до версии {version}.</>,
+		},
+	},
+	es_es: {
+		closeLabel: 'Cerrar',
+		acceptLabel: 'Actualizar',
+		optional: {
+			title: 'Actualización disponible',
+			message: (version) => <>Ya está disponible BuddyBird {version}.</>,
+		},
+		forced: {
+			title: 'Hace falta actualizar',
+			message: (version) => <>Actualiza a la versión {version} para seguir usando la app.</>,
+		},
+	},
+} satisfies Record<
+	keyof I18nFieldValue,
+	{ closeLabel: string; acceptLabel: string; optional: UpdateTexts; forced: UpdateTexts }
+>;
 
 const HELP_TEXTS = {
 	optional: '닫으면 같은 버전은 다시 표시하지 않습니다.',
@@ -57,6 +88,7 @@ interface Props {
 	version: string;
 	forced: boolean;
 	releaseNotes: I18nFieldValue;
+	locale: keyof I18nFieldValue;
 	latestVersion?: string;
 }
 
@@ -65,37 +97,24 @@ interface Props {
  * @param version 앞뒤 공백을 지운 버전 입력값
  * @param forced 강제 업데이트 여부
  * @param releaseNotes 출시 노트 입력값
+ * @param locale 미리보기에 표시할 언어
  * @param latestVersion 저장한 뒤의 최신 버전
  */
-const AppUpdatePreview = ({ version, forced, releaseNotes, latestVersion }: Props) => {
-	const [previewLocale, setPreviewLocale] = useState<keyof I18nFieldValue>('ko_kr');
-
-	const localeTexts =
-		PREVIEW_LOCALES.find((localeOption) => localeOption.locale === previewLocale) ?? PREVIEW_LOCALES[0];
-	const updateTexts = forced ? localeTexts.forced : localeTexts.optional;
+const AppUpdatePreview = ({ version, forced, releaseNotes, locale, latestVersion }: Props) => {
+	const dialogTexts = DIALOG_TEXTS[locale];
+	const updateTexts = forced ? dialogTexts.forced : dialogTexts.optional;
 	const versionValid = isAppVersion(version);
 	const outdated = versionValid && !!latestVersion && compareVersions(version, latestVersion) < 0;
 
-	// 한국어가 비어 있으면 영어 출시 노트 표시
-	const previewReleaseNotes = releaseNotes[previewLocale].trim() || releaseNotes.en_us.trim();
-	const englishShown = previewLocale === 'ko_kr' && !releaseNotes.ko_kr.trim() && !!previewReleaseNotes;
+	// 선택한 언어가 비어 있으면 영어 출시 노트 표시
+	const previewReleaseNotes = releaseNotes[locale].trim() || releaseNotes.en_us.trim();
+	const englishShown = locale !== 'en_us' && !releaseNotes[locale].trim() && !!previewReleaseNotes;
 
 	return (
 		<aside className="grid content-start gap-3.5 border-t bg-card-inset p-4 md:border-t-0 md:border-l md:p-5">
-			<div className="flex items-center justify-between">
+			<div className="flex min-h-7 items-center justify-between gap-2">
 				<h3 className="text-base font-bold">미리보기</h3>
-
-				<SegmentedControl
-					label="미리보기 언어"
-					size="sm"
-					options={PREVIEW_LOCALES.map((localeOption) => ({
-						value: localeOption.locale,
-						label: localeOption.label,
-					}))}
-					value={previewLocale}
-					className="border-border"
-					onValueChange={setPreviewLocale}
-				/>
+				<p className="text-[13px] text-muted-foreground">{toI18nLocaleName(locale)}</p>
 			</div>
 
 			<div className="grid gap-2">
@@ -108,8 +127,8 @@ const AppUpdatePreview = ({ version, forced, releaseNotes, latestVersion }: Prop
 				<AppDialogPreview
 					label="앱에 표시되는 업데이트 다이얼로그"
 					title={updateTexts.title}
-					closeLabel={forced ? undefined : localeTexts.closeLabel}
-					acceptLabel={localeTexts.acceptLabel}
+					closeLabel={forced ? undefined : dialogTexts.closeLabel}
+					acceptLabel={dialogTexts.acceptLabel}
 				>
 					<div className="grid gap-6 text-[15px] leading-6 font-bold wrap-anywhere">
 						<p className="text-[17px] leading-[27px]">

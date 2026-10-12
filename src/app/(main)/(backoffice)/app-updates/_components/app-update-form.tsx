@@ -11,6 +11,7 @@ import type { I18nFieldValue } from '@/types/i18n';
 import { useCreateAppUpdate, useGetAppUpdateList, useUpdateAppUpdate } from '@/hooks/apis/app-updates';
 import { useGetAppUpdateDashboard } from '@/hooks/apis/dashboard';
 
+import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextareaField from '@/app/(main)/(backoffice)/_components/locale-textarea-field';
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
@@ -56,6 +57,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 	const [versionBlurred, setVersionBlurred] = useState(false);
 	const [saveTried, setSaveTried] = useState(false);
 	const [forced, setForced] = useState(appUpdate?.is_forced ?? false);
+	const [locale, setLocale] = useState<keyof I18nFieldValue>('ko_kr');
 	const [releaseNotes, setReleaseNotes] = useState(toI18nFieldValue(appUpdate?.release_notes ?? null));
 	const [englishReleaseNotesMissing, setEnglishReleaseNotesMissing] = useState(false);
 	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -92,8 +94,8 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 	const savedDeviceGroups = groupDevices(appUpdateDashboardData.versions, savedVersionPolicy);
 	const currentDeviceGroups = groupDevices(appUpdateDashboardData.versions, toVersionPolicy(appUpdateListData));
 
-	const handleReleaseNotesChange = (nextReleaseNotes: I18nFieldValue) => {
-		setReleaseNotes(nextReleaseNotes);
+	const handleReleaseNotesChange = (localeReleaseNotes: string) => {
+		setReleaseNotes((prev) => ({ ...prev, [locale]: localeReleaseNotes }));
 		setEnglishReleaseNotesMissing(false);
 	};
 
@@ -108,6 +110,11 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 
 		setSaveTried(true);
 		setEnglishReleaseNotesMissing(nextEnglishReleaseNotesMissing);
+
+		// 빠진 영어 출시 노트를 입력하도록 영어 선택
+		if (nextEnglishReleaseNotesMissing) {
+			setLocale('en_us');
+		}
 
 		if (!versionValid || versionTaken || nextEnglishReleaseNotesMissing) {
 			return;
@@ -233,28 +240,28 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 						/>
 					</div>
 
-					<div className={`${rowClassName} mt-2 border-t pt-5`}>
-						<span className={`${labelClassName} @md:pt-2.5`}>
+					{/*언어 목록 및 입력이 나란히 놓이도록 이름을 위에 배치*/}
+					<div className="mt-2 grid gap-1.5 border-t pt-5">
+						<span className={labelClassName}>
 							출시 노트
 							<span className="ml-1 text-xs font-normal">선택</span>
 						</span>
 
 						<div>
-							<div className="grid gap-3 @md:grid-cols-2">
+							<LocaleFieldGroup
+								locale={locale}
+								summaryTexts={releaseNotes}
+								englishRequired={false}
+								onLocaleChange={setLocale}
+							>
 								<LocaleTextareaField
-									locale="ko_kr"
-									value={releaseNotes.ko_kr}
+									locale={locale}
+									value={releaseNotes[locale]}
 									placeholder="한 줄에 하나씩 입력"
-									onValueChange={(ko_kr) => handleReleaseNotesChange({ ...releaseNotes, ko_kr })}
+									invalid={locale === 'en_us' && englishReleaseNotesMissing}
+									onValueChange={handleReleaseNotesChange}
 								/>
-								<LocaleTextareaField
-									locale="en_us"
-									value={releaseNotes.en_us}
-									placeholder="One change per line"
-									invalid={englishReleaseNotesMissing}
-									onValueChange={(en_us) => handleReleaseNotesChange({ ...releaseNotes, en_us })}
-								/>
-							</div>
+							</LocaleFieldGroup>
 
 							{englishReleaseNotesMissing && (
 								<p role="alert" className="mt-1.5 text-[13px] text-destructive">
@@ -271,6 +278,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 					version={trimmedVersion}
 					forced={forced}
 					releaseNotes={releaseNotes}
+					locale={locale}
 					latestVersion={savedVersionPolicy.latestVersion}
 				/>
 			</div>

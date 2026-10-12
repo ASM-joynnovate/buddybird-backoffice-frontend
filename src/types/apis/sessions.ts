@@ -71,6 +71,9 @@ export const sessionSoundSchema = z.object({
 	id: uuidSchema,
 	captured_at: timestampSchema,
 	audio_file: fileSchema,
+	duration_ms: z.number().int().nullable(),
+	analysis: z.object({ score: z.number() }).nullable(),
+	judgment: z.object({ word_id: uuidSchema.nullable(), score: z.number() }).nullable(),
 	is_mimic: z.boolean(),
 });
 

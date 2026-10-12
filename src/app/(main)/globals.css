@@ -65,6 +65,13 @@
 	--radius-2xl: calc(var(--radius) * 1.8);
 	--radius-3xl: calc(var(--radius) * 2.2);
 	--radius-4xl: calc(var(--radius) * 2.6);
+	--animate-fill-width: fill-width linear forwards;
+
+	@keyframes fill-width {
+		to {
+			width: 100%;
+		}
+	}
 }
 
 :root {
@@ -137,6 +144,14 @@
 	}
 	::selection {
 		@apply bg-primary text-primary-foreground;
+	}
+
+	.maplibregl-popup-content {
+		@apply rounded-none! bg-transparent! p-0! shadow-none!;
+	}
+
+	.maplibregl-popup-tip {
+		@apply hidden!;
 	}
 }
 

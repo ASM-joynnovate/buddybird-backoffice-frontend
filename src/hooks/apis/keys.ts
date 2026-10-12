@@ -1,6 +1,6 @@
 import type { AnnouncementListParams } from '@/types/apis/announcements';
 import type { Platform } from '@/types/apis/app-updates';
-import type { DashboardParams } from '@/types/apis/dashboard';
+import type { DashboardParams, StabilityIssueSort } from '@/types/apis/dashboard';
 import type { FeedbackListParams } from '@/types/apis/feedback';
 import type {
 	NotificationDispatchListParams,
@@ -22,6 +22,9 @@ export const apiKeys = {
 			['api', 'dashboard', 'withdrawals', dashboardParams] as const,
 		notifications: (dashboardParams: DashboardParams) =>
 			['api', 'dashboard', 'notifications', dashboardParams] as const,
+		analytics: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'analytics', dashboardParams] as const,
+		stability: (dashboardParams: DashboardParams, sort: StabilityIssueSort) =>
+			['api', 'dashboard', 'stability', dashboardParams, sort] as const,
 		appUpdates: (platform: Platform) => ['api', 'dashboard', 'app-updates', platform] as const,
 		consents: (id: string, dashboardParams: DashboardParams) =>
 			['api', 'dashboard', 'consents', id, dashboardParams] as const,

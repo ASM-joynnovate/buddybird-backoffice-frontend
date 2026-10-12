@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { Diff, Minus, Plus } from 'lucide-react';
 
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
+import { I18N_LOCALES } from '@/config/locale';
 import { diffLines, type LineChange } from '@/utils/diff';
 
 import { Badge } from '@/components/ui/badge';
@@ -40,10 +41,12 @@ interface Props {
  * @param onComparedChange 비교를 켜고 끄면 실행할 함수
  */
 const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleChange, onComparedChange }: Props) => {
-	const body = consent.body[locale] ?? consent.body.en_us;
+	// 문구가 없는 언어 대신 영어 표시
+	const shownLocale = consent.body[locale] === null ? 'en_us' : locale;
+	const body = consent.body[shownLocale] ?? consent.body.en_us;
 	const lineChanges: LineChange[] =
 		compared && previousConsent
-			? diffLines(previousConsent.body[locale] ?? previousConsent.body.en_us, body)
+			? diffLines(previousConsent.body[shownLocale] ?? previousConsent.body.en_us, body)
 			: body.split('\n').map((text) => ({ type: 'same', text }));
 
 	const addedLineCount = lineChanges.filter((lineChange) => lineChange.type === 'added').length;
@@ -69,11 +72,12 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 				<SegmentedControl
 					label="언어"
 					size="sm"
-					options={[
-						{ value: 'ko_kr', label: '한국어' },
-						{ value: 'en_us', label: '영어' },
-					]}
-					value={locale}
+					options={I18N_LOCALES.map((localeOption) => ({
+						value: localeOption.locale,
+						label: localeOption.label,
+						disabled: consent.body[localeOption.locale] === null,
+					}))}
+					value={shownLocale}
 					onValueChange={onLocaleChange}
 				/>
 
@@ -114,7 +118,7 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 
 			<article className="pt-4.5 pr-5 pb-5 pl-8 leading-[1.75] max-md:pr-4 max-md:pl-7">
 				<h4 className="mb-3 text-lg leading-[1.4] font-bold tracking-[-0.01em]">
-					{consent.title[locale] ?? consent.title.en_us}
+					{consent.title[shownLocale] ?? consent.title.en_us}
 				</h4>
 
 				{lineGroups.map((lineGroup, groupIndex) => {

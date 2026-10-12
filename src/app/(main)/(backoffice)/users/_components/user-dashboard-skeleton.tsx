@@ -3,6 +3,7 @@ import UserFilterIcon from '@/app/(main)/(backoffice)/users/_components/user-fil
 import { VISIBLE_SPECIES_COUNT } from '@/config';
 import { USER_FILTER_GROUPS } from '@/config/user-filters';
 
+import { Card, CardTitle } from '@/components/ui/card';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const TREND_SERIES = [
@@ -73,12 +74,23 @@ const UserDashboardSkeleton = () => {
 				</ul>
 			</TitledCard>
 
-			<TitledCard
-				title="활성 사용자"
-				action=<span className="text-[13px] text-muted-foreground">세션 실행 기준</span>
-			>
-				<Skeleton className="h-65" />
-			</TitledCard>
+			<Card className="grid gap-0 py-0 xl:col-span-2 xl:row-span-2 xl:grid-cols-[minmax(0,1fr)_268px]">
+				<div className="min-w-0 px-5 py-4.5">
+					<div className="mb-3.5 flex items-baseline justify-between gap-3">
+						<CardTitle className="font-bold">활성 사용자</CardTitle>
+						<p className="text-[13px] text-muted-foreground">접속 기준</p>
+					</div>
+
+					{/*기준별 그래프 네 줄 자리*/}
+					<Skeleton className="h-127" />
+				</div>
+
+				<div className="border-t bg-card-inset px-5 py-4.5 xl:border-t-0 xl:border-l">
+					<CardTitle className="mb-3 font-bold">국가</CardTitle>
+
+					<Skeleton className="h-40" />
+				</div>
+			</Card>
 
 			<TitledCard title="구성">
 				<div className="grid gap-4.5">

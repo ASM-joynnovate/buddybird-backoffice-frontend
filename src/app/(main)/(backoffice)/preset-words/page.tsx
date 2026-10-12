@@ -28,8 +28,9 @@ export default function Page() {
 			</ErrorHandlingWrapper>
 
 			<p className="text-[12.5px] text-pretty text-muted-foreground">
-				새 사용자가 가입하면 앱 언어에 맞는 프리셋이 등록한 순서대로 단어에 추가됩니다. 프리셋을 수정하거나
-				삭제해도 이미 가입한 사용자의 단어는 변경되지 않습니다.
+				새 사용자가 가입하면 앱 언어에 맞는 프리셋이 등록한 순서대로 단어에 추가됩니다.
+				<br />
+				프리셋을 수정하거나 삭제해도 이미 가입한 사용자의 단어는 변경되지 않습니다.
 			</p>
 		</>
 	);
