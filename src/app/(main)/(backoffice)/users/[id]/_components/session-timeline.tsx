@@ -25,6 +25,7 @@ import { Play, Siren } from 'lucide-react';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import SessionEmergencyList from '@/app/(main)/(backoffice)/users/[id]/_components/session-emergency-list';
+import SessionPetcamList from '@/app/(main)/(backoffice)/users/[id]/_components/session-petcam-list';
 import SessionPlayhead from '@/app/(main)/(backoffice)/users/[id]/_components/session-playhead';
 import SessionScoreTooltip, {
 	type ScoreTooltip,
@@ -114,7 +115,9 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			label: heartbeatExpired ? '신호 끊김으로 종료' : (learningLabel ?? SESSION_EVENTS[sessionEvent.kind].label),
 			wordName: sessionEvent.word?.name,
 			color: heartbeatExpired ? 'var(--destructive-dot)' : SESSION_EVENTS[sessionEvent.kind].color,
-			emergencyDetected: sessionEvent.kind === 'emergency_detected',
+			emergencyDetected: sessionEvent.kind === 'sound_emergency_detected',
+			imageUrl: sessionEvent.image?.status === 'uploaded' ? sessionEvent.image.url : undefined,
+			videoUrl: sessionEvent.video?.status === 'uploaded' ? sessionEvent.video.url : undefined,
 			// 앵무새 소리가 아닌 녹음은 소리 목록에 없음
 			sounds: sessionSoundListData.filter((sessionSound) => sessionEvent.sound_ids.includes(sessionSound.id)),
 		};
@@ -122,13 +125,14 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 	const emergencies = sessionEvents.filter(
 		(sessionEvent) => sessionEvent.emergencyDetected && sessionEvent.sounds.length > 0,
 	);
+	const petcamEvents = sessionEvents.filter((sessionEvent) => sessionEvent.imageUrl || sessionEvent.videoUrl);
 	const emergencySoundIds = new Set(
 		sessionEventListData.flatMap((sessionEvent) =>
-			sessionEvent.kind === 'emergency_detected' ? sessionEvent.sound_ids : [],
+			sessionEvent.kind === 'sound_emergency_detected' ? sessionEvent.sound_ids : [],
 		),
 	);
 	const emergencyPeriods = sessionEventListData.flatMap((sessionEvent) =>
-		sessionEvent.kind === 'emergency_detected' && sessionEvent.ended_at
+		sessionEvent.kind === 'sound_emergency_detected' && sessionEvent.ended_at
 			? [{ startMs: dayjs(sessionEvent.occurred_at).valueOf(), endMs: dayjs(sessionEvent.ended_at).valueOf() }]
 			: [],
 	);
@@ -646,6 +650,8 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 					onScoreTooltipHide={hideScoreTooltip}
 				/>
 			)}
+
+			{petcamEvents.length > 0 && <SessionPetcamList petcamEvents={petcamEvents} />}
 
 			<hr />
 

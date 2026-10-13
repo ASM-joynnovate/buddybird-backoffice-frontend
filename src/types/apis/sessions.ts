@@ -44,7 +44,8 @@ export const sessionSchema = z.object({
 		mimic_count: z.number().int(),
 	}),
 	disconnections: z.array(z.object({ started_at: timestampSchema, ended_at: timestampSchema.nullable() })),
-	emergency_detections: z.array(timestampSchema),
+	sound_emergency_detections: z.array(timestampSchema),
+	parrot_disappearances: z.array(timestampSchema),
 });
 
 export const sessionEventSchema = z.object({
@@ -59,7 +60,7 @@ export const sessionEventSchema = z.object({
 			'word_changed',
 			'station_disconnected',
 			'station_reconnected',
-			'emergency_detected',
+			'sound_emergency_detected',
 			'parrot_disappeared',
 			'parrot_appeared',
 			'session_finished',
@@ -70,6 +71,8 @@ export const sessionEventSchema = z.object({
 	ended_at: timestampSchema.nullable(),
 	word: sessionWordSchema.nullable(),
 	sound_ids: z.array(uuidSchema),
+	image: fileSchema.nullable(),
+	video: fileSchema.nullable(),
 	is_learning: z.boolean().nullable(),
 });
 

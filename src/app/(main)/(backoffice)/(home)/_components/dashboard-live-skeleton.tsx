@@ -7,7 +7,13 @@ import { Card, CardTitle } from '@/components/ui/card';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const TODAY_STAT_LABELS = ['시작', '종료', '평균 진행 시간'];
-const CHECK_ITEM_LABELS = ['신호가 끊긴 세션', '응급 상황 감지', '탈퇴 실패', '모사 판정 실패'];
+const CHECK_ITEM_LABELS = [
+	'신호가 끊긴 세션',
+	'오디오 기반 응급 상황',
+	'비전 기반 응급 상황',
+	'탈퇴 실패',
+	'모사 판정 실패',
+];
 
 /** 현재 상태 카드를 불러오는 동안 보이는 컴포넌트 */
 const DashboardLiveSkeleton = () => {

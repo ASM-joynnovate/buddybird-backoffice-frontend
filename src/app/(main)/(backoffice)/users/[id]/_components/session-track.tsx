@@ -67,7 +67,7 @@ const SessionTrack = ({ session, sessionPeriod, timeZone, emergencyPeriods, clas
 
 			{/*이벤트 핀이 없으면 응급 상황 감지 시점만 표시*/}
 			{children ??
-				session.emergency_detections.map((detectedAt) => (
+				[...session.sound_emergency_detections, ...session.parrot_disappearances].map((detectedAt) => (
 					<span
 						key={detectedAt}
 						className="absolute top-1/2 size-2.5 -translate-1/2 rounded-full bg-card shadow-[inset_0_0_0_3px_var(--destructive-dot),0_0_0_2px_var(--card)]"

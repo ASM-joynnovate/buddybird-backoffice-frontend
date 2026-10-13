@@ -15,12 +15,13 @@ interface Props {
  * @param dashboardLive 대시보드의 현재 상태
  */
 const CheckItemCard = ({ dashboardLive }: Props) => {
-	const { heartbeat_expired_count, emergency_detected_count, judgment_failed_count } =
+	const { heartbeat_expired_count, sound_emergency_detected_count, parrot_disappeared_count, judgment_failed_count } =
 		dashboardLive.sessions.last_24_hours;
 
 	const checkItems = [
 		{ label: '신호가 끊긴 세션', count: heartbeat_expired_count, dotClassName: 'bg-destructive-dot' },
-		{ label: '응급 상황 감지', count: emergency_detected_count, dotClassName: 'bg-destructive-dot' },
+		{ label: '오디오 기반 응급 상황', count: sound_emergency_detected_count, dotClassName: 'bg-destructive-dot' },
+		{ label: '비전 기반 응급 상황', count: parrot_disappeared_count, dotClassName: 'bg-destructive-dot' },
 		{
 			label: '탈퇴 실패',
 			count: dashboardLive.withdrawals.failed_count,
