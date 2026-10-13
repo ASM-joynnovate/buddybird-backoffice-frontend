@@ -25,5 +25,8 @@ export const SESSION_EVENTS = {
 	station_disconnected: { label: '연결 끊김', color: 'var(--destructive-dot)' },
 	station_reconnected: { label: '다시 연결', color: 'var(--chart-3)' },
 	emergency_detected: { label: '응급 상황 감지', color: 'var(--destructive-dot)' },
+	parrot_disappeared: { label: '앵무새 사라짐', color: 'var(--destructive-dot)' },
+	parrot_appeared: { label: '앵무새 나타남', color: 'var(--chart-3)' },
 	session_finished: { label: '세션 종료', color: 'var(--foreground)' },
+	unknown: { label: '알 수 없는 이벤트', color: 'var(--muted-foreground)' },
 } satisfies Record<SessionEvent['kind'], { label: string; color: string }>;

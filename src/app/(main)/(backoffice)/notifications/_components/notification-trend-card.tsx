@@ -14,11 +14,14 @@ import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toToggledQuery, toUrlSearchParams } from '@/utils/search-params';
 
 // 아래부터 리포트, 공지, 마케팅, 긴급 순서로 쌓음
-const KIND_SERIES = Object.entries(NOTIFICATION_KINDS).map(([kind, { label, color }]) => ({
-	dataKey: kind,
-	name: label,
-	color,
-}));
+// 응급은 일별 집계에 없음
+const KIND_SERIES = Object.entries(NOTIFICATION_KINDS)
+	.filter(([kind]) => kind !== 'emergency')
+	.map(([kind, { label, color }]) => ({
+		dataKey: kind,
+		name: label,
+		color,
+	}));
 
 interface Props {
 	notificationDashboard: NotificationDashboard;

@@ -4,7 +4,7 @@ import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { z } from 'zod';
 
 export const sendableNotificationKindSchema = z.enum(['announcement', 'urgent', 'marketing']);
-export const notificationKindSchema = z.enum([...sendableNotificationKindSchema.options, 'report']);
+export const notificationKindSchema = z.enum([...sendableNotificationKindSchema.options, 'report', 'emergency']);
 
 const notificationImageSchema = z.object({ url: z.string() });
 
