@@ -12,7 +12,7 @@ import { saveFile } from '@/utils/file';
 import { Button } from '@/components/ui/button';
 
 interface Props {
-	sounds: SessionSound[];
+	sounds: Pick<SessionSound, 'audio_file'>[];
 	fileName: string;
 	label: string;
 	iconOnly?: boolean;
@@ -25,7 +25,7 @@ interface Props {
  * @param label 버튼의 aria-label
  * @param iconOnly 글자 없이 아이콘만 표시할지 여부
  */
-const SessionSoundDownloadButton = ({ sounds, fileName, label, iconOnly = false }: Props) => {
+const SoundDownloadButton = ({ sounds, fileName, label, iconOnly = false }: Props) => {
 	const downloadSessionSoundFiles = useDownloadSessionSoundFiles();
 
 	const handleDownload = () => {
@@ -69,4 +69,4 @@ const SessionSoundDownloadButton = ({ sounds, fileName, label, iconOnly = false 
 	);
 };
 
-export default SessionSoundDownloadButton;
+export default SoundDownloadButton;

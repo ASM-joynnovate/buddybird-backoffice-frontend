@@ -42,6 +42,7 @@ import {
 	formatShortDateTimeWithSeconds,
 	toHoursAndMinutes,
 } from '@/utils/date';
+import { toUploadedUrl } from '@/utils/file';
 import { type TimePeriod, toPeriodPercent } from '@/utils/session';
 
 const CLICK_MOVE_TOLERANCE_PX = 4;
@@ -116,8 +117,8 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			wordName: sessionEvent.word?.name,
 			color: heartbeatExpired ? 'var(--destructive-dot)' : SESSION_EVENTS[sessionEvent.kind].color,
 			emergencyDetected: sessionEvent.kind === 'sound_emergency_detected',
-			imageUrl: sessionEvent.image?.status === 'uploaded' ? sessionEvent.image.url : undefined,
-			videoUrl: sessionEvent.video?.status === 'uploaded' ? sessionEvent.video.url : undefined,
+			imageUrl: toUploadedUrl(sessionEvent.image),
+			videoUrl: toUploadedUrl(sessionEvent.video),
 			// 앵무새 소리가 아닌 녹음은 소리 목록에 없음
 			sounds: sessionSoundListData.filter((sessionSound) => sessionEvent.sound_ids.includes(sessionSound.id)),
 		};

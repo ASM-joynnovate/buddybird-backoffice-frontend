@@ -47,10 +47,10 @@ export const useGetUser = ({ id }: { id: string }) => {
 };
 
 /** 사용자 세션 목록 조회 Hook에 사용할 옵션 */
-export const getUserSessionListOptions = ({ id, page }: { id: string; page: number }) =>
+export const getUserSessionListOptions = ({ id, page, sessionId }: { id: string; page: number; sessionId?: string }) =>
 	queryOptions({
-		queryKey: apiKeys.users.sessionList(id, page),
-		queryFn: () => getUserSessionList({ id, page }),
+		queryKey: apiKeys.users.sessionList(id, page, sessionId),
+		queryFn: () => getUserSessionList({ id, page, sessionId }),
 		// 실행 중인 세션이 있을 때만 다시 조회
 		refetchInterval: (query) =>
 			query.state.data?.data.some((session) => session.status === 'running')
@@ -58,8 +58,8 @@ export const getUserSessionListOptions = ({ id, page }: { id: string; page: numb
 				: false,
 	});
 /** 사용자 세션 목록 조회 Hook */
-export const useGetUserSessionList = ({ id, page }: { id: string; page: number }) => {
-	return useSuspenseQuery(getUserSessionListOptions({ id, page }));
+export const useGetUserSessionList = ({ id, page, sessionId }: { id: string; page: number; sessionId?: string }) => {
+	return useSuspenseQuery(getUserSessionListOptions({ id, page, sessionId }));
 };
 
 /** 사용자 단어 목록 조회 Hook에 사용할 옵션 */

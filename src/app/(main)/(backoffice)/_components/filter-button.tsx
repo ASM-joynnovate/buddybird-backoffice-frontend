@@ -54,12 +54,14 @@ const FilterButton = ({ filterCount, size, children }: Props) => {
 				size={size}
 				aria-expanded={filterPanelOpen}
 				aria-controls="filter-panel"
+				className="relative"
 				onClick={() => setFilterPanelOpen((prev) => !prev)}
 			>
 				<ListFilter />
 				필터
+				{/*버튼 모서리에 겹쳐 표시*/}
 				{!!filterCount && (
-					<b className="grid h-5 min-w-5 place-items-center rounded-full bg-foreground px-1.5 text-xs font-bold text-card">
+					<b className="absolute -top-1.5 -right-1.5 grid h-4.5 min-w-4.5 place-items-center rounded-full bg-foreground px-1 text-[11.5px] font-bold text-card tabular-nums ring-2 ring-background">
 						{filterCount}
 					</b>
 				)}

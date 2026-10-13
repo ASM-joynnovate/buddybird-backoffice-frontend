@@ -9,6 +9,11 @@ export const formatFileSize = (bytes: number) => {
 	return `${(bytes / MEGABYTE).toFixed(1)}MB`;
 };
 
+/** 업로드가 끝난 파일의 주소를 반환하는 함수 */
+export const toUploadedUrl = (file: { url: string; status: string } | null) => {
+	return file?.status === 'uploaded' ? file.url : undefined;
+};
+
 /** 파일을 브라우저의 다운로드 폴더에 저장하는 함수 */
 export const saveFile = (file: Blob, fileName: string) => {
 	const fileUrl = URL.createObjectURL(file);

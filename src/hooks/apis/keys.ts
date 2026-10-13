@@ -1,6 +1,7 @@
 import type { AnnouncementListParams } from '@/types/apis/announcements';
 import type { Platform } from '@/types/apis/app-updates';
 import type { DashboardParams, StabilityIssueFilters, StabilityIssueSort } from '@/types/apis/dashboard';
+import type { EmergencyListParams } from '@/types/apis/emergencies';
 import type { FeedbackListParams } from '@/types/apis/feedback';
 import type {
 	NotificationDispatchListParams,
@@ -18,6 +19,8 @@ export const apiKeys = {
 		live: () => ['api', 'dashboard', 'live'] as const,
 		users: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'users', dashboardParams] as const,
 		feedback: (dashboardParams: DashboardParams) => ['api', 'dashboard', 'feedback', dashboardParams] as const,
+		emergencies: (dashboardParams: DashboardParams) =>
+			['api', 'dashboard', 'emergencies', dashboardParams] as const,
 		withdrawals: (dashboardParams: DashboardParams) =>
 			['api', 'dashboard', 'withdrawals', dashboardParams] as const,
 		notifications: (dashboardParams: DashboardParams) =>
@@ -35,7 +38,9 @@ export const apiKeys = {
 		infiniteList: (listParams: Omit<UserListParams, 'page'>) =>
 			['api', 'users', 'infinite-list', listParams] as const,
 		detail: (id: string) => ['api', 'users', id] as const,
-		sessionList: (id: string, page: number) => ['api', 'users', id, 'sessions', page] as const,
+		// 세션 ID로 조회한 목록은 따로 보관
+		sessionList: (id: string, page: number, sessionId?: string) =>
+			['api', 'users', id, 'sessions', page, ...(sessionId ? [sessionId] : [])] as const,
 		wordList: (id: string) => ['api', 'users', id, 'words'] as const,
 		consentList: (id: string) => ['api', 'users', id, 'consents'] as const,
 	},
@@ -56,6 +61,9 @@ export const apiKeys = {
 	},
 	feedback: {
 		list: (listParams: FeedbackListParams) => ['api', 'feedback', 'list', listParams] as const,
+	},
+	emergencies: {
+		list: (listParams: EmergencyListParams) => ['api', 'emergencies', 'list', listParams] as const,
 	},
 	notifications: {
 		all: () => ['api', 'notifications'] as const,

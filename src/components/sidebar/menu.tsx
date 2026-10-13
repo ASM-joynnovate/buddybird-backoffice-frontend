@@ -14,6 +14,7 @@ import {
 	MessageSquare,
 	Music,
 	PanelTop,
+	Siren,
 	Smartphone,
 	UserRound,
 	UserRoundX,
@@ -23,6 +24,7 @@ const menuGroups = [
 	[
 		{ href: '/', label: '홈', icon: House },
 		{ href: '/users', label: '사용자', icon: UserRound },
+		{ href: '/emergencies', label: '응급 상황', icon: Siren },
 		{ href: '/feedback', label: '피드백', icon: MessageSquare },
 		{ href: '/withdrawals', label: '탈퇴', icon: UserRoundX },
 		{ href: '/analytics', label: '분석', icon: ChartNoAxesColumn },

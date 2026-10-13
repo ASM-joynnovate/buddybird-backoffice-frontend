@@ -74,6 +74,13 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		startSound(sound);
 	};
 
+	/** 묶음의 선택한 소리부터 끝까지 재생하는 함수 */
+	const playSoundInGroup = (soundGroup: SoundGroup, sound: PlaylistSound) => {
+		setPlayingSoundGroup(soundGroup);
+
+		startSound(sound);
+	};
+
 	/** 재생을 정지하는 함수 */
 	const stopSound = () => {
 		const audio = audioRef.current;
@@ -113,9 +120,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		const firstSound = soundGroup.sounds.at(0);
 
 		if (firstSound) {
-			setPlayingSoundGroup(soundGroup);
-
-			startSound(firstSound);
+			playSoundInGroup(soundGroup, firstSound);
 		}
 	};
 
@@ -202,6 +207,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		durationSeconds,
 		continuousPlayEnabled,
 		playSound,
+		playSoundInGroup,
 		handleTogglePlay,
 		handleToggleSoundGroup,
 		handlePlayPrevious,

@@ -82,13 +82,14 @@ const SearchBar = ({
 	return (
 		<div
 			// 목록 행 전환 중에도 위에 표시
-			className="@container relative z-10 -mt-2 mb-2 flex flex-wrap items-center gap-2 bg-background py-2 [view-transition-name:search-bar] md:sticky md:top-0"
+			className="@container relative z-10 -mt-2 mb-2 flex items-center gap-2 bg-background py-2 [view-transition-name:search-bar] max-md:flex-wrap md:sticky md:top-0"
 		>
 			{/*검색어가 바뀌면 입력값을 새로 채움*/}
 			<Form
 				key={keyword}
 				action={pathname}
-				className="flex h-9 max-w-130 min-w-0 flex-[1_1_280px] items-center gap-2 rounded-md border bg-card pr-1 pl-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand hover:border-chart-neutral"
+				// 영역 폭의 비율로 고정
+				className="flex h-9 w-[clamp(240px,40%,520px)] flex-none items-center gap-2 rounded-md border bg-card pr-1 pl-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand hover:border-chart-neutral max-md:w-full"
 			>
 				{Object.entries(toLinkQuery({ ...query, keyword: undefined })).map(([name, value]) => (
 					<input key={name} type="hidden" name={name} value={String(value)} />
@@ -130,7 +131,10 @@ const SearchBar = ({
 			{/*좁은 화면에서는 검색줄 폭으로 패널 표시*/}
 			{!!filterPanel && <FilterButton filterCount={filterCount}>{filterPanel}</FilterButton>}
 
-			<SelectedFilters pathname={pathname} query={query} selectedFilters={selectedFilters} />
+			{/*넘치면 가로로 스크롤*/}
+			<div className="-m-1 flex min-w-0 flex-1 [scrollbar-width:none] items-center gap-2 overflow-x-auto p-1">
+				<SelectedFilters pathname={pathname} query={query} selectedFilters={selectedFilters} />
+			</div>
 
 			{children}
 		</div>

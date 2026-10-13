@@ -35,7 +35,7 @@ const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
 		<div
 			id="filter-panel"
 			className={cn(
-				'absolute top-[calc(100%+12px)] z-10 rounded-xl bg-card p-4 text-sm shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-1 ring-border max-md:inset-x-0 max-md:top-[calc(100%+4px)] md:right-0',
+				'absolute top-[calc(100%+12px)] z-10 rounded-xl bg-card p-4 text-sm shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-1 ring-border max-md:inset-x-0 max-md:top-[calc(100%+4px)] md:left-0',
 				className,
 			)}
 		>
@@ -52,6 +52,25 @@ const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
 									label={filterGroup.label}
 									unit={filterGroup.inputUnit}
 								/>
+							)}
+
+							{!!filterGroup.allOption && (
+								<Link
+									href={{
+										pathname,
+										query: toLinkQuery({ ...query, ...toClearedQuery([filterGroup.name]) }),
+									}}
+									scroll={false}
+									aria-current={query[filterGroup.name] === undefined ? 'true' : undefined}
+									className={optionClassName}
+								>
+									{filterGroup.allOption.label}
+									{filterGroup.allOption.count !== undefined && (
+										<span className="font-medium text-muted-foreground tabular-nums group-aria-[current]:text-card/70">
+											{filterGroup.allOption.count.toLocaleString('ko-KR')}
+										</span>
+									)}
+								</Link>
 							)}
 
 							{filterGroup.options.map((filterOption) => (
@@ -84,17 +103,22 @@ const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
 				))}
 			</dl>
 
-			{selected && (
-				<footer className="mt-3.5 flex justify-end border-t pt-3">
+			{/*패널 높이 유지를 위해 항상 표시*/}
+			<footer className="mt-3.5 flex justify-end border-t pt-3 text-[13px] font-semibold text-muted-foreground">
+				{selected ? (
 					<Link
 						href={{ pathname, query: toLinkQuery({ ...query, ...clearedQuery }) }}
 						scroll={false}
-						className="text-[13px] font-semibold text-muted-foreground hover:underline hover:underline-offset-3"
+						className="hover:underline hover:underline-offset-3"
 					>
 						모두 지우기
 					</Link>
-				</footer>
-			)}
+				) : (
+					<span aria-disabled className="opacity-45">
+						모두 지우기
+					</span>
+				)}
+			</footer>
 		</div>
 	);
 };

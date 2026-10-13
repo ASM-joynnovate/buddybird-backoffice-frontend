@@ -26,6 +26,7 @@ import { Card, CardTitle } from '@/components/ui/card';
 interface Props {
 	id: string;
 	page: number;
+	sessionId?: string;
 	initialNow: number;
 }
 
@@ -33,16 +34,18 @@ interface Props {
  * 세션 목록 및 고른 세션의 타임라인 카드 컴포넌트
  * @param id 조회할 사용자 ID
  * @param page 세션 목록의 페이지 번호
+ * @param sessionId 처음에 선택할 세션의 ID
  * @param initialNow 서버가 화면을 그린 시각
  */
-const UserSessionCard = ({ id, page, initialNow }: Props) => {
+const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });
 
-	const { data: userSessionListData } = useGetUserSessionList({ id, page });
+	const { data: userSessionListData } = useGetUserSessionList({ id, page, sessionId });
 
 	const now = useNow(initialNow);
 
-	const [selectedSessionId, setSelectedSessionId] = useState(userSessionListData.data[0]?.id);
+	// 주소의 세션이 목록에 없으면 첫 세션 선택
+	const [selectedSessionId, setSelectedSessionId] = useState(sessionId ?? userSessionListData.data[0]?.id);
 
 	const { meta } = userSessionListData;
 	// 스테이션 기기의 시간대로 수면 구간 계산

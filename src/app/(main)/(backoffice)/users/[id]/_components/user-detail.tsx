@@ -34,6 +34,7 @@ import QueryError from '@/components/query-error';
 interface Props {
 	id: string;
 	sessionPage: number;
+	sessionId?: string;
 	sessionList: Promise<CountedPage<Session> | undefined>;
 	today: string;
 	now: number;
@@ -43,11 +44,12 @@ interface Props {
  * 사용자 상세 화면 컴포넌트
  * @param id 조회할 사용자 ID
  * @param sessionPage 세션 목록의 페이지 번호
+ * @param sessionId 처음에 선택할 세션의 ID
  * @param sessionList 페이지에서 시작한 세션 목록 조회
  * @param today 오늘 날짜
  * @param now 서버가 화면을 그린 시각
  */
-const UserDetail = ({ id, sessionPage, sessionList, today, now }: Props) => {
+const UserDetail = ({ id, sessionPage, sessionId, sessionList, today, now }: Props) => {
 	return (
 		<>
 			<Link
@@ -74,12 +76,12 @@ const UserDetail = ({ id, sessionPage, sessionList, today, now }: Props) => {
 
 			{/*세션 목록의 페이지가 바뀌면 다시 마운트*/}
 			<ErrorHandlingWrapper
-				key={sessionPage}
+				key={sessionId ?? sessionPage}
 				fallbackComponent={QueryError}
 				suspenseFallback=<UserSessionCardSkeleton />
 			>
-				<SessionTimelinePrefetch sessionList={sessionList} />
-				<UserSessionCard id={id} page={sessionPage} initialNow={now} />
+				<SessionTimelinePrefetch sessionList={sessionList} sessionId={sessionId} />
+				<UserSessionCard id={id} page={sessionPage} sessionId={sessionId} initialNow={now} />
 			</ErrorHandlingWrapper>
 
 			<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">

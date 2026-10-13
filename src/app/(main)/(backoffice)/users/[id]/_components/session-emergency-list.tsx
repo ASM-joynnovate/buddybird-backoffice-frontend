@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 import { Play, Siren, Square } from 'lucide-react';
 
-import SessionSoundDownloadButton from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-download-button';
+import SoundDownloadButton from '@/app/(main)/(backoffice)/_components/sound-download-button';
 import { SECOND } from '@/config/units';
 import { formatAudioDuration } from '@/utils/audio';
 import {
@@ -168,7 +168,7 @@ const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScore
 									)}
 								</Button>
 
-								<SessionSoundDownloadButton
+								<SoundDownloadButton
 									sounds={emergency.sounds}
 									fileName={`emergency-${formatCompactDateTime(emergency.sounds[0].captured_at)}.wav`}
 									label={`${firstSoundTime} 응급 상황 소리 다운로드`}

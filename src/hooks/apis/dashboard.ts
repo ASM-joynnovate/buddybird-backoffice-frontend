@@ -6,6 +6,7 @@ import {
 	getConsentDashboard,
 	getDashboard,
 	getDashboardLive,
+	getEmergencyDashboard,
 	getFeedbackDashboard,
 	getNotificationDashboard,
 	getStabilityDashboard,
@@ -63,6 +64,17 @@ export const getFeedbackDashboardOptions = (dashboardParams: DashboardParams) =>
 /** 피드백 대시보드 조회 Hook */
 export const useGetFeedbackDashboard = (dashboardParams: DashboardParams) => {
 	return useSuspenseQuery(getFeedbackDashboardOptions(dashboardParams));
+};
+
+/** 응급 상황 대시보드 조회 Hook에 사용할 옵션 */
+export const getEmergencyDashboardOptions = (dashboardParams: DashboardParams) =>
+	queryOptions({
+		queryKey: apiKeys.dashboard.emergencies(dashboardParams),
+		queryFn: () => getEmergencyDashboard(dashboardParams),
+	});
+/** 응급 상황 대시보드 조회 Hook */
+export const useGetEmergencyDashboard = (dashboardParams: DashboardParams) => {
+	return useSuspenseQuery(getEmergencyDashboardOptions(dashboardParams));
 };
 
 /** 알림 대시보드 조회 Hook에 사용할 옵션 */
