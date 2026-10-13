@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.19.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.18.0...v0.19.0) (2026-10-13)
+
+
+### Features
+
+* 응급 상황 탭 추가 [BB-679] ([a51d536](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/a51d5365c5d4132275c8a047aca1abbd5ce6f1da))
+* 응급 상황 탭 추가 [BB-679] ([590a359](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/590a35956eb6de6d9683f32697a1599b4615b871))
+
+
+### Bug Fixes
+
+* 분석 탭 이슈 표의 모바일 가로 스크롤 추가 [BB-679] ([541667b](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/541667b18aedf49817d05d3105e7413fca67cc7b))
+
 ## [0.18.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.17.0...v0.18.0) (2026-10-13)
 
 
