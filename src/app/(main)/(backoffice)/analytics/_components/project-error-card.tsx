@@ -1,6 +1,7 @@
 import type { StabilityDashboard } from '@/types/apis/dashboard';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
+import SameWidthText from '@/app/(main)/(backoffice)/analytics/_components/same-width-text';
 
 interface Props {
 	projects: StabilityDashboard['projects'];
@@ -12,6 +13,8 @@ interface Props {
  */
 const ProjectErrorCard = ({ projects }: Props) => {
 	const maxErrorCount = Math.max(1, ...projects.map((project) => project.error_count));
+	// 행마다 막대의 끝이 같은 자리에 오도록 열의 모든 값을 모음
+	const errorCountTexts = projects.map((project) => project.error_count.toLocaleString('ko-KR'));
 
 	return (
 		<TitledCard title="프로젝트별 오류" action=<span className="text-[13px] text-muted-foreground">Sentry</span>>
@@ -19,7 +22,7 @@ const ProjectErrorCard = ({ projects }: Props) => {
 				{projects
 					.toSorted((a, b) => b.error_count - a.error_count)
 					.map(({ project, error_count }) => (
-						<li key={project} className="grid grid-cols-[156px_minmax(0,1fr)_48px] items-center gap-2.5">
+						<li key={project} className="grid grid-cols-[156px_minmax(0,1fr)_auto] items-center gap-2.5">
 							<span title={project} className="truncate font-semibold">
 								{project}
 							</span>
@@ -32,7 +35,10 @@ const ProjectErrorCard = ({ projects }: Props) => {
 							</div>
 
 							<strong className="text-right font-bold tabular-nums">
-								{error_count.toLocaleString('ko-KR')}
+								<SameWidthText
+									text={error_count.toLocaleString('ko-KR')}
+									columnTexts={errorCountTexts}
+								/>
 							</strong>
 						</li>
 					))}
