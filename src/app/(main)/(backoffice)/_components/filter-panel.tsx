@@ -7,7 +7,8 @@ import type { FilterGroup } from '@/types/filter';
 import type { SearchParamValue } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
-import { toLinkQuery, toToggledQuery } from '@/utils/search-params';
+import FilterNumberInput from '@/app/(main)/(backoffice)/_components/filter-number-input';
+import { toClearedQuery, toLinkQuery, toToggledQuery } from '@/utils/search-params';
 
 const optionClassName =
 	'group inline-flex h-7 items-center gap-1.5 rounded-full border bg-card px-2.5 text-[13px] font-semibold whitespace-nowrap hover:border-chart-neutral hover:bg-muted aria-[current]:border-foreground aria-[current]:bg-foreground aria-[current]:text-card';
@@ -43,12 +44,27 @@ const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
 					<Fragment key={filterGroup.name}>
 						<dt className="text-[13px] text-muted-foreground">{filterGroup.label}</dt>
 						<dd className="flex flex-wrap gap-1.5">
+							{!!filterGroup.inputUnit && (
+								<FilterNumberInput
+									pathname={pathname}
+									query={query}
+									name={filterGroup.name}
+									label={filterGroup.label}
+									unit={filterGroup.inputUnit}
+								/>
+							)}
+
 							{filterGroup.options.map((filterOption) => (
 								<Link
 									key={String(filterOption.value)}
 									href={{
 										pathname,
-										query: toToggledQuery(query, filterGroup.name, filterOption.value),
+										// 값이 바뀌면 딸린 조건을 함께 지움
+										query: toToggledQuery(
+											{ ...query, ...toClearedQuery(filterGroup.resetNames) },
+											filterGroup.name,
+											filterOption.value,
+										),
 									}}
 									scroll={false}
 									aria-current={query[filterGroup.name] === filterOption.value ? 'true' : undefined}

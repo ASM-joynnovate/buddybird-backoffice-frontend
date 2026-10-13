@@ -1,4 +1,4 @@
-import type { StabilityIssueSort } from '@/types/apis/dashboard';
+import type { StabilityEnvironment, StabilityIssuePriority, StabilityIssueSort } from '@/types/apis/dashboard';
 
 export const SERVICE_LINKS = [
 	{
@@ -29,7 +29,20 @@ export const ISSUE_LEVELS: Record<string, { label: string; color: string }> = {
 	fatal: { label: '치명', color: 'var(--destructive-dot)' },
 	error: { label: '오류', color: 'var(--destructive-dot)' },
 	warning: { label: '경고', color: 'var(--warning-dot)' },
+	info: { label: '정보', color: 'var(--info)' },
 };
+
+export const ISSUE_ENVIRONMENT_LABELS = {
+	prod: '운영',
+	dev: '개발',
+	local: '로컬',
+} satisfies Record<StabilityEnvironment, string>;
+
+export const ISSUE_PRIORITY_LABELS = {
+	high: '높음',
+	medium: '보통',
+	low: '낮음',
+} satisfies Record<StabilityIssuePriority, string>;
 
 // 앱의 온보딩 화면 순서
 export const ONBOARDING_STEPS = [

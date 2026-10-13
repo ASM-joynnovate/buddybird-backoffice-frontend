@@ -27,7 +27,7 @@ interface Props {
 const TitledCard = ({ title, href, linkLabel, action, className, children }: Props) => {
 	return (
 		<Card className={cn('gap-3.5 py-4.5', className)}>
-			<CardHeader className="items-baseline px-5">
+			<CardHeader className="relative items-baseline px-5">
 				<CardTitle className="font-bold">{title}</CardTitle>
 
 				{!!href && (
