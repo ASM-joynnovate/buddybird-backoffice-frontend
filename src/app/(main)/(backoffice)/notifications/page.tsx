@@ -48,8 +48,9 @@ export default async function Page(props: PageProps<'/notifications'>) {
 		sent_to: date ?? dashboardParams.date_to,
 	};
 	const notificationListParams = { ...sentListParams, kind, user_id };
-	// 사용자 및 리포트가 아니면 발송 단위로 조회
-	const dispatchListParams = !user_id && kind !== 'report' ? { ...sentListParams, kind } : undefined;
+	// 사용자, 리포트 및 응급이 아니면 발송 단위로 조회
+	const dispatchListParams =
+		!user_id && kind !== 'report' && kind !== 'emergency' ? { ...sentListParams, kind } : undefined;
 	const scheduledListParams = dispatchListParams && {
 		page: 1,
 		is_sent: false,

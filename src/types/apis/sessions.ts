@@ -49,17 +49,23 @@ export const sessionSchema = z.object({
 
 export const sessionEventSchema = z.object({
 	id: uuidSchema,
-	kind: z.enum([
-		'session_started',
-		'learning_started',
-		'learning_toggled',
-		'learning_finished',
-		'word_changed',
-		'station_disconnected',
-		'station_reconnected',
-		'emergency_detected',
-		'session_finished',
-	]),
+	// 모르는 종류는 unknown으로 변환
+	kind: z
+		.enum([
+			'session_started',
+			'learning_started',
+			'learning_toggled',
+			'learning_finished',
+			'word_changed',
+			'station_disconnected',
+			'station_reconnected',
+			'emergency_detected',
+			'parrot_disappeared',
+			'parrot_appeared',
+			'session_finished',
+			'unknown',
+		])
+		.catch('unknown'),
 	occurred_at: timestampSchema,
 	ended_at: timestampSchema.nullable(),
 	word: sessionWordSchema.nullable(),

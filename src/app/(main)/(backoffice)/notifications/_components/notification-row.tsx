@@ -65,8 +65,8 @@ const NotificationRow = ({ notification, keyword, recipientListed, expanded, now
 				pushSentAt={notification.push_sent_at}
 				readAt={notification.read_at}
 			>
-				{/*리포트 알림은 다시 보낼 수 없음*/}
-				{kind !== 'report' && (
+				{/*리포트 및 응급 알림은 다시 보낼 수 없음*/}
+				{kind !== 'report' && kind !== 'emergency' && (
 					<DetailActions
 						copiedContent={toCopiedContent({ ...notification, kind })}
 						copiedUserId={notification.user_id}
