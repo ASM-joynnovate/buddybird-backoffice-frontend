@@ -34,7 +34,7 @@ const ActiveUserCard = ({ daily, countries, today }: Props) => {
 				/>
 			</div>
 
-			<div className="border-t bg-card-inset px-5 py-4.5 xl:border-t-0 xl:border-l">
+			<div className="flex flex-col border-t bg-card-inset px-5 py-4.5 xl:border-t-0 xl:border-l">
 				<CardTitle className="mb-3 font-bold">국가</CardTitle>
 
 				<CountryList countries={countries} className="divide-y [&>li:first-child]:pt-0" />
