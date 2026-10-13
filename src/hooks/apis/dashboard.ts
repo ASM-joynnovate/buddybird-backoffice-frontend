@@ -14,7 +14,7 @@ import {
 } from '@/apis/dashboard';
 
 import type { Platform } from '@/types/apis/app-updates';
-import type { DashboardParams, StabilityIssueSort } from '@/types/apis/dashboard';
+import type { DashboardParams, StabilityIssueFilters, StabilityIssueSort } from '@/types/apis/dashboard';
 
 import { apiKeys } from '@/hooks/apis/keys';
 
@@ -102,23 +102,27 @@ export const useGetAnalyticsDashboard = (dashboardParams: DashboardParams) => {
 export const getStabilityDashboardOptions = ({
 	dashboardParams,
 	sort,
+	issueFilters,
 }: {
 	dashboardParams: DashboardParams;
 	sort: StabilityIssueSort;
+	issueFilters: StabilityIssueFilters;
 }) =>
 	queryOptions({
-		queryKey: apiKeys.dashboard.stability(dashboardParams, sort),
-		queryFn: () => getStabilityDashboard({ dashboardParams, sort }),
+		queryKey: apiKeys.dashboard.stability(dashboardParams, sort, issueFilters),
+		queryFn: () => getStabilityDashboard({ dashboardParams, sort, issueFilters }),
 	});
 /** 안정성 대시보드 조회 Hook */
 export const useGetStabilityDashboard = ({
 	dashboardParams,
 	sort,
+	issueFilters,
 }: {
 	dashboardParams: DashboardParams;
 	sort: StabilityIssueSort;
+	issueFilters: StabilityIssueFilters;
 }) => {
-	return useSuspenseQuery(getStabilityDashboardOptions({ dashboardParams, sort }));
+	return useSuspenseQuery(getStabilityDashboardOptions({ dashboardParams, sort, issueFilters }));
 };
 
 /** 앱 업데이트 대시보드 조회 Hook에 사용할 옵션 */

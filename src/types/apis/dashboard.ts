@@ -193,6 +193,24 @@ export const analyticsDashboardSchema = z.object({
 });
 
 export const stabilityIssueSortSchema = z.enum(['date', 'freq', 'user']);
+export const stabilityEnvironmentSchema = z.enum(['prod', 'dev', 'local']);
+export const stabilityIssueLevelSchema = z.enum(['fatal', 'error', 'warning', 'info']);
+export const stabilityIssuePrioritySchema = z.enum(['high', 'medium', 'low']);
+
+const booleanTextSchema = z.enum(['true', 'false']).transform((value) => value === 'true');
+
+// 주소의 쿼리에서 읽는 이슈 필터, 형식이 다른 값은 버림
+export const stabilityIssueFiltersSchema = z.object({
+	environment: stabilityEnvironmentSchema.optional().catch(undefined),
+	project: z.string().regex(/^\S+$/).optional().catch(undefined),
+	release: z.string().regex(/^\S+$/).optional().catch(undefined),
+	level: stabilityIssueLevelSchema.optional().catch(undefined),
+	priority: stabilityIssuePrioritySchema.optional().catch(undefined),
+	min_user_count: z.coerce.number().int().min(1).optional().catch(undefined),
+	is_new: booleanTextSchema.optional().catch(undefined),
+	is_unhandled: booleanTextSchema.optional().catch(undefined),
+	is_regressed: booleanTextSchema.optional().catch(undefined),
+});
 
 export const stabilityDashboardSchema = z.object({
 	projects: z.array(
@@ -210,11 +228,17 @@ export const stabilityDashboardSchema = z.object({
 			user_count: z.number().int(),
 		}),
 	),
+	issue_releases: z.array(z.object({ project: z.string(), release: z.string() })),
 	issues: z.array(
 		z.object({
+			short_id: z.string(),
 			project: z.string(),
 			title: z.string(),
+			culprit: z.string().nullable(),
 			level: z.string(),
+			substatus: z.string(),
+			is_unhandled: z.boolean(),
+			release: z.string().nullable(),
 			count: z.number().int(),
 			user_count: z.number().int(),
 			first_seen: timestampSchema,
@@ -234,6 +258,9 @@ export type AppUpdateDashboard = z.infer<typeof appUpdateDashboardSchema>;
 export type ConsentDashboard = z.infer<typeof consentDashboardSchema>;
 export type AnalyticsDashboard = z.infer<typeof analyticsDashboardSchema>;
 export type StabilityIssueSort = z.infer<typeof stabilityIssueSortSchema>;
+export type StabilityEnvironment = z.infer<typeof stabilityEnvironmentSchema>;
+export type StabilityIssuePriority = z.infer<typeof stabilityIssuePrioritySchema>;
+export type StabilityIssueFilters = z.infer<typeof stabilityIssueFiltersSchema>;
 export type StabilityDashboard = z.infer<typeof stabilityDashboardSchema>;
 
 export interface DashboardParams {

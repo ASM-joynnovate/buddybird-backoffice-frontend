@@ -1,6 +1,6 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import { stabilityIssueSortSchema } from '@/types/apis/dashboard';
+import { stabilityIssueFiltersSchema, stabilityIssueSortSchema } from '@/types/apis/dashboard';
 
 import {
 	getAnalyticsDashboardOptions,
@@ -25,16 +25,19 @@ export default async function Page(props: PageProps<'/analytics'>) {
 	const dashboardParams = customDashboardParams ?? { date_from: addDays(today, 1 - period), date_to: today };
 
 	const sort = stabilityIssueSortSchema.safeParse(searchParams.sort).data ?? 'date';
+	const parsedFilters = stabilityIssueFiltersSchema.parse(searchParams);
+	// 릴리스는 프로젝트를 선택한 경우에만 조회
+	const issueFilters = { ...parsedFilters, release: parsedFilters.project ? parsedFilters.release : undefined };
 
 	// 링크가 유지할 현재 주소의 쿼리
-	const listQuery = { sort: sort === 'date' ? undefined : sort };
+	const listQuery = { sort: sort === 'date' ? undefined : sort, ...issueFilters };
 	const query = { ...(customDashboardParams ?? { period }), ...listQuery };
 
 	const queryClient = getQueryClient();
 
 	// 응답을 기다리지 않고 조회 시작
 	void queryClient.prefetchQuery(getUserDashboardOptions(dashboardParams));
-	void queryClient.prefetchQuery(getStabilityDashboardOptions({ dashboardParams, sort }));
+	void queryClient.prefetchQuery(getStabilityDashboardOptions({ dashboardParams, sort, issueFilters }));
 	void queryClient.prefetchQuery(getAnalyticsDashboardOptions(dashboardParams));
 
 	return (
@@ -43,6 +46,7 @@ export default async function Page(props: PageProps<'/analytics'>) {
 				period={customDashboardParams ? undefined : period}
 				dashboardParams={dashboardParams}
 				sort={sort}
+				issueFilters={issueFilters}
 				listQuery={listQuery}
 				query={query}
 				today={today}

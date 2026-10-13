@@ -1,4 +1,4 @@
-import type { DashboardParams, StabilityIssueSort } from '@/types/apis/dashboard';
+import type { DashboardParams, StabilityIssueFilters, StabilityIssueSort } from '@/types/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
 
@@ -18,6 +18,7 @@ interface Props {
 	period?: number;
 	dashboardParams: DashboardParams;
 	sort: StabilityIssueSort;
+	issueFilters: StabilityIssueFilters;
 	listQuery: Record<string, SearchParamValue>;
 	query: Record<string, SearchParamValue>;
 	today: string;
@@ -29,12 +30,13 @@ interface Props {
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param sort 이슈 정렬 기준
+ * @param issueFilters 이슈 필터로 선택한 값
  * @param listQuery 기간을 뺀 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
  * @param now 서버가 화면을 그린 시각
  */
-const Analytics = ({ period, dashboardParams, sort, listQuery, query, today, now }: Props) => {
+const Analytics = ({ period, dashboardParams, sort, issueFilters, listQuery, query, today, now }: Props) => {
 	const periodKey = [dashboardParams.date_from, dashboardParams.date_to].join(':');
 
 	return (
@@ -71,13 +73,19 @@ const Analytics = ({ period, dashboardParams, sort, listQuery, query, today, now
 
 			<hr />
 
-			{/*정렬이 바뀌어도 이전 목록을 유지*/}
+			{/*정렬 및 필터가 바뀌어도 이전 목록을 유지*/}
 			<ErrorHandlingWrapper
 				key={`stability:${periodKey}`}
 				fallbackComponent={QueryError}
 				suspenseFallback=<StabilityCardsSkeleton />
 			>
-				<StabilityCards dashboardParams={dashboardParams} sort={sort} query={query} now={now} />
+				<StabilityCards
+					dashboardParams={dashboardParams}
+					sort={sort}
+					issueFilters={issueFilters}
+					query={query}
+					now={now}
+				/>
 			</ErrorHandlingWrapper>
 
 			<hr />

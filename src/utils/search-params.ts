@@ -85,6 +85,11 @@ export const toUrlSearchParams = (query: Record<string, SearchParamValue>) => {
 	return new URLSearchParams(Object.entries(toLinkQuery(query)).map(([name, value]) => [name, String(value)]));
 };
 
+/** 이름마다 값을 지운 쿼리를 반환하는 함수 */
+export const toClearedQuery = (names: string[] = []): Record<string, SearchParamValue> => {
+	return Object.fromEntries(names.map((name) => [name, undefined]));
+};
+
 /** 이미 고른 값이면 빼고 아니면 넣은 링크 쿼리를 반환하는 함수 */
 export const toToggledQuery = (query: Record<string, SearchParamValue>, name: string, value: SearchParamValue) => {
 	return toLinkQuery({ ...query, [name]: query[name] === value ? undefined : value });

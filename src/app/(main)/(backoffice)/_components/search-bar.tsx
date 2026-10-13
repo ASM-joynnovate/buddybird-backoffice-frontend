@@ -1,21 +1,20 @@
 'use client';
 
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 
 import Form from 'next/form';
-import Link from 'next/link';
 
 import type { SelectedFilter } from '@/types/filter';
 
 import type { SearchParamValue } from '@/lib/api';
 
-import { ListFilter, Search, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 
+import FilterButton from '@/app/(main)/(backoffice)/_components/filter-button';
+import SelectedFilters from '@/app/(main)/(backoffice)/_components/selected-filters';
 import { KEYWORD_MAX_LENGTH } from '@/config';
 import { toLinkQuery } from '@/utils/search-params';
 
-import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
-import QueryError from '@/components/query-error';
 import { Button } from '@/components/ui/button';
 
 interface Props {
@@ -51,17 +50,10 @@ const SearchBar = ({
 	children,
 }: Props) => {
 	const keywordInputRef = useRef<HTMLInputElement>(null);
-	const filterRef = useRef<HTMLDivElement>(null);
 
-	const [filterPanelOpen, setFilterPanelOpen] = useState(false);
-
-	/** "/" 키로 검색창 포커스, Esc 및 바깥 클릭으로 필터 닫기 */
+	/** "/" 키로 검색창 포커스 */
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				setFilterPanelOpen(false);
-			}
-
 			if (event.key !== '/' || event.target instanceof HTMLInputElement) {
 				return;
 			}
@@ -69,18 +61,11 @@ const SearchBar = ({
 			event.preventDefault();
 			keywordInputRef.current?.focus();
 		};
-		const handlePointerDown = (event: PointerEvent) => {
-			if (event.target instanceof Node && !filterRef.current?.contains(event.target)) {
-				setFilterPanelOpen(false);
-			}
-		};
 
 		document.addEventListener('keydown', handleKeyDown);
-		document.addEventListener('pointerdown', handlePointerDown);
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
-			document.removeEventListener('pointerdown', handlePointerDown);
 		};
 	}, []);
 
@@ -143,50 +128,9 @@ const SearchBar = ({
 			</Form>
 
 			{/*좁은 화면에서는 검색줄 폭으로 패널 표시*/}
-			{!!filterPanel && (
-				<div ref={filterRef} className="md:relative">
-					<Button
-						variant="outline"
-						aria-expanded={filterPanelOpen}
-						aria-controls="filter-panel"
-						onClick={() => setFilterPanelOpen((prev) => !prev)}
-					>
-						<ListFilter />
-						필터
-						{!!filterCount && (
-							<b className="grid h-5 min-w-5 place-items-center rounded-full bg-foreground px-1.5 text-xs font-bold text-card">
-								{filterCount}
-							</b>
-						)}
-					</Button>
+			{!!filterPanel && <FilterButton filterCount={filterCount}>{filterPanel}</FilterButton>}
 
-					{filterPanelOpen && (
-						<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback={null}>
-							{filterPanel}
-						</ErrorHandlingWrapper>
-					)}
-				</div>
-			)}
-
-			{/*고른 조건, 누르면 그 조건을 지움*/}
-			{selectedFilters.map((selectedFilter) => (
-				<Link
-					key={selectedFilter.name}
-					href={{ pathname, query: toLinkQuery({ ...query, [selectedFilter.name]: undefined }) }}
-					scroll={false}
-					aria-label={`${selectedFilter.label} 조건 지우기`}
-					className="inline-flex h-7 items-center gap-1.5 rounded-md bg-card pr-1.5 pl-2.5 text-[13px] font-semibold whitespace-nowrap ring-1 ring-border hover:bg-muted"
-				>
-					{!!selectedFilter.groupLabel && (
-						<small className="text-[12.5px] font-medium text-muted-foreground">
-							{selectedFilter.groupLabel}
-						</small>
-					)}
-					{selectedFilter.icon}
-					{selectedFilter.label}
-					<X className="size-3.5 text-muted-foreground" />
-				</Link>
-			))}
+			<SelectedFilters pathname={pathname} query={query} selectedFilters={selectedFilters} />
 
 			{children}
 		</div>

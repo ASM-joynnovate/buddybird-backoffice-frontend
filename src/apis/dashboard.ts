@@ -17,6 +17,7 @@ import {
 	notificationDashboardSchema,
 	type StabilityDashboard,
 	stabilityDashboardSchema,
+	type StabilityIssueFilters,
 	type StabilityIssueSort,
 	type UserDashboard,
 	userDashboardSchema,
@@ -94,14 +95,16 @@ export const getAnalyticsDashboard = async ({ date_from, date_to }: DashboardPar
 export const getStabilityDashboard = async ({
 	dashboardParams: { date_from, date_to },
 	sort,
+	issueFilters,
 }: {
 	dashboardParams: DashboardParams;
 	sort: StabilityIssueSort;
+	issueFilters: StabilityIssueFilters;
 }): Promise<StabilityDashboard> => {
 	const { data: stabilityDashboard } = await apiRequest(
 		'/api/v1/backoffice/dashboard/stability',
 		stabilityDashboardSchema,
-		{ searchParams: { date_from, date_to, sort } },
+		{ searchParams: { date_from, date_to, sort, ...issueFilters } },
 	);
 
 	return stabilityDashboard;
