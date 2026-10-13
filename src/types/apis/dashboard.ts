@@ -64,7 +64,8 @@ export const dashboardLiveSchema = z.object({
 		}),
 		last_24_hours: z.object({
 			heartbeat_expired_count: z.number().int(),
-			emergency_detected_count: z.number().int(),
+			sound_emergency_detected_count: z.number().int(),
+			parrot_disappeared_count: z.number().int(),
 			judgment_failed_count: z.number().int(),
 		}),
 	}),
@@ -156,6 +157,7 @@ export const notificationDashboardSchema = z.object({
 			announcement_count: z.number().int(),
 			marketing_count: z.number().int(),
 			urgent_count: z.number().int(),
+			emergency_count: z.number().int(),
 		}),
 	),
 });

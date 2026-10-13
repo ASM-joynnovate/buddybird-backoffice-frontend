@@ -69,7 +69,12 @@ export const USER_FILTER_GROUPS: UserFilterGroup[] = [
 		label: '확인 필요',
 		options: [
 			{ value: 'heartbeat_expired', label: '신호 끊김', listParams: { issue: 'heartbeat_expired' } },
-			{ value: 'emergency_detected', label: '응급 감지', listParams: { issue: 'emergency_detected' } },
+			{
+				value: 'sound_emergency_detected',
+				label: '오디오 기반 응급 상황',
+				listParams: { issue: 'sound_emergency_detected' },
+			},
+			{ value: 'parrot_disappeared', label: '비전 기반 응급 상황', listParams: { issue: 'parrot_disappeared' } },
 			{ value: 'withdrawal_failed', label: '탈퇴 실패', listParams: { issue: 'withdrawal_failed' } },
 		],
 	},

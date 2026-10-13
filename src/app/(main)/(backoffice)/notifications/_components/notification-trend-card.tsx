@@ -13,15 +13,12 @@ import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toToggledQuery, toUrlSearchParams } from '@/utils/search-params';
 
-// 아래부터 리포트, 공지, 마케팅, 긴급 순서로 쌓음
-// 응급은 일별 집계에 없음
-const KIND_SERIES = Object.entries(NOTIFICATION_KINDS)
-	.filter(([kind]) => kind !== 'emergency')
-	.map(([kind, { label, color }]) => ({
-		dataKey: kind,
-		name: label,
-		color,
-	}));
+// 아래부터 리포트, 공지, 마케팅, 긴급, 응급 순서로 쌓음
+const KIND_SERIES = Object.entries(NOTIFICATION_KINDS).map(([kind, { label, color }]) => ({
+	dataKey: kind,
+	name: label,
+	color,
+}));
 
 interface Props {
 	notificationDashboard: NotificationDashboard;
@@ -50,6 +47,7 @@ const NotificationTrendCard = ({ notificationDashboard, selectedDate, query, tod
 		announcement: dailyCount.announcement_count,
 		marketing: dailyCount.marketing_count,
 		urgent: dailyCount.urgent_count,
+		emergency: dailyCount.emergency_count,
 	}));
 
 	/** 알림 수에 대한 비율 문구를 반환하는 함수 */
