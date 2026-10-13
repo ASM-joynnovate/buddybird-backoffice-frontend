@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.18.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.17.0...v0.18.0) (2026-10-13)
+
+
+### Features
+
+* Sentry 이슈 필터 및 표 형태 목록 추가 [BB-677] ([ca6894e](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ca6894e6e636354a1d8a788e50be127ba87e01ba))
+* Sentry 이슈 필터 및 표 형태 목록 추가 [BB-677] ([4fe67d7](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/4fe67d7bf8f32c33f304b8df69a367c4f8957015))
+* 응급 상황 구분 및 펫캠 영상 추가 [BB-667] ([4ad51e1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/4ad51e16700998544b19e37f2fb7946c968e60d8))
+* 응급 상황 구분 및 펫캠 영상 추가 [BB-667] ([56707b9](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/56707b90c018cc67d5f5c5d141385bc423f3ec7f))
+* 응급 알림 및 앵무새 이벤트 종류 추가 [BB-667] ([fc87788](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/fc87788a4ab34c57780219760cb239d54176ab66))
+* 응급 알림 및 앵무새 이벤트 종류 추가 [BB-667] ([1f811e7](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/1f811e7e8e36f5e4289e51a0d0fd56a1b2963642))
+* 카드 높이에 맞춘 국가 목록 및 나머지 국가 팝업 추가 ([edd4917](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/edd49178bf9088f0a3c1db750272530d49527b2d))
+* 카드 높이에 맞춘 국가 목록 및 나머지 국가 팝업 추가 ([bf8ef87](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/bf8ef87dca85d70dd2002c2e9076d08f050abeed))
+
+
+### Bug Fixes
+
+* 프로젝트별 오류 수가 두 줄로 나뉘는 문제 수정 [BB-677] ([19b4d6e](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/19b4d6ec32e0a55173aefbfd30a809bda5669f02))
+
 ## [0.17.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.16.0...v0.17.0) (2026-10-12)
 
 
