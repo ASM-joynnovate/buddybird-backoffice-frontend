@@ -1,4 +1,4 @@
-import { i18nSchema } from '@/types/apis/common';
+import { fileSchema, i18nSchema } from '@/types/apis/common';
 import { notificationKindSchema } from '@/types/apis/notifications';
 import { localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { sessionPhaseSchema } from '@/types/apis/sessions';
@@ -103,6 +103,35 @@ export const userDashboardSchema = z.object({
 		total_count: z.number().int(),
 		species: z.array(z.object({ species: z.string(), count: z.number().int() })),
 	}),
+});
+
+export const emergencyDashboardSchema = z.object({
+	emergencies: z.object({
+		count: z.number().int(),
+		previous_count: z.number().int(),
+		sound_count: z.number().int(),
+		vision_count: z.number().int(),
+	}),
+	daily: z.array(z.object({ date: localDateSchema, sound_count: z.number().int(), vision_count: z.number().int() })),
+	hourly: z.array(z.object({ hour: z.number().int(), count: z.number().int() })),
+	users: z.array(
+		z.object({
+			id: uuidSchema,
+			nickname: z.string().nullable(),
+			photo_file: fileSchema.nullable(),
+			sound_count: z.number().int(),
+			vision_count: z.number().int(),
+		}),
+	),
+	ongoing_count: z.number().int(),
+	notifications: z.object({
+		read_count: z.number().int(),
+		unread_count: z.number().int(),
+		none_count: z.number().int(),
+	}),
+	platforms: z.array(z.object({ platform: z.string(), count: z.number().int() })),
+	session_count: z.number().int(),
+	analyzed_sound_count: z.number().int(),
 });
 
 export const feedbackDashboardSchema = z.object({
@@ -254,6 +283,7 @@ export type Dashboard = z.infer<typeof dashboardSchema>;
 export type DashboardLive = z.infer<typeof dashboardLiveSchema>;
 export type UserDashboard = z.infer<typeof userDashboardSchema>;
 export type FeedbackDashboard = z.infer<typeof feedbackDashboardSchema>;
+export type EmergencyDashboard = z.infer<typeof emergencyDashboardSchema>;
 export type WithdrawalDashboard = z.infer<typeof withdrawalDashboardSchema>;
 export type NotificationDashboard = z.infer<typeof notificationDashboardSchema>;
 export type AppUpdateDashboard = z.infer<typeof appUpdateDashboardSchema>;

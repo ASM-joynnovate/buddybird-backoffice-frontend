@@ -141,6 +141,8 @@
 		@apply font-sans;
 		word-break: keep-all;
 		overflow-wrap: break-word;
+		/* 스크롤바가 없어도 본문 폭 유지 */
+		scrollbar-gutter: stable;
 	}
 	::selection {
 		@apply bg-primary text-primary-foreground;

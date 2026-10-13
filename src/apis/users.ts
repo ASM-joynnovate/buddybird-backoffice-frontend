@@ -34,9 +34,17 @@ export const deleteUser = async ({ id, idempotencyKey }: { id: string; idempoten
 	await apiRequest(`/api/v1/backoffice/users/${id}`, z.unknown(), { method: 'DELETE', idempotencyKey });
 };
 
-export const getUserSessionList = async ({ id, page }: { id: string; page: number }): Promise<CountedPage<Session>> => {
+export const getUserSessionList = async ({
+	id,
+	page,
+	sessionId,
+}: {
+	id: string;
+	page: number;
+	sessionId?: string;
+}): Promise<CountedPage<Session>> => {
 	const { data, meta } = await apiRequest(`/api/v1/backoffice/users/${id}/sessions`, z.array(sessionSchema), {
-		searchParams: { page, count_by_page: USER_RECENT_ITEM_COUNT },
+		searchParams: { page, count_by_page: USER_RECENT_ITEM_COUNT, session_id: sessionId },
 	});
 
 	return { data, meta: countedPageMetaSchema.parse(meta) };

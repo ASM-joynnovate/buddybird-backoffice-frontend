@@ -11,6 +11,8 @@ import {
 	dashboardLiveSchema,
 	type DashboardParams,
 	dashboardSchema,
+	type EmergencyDashboard,
+	emergencyDashboardSchema,
 	type FeedbackDashboard,
 	feedbackDashboardSchema,
 	type NotificationDashboard,
@@ -47,6 +49,16 @@ export const getUserDashboard = async ({ date_from, date_to }: DashboardParams):
 	});
 
 	return userDashboard;
+};
+
+export const getEmergencyDashboard = async ({ date_from, date_to }: DashboardParams): Promise<EmergencyDashboard> => {
+	const { data: emergencyDashboard } = await apiRequest(
+		'/api/v1/backoffice/dashboard/emergencies',
+		emergencyDashboardSchema,
+		{ searchParams: { date_from, date_to } },
+	);
+
+	return emergencyDashboard;
 };
 
 export const getFeedbackDashboard = async ({ date_from, date_to }: DashboardParams): Promise<FeedbackDashboard> => {

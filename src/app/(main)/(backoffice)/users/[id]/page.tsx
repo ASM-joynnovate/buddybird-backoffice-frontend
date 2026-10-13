@@ -1,5 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
+import { uuidSchema } from '@/types/apis/primitives';
+
 import { getFeedbackListOptions } from '@/hooks/apis/feedback';
 import { getNotificationListOptions } from '@/hooks/apis/notifications';
 import {
@@ -21,6 +23,8 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 	const { id } = await props.params;
 	const searchParams = await props.searchParams;
 	const sessionPage = toPageNumber(searchParams.session_page);
+	// 처음에 선택할 세션
+	const sessionId = uuidSchema.safeParse(searchParams.session_id).data;
 	const recentListParams = { page: 1, count_by_page: USER_RECENT_ITEM_COUNT, user_id: id };
 
 	const queryClient = getQueryClient();
@@ -35,7 +39,7 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 
 	// 세션 목록은 첫 세션의 타임라인 조회에도 사용, 실패는 세션 카드가 표시
 	const sessionList = queryClient
-		.fetchQuery(getUserSessionListOptions({ id, page: sessionPage }))
+		.fetchQuery(getUserSessionListOptions({ id, page: sessionPage, sessionId }))
 		.catch(() => undefined);
 
 	return (
@@ -43,6 +47,7 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 			<UserDetail
 				id={id}
 				sessionPage={sessionPage}
+				sessionId={sessionId}
 				sessionList={sessionList}
 				today={formatToday()}
 				now={getNow()}

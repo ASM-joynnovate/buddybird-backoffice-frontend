@@ -12,7 +12,7 @@ import { Play, Siren } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
-import SessionSoundDownloadButton from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-download-button';
+import SoundDownloadButton from '@/app/(main)/(backoffice)/_components/sound-download-button';
 import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
 import { SECOND } from '@/config/units';
 import { formatAudioDuration } from '@/utils/audio';
@@ -181,7 +181,7 @@ const SessionSoundTable = ({ sounds, emergencySoundIds, judging, player }: Props
 									</TableCell>
 									{/*다운로드를 눌러도 행의 소리를 재생하지 않음*/}
 									<TableCell className="pr-1.5" onClick={(event) => event.stopPropagation()}>
-										<SessionSoundDownloadButton
+										<SoundDownloadButton
 											sounds={[sound]}
 											fileName={`sound-${formatCompactDateTime(sound.captured_at)}.wav`}
 											label={`${soundTime} 소리 다운로드`}
