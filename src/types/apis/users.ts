@@ -84,6 +84,8 @@ export interface UserListParams {
 	provider?: Provider;
 	is_anonymous?: boolean;
 	platform?: 'ios' | 'android';
+	country?: string;
+	locale?: string;
 	has_unsupported_device?: boolean;
 	is_pushable?: boolean;
 	is_marketing_enabled?: boolean;

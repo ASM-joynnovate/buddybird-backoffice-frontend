@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import { sortOrderSchema } from '@/types/apis/common';
-import { uuidSchema } from '@/types/apis/primitives';
+import { countrySchema, uuidSchema } from '@/types/apis/primitives';
 import { userSortSchema } from '@/types/apis/users';
 
 import { getUserDashboardOptions } from '@/hooks/apis/dashboard';
@@ -39,6 +39,7 @@ export default async function Page(props: PageProps<'/users'>) {
 	const dashboardParams = customDashboardParams ?? { date_from: addDays(today, 1 - period), date_to: today };
 
 	const userFilters = toUserFilters(searchParams);
+	const country = countrySchema.safeParse(searchParams.country).data;
 	const is_deleted = searchParams.is_deleted === 'true';
 	const sort = userSortSchema.safeParse(searchParams.sort).data ?? 'created_at';
 	const order = sortOrderSchema.safeParse(searchParams.order).data ?? 'desc';
@@ -48,6 +49,7 @@ export default async function Page(props: PageProps<'/users'>) {
 		is_deleted,
 		sort,
 		order,
+		country,
 		...toUserFilterParams(userFilters, today),
 	};
 
@@ -55,6 +57,7 @@ export default async function Page(props: PageProps<'/users'>) {
 	const listQuery = {
 		keyword,
 		...userFilters,
+		country,
 		is_deleted: is_deleted || undefined,
 		sort: sort === 'created_at' ? undefined : sort,
 		order: order === 'desc' ? undefined : order,

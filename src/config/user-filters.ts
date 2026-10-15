@@ -1,5 +1,7 @@
 import type { UserListParams } from '@/types/apis/users';
 
+import { LOCALE_NAMES } from '@/config/locale';
+
 interface UserFilterOption {
 	value: string;
 	label: string;
@@ -77,5 +79,14 @@ export const USER_FILTER_GROUPS: UserFilterGroup[] = [
 			{ value: 'parrot_disappeared', label: '비전 기반 응급 상황', listParams: { issue: 'parrot_disappeared' } },
 			{ value: 'withdrawal_failed', label: '탈퇴 실패', listParams: { issue: 'withdrawal_failed' } },
 		],
+	},
+	{
+		name: 'locale',
+		label: '언어',
+		options: Object.entries(LOCALE_NAMES).map(([locale, label]) => ({
+			value: locale,
+			label,
+			listParams: { locale },
+		})),
 	},
 ];

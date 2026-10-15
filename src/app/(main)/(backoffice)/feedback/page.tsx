@@ -1,8 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import { platformSchema } from '@/types/apis/app-updates';
-import { feedbackLocaleSchema } from '@/types/apis/feedback';
-import { localDateSchema, uuidSchema } from '@/types/apis/primitives';
+import { localDateSchema, localeSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { getFeedbackDashboardOptions } from '@/hooks/apis/dashboard';
 import { getFeedbackListOptions } from '@/hooks/apis/feedback';
@@ -26,7 +25,7 @@ export default async function Page(props: PageProps<'/feedback'>) {
 	const keyword = toOptionalText(searchParams.keyword);
 	const app_version = toOptionalText(searchParams.app_version);
 	const platform = platformSchema.safeParse(searchParams.platform).data;
-	const locale = feedbackLocaleSchema.safeParse(searchParams.locale).data;
+	const locale = localeSchema.safeParse(searchParams.locale).data;
 	// 조회 기간 밖의 날짜는 무시
 	const date = localDateSchema
 		.refine((value) => value >= dashboardParams.date_from && value <= dashboardParams.date_to)
