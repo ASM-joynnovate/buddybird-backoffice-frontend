@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.20.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.19.0...v0.20.0) (2026-10-15)
+
+
+### Features
+
+* 사용자 목록에 국가 및 언어 필터 추가 [BB-697] ([a49d009](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/a49d009300babcf234d55a586d9d25a6d6608601))
+* 사용자 목록에 국가 및 언어 필터 추가 [BB-697] ([feab766](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/feab766cc93d8856633b3a184921ea9c5986a96e))
+
 ## [0.19.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.18.0...v0.19.0) (2026-10-13)
 
 
