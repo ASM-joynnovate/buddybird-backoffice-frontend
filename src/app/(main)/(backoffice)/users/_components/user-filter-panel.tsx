@@ -11,6 +11,7 @@ import type { SearchParamValue } from '@/lib/api';
 import FilterPanel from '@/app/(main)/(backoffice)/_components/filter-panel';
 import UserFilterIcon from '@/app/(main)/(backoffice)/users/_components/user-filter-icon';
 import { USER_FILTER_GROUPS } from '@/config/user-filters';
+import { toCountryName } from '@/utils/country';
 
 interface Props {
 	dashboardParams: DashboardParams;
@@ -38,6 +39,14 @@ const UserFilterPanel = ({ dashboardParams, query }: Props) => {
 				icon: <UserFilterIcon listParams={filterOption.listParams} />,
 			})),
 		})),
+		{
+			name: 'country',
+			label: '국가',
+			// 조회 기간에 접속한 사용자가 많은 국가부터 나열
+			options: userDashboardData.countries.flatMap(({ country }) =>
+				country ? [{ value: country, label: toCountryName(country) }] : [],
+			),
+		},
 		{ name: 'is_deleted', label: '계정 상태', options: [{ value: true, label: '삭제됨' }] },
 	];
 

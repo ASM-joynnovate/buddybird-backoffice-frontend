@@ -14,6 +14,7 @@ import UserFilterPanel from '@/app/(main)/(backoffice)/users/_components/user-fi
 import UserTable from '@/app/(main)/(backoffice)/users/_components/user-table';
 import UserTableSkeleton from '@/app/(main)/(backoffice)/users/_components/user-table-skeleton';
 import { USER_FILTER_GROUPS, type UserFilters } from '@/config/user-filters';
+import { toCountryName } from '@/utils/country';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';
@@ -56,6 +57,9 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 					]
 				: [];
 		}),
+		...(listParams.country
+			? [{ name: 'country', groupLabel: '국가', label: toCountryName(listParams.country) }]
+			: []),
 		...(query.is_deleted ? [{ name: 'is_deleted', label: '삭제됨' }] : []),
 	];
 
