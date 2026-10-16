@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.22.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.21.0...v0.22.0) (2026-10-16)
+
+
+### Features
+
+* 홈 확인할 항목의 응급 상황에 응급 상황 탭 링크 추가 ([5f07a20](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/5f07a208a1f19560517c5cc4756efdf289ad445b))
+* 홈 확인할 항목의 응급 상황에 응급 상황 탭 링크 추가 ([c7867d4](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/c7867d44790fb06f716c38d12781c4a69b223f8e))
+
 ## [0.21.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.20.0...v0.21.0) (2026-10-16)
 
 
