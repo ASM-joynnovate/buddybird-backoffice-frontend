@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.21.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.20.0...v0.21.0) (2026-10-16)
+
+
+### Features
+
+* 새 앵무새 종의 한국어 이름 추가 [BB-696] ([5dda8a2](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/5dda8a2eb96bec5146afdd65acf84b6de83eb958))
+* 새 앵무새 종의 한국어 이름 추가 [BB-696] ([661bb86](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/661bb86b55b21e0b0535c3690f78342a096d5779))
+
 ## [0.20.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.19.0...v0.20.0) (2026-10-15)
 
 
