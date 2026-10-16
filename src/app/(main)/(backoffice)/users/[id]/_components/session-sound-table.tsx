@@ -37,7 +37,7 @@ const headClassName =
 
 interface Props {
 	sounds: SessionSound[];
-	emergencySoundIds: ReadonlySet<string>;
+	distressCallSoundIds: ReadonlySet<string>;
 	judging: boolean;
 	player: AudioPlaylist;
 }
@@ -45,11 +45,11 @@ interface Props {
 /**
  * 세션의 소리를 점수와 함께 나열한 표 컴포넌트
  * @param sounds 시각 순서의 소리 목록
- * @param emergencySoundIds 응급 상황으로 감지된 소리 ID
+ * @param distressCallSoundIds 신경질적 짹짹 소리 ID
  * @param judging 모사 판정이 끝나지 않았는지 여부
  * @param player useAudioPlaylist 결과
  */
-const SessionSoundTable = ({ sounds, emergencySoundIds, judging, player }: Props) => {
+const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Props) => {
 	const scrollAreaRef = useRef<HTMLDivElement>(null);
 	const selectedRowRef = useRef<HTMLTableRowElement>(null);
 
@@ -168,7 +168,7 @@ const SessionSoundTable = ({ sounds, emergencySoundIds, judging, player }: Props
 													<span className="max-md:sr-only">모사 성공</span>
 												</ColorTag>
 											)}
-											{emergencySoundIds.has(sound.id) && (
+											{distressCallSoundIds.has(sound.id) && (
 												<Badge
 													variant="destructive"
 													className="max-md:pr-1.5 dark:bg-destructive/10"

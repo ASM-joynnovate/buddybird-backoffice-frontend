@@ -14,7 +14,7 @@ import { toPlatformName } from '@/utils/platform';
 
 /** 응급 상황 종류별 건수를 반환하는 함수 */
 export const toEmergencyKindCounts = ({ sound_count, vision_count }: EmergencyDashboard['emergencies']) => {
-	return { sound_emergency_detected: sound_count, parrot_disappeared: vision_count };
+	return { distress_call_detected: sound_count, parrot_disappeared: vision_count };
 };
 
 /** 응급 상황 대시보드의 건수를 필터 그룹으로 변환하는 함수 */

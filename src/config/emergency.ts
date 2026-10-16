@@ -1,7 +1,7 @@
 import type { EmergencyKind, EmergencyNotificationState } from '@/types/apis/emergencies';
 
 export const EMERGENCY_KINDS = {
-	sound_emergency_detected: { label: '오디오', color: 'var(--chart-1)' },
+	distress_call_detected: { label: '오디오', color: 'var(--chart-1)' },
 	parrot_disappeared: { label: '비전', color: 'var(--chart-2)' },
 } satisfies Record<EmergencyKind, { label: string; color: string }>;
 

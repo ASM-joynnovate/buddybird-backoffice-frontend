@@ -89,7 +89,7 @@ export interface UserListParams {
 	has_unsupported_device?: boolean;
 	is_pushable?: boolean;
 	is_marketing_enabled?: boolean;
-	issue?: 'heartbeat_expired' | 'sound_emergency_detected' | 'parrot_disappeared' | 'withdrawal_failed';
+	issue?: 'heartbeat_expired' | 'distress_call_detected' | 'parrot_disappeared' | 'withdrawal_failed';
 	sort?: UserSort;
 	order?: SortOrder;
 }

@@ -47,7 +47,7 @@ interface Props {
 const EmergencyRow = ({ emergency, expanded, now, player, onToggle }: Props) => {
 	const { kind, session, user, parrot, sound, vision } = emergency;
 
-	const KindIcon = kind === 'sound_emergency_detected' ? AudioLines : Video;
+	const KindIcon = kind === 'distress_call_detected' ? AudioLines : Video;
 	const detailId = `emergency-detail-${emergency.id}`;
 	const kindLabel = `${EMERGENCY_KINDS[kind].label} 기반 응급 상황`;
 	const occurredTime = formatShortDateTimeWithSeconds(emergency.occurred_at);
