@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.22.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.22.0...v0.22.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* 오디오 기반 응급 상황 이름을 distress_call_detected로 변경 ([96c5d94](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/96c5d942418370f80b2d0f6509f590023cd8efb5))
+* 오디오 기반 응급 상황 이름을 distress_call_detected로 변경 ([0450b7e](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/0450b7ee7f5c489dab88a04dfff13a1c5bc080aa))
+
 ## [0.22.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.21.0...v0.22.0) (2026-10-16)
 
 
