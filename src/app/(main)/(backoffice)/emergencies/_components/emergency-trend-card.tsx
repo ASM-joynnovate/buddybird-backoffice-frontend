@@ -89,8 +89,8 @@ const EmergencyTrendCard = ({ emergencyDashboard, selectedDate, query, today }: 
 					series={[
 						{
 							dataKey: 'sound_count',
-							name: EMERGENCY_KINDS.sound_emergency_detected.label,
-							color: EMERGENCY_KINDS.sound_emergency_detected.color,
+							name: EMERGENCY_KINDS.distress_call_detected.label,
+							color: EMERGENCY_KINDS.distress_call_detected.color,
 						},
 						{
 							dataKey: 'vision_count',

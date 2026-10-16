@@ -24,7 +24,7 @@ import { Play, Siren } from 'lucide-react';
 
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
-import SessionEmergencyList from '@/app/(main)/(backoffice)/users/[id]/_components/session-emergency-list';
+import SessionDistressCallList from '@/app/(main)/(backoffice)/users/[id]/_components/session-distress-call-list';
 import SessionPetcamList from '@/app/(main)/(backoffice)/users/[id]/_components/session-petcam-list';
 import SessionPlayhead from '@/app/(main)/(backoffice)/users/[id]/_components/session-playhead';
 import SessionScoreTooltip, {
@@ -116,24 +116,24 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			label: heartbeatExpired ? '신호 끊김으로 종료' : (learningLabel ?? SESSION_EVENTS[sessionEvent.kind].label),
 			wordName: sessionEvent.word?.name,
 			color: heartbeatExpired ? 'var(--destructive-dot)' : SESSION_EVENTS[sessionEvent.kind].color,
-			emergencyDetected: sessionEvent.kind === 'sound_emergency_detected',
+			distressCallDetected: sessionEvent.kind === 'distress_call_detected',
 			imageUrl: toUploadedUrl(sessionEvent.image),
 			videoUrl: toUploadedUrl(sessionEvent.video),
 			// 앵무새 소리가 아닌 녹음은 소리 목록에 없음
 			sounds: sessionSoundListData.filter((sessionSound) => sessionEvent.sound_ids.includes(sessionSound.id)),
 		};
 	});
-	const emergencies = sessionEvents.filter(
-		(sessionEvent) => sessionEvent.emergencyDetected && sessionEvent.sounds.length > 0,
+	const distressCalls = sessionEvents.filter(
+		(sessionEvent) => sessionEvent.distressCallDetected && sessionEvent.sounds.length > 0,
 	);
 	const petcamEvents = sessionEvents.filter((sessionEvent) => sessionEvent.imageUrl || sessionEvent.videoUrl);
-	const emergencySoundIds = new Set(
+	const distressCallSoundIds = new Set(
 		sessionEventListData.flatMap((sessionEvent) =>
-			sessionEvent.kind === 'sound_emergency_detected' ? sessionEvent.sound_ids : [],
+			sessionEvent.kind === 'distress_call_detected' ? sessionEvent.sound_ids : [],
 		),
 	);
-	const emergencyPeriods = sessionEventListData.flatMap((sessionEvent) =>
-		sessionEvent.kind === 'sound_emergency_detected' && sessionEvent.ended_at
+	const distressCallPeriods = sessionEventListData.flatMap((sessionEvent) =>
+		sessionEvent.kind === 'distress_call_detected' && sessionEvent.ended_at
 			? [{ startMs: dayjs(sessionEvent.occurred_at).valueOf(), endMs: dayjs(sessionEvent.ended_at).valueOf() }]
 			: [],
 	);
@@ -382,7 +382,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		hideScoreTooltip();
 	};
 
-	const handleEmergencyPinEnter = (pin: Element, sessionEvent: (typeof sessionEvents)[number]) => {
+	const handleDistressCallPinEnter = (pin: Element, sessionEvent: (typeof sessionEvents)[number]) => {
 		setHighlightedEventId(sessionEvent.id);
 
 		if (sessionEvent.sounds.length > 0) {
@@ -390,7 +390,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		}
 	};
 
-	const handleEmergencyPinLeave = () => {
+	const handleDistressCallPinLeave = () => {
 		setHighlightedEventId(null);
 		hideScoreTooltip();
 	};
@@ -486,11 +486,11 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 							session={session}
 							sessionPeriod={sessionPeriod}
 							timeZone={timeZone}
-							emergencyPeriods={emergencyPeriods}
+							distressCallPeriods={distressCallPeriods}
 							className="h-4"
 						>
 							{sessionEvents.map((sessionEvent) =>
-								sessionEvent.emergencyDetected ? (
+								sessionEvent.distressCallDetected ? (
 									<button
 										key={sessionEvent.id}
 										type="button"
@@ -509,11 +509,13 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 										}}
 										onClick={() => handleSelectEvent(sessionEvent)}
 										onPointerEnter={(event) =>
-											handleEmergencyPinEnter(event.currentTarget, sessionEvent)
+											handleDistressCallPinEnter(event.currentTarget, sessionEvent)
 										}
-										onPointerLeave={handleEmergencyPinLeave}
-										onFocus={(event) => handleEmergencyPinEnter(event.currentTarget, sessionEvent)}
-										onBlur={handleEmergencyPinLeave}
+										onPointerLeave={handleDistressCallPinLeave}
+										onFocus={(event) =>
+											handleDistressCallPinEnter(event.currentTarget, sessionEvent)
+										}
+										onBlur={handleDistressCallPinLeave}
 									>
 										<span
 											className={cn(
@@ -637,15 +639,15 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			{sessionSoundListData.length > 0 && (
 				<SessionSoundPlayer
 					currentSound={currentSound}
-					emergencySoundIds={emergencySoundIds}
+					distressCallSoundIds={distressCallSoundIds}
 					judging={judging}
 					player={player}
 				/>
 			)}
 
-			{emergencies.length > 0 && (
-				<SessionEmergencyList
-					emergencies={emergencies}
+			{distressCalls.length > 0 && (
+				<SessionDistressCallList
+					distressCalls={distressCalls}
 					player={player}
 					onScoreTooltipShow={showScoreTooltip}
 					onScoreTooltipHide={hideScoreTooltip}
@@ -668,7 +670,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 						session={session}
 						sessionPeriod={sessionPeriod}
 						timeZone={timeZone}
-						emergencyPeriods={emergencyPeriods}
+						distressCallPeriods={distressCallPeriods}
 						className="h-1.5"
 					/>
 					<span
@@ -701,7 +703,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 						onPointerEnter={() => setHighlightedEventId(sessionEvent.id)}
 						onPointerLeave={() => setHighlightedEventId(null)}
 					>
-						{sessionEvent.emergencyDetected ? (
+						{sessionEvent.distressCallDetected ? (
 							<Siren className="size-3.5 text-destructive-dot" strokeWidth={2} />
 						) : (
 							<span className="size-2 rounded-full" style={{ backgroundColor: sessionEvent.color }} />
@@ -721,7 +723,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 					<SessionSoundTable
 						sounds={sessionSoundListData}
-						emergencySoundIds={emergencySoundIds}
+						distressCallSoundIds={distressCallSoundIds}
 						judging={judging}
 						player={player}
 					/>

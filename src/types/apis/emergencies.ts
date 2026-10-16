@@ -4,7 +4,7 @@ import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
 
-export const emergencyKindSchema = z.enum(['sound_emergency_detected', 'parrot_disappeared']);
+export const emergencyKindSchema = z.enum(['distress_call_detected', 'parrot_disappeared']);
 export const emergencyNotificationStateSchema = z.enum(['read', 'unread', 'none']);
 
 const emergencyNotificationSchema = z.object({ sent_at: timestampSchema, read_at: timestampSchema.nullable() });

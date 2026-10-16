@@ -44,7 +44,7 @@ export const sessionSchema = z.object({
 		mimic_count: z.number().int(),
 	}),
 	disconnections: z.array(z.object({ started_at: timestampSchema, ended_at: timestampSchema.nullable() })),
-	sound_emergency_detections: z.array(timestampSchema),
+	distress_call_detections: z.array(timestampSchema),
 	parrot_disappearances: z.array(timestampSchema),
 });
 
@@ -60,7 +60,7 @@ export const sessionEventSchema = z.object({
 			'word_changed',
 			'station_disconnected',
 			'station_reconnected',
-			'sound_emergency_detected',
+			'distress_call_detected',
 			'parrot_disappeared',
 			'parrot_appeared',
 			'session_finished',

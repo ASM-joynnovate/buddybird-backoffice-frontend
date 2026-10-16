@@ -38,26 +38,26 @@ const showSoundCell = (soundCell: HTMLButtonElement | null) => {
 	}
 };
 
-export interface Emergency {
+export interface DistressCall {
 	id: string;
 	sounds: SessionSound[];
 }
 
 interface Props {
-	emergencies: Emergency[];
+	distressCalls: DistressCall[];
 	player: AudioPlaylist;
 	onScoreTooltipShow: (anchor: Element, sounds: SessionSound[]) => void;
 	onScoreTooltipHide: () => void;
 }
 
 /**
- * 응급 상황마다 감지된 소리를 한 줄에 나열한 목록 컴포넌트
- * @param emergencies 응급 상황 및 감지된 소리 목록
+ * 신경질적 짹짹마다 감지된 소리를 한 줄에 나열한 목록 컴포넌트
+ * @param distressCalls 신경질적 짹짹 및 감지된 소리 목록
  * @param player useAudioPlaylist 결과
  * @param onScoreTooltipShow 소리 칸을 가리키면 실행할 함수
  * @param onScoreTooltipHide 소리 칸에서 벗어나면 실행할 함수
  */
-const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScoreTooltipHide }: Props) => {
+const SessionDistressCallList = ({ distressCalls, player, onScoreTooltipShow, onScoreTooltipHide }: Props) => {
 	return (
 		<section className="rounded-lg bg-[color-mix(in_srgb,var(--destructive)_6%,var(--card))] px-3.5 py-3 shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--destructive)_24%,transparent)]">
 			<div className="mb-1.5 flex items-baseline justify-between gap-3">
@@ -65,39 +65,39 @@ const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScore
 					<Siren className="size-4 self-center text-destructive-dot" strokeWidth={2} />
 					응급 상황
 				</h4>
-				<span className="text-[13px] text-muted-foreground tabular-nums">{emergencies.length}번</span>
+				<span className="text-[13px] text-muted-foreground tabular-nums">{distressCalls.length}번</span>
 			</div>
 
 			{/*응급 상황 세 번까지 보이고 넘으면 스크롤*/}
 			<ul className="-mr-2 max-h-33.5 [scrollbar-width:thin] divide-y divide-destructive/16 overflow-y-auto overscroll-contain pr-2 max-md:max-h-57.5">
-				{emergencies.map((emergency) => {
-					const firstSoundTime = formatShortDateTimeWithSeconds(emergency.sounds[0].captured_at);
-					const groupPlaying = player.playingSoundGroupId === emergency.id;
+				{distressCalls.map((distressCall) => {
+					const firstSoundTime = formatShortDateTimeWithSeconds(distressCall.sounds[0].captured_at);
+					const groupPlaying = player.playingSoundGroupId === distressCall.id;
 
-					const durations = emergency.sounds.flatMap((sound) => sound.duration_ms ?? []);
-					const durationsKnown = durations.length === emergency.sounds.length;
+					const durations = distressCall.sounds.flatMap((sound) => sound.duration_ms ?? []);
+					const durationsKnown = durations.length === distressCall.sounds.length;
 					const shortestDurationMs = Math.min(...durations);
 					const totalDurationMs = durations.reduce((total, durationMs) => total + durationMs, 0);
 
 					return (
 						<li
-							key={emergency.id}
+							key={distressCall.id}
 							className="grid h-11 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 tabular-nums max-md:h-auto max-md:grid-cols-[minmax(0,1fr)_auto] max-md:gap-x-2 max-md:gap-y-1.5 max-md:py-2"
 						>
 							{/*시각, 소리 개수, 길이의 합을 한 묶음으로 표시*/}
 							<div className="grid gap-0.5 border-r border-destructive/16 pr-3 leading-tight whitespace-nowrap max-md:border-r-0 max-md:pr-0">
 								<p className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">
-									{formatShortDate(emergency.sounds[0].captured_at)}
+									{formatShortDate(distressCall.sounds[0].captured_at)}
 									<span className="flex gap-2">
 										<strong className="font-semibold text-foreground">
-											{emergency.sounds.length}개
+											{distressCall.sounds.length}개
 										</strong>
 										{totalDurationMs > 0 ? formatAudioDuration(totalDurationMs / SECOND) : '-'}
 									</span>
 								</p>
 								<time className="font-semibold">
-									{formatTimeWithSeconds(emergency.sounds[0].captured_at)} ~{' '}
-									{formatTimeWithSeconds(emergency.sounds.at(-1)?.captured_at)}
+									{formatTimeWithSeconds(distressCall.sounds[0].captured_at)} ~{' '}
+									{formatTimeWithSeconds(distressCall.sounds.at(-1)?.captured_at)}
 								</time>
 							</div>
 
@@ -105,7 +105,7 @@ const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScore
 							<fieldset className="relative flex h-7 min-w-0 [scrollbar-width:none] gap-0.5 overflow-x-auto overscroll-contain max-md:col-span-2 max-md:row-start-2">
 								<legend className="sr-only">{firstSoundTime} 응급 상황으로 감지된 소리</legend>
 
-								{emergency.sounds.map((sound) => {
+								{distressCall.sounds.map((sound) => {
 									const selected = sound.id === player.currentSoundId;
 									const soundWeight =
 										durationsKnown && sound.duration_ms
@@ -159,7 +159,7 @@ const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScore
 									size="icon-sm"
 									aria-label={`${firstSoundTime} 응급 상황 소리 ${groupPlaying ? '정지' : '이어 듣기'}`}
 									title={groupPlaying ? '정지' : '이어 듣기'}
-									onClick={() => player.handleToggleSoundGroup(emergency)}
+									onClick={() => player.handleToggleSoundGroup(distressCall)}
 								>
 									{groupPlaying ? (
 										<Square className="size-3 fill-current" />
@@ -169,8 +169,8 @@ const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScore
 								</Button>
 
 								<SoundDownloadButton
-									sounds={emergency.sounds}
-									fileName={`emergency-${formatCompactDateTime(emergency.sounds[0].captured_at)}.wav`}
+									sounds={distressCall.sounds}
+									fileName={`distress-call-${formatCompactDateTime(distressCall.sounds[0].captured_at)}.wav`}
 									label={`${firstSoundTime} 응급 상황 소리 다운로드`}
 								/>
 							</div>
@@ -182,4 +182,4 @@ const SessionEmergencyList = ({ emergencies, player, onScoreTooltipShow, onScore
 	);
 };
 
-export default SessionEmergencyList;
+export default SessionDistressCallList;

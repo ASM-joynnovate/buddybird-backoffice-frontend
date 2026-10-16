@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 interface Props {
 	currentSound: SessionSound | null;
-	emergencySoundIds: ReadonlySet<string>;
+	distressCallSoundIds: ReadonlySet<string>;
 	judging: boolean;
 	player: AudioPlaylist;
 }
@@ -29,11 +29,11 @@ interface Props {
 /**
  * 세션 소리 재생 컴포넌트
  * @param currentSound 재생할 차례인 소리
- * @param emergencySoundIds 응급 상황으로 감지된 소리 ID
+ * @param distressCallSoundIds 신경질적 짹짹 소리 ID
  * @param judging 모사 판정이 끝나지 않았는지 여부
  * @param player useAudioPlaylist 결과
  */
-const SessionSoundPlayer = ({ currentSound, emergencySoundIds, judging, player }: Props) => {
+const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, player }: Props) => {
 	const spaceKeyHandledRef = useRef(false);
 
 	const [progressPercent, setProgressPercent] = useState(0);
@@ -161,7 +161,7 @@ const SessionSoundPlayer = ({ currentSound, emergencySoundIds, judging, player }
 								barClassName="bg-foreground"
 							/>
 							{currentSound.is_mimic && <ColorTag color="var(--foreground)">모사 성공</ColorTag>}
-							{emergencySoundIds.has(currentSound.id) && (
+							{distressCallSoundIds.has(currentSound.id) && (
 								<Badge variant="destructive" className="max-md:pr-1.5 dark:bg-destructive/10">
 									<Siren data-icon="inline-start" />
 									<span className="max-md:sr-only">응급 상황</span>
