@@ -14,7 +14,7 @@ export const announcementSchema = z.object({
 	push_enabled: z.boolean(),
 	push_local_time: timeSchema.nullable(),
 	push_prepared_at: timestampSchema.nullable(),
-	images: z.array(z.object({ id: uuidSchema, url: z.string() })),
+	images: z.array(z.object({ id: uuidSchema, file_id: uuidSchema, url: z.string() })),
 });
 
 export const announcementListItemSchema = announcementSchema.extend({ read_count: z.number().int() });
@@ -26,6 +26,7 @@ const updateAnnouncementRequestSchema = z.object({
 	body: i18nSchema.nullable(),
 	starts_at: timestampSchema,
 	ends_at: timestampSchema.nullable(),
+	image_file_ids: z.array(uuidSchema),
 	push_enabled: z.boolean().optional(),
 	push_local_time: timeSchema.nullable().optional(),
 });

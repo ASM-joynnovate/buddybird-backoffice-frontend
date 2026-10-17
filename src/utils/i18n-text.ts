@@ -41,6 +41,16 @@ export const toOptionalI18nText = (fieldValue: I18nFieldValue) => {
 	return fieldValue.en_us.trim() ? toI18nText(fieldValue) : null;
 };
 
+/** 서버 문구와 비교해 바뀐 언어의 문구만 반환하는 함수 */
+export const toChangedI18nText = (text: I18nText, savedText: I18nText | null): Partial<I18nText> => {
+	return Object.fromEntries(
+		I18N_LOCALES.filter(({ locale }) => text[locale] !== (savedText?.[locale] ?? null)).map(({ locale }) => [
+			locale,
+			text[locale],
+		]),
+	);
+};
+
 /** 영어 문구 없이 다른 언어의 문구만 입력했는지 확인하는 함수 */
 export const englishTextMissing = (fieldValue: I18nFieldValue) => {
 	return !fieldValue.en_us.trim() && I18N_LOCALES.some(({ locale }) => !!fieldValue[locale].trim());

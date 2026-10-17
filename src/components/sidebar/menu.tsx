@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 
 import {
 	Bell,
+	BellPlus,
 	ChartNoAxesColumn,
 	FileText,
 	House,
@@ -32,6 +33,7 @@ const menuGroups = [
 	[
 		{ href: '/announcements', label: '공지', icon: Megaphone },
 		{ href: '/notifications', label: '알림', icon: Bell },
+		{ href: '/notification-settings', label: '알림 설정', icon: BellPlus },
 		{ href: '/app-updates', label: '앱 업데이트', icon: Smartphone },
 		{ href: '/consents', label: '고지문', icon: FileText },
 		{ href: '/preset-words', label: '단어 프리셋', icon: Music },
