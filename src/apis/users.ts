@@ -1,5 +1,6 @@
 import { type CountedPage, countedPageMetaSchema } from '@/types/apis/common';
 import { type UserConsent, userConsentSchema } from '@/types/apis/consents';
+import { type UserNotificationSettings, userNotificationSettingsSchema } from '@/types/apis/notification-settings';
 import { type Session, sessionSchema } from '@/types/apis/sessions';
 import {
 	type UserDetail,
@@ -63,4 +64,13 @@ export const getUserConsentList = async ({ id }: { id: string }): Promise<UserCo
 	);
 
 	return userConsents;
+};
+
+export const getUserNotificationSettings = async ({ id }: { id: string }): Promise<UserNotificationSettings> => {
+	const { data: userNotificationSettings } = await apiRequest(
+		`/api/v1/backoffice/users/${id}/settings/notifications`,
+		userNotificationSettingsSchema,
+	);
+
+	return userNotificationSettings;
 };

@@ -5,15 +5,13 @@ import { apiRequest } from '@/lib/api';
 import { API_TIMEOUT_MS } from '@/config';
 
 export const postAnnouncementImageUpload = async ({
-	id,
 	file,
 	idempotencyKey,
 }: {
-	id: string;
 	file: File;
 	idempotencyKey: string;
 }): Promise<Upload> => {
-	const { data: upload } = await apiRequest(`/api/v1/backoffice/announcements/${id}/images`, uploadSchema, {
+	const { data: upload } = await apiRequest('/api/v1/backoffice/announcements/images', uploadSchema, {
 		method: 'POST',
 		json: { content_type: file.type, file_size: file.size },
 		idempotencyKey,

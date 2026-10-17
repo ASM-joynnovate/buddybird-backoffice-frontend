@@ -5,6 +5,7 @@ import {
 	getUser,
 	getUserConsentList,
 	getUserList,
+	getUserNotificationSettings,
 	getUserSessionList,
 	getUserWordList,
 } from '@/apis/users';
@@ -76,6 +77,17 @@ export const getUserConsentListOptions = ({ id }: { id: string }) =>
 /** 사용자 동의 내역 조회 Hook */
 export const useGetUserConsentList = ({ id }: { id: string }) => {
 	return useSuspenseQuery(getUserConsentListOptions({ id }));
+};
+
+/** 사용자 알림 설정 조회 Hook에 사용할 옵션 */
+export const getUserNotificationSettingsOptions = ({ id }: { id: string }) =>
+	queryOptions({
+		queryKey: apiKeys.users.notificationSettings(id),
+		queryFn: () => getUserNotificationSettings({ id }),
+	});
+/** 사용자 알림 설정 조회 Hook */
+export const useGetUserNotificationSettings = ({ id }: { id: string }) => {
+	return useSuspenseQuery(getUserNotificationSettingsOptions({ id }));
 };
 
 /** 사용자 삭제 Hook */

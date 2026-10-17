@@ -6,7 +6,7 @@ import type { Announcement } from '@/types/apis/announcements';
 
 import type { I18nFieldValue } from '@/types/i18n';
 
-import { useCreateAnnouncement, useSaveAnnouncementImages, useUpdateAnnouncement } from '@/hooks/apis/announcements';
+import { useCreateAnnouncement, useUpdateAnnouncement, useUploadAnnouncementImage } from '@/hooks/apis/announcements';
 
 import dayjs from 'dayjs';
 
@@ -14,7 +14,7 @@ import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-pick
 import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import AnnouncementImageField, {
-	type PickedImage,
+	type AnnouncementImageInput,
 } from '@/app/(main)/(backoffice)/announcements/_components/announcement-image-field';
 import AnnouncementPreview from '@/app/(main)/(backoffice)/announcements/_components/announcement-preview';
 import AnnouncementPushField, {
@@ -49,8 +49,9 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 	const [englishTitleMissing, setEnglishTitleMissing] = useState(false);
 	const [englishBodyMissing, setEnglishBodyMissing] = useState(false);
 
-	const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
-	const [pickedImages, setPickedImages] = useState<PickedImage[]>([]);
+	const [images, setImages] = useState<AnnouncementImageInput[]>(() =>
+		(announcement?.images ?? []).map((image) => ({ url: image.url, fileId: image.file_id })),
+	);
 
 	const [startsAt, setStartsAt] = useState(announcement ? toDateTimeInputValue(announcement.starts_at) : '');
 	const [endsAt, setEndsAt] = useState(announcement?.ends_at ? toDateTimeInputValue(announcement.ends_at) : '');
@@ -67,10 +68,10 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 
 	const createAnnouncement = useCreateAnnouncement();
 	const updateAnnouncement = useUpdateAnnouncement();
-	const saveAnnouncementImages = useSaveAnnouncementImages();
+	const uploadAnnouncementImage = useUploadAnnouncementImage();
 
-	const saving = createAnnouncement.isPending || updateAnnouncement.isPending || saveAnnouncementImages.isPending;
-	const savedImages = (announcement?.images ?? []).filter((image) => !deletedImageIds.includes(image.id));
+	const saving = createAnnouncement.isPending || updateAnnouncement.isPending;
+	const uploading = images.some((image) => !image.fileId);
 
 	const handleOpenChange = (nextOpen: boolean) => {
 		if (!nextOpen && !saving) {
@@ -88,10 +89,19 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		setEnglishBodyMissing(false);
 	};
 
-	const handlePickedImageRemove = (removedImage: PickedImage) => {
-		URL.revokeObjectURL(removedImage.url);
+	// 선택한 사진은 바로 업로드
+	const handleImagePick = (file: File) => {
+		const url = URL.createObjectURL(file);
 
-		setPickedImages((prev) => prev.filter((pickedImage) => pickedImage !== removedImage));
+		setImages((prev) => [...prev, { url, fileId: null }]);
+
+		uploadAnnouncementImage
+			.mutateAsync({ file })
+			.then((fileId) => setImages((prev) => prev.map((image) => (image.url === url ? { url, fileId } : image))))
+			.catch(() => {
+				URL.revokeObjectURL(url);
+				setImages((prev) => prev.filter((image) => image.url !== url));
+			});
 	};
 
 	const handleStartsAtChange = (value: string) => {
@@ -104,29 +114,10 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		setEndsAtInvalid(false);
 	};
 
-	/** 저장한 공지에 사진 변경을 반영 */
-	const saveImages = ({ id }: Announcement) => {
-		if (deletedImageIds.length === 0 && pickedImages.length === 0) {
-			onClose();
-
-			return;
-		}
-
-		// 사진 요청마다 idempotency key
-		saveAnnouncementImages.mutate(
-			{
-				id,
-				deletedImages: deletedImageIds.map((imageId) => ({ imageId, idempotencyKey: crypto.randomUUID() })),
-				addedImages: pickedImages.map(({ file }) => ({ file, idempotencyKey: crypto.randomUUID() })),
-			},
-			{ onSettled: onClose },
-		);
-	};
-
 	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (saving) {
+		if (saving || uploading) {
 			return;
 		}
 
@@ -160,6 +151,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			body: toOptionalI18nText(body),
 			starts_at: toTimestamp(startsAt),
 			ends_at: endsAt ? toTimestamp(endsAt) : null,
+			image_file_ids: images.flatMap((image) => (image.fileId ? [image.fileId] : [])),
 		};
 		const pushRequest = {
 			push_enabled: pushSetting.enabled,
@@ -175,7 +167,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 						? announcementRequest
 						: { ...announcementRequest, ...pushRequest },
 				},
-				{ onSuccess: saveImages, onError: () => setConfirmDialogOpen(false) },
+				{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
 			);
 
 			return;
@@ -183,7 +175,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 
 		createAnnouncement.mutate(
 			{ data: { ...announcementRequest, ...pushRequest } },
-			{ onSuccess: saveImages, onError: () => setConfirmDialogOpen(false) },
+			{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
 		);
 	};
 
@@ -236,11 +228,9 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 								</span>
 
 								<AnnouncementImageField
-									savedImages={savedImages}
-									pickedImages={pickedImages}
-									onSavedImageDelete={(imageId) => setDeletedImageIds((prev) => [...prev, imageId])}
-									onImagePick={(pickedImage) => setPickedImages((prev) => [...prev, pickedImage])}
-									onPickedImageRemove={handlePickedImageRemove}
+									images={images}
+									onImagePick={handleImagePick}
+									onImagesChange={setImages}
 								/>
 							</div>
 
@@ -296,7 +286,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 						<AnnouncementPreview
 							title={title}
 							body={body}
-							imageUrl={savedImages[0]?.url ?? pickedImages[0]?.url}
+							imageUrl={images[0]?.url}
 							pushEnabled={pushSetting.enabled}
 							locale={locale}
 						/>
@@ -317,7 +307,8 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 						<Button type="button" variant="outline" disabled={saving} onClick={onClose}>
 							취소
 						</Button>
-						<Button type="submit" loading={saving}>
+						{/*사진 업로드가 끝나야 저장 가능*/}
+						<Button type="submit" loading={saving} disabled={uploading}>
 							저장
 						</Button>
 					</DialogFooter>

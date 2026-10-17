@@ -6,6 +6,7 @@ import { getFeedbackListOptions } from '@/hooks/apis/feedback';
 import { getNotificationListOptions } from '@/hooks/apis/notifications';
 import {
 	getUserConsentListOptions,
+	getUserNotificationSettingsOptions,
 	getUserOptions,
 	getUserSessionListOptions,
 	getUserWordListOptions,
@@ -36,6 +37,7 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 	void queryClient.prefetchQuery(getFeedbackListOptions(recentListParams));
 	void queryClient.prefetchQuery(getUserWordListOptions({ id }));
 	void queryClient.prefetchQuery(getUserConsentListOptions({ id }));
+	void queryClient.prefetchQuery(getUserNotificationSettingsOptions({ id }));
 
 	// 세션 목록은 첫 세션의 타임라인 조회에도 사용, 실패는 세션 카드가 표시
 	const sessionList = queryClient

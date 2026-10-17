@@ -68,33 +68,15 @@ export const deleteAnnouncement = async ({
 };
 
 export const postAnnouncementImage = async ({
-	id,
 	file,
 	idempotencyKey,
 }: {
-	id: string;
 	file: File;
 	idempotencyKey: string;
-}): Promise<void> => {
-	const upload = await postAnnouncementImageUpload({ id, file, idempotencyKey });
+}): Promise<string> => {
+	const upload = await postAnnouncementImageUpload({ file, idempotencyKey });
 
 	await putUploadFile({ upload, file });
-};
 
-export const deleteAnnouncementImage = async ({
-	id,
-	imageId,
-	idempotencyKey,
-}: {
-	id: string;
-	imageId: string;
-	idempotencyKey: string;
-}): Promise<Announcement> => {
-	const { data: announcement } = await apiRequest(
-		`/api/v1/backoffice/announcements/${id}/images/${imageId}`,
-		announcementSchema,
-		{ method: 'DELETE', idempotencyKey },
-	);
-
-	return announcement;
+	return upload.file_id;
 };

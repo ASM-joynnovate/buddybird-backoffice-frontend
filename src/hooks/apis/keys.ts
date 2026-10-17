@@ -43,6 +43,7 @@ export const apiKeys = {
 			['api', 'users', id, 'sessions', page, ...(sessionId ? [sessionId] : [])] as const,
 		wordList: (id: string) => ['api', 'users', id, 'words'] as const,
 		consentList: (id: string) => ['api', 'users', id, 'consents'] as const,
+		notificationSettings: (id: string) => ['api', 'users', id, 'settings', 'notifications'] as const,
 	},
 	sessions: {
 		eventList: (id: string) => ['api', 'sessions', id, 'events'] as const,
@@ -74,6 +75,11 @@ export const apiKeys = {
 			['api', 'notifications', 'dispatches', 'list', listParams] as const,
 		dispatchDetail: (id: string) => ['api', 'notifications', 'dispatches', id] as const,
 		audience: (kind: SendableNotificationKind) => ['api', 'notifications', 'audience', kind] as const,
+	},
+	notificationSettings: {
+		all: () => ['api', 'notification-settings'] as const,
+		groupList: () => ['api', 'notification-settings', 'groups'] as const,
+		itemList: () => ['api', 'notification-settings', 'items'] as const,
 	},
 	presetWords: {
 		all: () => ['api', 'preset-words'] as const,

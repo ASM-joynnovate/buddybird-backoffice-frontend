@@ -1,8 +1,7 @@
-import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 import {
 	deleteAnnouncement,
-	deleteAnnouncementImage,
 	getAnnouncementList,
 	patchAnnouncement,
 	postAnnouncement,
@@ -77,34 +76,11 @@ export const useDeleteAnnouncement = () => {
 	});
 };
 
-/** 공지 사진 삭제 및 업로드 Hook */
-export const useSaveAnnouncementImages = () => {
-	const queryClient = useQueryClient();
-
-	return useMutation({
-		mutationKey: apiKeys.mutation('announcements', 'images', 'save'),
-		mutationFn: async ({
-			id,
-			deletedImages,
-			addedImages,
-		}: {
-			id: string;
-			deletedImages: { imageId: string; idempotencyKey: string }[];
-			addedImages: { file: File; idempotencyKey: string }[];
-		}) => {
-			for (const { imageId, idempotencyKey } of deletedImages) {
-				await deleteAnnouncementImage({ id, imageId, idempotencyKey });
-			}
-
-			// 고른 순서대로 업로드
-			for (const { file, idempotencyKey } of addedImages) {
-				await postAnnouncementImage({ id, file, idempotencyKey });
-			}
-		},
-		onError: () =>
-			toast.error('사진을 저장하지 못했습니다.', {
-				description: '공지 내용은 저장됐습니다. 공지를 다시 열어 사진을 확인해 주세요.',
-			}),
-		onSettled: () => queryClient.invalidateQueries({ queryKey: apiKeys.announcements.all() }),
+/** 공지 사진 업로드 Hook */
+export const useUploadAnnouncementImage = () => {
+	return useIdempotentMutation({
+		mutationKey: apiKeys.mutation('announcements', 'images', 'upload'),
+		mutationFn: postAnnouncementImage,
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 };

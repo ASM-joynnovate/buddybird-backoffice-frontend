@@ -11,6 +11,7 @@ interface Props {
 	locale: keyof I18nFieldValue;
 	title: string;
 	body: string;
+	bodyLabel?: string;
 	bodyMaxLength?: number;
 	className?: string;
 	bodyClassName?: string;
@@ -25,6 +26,7 @@ interface Props {
  * @param locale 입력하는 언어
  * @param title 제목 입력값
  * @param body 본문 입력값
+ * @param bodyLabel 본문 입력의 이름
  * @param bodyMaxLength 본문의 최대 길이
  * @param className 입력 상자에 더할 class
  * @param bodyClassName 본문 입력에 더할 class
@@ -37,6 +39,7 @@ const LocaleTextField = ({
 	locale,
 	title,
 	body,
+	bodyLabel = '본문',
 	bodyMaxLength,
 	className,
 	bodyClassName,
@@ -73,8 +76,8 @@ const LocaleTextField = ({
 				onChange={(event) => onTitleChange(event.target.value)}
 			/>
 			<textarea
-				aria-label={`${languageName} 본문`}
-				placeholder="본문"
+				aria-label={`${languageName} ${bodyLabel}`}
+				placeholder={bodyLabel}
 				required={english && englishBodyRequired}
 				maxLength={bodyMaxLength}
 				value={body}
