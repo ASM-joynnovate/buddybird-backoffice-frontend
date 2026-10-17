@@ -9,7 +9,7 @@ const SidebarLogoutButton = () => {
 	return (
 		<button
 			type="button"
-			className="flex h-9.5 items-center gap-2.5 rounded-lg px-2.5 text-sm font-medium text-sidebar-foreground/65 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+			className="flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm font-medium text-sidebar-foreground/65 hover:bg-sidebar-accent hover:text-sidebar-foreground"
 			onClick={signOut}
 		>
 			<LogOut className="size-4.5" />

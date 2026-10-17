@@ -50,10 +50,15 @@ const Sidebar = ({ theme }: Props) => {
 			</div>
 
 			{/*좁은 화면에서는 메뉴 버튼으로 펼침*/}
-			<div className={cn('flex-1 flex-col gap-3 md:flex', menuOpen ? 'flex' : 'hidden')}>
+			<div
+				className={cn(
+					'min-h-0 flex-1 flex-col gap-3 max-md:gap-4 max-md:pt-1 md:flex',
+					menuOpen ? 'flex' : 'hidden',
+				)}
+			>
 				<SidebarMenu onSelect={() => setMenuOpen(false)} />
 
-				<div className="mt-auto flex flex-col gap-1">
+				<div className="mt-auto flex flex-col gap-1 max-md:flex-row max-md:items-center max-md:gap-2">
 					<SidebarThemeSelect theme={theme} />
 					<SidebarLogoutButton />
 				</div>

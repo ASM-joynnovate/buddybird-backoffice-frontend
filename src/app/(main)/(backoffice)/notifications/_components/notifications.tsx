@@ -72,7 +72,7 @@ const Notifications = ({
 	return (
 		<>
 			<div className="flex flex-wrap items-center gap-2.5">
-				<h1 className="mr-auto text-2xl font-bold">알림</h1>
+				<h1 className="mr-auto text-2xl font-bold">알림 발송</h1>
 
 				{/*좁은 화면에서는 다음 줄에 표시*/}
 				<div className="max-md:order-last max-md:w-full">

@@ -30,7 +30,7 @@ const SidebarThemeSelect = ({ theme }: Props) => {
 	};
 
 	return (
-		<fieldset className="grid min-w-0 grid-cols-3 rounded-lg bg-sidebar-accent p-0.5">
+		<fieldset className="grid min-w-0 grid-cols-3 rounded-lg bg-sidebar-accent p-0.5 max-md:flex-1">
 			<legend className="sr-only">화면 모드</legend>
 
 			{themeOptions.map((themeOption) => (
@@ -39,7 +39,7 @@ const SidebarThemeSelect = ({ theme }: Props) => {
 					type="button"
 					aria-pressed={selectedTheme === themeOption.value}
 					className={cn(
-						'h-7 rounded-md text-xs font-semibold text-sidebar-foreground/65',
+						'h-7 rounded-md text-xs font-semibold text-sidebar-foreground/65 max-md:h-8',
 						selectedTheme === themeOption.value && 'bg-sidebar text-sidebar-foreground',
 					)}
 					onClick={() => handleSelectTheme(themeOption.value)}
