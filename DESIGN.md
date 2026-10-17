@@ -137,13 +137,13 @@ components:
   sidebar-menu-item:
     textColor: "rgba(255, 255, 255, 0.65)"
     rounded: "{rounded.md}"
-    height: "38px"
+    height: "36px"
     padding: "0 10px"
   sidebar-menu-item-current:
     backgroundColor: "{colors.sidebar-accent}"
     textColor: "{colors.sidebar-foreground}"
     rounded: "{rounded.md}"
-    height: "38px"
+    height: "36px"
     padding: "0 10px"
   sidebar-theme-select:
     backgroundColor: "{colors.sidebar-accent}"
@@ -358,7 +358,7 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 - `{colors.sidebar-foreground}`: 제품명, 선택된 메뉴, 선택된 화면 모드 버튼의 글자
   - 선택되지 않은 메뉴 및 버튼에는 65% 불투명도로 사용
 - `{colors.sidebar-accent}`: 선택된 메뉴 및 마우스를 올린 메뉴의 배경, 화면 모드 선택의 배경
-- `{colors.sidebar-border}`: 사이드바 경계선, 메뉴 그룹 사이의 구분선, "메뉴" 버튼의 테두리
+- `{colors.sidebar-border}`: 사이드바 경계선, "기존 화면" 메뉴 위의 구분선, "메뉴" 버튼의 테두리
 
 ### Tooltip
 
@@ -514,10 +514,11 @@ frontmatter에서는 어두운 화면 값의 이름 뒤에 `-dark`를 붙였다.
 
 - **Sidebar:** `{components.sidebar}`. 화면 왼쪽에 고정하고 오른쪽에 `sidebar-border` 색 1px 선을 둔다. 위에서부터 제품명, 메뉴 그룹, 화면 모드 선택, 로그아웃 순서로 배치한다
 - **Brand:** 28px 마스코트 이미지, 16px 굵기 700의 "버디버드", 12px 굵기 500의 "백오피스"를 8px 간격으로 나란히 둔다
-- **Menu item:** `{components.sidebar-menu-item}`. 18px 아이콘 및 14px 굵기 500의 이름을 10px 간격으로 둔다. 메뉴 그룹 사이에는 `sidebar-border` 색 1px 구분선을 위아래 8px 여백으로 둔다
+- **Menu item:** `{components.sidebar-menu-item}`. 18px 아이콘 및 14px 굵기 500의 이름을 10px 간격으로 둔다. 높이는 36px이다
+- **Menu group:** 메뉴는 "홈" 및 "분석", "사용자", "알림", "등록", "기존 화면" 순서의 그룹으로 나누고 그룹 사이에 16px 간격을 둔다. 첫 그룹 및 "기존 화면"을 제외한 그룹은 메뉴 위에 높이 24px, 12px 굵기 600, 흰색 50% 불투명도의 그룹 제목을 둔다. "기존 화면" 위에는 `sidebar-border` 색 1px 구분선을 두고 구분선 아래에 8px 여백을 둔다. 메뉴가 사이드바 높이를 넘으면 메뉴 영역만 스크롤하며 스크롤바는 흰색 18% 불투명도다
 - **Hover / Current:** `{components.sidebar-menu-item-current}`. 마우스를 올린 메뉴 및 현재 화면의 메뉴에 사용한다. 현재 화면의 메뉴는 굵기를 700으로 변경하고 `aria-current="page"`를 지정한다
 - **Theme select:** `{components.sidebar-theme-select}`. "시스템", "밝게", "어둡게" 버튼을 같은 폭으로 나란히 둔다. 버튼은 `{components.sidebar-theme-select-item}`이고 글자는 12px 굵기 600이다. 선택된 버튼은 `{components.sidebar-theme-select-item-selected}`를 사용한다
-- **Narrow screen:** 화면 폭 860px 이하에서는 화면 위의 가로 바에 제품명 및 `{components.menu-button}`만 표시한다. "메뉴" 버튼에는 `sidebar-border` 색 1px 테두리를 두른다. 버튼을 누르면 메뉴를 펼친다
+- **Narrow screen:** 화면 폭 860px 이하에서는 화면 위의 가로 바에 제품명 및 `{components.menu-button}`만 표시한다. "메뉴" 버튼에는 `sidebar-border` 색 1px 테두리를 두른다. 버튼을 누르면 메뉴를 펼친다. 펼친 메뉴는 그룹마다 높이 44px의 메뉴를 두 열로 배치하고 그룹 사이에 12px 간격을 둔다. 화면 모드 선택 및 로그아웃은 한 줄에 나란히 두며 화면 모드 버튼의 높이는 32px이다
 
 ### Cards
 
