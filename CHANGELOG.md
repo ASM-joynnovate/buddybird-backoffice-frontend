@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.23.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.22.1...v0.23.0) (2026-10-17)
+
+
+### Features
+
+* 빗창앵무, 쟈딘앵무, 카카리키의 한국어 이름 추가 ([6b36e11](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/6b36e115f60ccc72c227d75ad9325569c66dd47d))
+* 빗창앵무, 쟈딘앵무, 카카리키의 한국어 이름 추가 ([01e1a4c](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/01e1a4c3f7f6e451e9c46897899e9a4e0204300f))
+* 사이드바 메뉴를 그룹별로 구분 [BB-730] ([06d5bab](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/06d5bab50828ffd304823514903eb5a0124d1ab9))
+* 사이드바 메뉴를 그룹별로 구분 [BB-730] ([bfc29bc](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/bfc29bc295256ee32633f3d5d42c3ac55149de6a))
+* 알림 설정 관리 화면 및 사용자별 알림 설정 추가 ([70472a5](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/70472a5c46567071a0f1465d3c080e459f4b2b24))
+* 알림 설정 관리 화면 및 사용자별 알림 설정 추가 ([3388223](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/3388223b9c3d1413b3090f077bec0227933a0992))
+
 ## [0.22.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.22.0...v0.22.1) (2026-10-16)
 
 
