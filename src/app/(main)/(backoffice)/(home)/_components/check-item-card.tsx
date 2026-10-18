@@ -15,8 +15,12 @@ interface Props {
  * @param dashboardLive 대시보드의 현재 상태
  */
 const CheckItemCard = ({ dashboardLive }: Props) => {
-	const { heartbeat_expired_count, distress_call_detected_count, parrot_disappeared_count, judgment_failed_count } =
-		dashboardLive.sessions.last_24_hours;
+	const {
+		heartbeat_expired_count,
+		distress_call_detected_count,
+		parrot_disappeared_count,
+		parrot_detection_failed_count,
+	} = dashboardLive.sessions.last_24_hours;
 
 	const checkItems = [
 		{ label: '신호가 끊긴 세션', count: heartbeat_expired_count, dotClassName: 'bg-destructive-dot' },
@@ -38,7 +42,7 @@ const CheckItemCard = ({ dashboardLive }: Props) => {
 			dotClassName: 'bg-destructive-dot',
 			href: '/withdrawals',
 		},
-		{ label: '모사 판정 실패', count: judgment_failed_count, dotClassName: 'bg-warning-dot' },
+		{ label: '앵무 소리 판별 실패', count: parrot_detection_failed_count, dotClassName: 'bg-warning-dot' },
 	];
 	const totalCount = checkItems.reduce((total, checkItem) => total + checkItem.count, 0);
 
