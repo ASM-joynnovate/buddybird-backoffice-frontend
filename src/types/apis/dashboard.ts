@@ -66,7 +66,7 @@ export const dashboardLiveSchema = z.object({
 			heartbeat_expired_count: z.number().int(),
 			distress_call_detected_count: z.number().int(),
 			parrot_disappeared_count: z.number().int(),
-			judgment_failed_count: z.number().int(),
+			parrot_detection_failed_count: z.number().int(),
 		}),
 	}),
 	withdrawals: z.object({ failed_count: z.number().int() }),
