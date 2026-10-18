@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.23.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.23.0...v0.23.1) (2026-10-18)
+
+
+### Bug Fixes
+
+* 앵무 소리 판별 실패 개수 필드를 parrot_detection_failed_count로 변경 ([dd715f9](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/dd715f9bf4a09efdfd1044b40792226b26aa4831))
+* 앵무 소리 판별 실패 개수 필드를 parrot_detection_failed_count로 변경 ([6989bff](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/6989bff5362d585f53b49f265a211cc393063dbe))
+
 ## [0.23.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.22.1...v0.23.0) (2026-10-17)
 
 
