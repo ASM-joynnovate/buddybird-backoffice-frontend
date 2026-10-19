@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.24.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.23.1...v0.24.0) (2026-10-19)
+
+
+### Features
+
+* 그래프에 평균선 추가 ([b249ce4](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/b249ce45c7998dffd18aff35e0f327f84390fd2c))
+* 그래프에 평균선 추가 ([01648ae](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/01648ae1f407fff4af30571f0479977507ad74a5))
+
 ## [0.23.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.23.0...v0.23.1) (2026-10-18)
 
 
