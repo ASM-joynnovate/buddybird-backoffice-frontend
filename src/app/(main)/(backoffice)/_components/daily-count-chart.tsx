@@ -2,6 +2,7 @@
 
 import { Bar, BarChart, BarStack, LabelList, Rectangle, XAxis, YAxis } from 'recharts';
 
+import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
 import DailyCountTooltip from '@/app/(main)/(backoffice)/_components/daily-count-tooltip';
 import { toChartDateLabel } from '@/utils/date';
 
@@ -59,6 +60,7 @@ const DailyCountChart = ({
 		};
 	});
 	const maxAxisCount = Math.max(MIN_AXIS_COUNT, ...dailyCounts.map((dailyCount) => dailyCount.totalCount));
+	const averageCount = dailyCounts.reduce((sum, dailyCount) => sum + dailyCount.totalCount, 0) / dailyCounts.length;
 
 	const handleSelectDate = (dailyCount: (typeof dailyCounts)[number]) => {
 		if (dailyCount.totalCount === 0) {
@@ -129,6 +131,8 @@ const DailyCountChart = ({
 						</Bar>
 					))}
 				</BarStack>
+
+				<AverageLine value={averageCount} valueText={`${averageCount.toFixed(1)}${unit}`} />
 			</BarChart>
 		</ChartContainer>
 	);

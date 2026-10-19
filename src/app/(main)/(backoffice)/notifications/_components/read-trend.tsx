@@ -7,6 +7,7 @@ import { useGetNotificationDispatch } from '@/hooks/apis/notifications';
 import dayjs from 'dayjs';
 import { Bar, BarChart, type BarShapeProps, LabelList, Rectangle, XAxis, YAxis } from 'recharts';
 
+import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import ReadTrendTick from '@/app/(main)/(backoffice)/notifications/_components/read-trend-tick';
 import ReadTrendTooltip from '@/app/(main)/(backoffice)/notifications/_components/read-trend-tooltip';
@@ -37,6 +38,9 @@ const ReadTrend = ({ notificationDispatch, now }: Props) => {
 	const passedReads = dispatchDetailData.hourly_reads.filter(({ hour }) => hour < elapsedHours);
 	const peakCount = Math.max(0, ...passedReads.map(({ count }) => count));
 	const peakHour = passedReads.find(({ count }) => count === peakCount)?.hour;
+	const averageCount = passedReads.length
+		? passedReads.reduce((sum, { count }) => sum + count, 0) / passedReads.length
+		: null;
 	const firstHourCount = dispatchDetailData.hourly_reads.find(({ hour }) => hour === 0)?.count ?? 0;
 	const firstHourPercent = dispatchDetailData.sent_count
 		? Math.round((firstHourCount / dispatchDetailData.sent_count) * 100)
@@ -113,6 +117,11 @@ const ReadTrend = ({ notificationDispatch, now }: Props) => {
 					>
 						<LabelList dataKey="peakLabel" position="top" className="fill-foreground text-xs font-bold" />
 					</Bar>
+
+					{/*최고값 글자를 피해 오른쪽 끝에 이름표*/}
+					{averageCount !== null && (
+						<AverageLine value={averageCount} valueText={`${averageCount.toFixed(1)}명`} labelAlign="end" />
+					)}
 				</BarChart>
 			</ChartContainer>
 		</>

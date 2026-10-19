@@ -4,6 +4,7 @@ import type { Dashboard } from '@/types/apis/dashboard';
 
 import { Bar, BarChart, LabelList, XAxis, YAxis } from 'recharts';
 
+import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
 import DailyCountTooltip from '@/app/(main)/(backoffice)/_components/daily-count-tooltip';
 import StatCell from '@/app/(main)/(backoffice)/_components/stat-cell';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
@@ -27,6 +28,7 @@ interface Props {
  * @param today 오늘 날짜
  */
 const SessionCard = ({ sessions, today }: Props) => {
+	const averageCount = sessions.count / sessions.daily.length;
 	const averageDuration =
 		sessions.average_duration_ms === null ? null : toHoursAndMinutes(sessions.average_duration_ms);
 	// 지난 날짜는 옅게, 마지막 날짜에만 값 표시
@@ -39,7 +41,7 @@ const SessionCard = ({ sessions, today }: Props) => {
 	return (
 		<TitledCard title="세션">
 			<dl className="mb-4.5 grid grid-cols-3 gap-2">
-				<StatCell label="하루 평균">{(sessions.count / sessions.daily.length).toFixed(1)}회</StatCell>
+				<StatCell label="하루 평균">{averageCount.toFixed(1)}회</StatCell>
 				<StatCell label="시간 합계">
 					{Math.round(sessions.duration_ms / HOUR).toLocaleString('ko-KR')}시간
 				</StatCell>
@@ -77,6 +79,8 @@ const SessionCard = ({ sessions, today }: Props) => {
 					>
 						<LabelList dataKey="lastCount" position="top" className="fill-foreground text-xs font-bold" />
 					</Bar>
+
+					<AverageLine value={averageCount} valueText={`${averageCount.toFixed(1)}회`} />
 				</BarChart>
 			</ChartContainer>
 		</TitledCard>

@@ -6,6 +6,7 @@ import type { UserDashboard } from '@/types/apis/dashboard';
 
 import { Area, AreaChart, CartesianGrid, ReferenceDot, XAxis, YAxis } from 'recharts';
 
+import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
 import DailyCountTooltip from '@/app/(main)/(backoffice)/_components/daily-count-tooltip';
 import { ACTIVE_USER_RECORD_START_DATE } from '@/config';
 import { toChartDateLabel } from '@/utils/date';
@@ -55,6 +56,10 @@ const ActiveUserTrends = ({ daily, metrics, chartHeight, today }: Props) => {
 							: dailyCount[metric],
 				}));
 				const lastDailyCount = dailyCounts.at(-1);
+				const recordedCounts = dailyCounts.flatMap(({ count }) => (count === null ? [] : [count]));
+				const averageCount = recordedCounts.length
+					? recordedCounts.reduce((sum, count) => sum + count, 0) / recordedCounts.length
+					: null;
 
 				return (
 					<div
@@ -133,6 +138,13 @@ const ActiveUserTrends = ({ daily, metrics, chartHeight, today }: Props) => {
 									activeDot={{ r: 5, stroke: 'var(--card)', strokeWidth: 2.5 }}
 									isAnimationActive={false}
 								/>
+
+								{averageCount !== null && (
+									<AverageLine
+										value={averageCount}
+										valueText={`${Math.round(averageCount).toLocaleString('ko-KR')}명`}
+									/>
+								)}
 
 								{/*마지막 날짜의 점*/}
 								{typeof lastDailyCount?.count === 'number' && (

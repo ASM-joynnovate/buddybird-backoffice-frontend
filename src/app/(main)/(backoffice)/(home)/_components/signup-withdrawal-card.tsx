@@ -4,6 +4,7 @@ import type { Dashboard } from '@/types/apis/dashboard';
 
 import { Area, AreaChart, CartesianGrid, ReferenceDot, XAxis, YAxis } from 'recharts';
 
+import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
 import DailyCountTooltip from '@/app/(main)/(backoffice)/_components/daily-count-tooltip';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { toChartDateLabel } from '@/utils/date';
@@ -34,6 +35,8 @@ const SignupWithdrawalCard = ({ users, withdrawals, today }: Props) => {
 		withdrawal: withdrawals.daily[index].count,
 	}));
 	const lastDailyCount = dailyCounts[dailyCounts.length - 1];
+	const signupAverage = users.signup_count / dailyCounts.length;
+	const withdrawalAverage = withdrawals.count / dailyCounts.length;
 
 	return (
 		<TitledCard
@@ -97,6 +100,20 @@ const SignupWithdrawalCard = ({ users, withdrawals, today }: Props) => {
 						fillOpacity={0}
 						activeDot={{ r: 5, stroke: 'var(--card)', strokeWidth: 2.5 }}
 						isAnimationActive={false}
+					/>
+
+					{/*낮은 평균은 선 아래 이름표*/}
+					<AverageLine
+						value={signupAverage}
+						valueText={`${signupAverage.toFixed(1)}명`}
+						color="var(--color-signup)"
+						labelPosition={signupAverage >= withdrawalAverage ? 'top' : 'bottom'}
+					/>
+					<AverageLine
+						value={withdrawalAverage}
+						valueText={`${withdrawalAverage.toFixed(1)}명`}
+						color="var(--color-withdrawal)"
+						labelPosition={signupAverage >= withdrawalAverage ? 'bottom' : 'top'}
 					/>
 
 					{/*마지막 날짜의 값 및 점*/}
