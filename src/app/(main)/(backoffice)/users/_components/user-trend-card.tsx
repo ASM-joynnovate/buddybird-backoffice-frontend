@@ -4,6 +4,7 @@ import type { UserDashboard } from '@/types/apis/dashboard';
 
 import { Area, AreaChart, Bar, BarChart, ReferenceDot, ReferenceLine, XAxis, YAxis } from 'recharts';
 
+import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
 import CountChange from '@/app/(main)/(backoffice)/_components/count-change';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import UserTrendTooltip from '@/app/(main)/(backoffice)/users/_components/user-trend-tooltip';
@@ -46,6 +47,8 @@ const UserTrendCard = ({ userDashboard, today }: Props) => {
 	}));
 	const lastDailyCount = dailyCounts[dailyCounts.length - 1];
 	const totalCounts = dailyCounts.map((dailyCount) => dailyCount.total);
+	const signupAverage = users.signup_count / daily.length;
+	const withdrawalAverage = withdrawals.count / daily.length;
 
 	return (
 		<TitledCard
@@ -196,6 +199,18 @@ const UserTrendCard = ({ userDashboard, today }: Props) => {
 									maxBarSize={12}
 									activeBar={{ fillOpacity: 1 }}
 									isAnimationActive={false}
+								/>
+
+								<AverageLine
+									value={signupAverage}
+									valueText={`+${signupAverage.toFixed(1)}명`}
+									color="var(--color-signup)"
+								/>
+								<AverageLine
+									value={-withdrawalAverage}
+									valueText={`−${withdrawalAverage.toFixed(1)}명`}
+									color="var(--color-withdrawal)"
+									labelPosition="bottom"
 								/>
 							</BarChart>
 						</ChartContainer>
