@@ -10,6 +10,7 @@ const presetLanguageNames: Record<PresetLanguage, string> = {
 	es: '스페인어',
 	'zh-CN': '중국어(간체)',
 	'zh-TW': '중국어(번체)',
+	th: '태국어',
 };
 
 /** 언어 값을 화면에 표시할 이름으로 변환하는 함수 */

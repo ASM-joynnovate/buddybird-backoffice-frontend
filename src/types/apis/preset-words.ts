@@ -3,7 +3,7 @@ import { uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
 
-export const presetLanguageSchema = z.enum(['ko', 'en', 'ja', 'ru', 'es', 'zh-CN', 'zh-TW']);
+export const presetLanguageSchema = z.enum(['ko', 'en', 'ja', 'ru', 'es', 'zh-CN', 'zh-TW', 'th']);
 
 export const presetWordSchema = z.object({
 	id: uuidSchema,

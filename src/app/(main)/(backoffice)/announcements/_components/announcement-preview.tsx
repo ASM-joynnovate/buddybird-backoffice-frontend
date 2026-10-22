@@ -17,6 +17,7 @@ const POPUP_TEXTS = {
 	es_es: { closeLabel: 'CERRAR', detailLabel: 'VER MÁS' },
 	zh_cn: { closeLabel: '关闭', detailLabel: '详情' },
 	zh_tw: { closeLabel: '關閉', detailLabel: '查看詳情' },
+	th_th: { closeLabel: 'ปิด', detailLabel: 'ดูรายละเอียด' },
 } satisfies Record<keyof I18nFieldValue, { closeLabel: string; detailLabel: string }>;
 
 interface Props {

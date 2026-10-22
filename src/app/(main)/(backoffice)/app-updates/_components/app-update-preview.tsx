@@ -97,6 +97,18 @@ const DIALOG_TEXTS = {
 			message: (version) => <>請更新到 {version} 版以繼續使用。</>,
 		},
 	},
+	th_th: {
+		closeLabel: 'ปิด',
+		acceptLabel: 'อัปเดต',
+		optional: {
+			title: 'มีอัปเดตใหม่',
+			message: (version) => <>BuddyBird เวอร์ชัน {version} พร้อมให้ใช้งานแล้ว</>,
+		},
+		forced: {
+			title: 'ต้องอัปเดตแอป',
+			message: (version) => <>โปรดอัปเดตเป็นเวอร์ชัน {version} เพื่อใช้งานต่อ</>,
+		},
+	},
 } satisfies Record<
 	keyof I18nFieldValue,
 	{ closeLabel: string; acceptLabel: string; optional: UpdateTexts; forced: UpdateTexts }

@@ -8,6 +8,7 @@ export const MARKETING_PREFIXES: I18nFieldValue = {
 	es_es: '(Publicidad) ',
 	zh_cn: '(广告) ',
 	zh_tw: '(廣告) ',
+	th_th: '(โฆษณา) ',
 };
 export const UNSUBSCRIBE_TEXTS: I18nFieldValue = {
 	ko_kr: '무료 수신거부: 프로필 > 설정 > 알림에서 마케팅 알림 Off',
@@ -17,6 +18,7 @@ export const UNSUBSCRIBE_TEXTS: I18nFieldValue = {
 	es_es: 'Baja gratuita: Perfil > Ajustes > Notificaciones > desactiva las de marketing',
 	zh_cn: '免费退订: 我的 > 设置 > 通知 > 关闭营销通知',
 	zh_tw: '免費取消訂閱: 個人檔案 > 設定 > 通知 > 關閉行銷通知',
+	th_th: 'ยกเลิกการรับข่าวสารได้ฟรี: โปรไฟล์ > การตั้งค่า > การแจ้งเตือน > ปิดการแจ้งเตือนข่าวสารและโปรโมชัน',
 };
 
 export const AUDIENCE_HELP_TEXTS = {

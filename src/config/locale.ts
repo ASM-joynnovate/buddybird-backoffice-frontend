@@ -8,6 +8,7 @@ export const I18N_LOCALES = [
 	{ locale: 'es_es', label: '스페인어' },
 	{ locale: 'zh_cn', label: '중국어(간체)' },
 	{ locale: 'zh_tw', label: '중국어(번체)' },
+	{ locale: 'th_th', label: '태국어' },
 ] satisfies { locale: keyof I18nFieldValue; label: string }[];
 
 // 앱이 기기 등록 때 보내는 언어
@@ -19,4 +20,5 @@ export const LOCALE_NAMES: Record<string, string> = {
 	'es-ES': 'Español',
 	'zh-CN': '简体中文',
 	'zh-TW': '繁體中文',
+	'th-TH': 'ไทย',
 };

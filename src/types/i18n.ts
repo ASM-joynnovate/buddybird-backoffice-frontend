@@ -6,4 +6,5 @@ export interface I18nFieldValue {
 	es_es: string;
 	zh_cn: string;
 	zh_tw: string;
+	th_th: string;
 }
