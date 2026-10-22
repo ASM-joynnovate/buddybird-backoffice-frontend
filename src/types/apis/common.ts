@@ -82,6 +82,7 @@ export const i18nSchema = z.object({
 	ja_jp: z.string().nullable(),
 	ru_ru: z.string().nullable(),
 	es_es: z.string().nullable(),
+	th_th: z.string().nullable(),
 });
 
 export const sortOrderSchema = z.enum(['asc', 'desc']);
