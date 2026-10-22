@@ -30,6 +30,8 @@ export const toSentText = (fieldValue: I18nFieldValue, kind: SendableNotificatio
 		ja_jp: text.ja_jp && `${MARKETING_PREFIXES.ja_jp}${text.ja_jp}`,
 		ru_ru: text.ru_ru && `${MARKETING_PREFIXES.ru_ru}${text.ru_ru}`,
 		es_es: text.es_es && `${MARKETING_PREFIXES.es_es}${text.es_es}`,
+		zh_cn: text.zh_cn && `${MARKETING_PREFIXES.zh_cn}${text.zh_cn}`,
+		zh_tw: text.zh_tw && `${MARKETING_PREFIXES.zh_tw}${text.zh_tw}`,
 	};
 };
 
@@ -56,6 +58,8 @@ export const toCopiedContent = (notification: {
 						ja_jp: text.ja_jp && removeMarketingPrefix(text.ja_jp, 'ja_jp'),
 						ru_ru: text.ru_ru && removeMarketingPrefix(text.ru_ru, 'ru_ru'),
 						es_es: text.es_es && removeMarketingPrefix(text.es_es, 'es_es'),
+						zh_cn: text.zh_cn && removeMarketingPrefix(text.zh_cn, 'zh_cn'),
+						zh_tw: text.zh_tw && removeMarketingPrefix(text.zh_tw, 'zh_tw'),
 					}
 				: text,
 		);

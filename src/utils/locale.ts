@@ -8,6 +8,8 @@ const presetLanguageNames: Record<PresetLanguage, string> = {
 	ja: '일본어',
 	ru: '러시아어',
 	es: '스페인어',
+	'zh-CN': '중국어(간체)',
+	'zh-TW': '중국어(번체)',
 };
 
 /** 언어 값을 화면에 표시할 이름으로 변환하는 함수 */
