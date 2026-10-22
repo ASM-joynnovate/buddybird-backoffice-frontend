@@ -6,6 +6,7 @@ export const MARKETING_PREFIXES: I18nFieldValue = {
 	ja_jp: '(広告) ',
 	ru_ru: '(Реклама) ',
 	es_es: '(Publicidad) ',
+	th_th: '(โฆษณา) ',
 };
 export const UNSUBSCRIBE_TEXTS: I18nFieldValue = {
 	ko_kr: '무료 수신거부: 프로필 > 설정 > 알림에서 마케팅 알림 Off',
@@ -13,6 +14,7 @@ export const UNSUBSCRIBE_TEXTS: I18nFieldValue = {
 	ja_jp: '無料配信停止: プロフィール > 設定 > 通知でマーケティング通知をオフ',
 	ru_ru: 'Бесплатная отписка: Профиль > Настройки > Уведомления > отключите маркетинг',
 	es_es: 'Baja gratuita: Perfil > Ajustes > Notificaciones > desactiva las de marketing',
+	th_th: 'ยกเลิกการรับข่าวสารได้ฟรี: โปรไฟล์ > การตั้งค่า > การแจ้งเตือน > ปิดการแจ้งเตือนข่าวสารและโปรโมชัน',
 };
 
 export const AUDIENCE_HELP_TEXTS = {

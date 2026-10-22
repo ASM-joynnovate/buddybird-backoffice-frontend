@@ -22,6 +22,7 @@ export const toI18nFieldValue = (text: I18nText | null): I18nFieldValue => {
 		ja_jp: text?.ja_jp ?? '',
 		ru_ru: text?.ru_ru ?? '',
 		es_es: text?.es_es ?? '',
+		th_th: text?.th_th ?? '',
 	};
 };
 
@@ -33,6 +34,7 @@ export const toI18nText = (fieldValue: I18nFieldValue): I18nText => {
 		ja_jp: fieldValue.ja_jp.trim() || null,
 		ru_ru: fieldValue.ru_ru.trim() || null,
 		es_es: fieldValue.es_es.trim() || null,
+		th_th: fieldValue.th_th.trim() || null,
 	};
 };
 
