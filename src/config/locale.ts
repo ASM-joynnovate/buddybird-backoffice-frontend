@@ -16,5 +16,5 @@ export const LOCALE_NAMES: Record<string, string> = {
 	'ja-JP': '日本語',
 	'ru-RU': 'Русский',
 	'es-ES': 'Español',
-	'th-TH': 'ไทย',
+	'th-TH': 'ภาษาไทย',
 };
