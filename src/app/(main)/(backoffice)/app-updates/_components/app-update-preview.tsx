@@ -73,6 +73,30 @@ const DIALOG_TEXTS = {
 			message: (version) => <>Actualiza a la versión {version} para seguir usando la app.</>,
 		},
 	},
+	zh_cn: {
+		closeLabel: '关闭',
+		acceptLabel: '更新',
+		optional: {
+			title: '更新提醒',
+			message: (version) => <>BuddyBird {version} 版本已发布。</>,
+		},
+		forced: {
+			title: '需要更新',
+			message: (version) => <>如需继续使用，请更新到 {version} 版本。</>,
+		},
+	},
+	zh_tw: {
+		closeLabel: '關閉',
+		acceptLabel: '更新',
+		optional: {
+			title: '更新通知',
+			message: (version) => <>BuddyBird {version} 版已推出。</>,
+		},
+		forced: {
+			title: '需要更新',
+			message: (version) => <>請更新到 {version} 版以繼續使用。</>,
+		},
+	},
 } satisfies Record<
 	keyof I18nFieldValue,
 	{ closeLabel: string; acceptLabel: string; optional: UpdateTexts; forced: UpdateTexts }

@@ -4,4 +4,6 @@ export interface I18nFieldValue {
 	ja_jp: string;
 	ru_ru: string;
 	es_es: string;
+	zh_cn: string;
+	zh_tw: string;
 }
