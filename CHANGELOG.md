@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.27.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.26.0...v0.27.0) (2026-10-26)
+
+
+### Features
+
+* 국가 카드 및 지도를 프로필 국가 기준으로 변경 ([b1e75af](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/b1e75afc86fecc487f200c735e02a4f80936d23a))
+* 사용자 목록에 국가 열 추가 ([41957c0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/41957c0922c8bae74f0e65de96770a646631acf7))
+* 소리 상세 상자 접기 및 라벨 입력 기본값 추가 ([bf89f55](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/bf89f558798f4e6b227d3913b1ebd527303ac5f2))
+* 소리 상세 접기, 라벨 기본값 및 사용자 국가 표시 ([f828237](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/f82823739f86a29a6220324b16aac4558c81aa43))
+
 ## [0.26.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.25.0...v0.26.0) (2026-10-26)
 
 
