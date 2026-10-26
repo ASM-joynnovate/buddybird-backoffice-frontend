@@ -6,6 +6,7 @@ import type { UserDashboard } from '@/types/apis/dashboard';
 
 import useResolvedTheme from '@/hooks/use-resolved-theme';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import { COUNTRY_POSITIONS } from '@/config/country-positions';
 import { toCountryName } from '@/utils/country';
 
@@ -146,7 +147,10 @@ const CountryMap = ({ countries }: Props) => {
 								<strong className="block text-[13px] font-bold tabular-nums">
 									{countryMarker.count.toLocaleString('ko-KR')}명
 								</strong>
-								<span className="text-tooltip-foreground/75">{countryName}</span>
+								<span className="flex items-center gap-1.5 text-tooltip-foreground/75">
+									<CountryFlag country={countryMarker.country} className="h-3 w-4" />
+									{countryName}
+								</span>
 							</MarkerTooltip>
 						</MapMarker>
 					);

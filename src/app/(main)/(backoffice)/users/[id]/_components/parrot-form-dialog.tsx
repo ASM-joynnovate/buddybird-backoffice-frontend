@@ -8,6 +8,7 @@ import { useDeleteUserParrotPhoto, useUpdateUserParrot } from '@/hooks/apis/user
 
 import CountedInput from '@/app/(main)/(backoffice)/_components/counted-input';
 import SearchSelect from '@/app/(main)/(backoffice)/_components/search-select';
+import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import RemovablePhotoField from '@/app/(main)/(backoffice)/users/[id]/_components/removable-photo-field';
 import { PARROT_NAME_MAX_LENGTH } from '@/config';
 import { SPECIES_IDS, toSpeciesName } from '@/utils/species';
@@ -154,6 +155,7 @@ const ParrotFormDialog = ({ userId, parrot, today, onClose }: Props) => {
 								placeholder="종 이름"
 								customOptionAllowed
 								toOptionLabel={toSpeciesName}
+								toOptionIcon={(option) => <SpeciesIcon species={option} className="size-4" />}
 								onValueChange={setSpecies}
 							/>
 						</div>

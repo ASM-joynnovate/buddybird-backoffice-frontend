@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { Bell, Copy, Pencil, Trash2, TriangleAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
@@ -149,8 +150,15 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 
 					<div className={factClassName}>
 						<dt className={factTitleClassName}>국가</dt>
-						<dd className={factValueClassName}>
-							{userData.country ? toCountryName(userData.country) : '-'}
+						<dd className={`${factValueClassName} flex items-center gap-2`}>
+							{userData.country ? (
+								<>
+									<CountryFlag country={userData.country} />
+									{toCountryName(userData.country)}
+								</>
+							) : (
+								'-'
+							)}
 						</dd>
 						<dd className={factNoteClassName}>{userData.country}</dd>
 					</div>

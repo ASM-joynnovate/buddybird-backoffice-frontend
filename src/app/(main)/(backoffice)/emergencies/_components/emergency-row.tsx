@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import { AudioLines, BellOff, ChevronDown, ChevronRight, Play, Square, Video } from 'lucide-react';
 
 import ReadStatus from '@/app/(main)/(backoffice)/_components/read-status';
+import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import EmergencyDetail from '@/app/(main)/(backoffice)/emergencies/_components/emergency-detail';
 import { EMERGENCY_KINDS } from '@/config/emergency';
@@ -122,6 +123,10 @@ const EmergencyRow = ({ emergency, expanded, now, player, onToggle }: Props) => 
 							{parrot ? (
 								<>
 									<b className="font-semibold text-foreground">{parrot.name}</b>{' '}
+									<SpeciesIcon
+										species={parrot.species}
+										className="mr-1 inline-block size-4 align-text-bottom"
+									/>
 									{toSpeciesName(parrot.species)}
 									{emergency.parrot_count > 1 && ` 외 ${emergency.parrot_count - 1}마리`}
 								</>

@@ -8,6 +8,7 @@ import type { UpdateUserRequest, UserDetail } from '@/types/apis/users';
 import { useDeleteUserPhoto, useUpdateUser } from '@/hooks/apis/users';
 
 import CountedInput from '@/app/(main)/(backoffice)/_components/counted-input';
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import SearchSelect from '@/app/(main)/(backoffice)/_components/search-select';
 import RemovablePhotoField from '@/app/(main)/(backoffice)/users/[id]/_components/removable-photo-field';
 import { NICKNAME_MAX_LENGTH } from '@/config';
@@ -155,6 +156,7 @@ const UserProfileFormDialog = ({ user, onClose }: Props) => {
 								placeholder="국가 이름 또는 코드"
 								toOptionLabel={toCountryName}
 								toOptionNote={(option) => option}
+								toOptionIcon={(option) => <CountryFlag country={option} />}
 								onValueChange={setCountry}
 							/>
 						</div>

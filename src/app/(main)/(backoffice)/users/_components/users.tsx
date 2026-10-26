@@ -5,6 +5,7 @@ import type { SelectedFilter } from '@/types/filter';
 
 import type { SearchParamValue } from '@/lib/api';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import PeriodFilter from '@/app/(main)/(backoffice)/_components/period-filter';
 import SearchBar from '@/app/(main)/(backoffice)/_components/search-bar';
 import UserDashboardCards from '@/app/(main)/(backoffice)/users/_components/user-dashboard-cards';
@@ -58,7 +59,14 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				: [];
 		}),
 		...(listParams.country
-			? [{ name: 'country', groupLabel: '국가', label: toCountryName(listParams.country) }]
+			? [
+					{
+						name: 'country',
+						groupLabel: '국가',
+						label: toCountryName(listParams.country),
+						icon: <CountryFlag country={listParams.country} className="h-3 w-4" />,
+					},
+				]
 			: []),
 		...(query.is_deleted ? [{ name: 'is_deleted', label: '삭제됨' }] : []),
 	];

@@ -8,6 +8,7 @@ import { useGetUserDashboard } from '@/hooks/apis/dashboard';
 
 import type { SearchParamValue } from '@/lib/api';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import FilterPanel from '@/app/(main)/(backoffice)/_components/filter-panel';
 import UserFilterIcon from '@/app/(main)/(backoffice)/users/_components/user-filter-icon';
 import { USER_FILTER_GROUPS } from '@/config/user-filters';
@@ -44,7 +45,16 @@ const UserFilterPanel = ({ dashboardParams, query }: Props) => {
 			label: '국가',
 			// 프로필 국가 기준 사용자 수
 			options: userDashboardData.countries.flatMap(({ country, count }) =>
-				country ? [{ value: country, label: toCountryName(country), count }] : [],
+				country
+					? [
+							{
+								value: country,
+								label: toCountryName(country),
+								count,
+								icon: <CountryFlag country={country} className="h-3 w-4" />,
+							},
+						]
+					: [],
 			),
 		},
 		{ name: 'is_deleted', label: '계정 상태', options: [{ value: true, label: '삭제됨' }] },

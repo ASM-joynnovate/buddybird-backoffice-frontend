@@ -8,6 +8,7 @@ import { useGetUser } from '@/hooks/apis/users';
 
 import { Pencil } from 'lucide-react';
 
+import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import ParrotFormDialog from '@/app/(main)/(backoffice)/users/[id]/_components/parrot-form-dialog';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
@@ -53,7 +54,10 @@ const ParrotCard = ({ id, today }: Props) => {
 
 						<div className="min-w-0">
 							<strong className="block text-base font-bold">{parrot.name}</strong>
-							<span className="text-muted-foreground">{toSpeciesName(parrot.species)}</span>
+							<span className="flex items-center gap-1.5 text-muted-foreground">
+								<SpeciesIcon species={parrot.species} />
+								{toSpeciesName(parrot.species)}
+							</span>
 						</div>
 
 						{parrot.birthdate ? (

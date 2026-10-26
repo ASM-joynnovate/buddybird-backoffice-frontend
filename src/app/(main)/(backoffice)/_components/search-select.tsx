@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { Combobox } from '@base-ui/react/combobox';
 import { Check, ChevronDown, PencilLine, Search } from 'lucide-react';
@@ -13,6 +13,7 @@ interface Props {
 	customOptionAllowed?: boolean;
 	toOptionLabel: (option: string) => string;
 	toOptionNote?: (option: string) => string;
+	toOptionIcon?: (option: string) => ReactNode;
 	onValueChange: (value: string) => void;
 }
 
@@ -25,6 +26,7 @@ interface Props {
  * @param customOptionAllowed 검색어를 그대로 값으로 선택할 수 있는지 여부
  * @param toOptionLabel 값을 화면에 표시할 이름으로 변환하는 함수
  * @param toOptionNote 값 오른쪽에 작게 표시할 문구를 반환하는 함수
+ * @param toOptionIcon 값 왼쪽에 표시할 아이콘을 반환하는 함수
  * @param onValueChange 값을 선택하면 실행할 함수
  */
 const SearchSelect = ({
@@ -35,6 +37,7 @@ const SearchSelect = ({
 	customOptionAllowed = false,
 	toOptionLabel,
 	toOptionNote,
+	toOptionIcon,
 	onValueChange,
 }: Props) => {
 	const [query, setQuery] = useState('');
@@ -81,6 +84,7 @@ const SearchSelect = ({
 				aria-label={label}
 				className="flex h-9 w-full min-w-0 items-center gap-2 rounded-md border bg-card px-3 text-left hover:border-chart-neutral focus-visible:border-chart-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand data-popup-open:border-chart-neutral"
 			>
+				{!!value && toOptionIcon?.(value)}
 				<span className="truncate font-semibold">{value ? toOptionLabel(value) : '-'}</span>
 				{!!value && !!toOptionNote && (
 					<span className="text-xs text-muted-foreground tabular-nums">{toOptionNote(value)}</span>
@@ -120,7 +124,10 @@ const SearchSelect = ({
 											<span className="truncate">‘{customOption}’ 직접 입력</span>
 										</>
 									) : (
-										<span className="truncate">{toOptionLabel(option)}</span>
+										<>
+											{toOptionIcon?.(option)}
+											<span className="truncate">{toOptionLabel(option)}</span>
+										</>
 									)}
 
 									{!!toOptionNote && (

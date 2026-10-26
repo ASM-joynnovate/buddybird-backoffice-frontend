@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 
 import { Check, EyeOff, Feather, ImageIcon } from 'lucide-react';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import AbuseReportFeedItem from '@/app/(main)/(backoffice)/abuse-reports/_components/abuse-report-feed-item';
 import DeleteParrotPhotoDialog from '@/app/(main)/(backoffice)/abuse-reports/_components/delete-parrot-photo-dialog';
@@ -92,8 +93,9 @@ const AbuseReportRow = ({ abuseReport, now }: Props) => {
 					)}
 
 					{!!reportedUser.country && (
-						<span className="block truncate text-[13px] text-muted-foreground">
-							{toCountryName(reportedUser.country)}
+						<span className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
+							<CountryFlag country={reportedUser.country} className="h-3 w-4" />
+							<span className="truncate">{toCountryName(reportedUser.country)}</span>
 						</span>
 					)}
 				</span>

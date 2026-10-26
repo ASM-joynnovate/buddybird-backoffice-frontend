@@ -1,7 +1,10 @@
+import type { ReactNode } from 'react';
+
 import { cn } from '@/lib/utils';
 
 interface Props {
 	label: string;
+	icon?: ReactNode;
 	barPercent: number;
 	percent: number;
 	barClassName?: string;
@@ -11,15 +14,19 @@ interface Props {
 /**
  * 이름, 비율 막대, 비율을 한 줄에 두는 행 컴포넌트
  * @param label 값의 이름
+ * @param icon 이름 왼쪽에 표시할 아이콘
  * @param barPercent 막대를 채울 비율
  * @param percent 오른쪽 끝에 표시할 비율
  * @param barClassName 막대의 색 class
  * @param className 행에 더할 class
  */
-const RatioBarRow = ({ label, barPercent, percent, barClassName, className }: Props) => {
+const RatioBarRow = ({ label, icon, barPercent, percent, barClassName, className }: Props) => {
 	return (
 		<li className={cn('grid items-center', className)}>
-			<span className="truncate">{label}</span>
+			<span className="flex min-w-0 items-center gap-2">
+				{icon}
+				<span className="truncate">{label}</span>
+			</span>
 
 			<div aria-hidden className="h-2 rounded-full bg-muted">
 				<div

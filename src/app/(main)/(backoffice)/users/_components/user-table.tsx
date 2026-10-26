@@ -17,6 +17,7 @@ import { TriangleAlert } from 'lucide-react';
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import SortLink from '@/app/(main)/(backoffice)/_components/sort-link';
+import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import UserSummary from '@/app/(main)/(backoffice)/_components/user-summary';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
 import { SESSION_PHASES } from '@/config/session';
@@ -154,7 +155,11 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 																</span>
 															)}
 														</strong>
-														<span className="block text-[13px] text-muted-foreground max-md:hidden">
+														<span className="flex items-center gap-1.5 text-[13px] text-muted-foreground max-md:hidden">
+															<SpeciesIcon
+																species={user.first_parrot.species}
+																className="size-4"
+															/>
 															{toSpeciesName(user.first_parrot.species)}
 														</span>
 													</div>

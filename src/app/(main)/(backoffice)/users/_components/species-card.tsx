@@ -1,6 +1,7 @@
 import type { UserDashboard } from '@/types/apis/dashboard';
 
 import RatioBarRow from '@/app/(main)/(backoffice)/_components/ratio-bar-row';
+import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import { VISIBLE_SPECIES_COUNT } from '@/config';
 import { toSpeciesName } from '@/utils/species';
@@ -30,9 +31,10 @@ const SpeciesCard = ({ parrots }: Props) => {
 					<RatioBarRow
 						key={species}
 						label={toSpeciesName(species)}
+						icon=<SpeciesIcon species={species} />
 						barPercent={(count / maxCount) * 100}
 						percent={Math.round((count / parrots.total_count) * 100)}
-						className="grid-cols-[104px_minmax(0,1fr)_40px] gap-2.5 font-semibold"
+						className="grid-cols-[132px_minmax(0,1fr)_40px] gap-2.5 font-semibold"
 					/>
 				))}
 			</ul>
