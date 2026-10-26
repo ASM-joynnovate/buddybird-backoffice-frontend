@@ -7,8 +7,10 @@ import type { SessionSoundDetail, SessionSoundLabelTarget } from '@/types/apis/s
 import { useCancelSessionSoundLabel, useUpdateSessionSoundLabel } from '@/hooks/apis/sessions';
 
 import { readBrowserOperatorName } from '@/lib/auth';
+import { cn } from '@/lib/utils';
 
-import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
+import { Check, X } from 'lucide-react';
+
 import TitledBox from '@/app/(main)/(backoffice)/_components/titled-box';
 import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
 import { LABEL_MEMO_MAX_LENGTH } from '@/config';
@@ -18,10 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-const positiveOptions = [
-	{ value: true, label: '예' },
-	{ value: false, label: '아니오' },
-];
+const fieldLabelClassName = 'text-[13px] font-semibold text-muted-foreground';
 
 interface Props {
 	sessionId: string;
@@ -41,6 +40,7 @@ interface Props {
  */
 const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestLabel }: Props) => {
 	const scoreInputId = useId();
+	const memoInputId = useId();
 
 	// 취소하지 않은 최근 라벨의 값으로 시작
 	const activeLabel = latestLabel?.is_positive === null ? undefined : latestLabel;
@@ -107,25 +107,42 @@ const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestL
 					<SessionSoundScore
 						label="최종"
 						score={finalScore}
-						barClassName={target === 'parrot' ? 'bg-chart-1' : 'bg-foreground'}
+						barClassName={target === 'parrot' ? 'bg-foreground' : 'bg-chart-1'}
 					/>
 				</span>
 			}
 		>
-			<form onSubmit={handleSubmit} className="grid gap-2.5 p-3">
-				<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-					<SegmentedControl
-						label={`${targetName} 여부`}
-						options={positiveOptions}
-						value={positive}
-						className="divide-x"
-						onValueChange={setPositive}
-					/>
+			<form onSubmit={handleSubmit}>
+				<div className="grid grid-cols-[40px_minmax(0,1fr)] items-center gap-2.5 p-3">
+					<span className={fieldLabelClassName}>판정</span>
+					<fieldset className="grid grid-cols-2 gap-2">
+						<legend className="sr-only">{targetName} 여부</legend>
 
+						<Button
+							type="button"
+							variant="outline"
+							aria-pressed={positive === true}
+							className="aria-pressed:border-success aria-pressed:bg-success/10 aria-pressed:text-success"
+							onClick={() => setPositive(true)}
+						>
+							<Check />예
+						</Button>
+						<Button
+							type="button"
+							variant="outline"
+							aria-pressed={positive === false}
+							className="aria-pressed:border-destructive aria-pressed:bg-destructive/10 aria-pressed:text-destructive"
+							onClick={() => setPositive(false)}
+						>
+							<X />
+							아니오
+						</Button>
+					</fieldset>
+
+					<label htmlFor={scoreInputId} className={fieldLabelClassName}>
+						점수
+					</label>
 					<div className="flex items-center gap-1.5">
-						<label htmlFor={scoreInputId} className="text-[13px] font-semibold text-muted-foreground">
-							점수
-						</label>
 						<Input
 							id={scoreInputId}
 							type="number"
@@ -140,18 +157,21 @@ const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestL
 						/>
 						<span className="text-muted-foreground">%</span>
 					</div>
+
+					<label htmlFor={memoInputId} className={cn(fieldLabelClassName, 'self-start pt-2')}>
+						메모
+					</label>
+					<Textarea
+						id={memoInputId}
+						placeholder="메모"
+						maxLength={LABEL_MEMO_MAX_LENGTH}
+						value={memo}
+						className="min-h-14"
+						onChange={(event) => setMemo(event.target.value)}
+					/>
 				</div>
 
-				<Textarea
-					aria-label={`${targetName} 메모`}
-					placeholder="메모"
-					maxLength={LABEL_MEMO_MAX_LENGTH}
-					value={memo}
-					className="min-h-14"
-					onChange={(event) => setMemo(event.target.value)}
-				/>
-
-				<div className="flex justify-end gap-1.5">
+				<div className="flex justify-end gap-1.5 border-t px-3 py-2.5">
 					{!!activeLabel && (
 						<Button
 							type="button"
@@ -160,7 +180,7 @@ const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestL
 							disabled={saving}
 							onClick={handleCancel}
 						>
-							라벨 취소
+							취소
 						</Button>
 					)}
 					<Button type="submit" loading={updateLabel.isPending} disabled={positive === undefined || saving}>

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	type CSSProperties,
 	type MouseEvent,
 	type PointerEvent,
 	type ReactNode,
@@ -63,7 +64,7 @@ const legends = [
 	{ label: '수면 시간', className: 'bg-[color-mix(in_srgb,var(--chart-4)_46%,var(--card))]' },
 	{ label: '연결 끊김', className: 'bg-destructive-dot' },
 	{ label: '응급 상황', className: 'text-destructive-dot', icon: Siren },
-	{ label: '모사 성공', className: 'bg-foreground' },
+	{ label: '모사 성공', className: 'bg-chart-1' },
 ];
 const laneLabelClassName = 'sticky left-0 -mb-2 w-max text-[12.5px] text-muted-foreground';
 
@@ -83,7 +84,7 @@ interface Props {
  * @param timeZone 스테이션 기기의 시간대
  * @param label 이벤트 라벨 조건
  * @param soundListParams 소리 조회 조건
- * @param filterButton 제목 줄에 표시할 필터 버튼
+ * @param filterButton 소리 표 제목 줄에 표시할 필터 버튼
  */
 const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListParams, filterButton }: Props) => {
 	const [{ data: sessionEventListData }, { data: sessionSoundListData }] = useSuspenseQueries({
@@ -434,27 +435,23 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h3 className="text-base font-bold">{formatMonthDayTime(session.period.started_at)} 세션</h3>
 
-				<div className="flex items-center gap-2">
-					{filterButton}
-
-					<SegmentedControl
-						label="확대"
-						size="sm"
-						options={zoomLevels.map((zoomLevel) => ({
-							value: zoomLevel.label,
-							label: zoomLevel.label,
-							disabled: !!zoomLevel.visibleMs && zoomLevel.zoom <= 1,
-						}))}
-						value={zoomLevels.find((zoomLevel) => Math.abs(zoom - zoomLevel.zoom) < 0.01)?.label}
-						className="border-0 bg-muted"
-						onValueChange={(zoomLabel) =>
-							changeZoom(
-								() => zoomLevels.find((zoomLevel) => zoomLevel.label === zoomLabel)?.zoom ?? zoom,
-								0.5,
-							)
-						}
-					/>
-				</div>
+				<SegmentedControl
+					label="확대"
+					size="sm"
+					options={zoomLevels.map((zoomLevel) => ({
+						value: zoomLevel.label,
+						label: zoomLevel.label,
+						disabled: !!zoomLevel.visibleMs && zoomLevel.zoom <= 1,
+					}))}
+					value={zoomLevels.find((zoomLevel) => Math.abs(zoom - zoomLevel.zoom) < 0.01)?.label}
+					className="border-0 bg-muted"
+					onValueChange={(zoomLabel) =>
+						changeZoom(
+							() => zoomLevels.find((zoomLevel) => zoomLevel.label === zoomLabel)?.zoom ?? zoom,
+							0.5,
+						)
+					}
+				/>
 			</div>
 
 			<dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
@@ -577,9 +574,9 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 										type="button"
 										aria-label={`${formatShortDateTimeWithSeconds(sessionSound.captured_at)} 모사 성공 소리 재생`}
 										className={cn(
-											'absolute top-1 -ml-1 size-2 rounded-full bg-foreground transition-transform after:absolute after:-inset-2 hover:scale-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
+											'absolute top-1 -ml-1 size-2 rounded-full bg-chart-1 transition-transform after:absolute after:-inset-2 hover:scale-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
 											sessionSound.id === currentSound?.id &&
-												'scale-125 ring-[1.5px] ring-foreground ring-offset-2 ring-offset-card',
+												'scale-125 ring-[1.5px] ring-chart-1 ring-offset-2 ring-offset-card',
 										)}
 										style={{
 											left: `${toPeriodPercent(dayjs(sessionSound.captured_at).valueOf(), sessionPeriod)}%`,
@@ -606,21 +603,33 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 							onPointerMove={handleSoundLanePointerMove}
 							onPointerLeave={handleSoundLanePointerLeave}
 						>
-							{soundBars.map((soundBar, index) => (
-								<span
-									key={index}
-									className={cn(
-										'min-w-0 basis-0 rounded-t-xs bg-chart-1/70 transition-colors',
-										currentSoundBarIndex !== null &&
-											(index <= currentSoundBarIndex ? 'bg-chart-1' : 'bg-chart-1/38'),
-										index === hoveredSoundBarIndex && 'bg-chart-1',
-									)}
-									style={{
-										flexGrow: soundBar.durationMs,
-										height: `${(soundBar.sounds.length / maxSoundCount) * 100}%`,
-									}}
-								/>
-							))}
+							{soundBars.map((soundBar, index) => {
+								// 모사 성공 소리가 있으면 주황색
+								const barColor = soundBar.sounds.some((sessionSound) => sessionSound.kind === 'mimic')
+									? 'var(--chart-1)'
+									: 'var(--foreground)';
+
+								return (
+									<span
+										key={index}
+										className={cn(
+											'min-w-0 basis-0 rounded-t-xs bg-(--bar-color)/70 transition-colors',
+											currentSoundBarIndex !== null &&
+												(index <= currentSoundBarIndex
+													? 'bg-(--bar-color)'
+													: 'bg-(--bar-color)/38'),
+											index === hoveredSoundBarIndex && 'bg-(--bar-color)',
+										)}
+										style={
+											{
+												'--bar-color': barColor,
+												flexGrow: soundBar.durationMs,
+												height: `${(soundBar.sounds.length / maxSoundCount) * 100}%`,
+											} as CSSProperties
+										}
+									/>
+								);
+							})}
 						</div>
 
 						<ol className="flex justify-between text-[11.5px] whitespace-nowrap text-muted-foreground tabular-nums">
@@ -742,41 +751,41 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 				))}
 			</div>
 
-			{sessionSoundListData.length > 0 && (
-				<>
-					<hr />
+			<hr />
 
-					<div className="@container">
-						<div className="grid gap-4 @min-[760px]:grid-cols-[minmax(0,1fr)_312px]">
-							<SessionSoundTable
-								sounds={sessionSoundListData}
-								distressCallSoundIds={distressCallSoundIds}
-								judging={judging}
-								player={player}
-							/>
+			<div className="@container">
+				<div
+					className={cn(
+						'grid gap-4',
+						sessionSoundListData.length > 0 && '@min-[760px]:grid-cols-[minmax(0,1fr)_384px]',
+					)}
+				>
+					<SessionSoundTable
+						sounds={sessionSoundListData}
+						distressCallSoundIds={distressCallSoundIds}
+						judging={judging}
+						player={player}
+						filterButton={filterButton}
+					/>
 
-							{/*선택한 소리의 상세*/}
-							<aside className="grid min-w-0 content-start gap-3 rounded-xl bg-card-inset p-3 ring-1 ring-border">
-								{currentSound ? (
-									<ErrorHandlingWrapper
-										key={currentSound.id}
-										fallbackComponent={QueryError}
-										suspenseFallback=<SessionSoundDetailSkeleton />
-									>
-										<SessionSoundDetail
-											sessionId={session.id}
-											sound={currentSound}
-											player={player}
-										/>
-									</ErrorHandlingWrapper>
-								) : (
-									<p className="p-2 text-[13px] text-muted-foreground">선택한 소리 없음</p>
-								)}
-							</aside>
-						</div>
-					</div>
-				</>
-			)}
+					{/*선택한 소리의 상세*/}
+					{sessionSoundListData.length > 0 && (
+						<aside className="grid min-w-0 content-start gap-3 rounded-xl bg-card-inset p-3 ring-1 ring-border">
+							{currentSound ? (
+								<ErrorHandlingWrapper
+									key={currentSound.id}
+									fallbackComponent={QueryError}
+									suspenseFallback=<SessionSoundDetailSkeleton />
+								>
+									<SessionSoundDetail sessionId={session.id} sound={currentSound} player={player} />
+								</ErrorHandlingWrapper>
+							) : (
+								<p className="p-2 text-[13px] text-muted-foreground">선택한 소리 없음</p>
+							)}
+						</aside>
+					)}
+				</div>
+			</div>
 
 			{!!scoreTooltip && <SessionScoreTooltip scoreTooltip={scoreTooltip} judging={judging} />}
 		</div>

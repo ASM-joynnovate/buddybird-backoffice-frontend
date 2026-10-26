@@ -7,8 +7,8 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 /** 세션 카드를 불러오는 동안 표시하는 컴포넌트 */
 const UserSessionCardSkeleton = () => {
 	return (
-		<Card className="grid gap-0 py-0 md:grid-cols-[288px_minmax(0,1fr)]">
-			<div className="grid content-start gap-0.5 border-b bg-card-inset p-3 md:border-r md:border-b-0">
+		<Card className="grid gap-0 py-0 @min-[960px]:grid-cols-[288px_minmax(0,1fr)]">
+			<div className="grid content-start gap-0.5 border-b bg-card-inset p-3 @min-[960px]:border-r @min-[960px]:border-b-0">
 				<div className="flex items-center justify-between gap-3 px-2 pt-2 pb-2.5">
 					<CardTitle className="font-bold">세션</CardTitle>
 					<SkeletonText className="w-14 text-[13px]" />

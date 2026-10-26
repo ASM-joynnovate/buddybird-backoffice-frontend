@@ -78,9 +78,9 @@ const UserSessionCard = ({ id, page, sessionId, label, soundListParams, sessionQ
 	}
 
 	return (
-		<Card className="grid gap-0 py-0 md:grid-cols-[288px_minmax(0,1fr)]">
+		<Card className="grid gap-0 py-0 @min-[960px]:grid-cols-[288px_minmax(0,1fr)]">
 			{/*세션 목록*/}
-			<div className="grid content-start gap-0.5 border-b bg-card-inset p-3 md:border-r md:border-b-0">
+			<div className="grid content-start gap-0.5 border-b bg-card-inset p-3 @min-[960px]:border-r @min-[960px]:border-b-0">
 				<div className="flex items-baseline justify-between gap-3 px-2 pt-2 pb-2.5">
 					<CardTitle className="font-bold">세션</CardTitle>
 					<p className="text-[13px] text-muted-foreground">

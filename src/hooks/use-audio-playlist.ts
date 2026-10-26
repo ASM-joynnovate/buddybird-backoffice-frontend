@@ -15,7 +15,7 @@ interface SoundGroup {
 }
 
 /**
- * 소리 목록을 차례로 재생하는 Hook
+ * 소리 목록 재생 Hook
  * @param sounds 시각 순서의 소리 목록
  */
 const useAudioPlaylist = (sounds: PlaylistSound[]) => {
@@ -27,7 +27,6 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 	const [playing, setPlaying] = useState(false);
 	const [playbackFailed, setPlaybackFailed] = useState(false);
 	const [durationSeconds, setDurationSeconds] = useState<number | null>(null);
-	const [continuousPlayEnabled, setContinuousPlayEnabled] = useState(true);
 
 	const currentIndex = sounds.findIndex((sound) => sound.id === currentSoundId);
 	const previousSound = currentIndex > 0 ? sounds[currentIndex - 1] : undefined;
@@ -136,15 +135,6 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		}
 	};
 
-	const handleToggleContinuousPlay = () => {
-		// 다음 소리 대기 중에 연속 재생을 끄면 정지
-		if (continuousPlayEnabled && playing && audioRef.current?.paused) {
-			stopSound();
-		}
-
-		setContinuousPlayEnabled(!continuousPlayEnabled);
-	};
-
 	const handleLoadedMetadata = (event: SyntheticEvent<HTMLAudioElement>) => {
 		const { duration } = event.currentTarget;
 
@@ -165,12 +155,9 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 	};
 
 	const handleEnded = () => {
-		// 그룹을 재생 중이면 그룹 안의 다음 소리만 재생
-		const queuedSound = playingSoundGroup
-			? playingSoundGroup.sounds[playingSoundGroup.sounds.findIndex((sound) => sound.id === currentSoundId) + 1]
-			: continuousPlayEnabled
-				? nextSound
-				: undefined;
+		// 그룹을 재생 중일 때만 그룹 안의 다음 소리 재생
+		const queuedSound =
+			playingSoundGroup?.sounds[playingSoundGroup.sounds.findIndex((sound) => sound.id === currentSoundId) + 1];
 
 		if (!queuedSound) {
 			finishPlaying();
@@ -205,14 +192,12 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		playingSoundGroupId: playing ? (playingSoundGroup?.id ?? null) : null,
 		playbackFailed,
 		durationSeconds,
-		continuousPlayEnabled,
 		playSound,
 		playSoundInGroup,
 		handleTogglePlay,
 		handleToggleSoundGroup,
 		handlePlayPrevious,
 		handlePlayNext,
-		handleToggleContinuousPlay,
 		audioProps: {
 			ref: audioRef,
 			onLoadedMetadata: handleLoadedMetadata,
