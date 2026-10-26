@@ -6,7 +6,7 @@ import type { SessionSound } from '@/types/apis/sessions';
 
 import type { AudioPlaylist } from '@/hooks/use-audio-playlist';
 
-import { BadgeCheck, ListMusic, Siren, SkipBack, SkipForward } from 'lucide-react';
+import { BadgeCheck, Siren, SkipBack, SkipForward } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import PlayButton from '@/app/(main)/(backoffice)/_components/play-button';
@@ -19,7 +19,6 @@ import { formatShortDateTimeWithSeconds } from '@/utils/date';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Props {
 	currentSound: SessionSound | null;
@@ -40,8 +39,7 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 
 	const [progressPercent, setProgressPercent] = useState(0);
 
-	const { playing, playbackFailed, durationSeconds, continuousPlayEnabled, previousSound, nextSound, audioProps } =
-		player;
+	const { playing, playbackFailed, durationSeconds, previousSound, nextSound, audioProps } = player;
 	const soundTime = currentSound && formatShortDateTimeWithSeconds(currentSound.captured_at);
 	// 길이를 저장하기 전의 녹음은 파일에서 읽은 길이 표시
 	const soundDurationSeconds = currentSound?.duration_ms ? currentSound.duration_ms / SECOND : durationSeconds;
@@ -136,7 +134,7 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 					{/*좁은 화면에서는 한 줄로 축약 표시*/}
 					{!currentSound && (
 						<span>
-							막대를 누르면 <span className="max-md:hidden">그 시각부터 </span>재생
+							막대를 누르면 <span className="max-md:hidden">그 시각의 소리 </span>재생
 						</span>
 					)}
 
@@ -154,13 +152,13 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 							<SessionSoundScore
 								label="앵무새 소리"
 								score={currentSound.final_parrot_score}
-								barClassName="bg-chart-1"
+								barClassName="bg-foreground"
 							/>
 							<SessionSoundScore
 								label="모사"
 								score={currentSound.final_mimic_score}
 								judging={judging}
-								barClassName="bg-foreground"
+								barClassName="bg-chart-1"
 							/>
 							{currentSound.kind === 'mimic' && (
 								<ColorTag color={SESSION_SOUND_KINDS.mimic.color}>
@@ -209,21 +207,6 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 				>
 					<SkipForward />
 				</Button>
-
-				<Tooltip>
-					<TooltipTrigger
-						render=<Button variant="outline" size="icon-sm" />
-						aria-label="이어 듣기"
-						aria-pressed={continuousPlayEnabled}
-						className="ml-1.5 aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-card"
-						onClick={player.handleToggleContinuousPlay}
-					>
-						<ListMusic />
-					</TooltipTrigger>
-					<TooltipContent side="bottom" align="end" sideOffset={8}>
-						이어 듣기
-					</TooltipContent>
-				</Tooltip>
 			</div>
 		</div>
 	);

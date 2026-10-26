@@ -48,7 +48,7 @@ const SessionScoreTooltip = ({ scoreTooltip, judging }: Props) => {
 			{!!title && <strong className="text-[13px] font-bold">{title}</strong>}
 
 			<div className="flex items-center gap-1.5">
-				<span className="size-2 rounded-full bg-chart-1" />
+				<span className="size-2 rounded-full bg-tooltip-foreground" />
 				<strong className="text-[13px] font-bold tabular-nums">
 					{analysisScores.length > 0 ? `${Math.round(averageAnalysisScore * 100)}%` : '-'}
 				</strong>
@@ -56,7 +56,7 @@ const SessionScoreTooltip = ({ scoreTooltip, judging }: Props) => {
 			</div>
 
 			<div className="flex items-center gap-1.5">
-				<span className="size-2 rounded-full bg-tooltip-foreground" />
+				<span className="size-2 rounded-full bg-chart-1" />
 				<strong className="text-[13px] font-bold tabular-nums">
 					{judgmentScores.length > 0 && `${Math.round(Math.max(...judgmentScores) * 100)}%`}
 					{judgmentScores.length === 0 && (judging ? '판정 중' : '-')}

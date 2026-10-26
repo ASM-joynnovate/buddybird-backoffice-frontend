@@ -31,7 +31,7 @@ const SessionSoundScore = ({ label, score, judging = false, barClassName, trackC
 							style={{ width: `${score * 100}%` }}
 						/>
 					</span>
-					<strong className="min-w-7.5 font-bold text-foreground tabular-nums">
+					<strong className="min-w-7.5 text-right font-bold text-foreground tabular-nums">
 						{Math.round(score * 100)}%
 					</strong>
 				</>

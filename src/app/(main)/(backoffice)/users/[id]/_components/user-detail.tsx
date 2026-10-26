@@ -92,28 +92,30 @@ const UserDetail = ({
 				</ErrorHandlingWrapper>
 			</div>
 
-			{/*세션 목록의 페이지가 변경되면 다시 마운트*/}
-			<ErrorHandlingWrapper
-				key={sessionId ?? sessionPage}
-				fallbackComponent={QueryError}
-				suspenseFallback=<UserSessionCardSkeleton />
-			>
-				<SessionTimelinePrefetch
-					sessionList={sessionList}
-					sessionId={sessionId}
-					label={label}
-					soundListParams={soundListParams}
-				/>
-				<UserSessionCard
-					id={id}
-					page={sessionPage}
-					sessionId={sessionId}
-					label={label}
-					soundListParams={soundListParams}
-					sessionQuery={sessionQuery}
-					initialNow={now}
-				/>
-			</ErrorHandlingWrapper>
+			<div className="@container">
+				{/*세션 목록의 페이지가 변경되면 다시 마운트*/}
+				<ErrorHandlingWrapper
+					key={sessionId ?? sessionPage}
+					fallbackComponent={QueryError}
+					suspenseFallback=<UserSessionCardSkeleton />
+				>
+					<SessionTimelinePrefetch
+						sessionList={sessionList}
+						sessionId={sessionId}
+						label={label}
+						soundListParams={soundListParams}
+					/>
+					<UserSessionCard
+						id={id}
+						page={sessionPage}
+						sessionId={sessionId}
+						label={label}
+						soundListParams={soundListParams}
+						sessionQuery={sessionQuery}
+						initialNow={now}
+					/>
+				</ErrorHandlingWrapper>
+			</div>
 
 			<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
 				<div className="contents xl:grid xl:gap-4">

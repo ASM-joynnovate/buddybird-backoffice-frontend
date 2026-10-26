@@ -39,8 +39,8 @@ export const SESSION_EVENTS = {
 
 export const SESSION_SOUND_KINDS = {
 	not_parrot: { label: '앵무새 X', color: 'var(--chart-neutral)' },
-	parrot: { label: '앵무새 O', color: 'var(--chart-1)' },
-	mimic: { label: '모사', color: 'var(--foreground)' },
+	parrot: { label: '앵무새 O', color: 'var(--foreground)' },
+	mimic: { label: '모사', color: 'var(--chart-1)' },
 } satisfies Record<SessionSoundKind, { label: string; color: string }>;
 
 export const SESSION_SOUND_LABEL_TARGETS = {
