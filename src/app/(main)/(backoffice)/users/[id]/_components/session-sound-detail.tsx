@@ -9,12 +9,13 @@ import { cn } from '@/lib/utils';
 
 import { Play, Square } from 'lucide-react';
 
+import CollapsibleTitledBox from '@/app/(main)/(backoffice)/_components/collapsible-titled-box';
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import CorrectnessIcon from '@/app/(main)/(backoffice)/_components/correctness-icon';
 import SoundDownloadButton from '@/app/(main)/(backoffice)/_components/sound-download-button';
-import TitledBox from '@/app/(main)/(backoffice)/_components/titled-box';
 import LabelHistory from '@/app/(main)/(backoffice)/users/[id]/_components/label-history';
 import SessionSoundLabelForm from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-label-form';
+import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
 import UserReviewBox from '@/app/(main)/(backoffice)/users/[id]/_components/user-review-box';
 import { SESSION_SOUND_KINDS, SESSION_SOUND_LABEL_TARGETS } from '@/config/session';
 import { SECOND } from '@/config/units';
@@ -28,6 +29,7 @@ const subtitleClassName = 'px-3 pt-2.5 text-[12.5px] font-semibold text-muted-fo
 const scrollAreaClassName = '[scrollbar-width:thin] overflow-auto overscroll-contain';
 const headClassName = 'sticky -top-px h-8 bg-card px-1.5 text-[12.5px] first:pl-3 last:pr-3';
 const cellClassName = 'px-1.5 py-1.5 tabular-nums first:pl-3 last:pr-3';
+const modelResultClassName = 'inline-flex items-center gap-1 font-semibold tabular-nums';
 
 interface Props {
 	sessionId: string;
@@ -47,6 +49,10 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 	const requestMimicJudgment = useRequestSessionSoundMimicJudgment();
 
 	const { kind, parrot_detections: parrotDetections, mimic_judgments: mimicJudgments } = sessionSoundData;
+	const latestParrotDetection = parrotDetections.at(-1);
+	const latestMimicJudgment = mimicJudgments.at(-1);
+	const latestParrotLabel = sessionSoundData.labels.findLast((label) => label.target === 'parrot');
+	const latestMimicLabel = sessionSoundData.labels.findLast((label) => label.target === 'mimic');
 	const soundTime = formatShortDateTimeWithSeconds(sound.captured_at);
 	const soundPlaying = player.playing && player.currentSoundId === sound.id;
 	// 앵무새 소리로 판별된 소리만 모사 판정 가능
@@ -110,24 +116,91 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 
 			<UserReviewBox userReview={sessionSoundData.user_review} />
 
-			<SessionSoundLabelForm
-				sessionId={sessionId}
-				soundId={sound.id}
-				target="parrot"
-				finalScore={sessionSoundData.final_parrot_score}
-				latestLabel={sessionSoundData.labels.findLast((label) => label.target === 'parrot')}
-			/>
-			<SessionSoundLabelForm
-				sessionId={sessionId}
-				soundId={sound.id}
-				target="mimic"
-				finalScore={sessionSoundData.final_mimic_score}
-				latestLabel={sessionSoundData.labels.findLast((label) => label.target === 'mimic')}
-			/>
+			{/*저장한 라벨이 바뀌면 입력값을 다시 채움*/}
+			<CollapsibleTitledBox
+				title={SESSION_SOUND_LABEL_TARGETS.parrot}
+				action={
+					<span className="text-[12.5px] text-muted-foreground">
+						<SessionSoundScore
+							label="최종"
+							score={sessionSoundData.final_parrot_score}
+							barClassName="bg-foreground"
+						/>
+					</span>
+				}
+				defaultOpen
+			>
+				<SessionSoundLabelForm
+					key={latestParrotLabel?.id}
+					sessionId={sessionId}
+					soundId={sound.id}
+					target="parrot"
+					latestLabel={latestParrotLabel}
+					latestModelResult={
+						latestParrotDetection && {
+							positive: latestParrotDetection.is_parrot,
+							score: latestParrotDetection.score,
+						}
+					}
+				/>
+			</CollapsibleTitledBox>
+			<CollapsibleTitledBox
+				title={SESSION_SOUND_LABEL_TARGETS.mimic}
+				action={
+					<span className="text-[12.5px] text-muted-foreground">
+						<SessionSoundScore
+							label="최종"
+							score={sessionSoundData.final_mimic_score}
+							barClassName="bg-chart-1"
+						/>
+					</span>
+				}
+			>
+				<SessionSoundLabelForm
+					key={latestMimicLabel?.id}
+					sessionId={sessionId}
+					soundId={sound.id}
+					target="mimic"
+					latestLabel={latestMimicLabel}
+					latestModelResult={
+						latestMimicJudgment && {
+							positive: latestMimicJudgment.word_id !== null,
+							score: latestMimicJudgment.score,
+						}
+					}
+				/>
+			</CollapsibleTitledBox>
 
-			<TitledBox
+			<CollapsibleTitledBox
 				title="모델 결과"
 				action={
+					<span className="flex items-center gap-2.5 text-[12.5px]">
+						{!!latestParrotDetection && (
+							<span className={modelResultClassName}>
+								<span className="mr-0.5 font-normal text-muted-foreground">앵무새</span>
+								<CorrectnessIcon
+									correct={latestParrotDetection.is_parrot}
+									label={latestParrotDetection.is_parrot ? '앵무새 소리' : '앵무새 소리 아님'}
+									className="size-3.5"
+								/>
+								{Math.round(latestParrotDetection.score * 100)}%
+							</span>
+						)}
+						{!!latestMimicJudgment && (
+							<span className={modelResultClassName}>
+								<span className="mr-0.5 font-normal text-muted-foreground">모사</span>
+								<CorrectnessIcon
+									correct={latestMimicJudgment.word_id !== null}
+									label={latestMimicJudgment.word_id === null ? '모사 아님' : '모사'}
+									className="size-3.5"
+								/>
+								{Math.round(latestMimicJudgment.score * 100)}%
+							</span>
+						)}
+					</span>
+				}
+			>
+				<div className="flex justify-end px-3 pt-2.5">
 					<Button
 						variant="outline"
 						size="sm"
@@ -137,8 +210,8 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 					>
 						모델 재판정
 					</Button>
-				}
-			>
+				</div>
+
 				<p className={subtitleClassName}>앵무새 소리 판별</p>
 				<div className={cn(scrollAreaClassName, 'max-h-38')}>
 					<table className="w-max min-w-full text-[13px]">
@@ -229,9 +302,9 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 						</TableBody>
 					</table>
 				</div>
-			</TitledBox>
+			</CollapsibleTitledBox>
 
-			<TitledBox
+			<CollapsibleTitledBox
 				title="수정 기록"
 				action={
 					<span className="text-[12.5px] text-muted-foreground tabular-nums">
@@ -252,7 +325,7 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 					}))}
 					className="max-h-59"
 				/>
-			</TitledBox>
+			</CollapsibleTitledBox>
 		</>
 	);
 };
