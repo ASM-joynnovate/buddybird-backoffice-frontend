@@ -24,10 +24,15 @@ const SessionSoundDetailSkeleton = () => {
 					<Skeleton className="size-7" />
 				</div>
 
-				<dl className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-x-3 border-t pt-2.5 text-[13px]">
+				<dl className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-x-3 gap-y-2 border-t pt-2.5 text-[13px]">
 					<dt className="text-muted-foreground">최종 결과</dt>
 					<dd>
 						<Skeleton className="h-5 w-18" />
+					</dd>
+
+					<dt className="text-muted-foreground">단어</dt>
+					<dd>
+						<SkeletonText className="w-12" />
 					</dd>
 				</dl>
 			</div>
@@ -56,6 +61,7 @@ const SessionSoundDetailSkeleton = () => {
 				</div>
 
 				<div className="flex justify-end gap-1.5 border-t px-3 py-2.5">
+					<Skeleton className="mr-auto h-9 w-14" />
 					<Skeleton className="h-9 w-14" />
 					<Skeleton className="h-9 w-14" />
 				</div>

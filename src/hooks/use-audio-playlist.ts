@@ -94,6 +94,16 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		finishPlaying();
 	};
 
+	/** 재생 없이 소리를 선택하는 함수 */
+	const selectSound = (sound: PlaylistSound) => {
+		if (sound.id === currentSoundId) {
+			return;
+		}
+
+		stopSound();
+		setCurrentSoundId(sound.id);
+	};
+
 	const handleTogglePlay = () => {
 		if (playing) {
 			stopSound();
@@ -194,6 +204,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		durationSeconds,
 		playSound,
 		playSoundInGroup,
+		selectSound,
 		handleTogglePlay,
 		handleToggleSoundGroup,
 		handlePlayPrevious,
