@@ -8,6 +8,8 @@ import { ApiError } from '@/types/apis/common';
 
 import { useLogin } from '@/hooks/apis/auth';
 
+import { OPERATOR_NAME_MAX_LENGTH } from '@/config';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,6 +18,7 @@ import { Label } from '@/components/ui/label';
 const LoginForm = () => {
 	const router = useRouter();
 
+	const [operatorName, setOperatorName] = useState('');
 	const [password, setPassword] = useState('');
 
 	const { error, isPending, isSuccess, mutate } = useLogin();
@@ -29,12 +32,26 @@ const LoginForm = () => {
 			return;
 		}
 
-		mutate({ password }, { onSuccess: () => router.replace('/users') });
+		mutate({ password, operatorName: operatorName.trim() }, { onSuccess: () => router.replace('/users') });
 	};
 
 	return (
 		<form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
 			<h1 className="text-2xl font-bold">버디버드 백오피스</h1>
+
+			<div className="space-y-2">
+				<Label htmlFor="operator-name">이름</Label>
+				<Input
+					id="operator-name"
+					autoComplete="name"
+					required
+					// 공백만 입력한 이름은 제출하지 않음
+					pattern=".*\S.*"
+					maxLength={OPERATOR_NAME_MAX_LENGTH}
+					value={operatorName}
+					onChange={(event) => setOperatorName(event.target.value)}
+				/>
+			</div>
 
 			<div className="space-y-2">
 				<Label htmlFor="password">비밀번호</Label>

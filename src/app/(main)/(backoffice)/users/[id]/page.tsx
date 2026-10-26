@@ -1,6 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import { uuidSchema } from '@/types/apis/primitives';
+import { correctnessSchema } from '@/types/apis/sessions';
 
 import { getFeedbackListOptions } from '@/hooks/apis/feedback';
 import { getNotificationListOptions } from '@/hooks/apis/notifications';
@@ -16,8 +17,9 @@ import { getQueryClient } from '@/lib/query-client';
 
 import UserDetail from '@/app/(main)/(backoffice)/users/[id]/_components/user-detail';
 import { USER_RECENT_ITEM_COUNT } from '@/config';
+import { DEFAULT_LABELS, SOUND_KIND_FILTER_GROUP, SOUND_KIND_FILTER_KINDS } from '@/config/session-filters';
 import { formatToday, getNow } from '@/utils/date';
-import { toPageNumber } from '@/utils/search-params';
+import { toLabels, toPageNumber } from '@/utils/search-params';
 
 /** 사용자 상세 페이지 */
 export default async function Page(props: PageProps<'/users/[id]'>) {
@@ -27,6 +29,20 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 	// 처음에 선택할 세션
 	const sessionId = uuidSchema.safeParse(searchParams.session_id).data;
 	const recentListParams = { page: 1, count_by_page: USER_RECENT_ITEM_COUNT, user_id: id };
+
+	const labels = toLabels(searchParams.label);
+	const soundKind = SOUND_KIND_FILTER_GROUP.options.find(
+		(filterOption) => filterOption.value === searchParams.sound_kind,
+	)?.value;
+	const soundReview = correctnessSchema.safeParse(searchParams.sound_review).data;
+
+	const label = labels ?? DEFAULT_LABELS;
+	const soundListParams = {
+		kind: SOUND_KIND_FILTER_KINDS[soundKind ?? SOUND_KIND_FILTER_GROUP.defaultValue],
+		user_review: soundReview && [soundReview],
+	};
+	// 링크가 유지할 세션 필터 쿼리
+	const sessionQuery = { label: labels?.join(','), sound_kind: soundKind, sound_review: soundReview };
 
 	const queryClient = getQueryClient();
 
@@ -42,7 +58,7 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 	// 세션 목록은 첫 세션의 타임라인 조회에도 사용
 	// 실패 시 세션 카드에 오류 표시
 	const sessionList = queryClient
-		.fetchQuery(getUserSessionListOptions({ id, page: sessionPage, sessionId }))
+		.fetchQuery(getUserSessionListOptions({ id, page: sessionPage, sessionId, label }))
 		.catch(() => undefined);
 
 	return (
@@ -52,6 +68,9 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 				sessionPage={sessionPage}
 				sessionId={sessionId}
 				sessionList={sessionList}
+				label={label}
+				soundListParams={soundListParams}
+				sessionQuery={sessionQuery}
 				today={formatToday()}
 				now={getNow()}
 			/>

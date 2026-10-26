@@ -6,11 +6,13 @@ import type { SessionSound } from '@/types/apis/sessions';
 
 import type { AudioPlaylist } from '@/hooks/use-audio-playlist';
 
-import { ListMusic, Siren, SkipBack, SkipForward } from 'lucide-react';
+import { BadgeCheck, ListMusic, Siren, SkipBack, SkipForward } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import PlayButton from '@/app/(main)/(backoffice)/_components/play-button';
+import UserReviewIcon from '@/app/(main)/(backoffice)/_components/user-review-icon';
 import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
+import { SESSION_SOUND_KINDS } from '@/config/session';
 import { SECOND } from '@/config/units';
 import { formatAudioDuration } from '@/utils/audio';
 import { formatShortDateTimeWithSeconds } from '@/utils/date';
@@ -151,16 +153,28 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 							)}
 							<SessionSoundScore
 								label="앵무새 소리"
-								score={currentSound.analysis?.score ?? null}
+								score={currentSound.final_parrot_score}
 								barClassName="bg-chart-1"
 							/>
 							<SessionSoundScore
 								label="모사"
-								score={currentSound.judgment?.score ?? null}
+								score={currentSound.final_mimic_score}
 								judging={judging}
 								barClassName="bg-foreground"
 							/>
-							{currentSound.is_mimic && <ColorTag color="var(--foreground)">모사 성공</ColorTag>}
+							{currentSound.kind === 'mimic' && (
+								<ColorTag color={SESSION_SOUND_KINDS.mimic.color}>
+									{SESSION_SOUND_KINDS.mimic.label}
+								</ColorTag>
+							)}
+							{currentSound.is_labeled && (
+								<BadgeCheck aria-label="운영자 라벨 있음" className="size-4 text-info">
+									<title>운영자 라벨 있음</title>
+								</BadgeCheck>
+							)}
+							{!!currentSound.user_review && (
+								<UserReviewIcon correct={currentSound.user_review.is_correct} />
+							)}
 							{distressCallSoundIds.has(currentSound.id) && (
 								<Badge variant="destructive" className="max-md:pr-1.5 dark:bg-destructive/10">
 									<Siren data-icon="inline-start" />

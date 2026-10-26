@@ -1,5 +1,8 @@
 import Image from 'next/image';
 
+import type { SessionEvent } from '@/types/apis/sessions';
+
+import SessionEventLabel from '@/app/(main)/(backoffice)/users/[id]/_components/session-event-label';
 import { formatShortDateTime } from '@/utils/date';
 
 interface PetcamEvent {
@@ -9,17 +12,21 @@ interface PetcamEvent {
 	color: string;
 	imageUrl?: string;
 	videoUrl?: string;
+	isCorrect: SessionEvent['is_correct'];
+	userReview: SessionEvent['user_review'];
 }
 
 interface Props {
+	sessionId: string;
 	petcamEvents: PetcamEvent[];
 }
 
 /**
  * 펫캠 이벤트의 썸네일 및 영상 목록 컴포넌트
+ * @param sessionId 펫캠 이벤트가 속한 세션 ID
  * @param petcamEvents 썸네일이나 영상이 있는 펫캠 이벤트
  */
-const SessionPetcamList = ({ petcamEvents }: Props) => {
+const SessionPetcamList = ({ sessionId, petcamEvents }: Props) => {
 	return (
 		<section className="grid gap-2">
 			<h4 className="font-bold">펫캠</h4>
@@ -55,14 +62,26 @@ const SessionPetcamList = ({ petcamEvents }: Props) => {
 								)
 							)}
 
-							<p className="flex items-center gap-2 text-[13px] font-semibold">
-								<span
-									className="size-2 shrink-0 rounded-full"
-									style={{ backgroundColor: petcamEvent.color }}
+							<div className="flex items-center justify-between gap-2">
+								<p className="flex items-center gap-2 text-[13px] font-semibold">
+									<span
+										className="size-2 shrink-0 rounded-full"
+										style={{ backgroundColor: petcamEvent.color }}
+									/>
+									<time className="font-normal text-muted-foreground tabular-nums">
+										{occurredTime}
+									</time>
+									{petcamEvent.label}
+								</p>
+
+								<SessionEventLabel
+									sessionId={sessionId}
+									eventId={petcamEvent.id}
+									title={`${occurredTime} ${petcamEvent.label}`}
+									isCorrect={petcamEvent.isCorrect}
+									userReview={petcamEvent.userReview}
 								/>
-								<time className="font-normal text-muted-foreground tabular-nums">{occurredTime}</time>
-								{petcamEvent.label}
-							</p>
+							</div>
 						</li>
 					);
 				})}

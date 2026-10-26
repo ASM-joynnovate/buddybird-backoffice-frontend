@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { PASSWORD_COOKIE_NAME } from '@/lib/auth';
+import { OPERATOR_NAME_COOKIE_NAME, PASSWORD_COOKIE_NAME } from '@/lib/auth';
 
 const LOGIN_PATH = '/login';
 
@@ -8,13 +8,15 @@ const LOGIN_PATH = '/login';
 export const proxy = (request: NextRequest) => {
 	const { pathname } = request.nextUrl;
 
-	const passwordSaved = !!request.cookies.get(PASSWORD_COOKIE_NAME)?.value;
+	// 라벨에 저장할 운영자 이름이 없으면 다시 로그인
+	const loginSaved =
+		!!request.cookies.get(PASSWORD_COOKIE_NAME)?.value && !!request.cookies.get(OPERATOR_NAME_COOKIE_NAME)?.value;
 
-	if (!passwordSaved && pathname !== LOGIN_PATH) {
+	if (!loginSaved && pathname !== LOGIN_PATH) {
 		return NextResponse.redirect(new URL(LOGIN_PATH, request.url));
 	}
 
-	if (passwordSaved && pathname === LOGIN_PATH) {
+	if (loginSaved && pathname === LOGIN_PATH) {
 		return NextResponse.redirect(new URL('/', request.url));
 	}
 

@@ -1,6 +1,7 @@
 import type { Platform } from '@/types/apis/app-updates';
 import { fileSchema } from '@/types/apis/common';
 import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
+import type { Correctness } from '@/types/apis/sessions';
 
 import { z } from 'zod';
 
@@ -22,6 +23,7 @@ export const emergencySchema = z.object({
 	kind: emergencyKindSchema,
 	occurred_at: timestampSchema,
 	ended_at: timestampSchema.nullable(),
+	is_correct: z.boolean().nullable(),
 	session: z.object({
 		id: uuidSchema,
 		status: z.enum(['running', 'finished']),
@@ -73,4 +75,5 @@ export interface EmergencyListParams {
 	is_ongoing?: boolean;
 	notification?: EmergencyNotificationState;
 	platform?: Platform;
+	label?: Correctness[];
 }

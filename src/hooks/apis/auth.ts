@@ -7,7 +7,7 @@ import { ApiError } from '@/types/apis/common';
 import { apiKeys } from '@/hooks/apis/keys';
 
 import { apiErrorMessage } from '@/lib/api';
-import { savePassword } from '@/lib/auth';
+import { saveLogin } from '@/lib/auth';
 
 import { toast } from 'sonner';
 
@@ -15,9 +15,9 @@ import { toast } from 'sonner';
 export const useLogin = () => {
 	return useMutation({
 		mutationKey: apiKeys.mutation('auth', 'login'),
-		mutationFn: checkPassword,
+		mutationFn: ({ password }: { password: string; operatorName: string }) => checkPassword({ password }),
 		meta: { skipUnauthorizedSignOut: true },
-		onSuccess: (_data, { password }) => savePassword(password),
+		onSuccess: (_data, variables) => saveLogin(variables),
 		onError: (error) => {
 			if (!(error instanceof ApiError && error.passwordRejected)) {
 				toast.error(apiErrorMessage(error));

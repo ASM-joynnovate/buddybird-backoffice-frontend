@@ -26,8 +26,8 @@ interface Props {
 const SessionScoreTooltip = ({ scoreTooltip, judging }: Props) => {
 	const { title, sounds, left, top } = scoreTooltip;
 
-	const analysisScores = sounds.flatMap((sound) => (sound.analysis ? [sound.analysis.score] : []));
-	const judgmentScores = sounds.flatMap((sound) => (sound.judgment ? [sound.judgment.score] : []));
+	const analysisScores = sounds.flatMap((sound) => sound.final_parrot_score ?? []);
+	const judgmentScores = sounds.flatMap((sound) => sound.final_mimic_score ?? []);
 	const averageAnalysisScore = analysisScores.reduce((total, score) => total + score, 0) / analysisScores.length;
 	const multiple = sounds.length > 1;
 
