@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.28.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.27.0...v0.28.0) (2026-10-26)
+
+
+### Features
+
+* 소리 표 열 폭 조정, 행 클릭 재생 삭제 및 모사 단어 표시 ([a19259a](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/a19259a2aa4952273923e20a6be77748a3c5b68a))
+* 소리 표 열 폭 조정, 행 클릭 재생 삭제 및 모사 단어 표시 ([2101c45](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/2101c45255484da7fb5eb5d7827e3a491cb20f09))
+
 ## [0.27.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.26.0...v0.27.0) (2026-10-26)
 
 
