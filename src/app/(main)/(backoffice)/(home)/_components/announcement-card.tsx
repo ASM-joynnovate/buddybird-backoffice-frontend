@@ -16,7 +16,7 @@ interface Props {
 
 /**
  * 공지 카드 컴포넌트
- * @param announcements 끝나지 않은 공지 목록
+ * @param announcements 종료되지 않은 공지 목록
  * @param userCount 전체 사용자 수
  * @param now 서버가 화면을 렌더링한 시각
  */

@@ -28,7 +28,7 @@ const LocaleFieldGroup = ({ locale, summaryTexts, englishRequired, children, onL
 	return (
 		<div className="@container">
 			<div className="grid items-start gap-2.5 @lg:grid-cols-[208px_minmax(0,1fr)]">
-				{/*언어 다섯 개까지 보이고 넘으면 스크롤*/}
+				{/*언어 다섯 개까지 표시, 초과하면 스크롤*/}
 				<fieldset className="max-h-60.5 min-w-0 [scrollbar-width:thin] divide-y overflow-y-auto overscroll-contain rounded-lg border bg-card">
 					<legend className="sr-only">입력할 언어</legend>
 

@@ -38,7 +38,7 @@ const DeleteConsentDialog = ({ open, consent, onClose }: Props) => {
 				onSuccess: () => {
 					onClose();
 
-					// 같은 종류의 대표하는 버전을 고름
+					// 같은 종류의 대표하는 버전을 선택
 					router.push(`/consents?${new URLSearchParams({ kind: consent.kind })}`, { scroll: false });
 				},
 			},

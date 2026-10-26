@@ -37,7 +37,7 @@ const SettingsCardSkeleton = () => {
 						<Skeleton className="h-4 w-7 rounded-full" />
 					</li>
 
-					{/*알림 설정 이름 줄 및 결정 일시 줄*/}
+					{/*알림 설정 이름 행 및 결정 일시 행*/}
 					{Array.from({ length: PLACEHOLDER_ROW_COUNT }, (_, index) => (
 						<li key={index} className="flex items-center justify-between gap-3 py-2 last:pb-0">
 							<div className="grid">

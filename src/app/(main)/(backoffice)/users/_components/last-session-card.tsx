@@ -29,7 +29,7 @@ const LastSessionCard = ({ lastSessions, userCount, query }: Props) => {
 		count,
 		label: USER_FILTER_GROUPS[0].options.find(({ value }) => value === last_session)?.label,
 		colorClassName: colorClassNames[index],
-		// 다른 구간을 골랐으면 옅게 표시
+		// 다른 구간을 선택했으면 옅게 표시
 		dimmed: !!query.last_session && query.last_session !== last_session,
 		href: { pathname: '/users', query: toToggledQuery(query, 'last_session', last_session) },
 	}));

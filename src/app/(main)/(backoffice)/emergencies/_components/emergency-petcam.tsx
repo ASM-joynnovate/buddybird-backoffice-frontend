@@ -54,9 +54,9 @@ interface Props {
 }
 
 /**
- * 펫캠 사진, 영상 및 이탈부터 복귀까지의 경과 컴포넌트
+ * 펫캠 이탈부터 복귀까지의 기록 컴포넌트
  * @param occurredAt 이탈 시각
- * @param vision 비전 기반 응급 상황의 사진, 영상, 알림, 복귀 정보
+ * @param vision 비전 기반 응급 상황 정보
  */
 const EmergencyPetcam = ({ occurredAt, vision }: Props) => {
 	const [shownShot, setShownShot] = useState<PetcamShot>('disappeared');
@@ -124,7 +124,7 @@ const EmergencyPetcam = ({ occurredAt, vision }: Props) => {
 				</figcaption>
 			</figure>
 
-			{/*행은 56px까지 늘어남*/}
+			{/*행 높이는 최대 56px*/}
 			<ol
 				className="-m-0.75 grid min-w-0 auto-rows-[minmax(44px,1fr)] gap-1 self-stretch tabular-nums @min-[620px]:auto-rows-[minmax(34px,1fr)]"
 				style={{ maxHeight: orderedSteps.length * 60 - 4 }}

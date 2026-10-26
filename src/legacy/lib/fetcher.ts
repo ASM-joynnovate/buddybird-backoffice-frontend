@@ -43,7 +43,7 @@ export default async function fetcher<T extends ApiResponse>(
 			const data = await res.json();
 			error = new ApiError(data['error_code'] ?? data['code'] ?? 'UNKNOWN', data['message'] ?? '', res.status);
 		} catch (e) {
-			/** 파싱에 실패했을 경우 UNKNOWN ApiError throw */
+			/** 파싱 실패 시 UNKNOWN ApiError throw */
 			console.error(e);
 			error = new ApiError('UNKNOWN', '알 수 없는 오류가 발생했습니다.', res.status);
 		}
@@ -72,7 +72,7 @@ export default async function fetcher<T extends ApiResponse>(
 			meta: meta ? camelize(meta) : null,
 		} as T;
 	} catch (e) {
-		/** 기타 알 수 없는 오류가 발생했을 경우 UNKNOWN ApiError throw */
+		/** 그 밖의 오류는 UNKNOWN ApiError throw */
 		console.error(e);
 		throw new ApiError('UNKNOWN', '알 수 없는 오류가 발생했습니다.', res.status);
 	}

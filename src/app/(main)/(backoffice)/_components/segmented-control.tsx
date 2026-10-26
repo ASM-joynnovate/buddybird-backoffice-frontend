@@ -24,13 +24,13 @@ interface Props<T extends string | number | boolean> {
 }
 
 /**
- * 값 하나를 고르는 버튼 그룹 컴포넌트
+ * 값 하나를 선택하는 버튼 그룹 컴포넌트
  * @param label 그룹의 이름
- * @param options 고를 수 있는 버튼 목록
- * @param value 고른 값
+ * @param options 선택할 수 있는 버튼 목록
+ * @param value 선택한 값
  * @param size 그룹의 크기
  * @param className 그룹에 더할 class
- * @param onValueChange 값을 고르면 실행할 함수
+ * @param onValueChange 값을 선택하면 실행할 함수
  */
 const SegmentedControl = <T extends string | number | boolean>({
 	label,

@@ -42,7 +42,7 @@ const CountryList = ({ countries, className }: Props) => {
 	const totalCount = countries.reduce((total, { count }) => total + count, 0);
 	const maxCount = Math.max(1, ...countries.map(({ count }) => count));
 
-	// 이름 있는 국가, 나머지 국가의 합, 국가를 알 수 없는 사용자 순서
+	// 국가, 나머지 합계, 알 수 없음 순서
 	const countryRows = [
 		...knownCountries.slice(0, visibleCountryCount).map(({ country, count }) => ({
 			name: toCountryName(country),

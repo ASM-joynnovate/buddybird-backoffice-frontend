@@ -76,7 +76,7 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 
 		setSaveTried(true);
 
-		// 빠진 영어 문구를 입력하도록 영어 선택
+		// 누락된 영어 문구를 입력하도록 영어 선택
 		if (englishTextMissing) {
 			setLocale('en_us');
 
@@ -98,7 +98,7 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 			published_at: toTimestamp(publishedAt),
 		};
 
-		// 저장한 버전을 고름
+		// 저장한 버전을 선택
 		const handleSaved = (savedConsent: Consent) => {
 			onClose();
 
@@ -170,7 +170,7 @@ const ConsentForm = ({ formMode, sourceConsent, liveConsentExists, onClose }: Pr
 				</div>
 			)}
 
-			{/*선택한 언어의 제목 및 본문을 한 상자에 입력*/}
+			{/*선택한 언어의 제목 및 본문을 한 입력 영역에 입력*/}
 			<div className={`${rowClassName} md:items-start`}>
 				<span className={`${labelClassName} md:pt-2`}>내용</span>
 

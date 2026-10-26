@@ -99,7 +99,7 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 			return;
 		}
 
-		// 바뀐 값이 없는 수정은 요청 없이 닫음
+		// 변경한 값이 없으면 요청 없이 닫음
 		if (presetWord && trimmedName === presetWord.name && !pickedAudio) {
 			onClose();
 
@@ -128,7 +128,7 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 			return;
 		}
 
-		// 음성 없는 추가는 위에서 막으므로 타입만 좁힌다
+		// 타입 narrowing용 검사
 		if (!pickedAudio) {
 			return;
 		}

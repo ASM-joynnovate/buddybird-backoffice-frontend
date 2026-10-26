@@ -34,9 +34,9 @@ interface Props {
  * @param placeholder 검색 입력의 안내 문구
  * @param keyword 조회 조건의 검색어
  * @param query 현재 주소의 쿼리
- * @param selectedFilters 칩으로 표시할 고른 조건
+ * @param selectedFilters 칩으로 표시할 선택한 조건
  * @param filterCount "필터" 버튼에 표시할 조건의 개수
- * @param filterPanel "필터" 버튼을 누르면 열리는 패널
+ * @param filterPanel "필터" 버튼을 누르면 표시되는 패널
  * @param children 칩 오른쪽에 표시할 내용
  */
 const SearchBar = ({
@@ -51,7 +51,7 @@ const SearchBar = ({
 }: Props) => {
 	const keywordInputRef = useRef<HTMLInputElement>(null);
 
-	/** "/" 키로 검색창 포커스 */
+	/** "/" 키로 검색 입력 포커스 */
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key !== '/' || event.target instanceof HTMLInputElement) {
@@ -84,7 +84,7 @@ const SearchBar = ({
 			// 목록 행 전환 중에도 위에 표시
 			className="@container relative z-10 -mt-2 mb-2 flex items-center gap-2 bg-background py-2 [view-transition-name:search-bar] max-md:flex-wrap md:sticky md:top-0"
 		>
-			{/*검색어가 바뀌면 입력값을 새로 채움*/}
+			{/*검색어가 변경되면 입력값 갱신*/}
 			<Form
 				key={keyword}
 				action={pathname}
@@ -128,7 +128,7 @@ const SearchBar = ({
 				</Button>
 			</Form>
 
-			{/*좁은 화면에서는 검색줄 폭으로 패널 표시*/}
+			{/*좁은 화면에서는 검색 영역 폭으로 패널 표시*/}
 			{!!filterPanel && <FilterButton filterCount={filterCount}>{filterPanel}</FilterButton>}
 
 			{/*넘치면 가로로 스크롤*/}

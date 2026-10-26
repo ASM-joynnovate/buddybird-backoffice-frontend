@@ -44,9 +44,9 @@ interface Props {
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param listParams 목록 조회 조건
- * @param keyword 검색 입력에 적은 검색어
+ * @param keyword 검색 입력에 입력한 검색어
  * @param date "응급 상황 추이"에서 선택한 날짜
- * @param listQuery 기간 및 날짜를 뺀 현재 주소의 쿼리
+ * @param listQuery 기간 및 날짜를 제외한 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
  * @param now 서버가 화면을 렌더링한 시각
@@ -124,7 +124,7 @@ const Emergencies = ({ period, dashboardParams, listParams, keyword, date, listQ
 						)}
 					</SearchBar>
 
-					{/*조건이 바뀌어도 이전 목록 유지*/}
+					{/*조건이 변경되어도 이전 목록 유지*/}
 					<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<EmergencyListSkeleton />>
 						<EmergencyList
 							dashboardParams={dashboardParams}
@@ -139,7 +139,7 @@ const Emergencies = ({ period, dashboardParams, listParams, keyword, date, listQ
 
 				{/*한 열일 때는 목록 위에 표시*/}
 				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 max-xl:order-first xl:sticky xl:top-2">
-					{/*조회 기간이 바뀌면 다시 마운트*/}
+					{/*조회 기간이 변경되면 다시 마운트*/}
 					<ErrorHandlingWrapper
 						key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
 						fallbackComponent={QueryError}

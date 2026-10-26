@@ -22,9 +22,9 @@ interface Props {
 
 /**
  * 필터 패널 컴포넌트
- * @param pathname 값을 고르면 이동할 경로
+ * @param pathname 값을 선택하면 이동할 경로
  * @param query 현재 주소의 쿼리
- * @param filterGroups 그룹별로 고를 수 있는 값
+ * @param filterGroups 그룹별로 선택할 수 있는 값
  * @param className 패널의 폭을 정하는 class
  */
 const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
@@ -78,7 +78,7 @@ const FilterPanel = ({ pathname, query, filterGroups, className }: Props) => {
 									key={String(filterOption.value)}
 									href={{
 										pathname,
-										// 값이 바뀌면 딸린 조건을 함께 지움
+										// 값이 변경되면 하위 조건도 함께 해제
 										query: toToggledQuery(
 											{ ...query, ...toClearedQuery(filterGroup.resetNames) },
 											filterGroup.name,

@@ -5,12 +5,12 @@ import { compareVersions, isAppVersion } from '@/utils/version';
 
 export type DeviceGroups = Record<'latest' | 'optional' | 'forced', AppUpdateDashboard['versions']>;
 
-/** 앱 버전별 기기 수를 더하는 함수 */
+/** 앱 버전별 기기 수를 합산하는 함수 */
 export const countDevices = (versions: AppUpdateDashboard['versions']) => {
 	return versions.reduce((total, version) => total + version.count, 0);
 };
 
-/** 업데이트 목록으로 최신 버전 및 최소 지원 버전을 구하는 함수 */
+/** 최신 버전 및 최소 지원 버전을 계산하는 함수 */
 export const toVersionPolicy = (appUpdates: Pick<AppUpdate, 'version' | 'is_forced'>[]) => {
 	const sortedAppUpdates = appUpdates.toSorted((a, b) => compareVersions(b.version, a.version));
 
@@ -20,7 +20,7 @@ export const toVersionPolicy = (appUpdates: Pick<AppUpdate, 'version' | 'is_forc
 	};
 };
 
-/** 기기를 앱 버전에 따라 세 묶음으로 나누는 함수 */
+/** 기기를 앱 버전에 따라 세 그룹으로 나누는 함수 */
 export const groupDevices = (
 	versions: AppUpdateDashboard['versions'],
 	{ latestVersion, minSupportedVersion }: ReturnType<typeof toVersionPolicy>,

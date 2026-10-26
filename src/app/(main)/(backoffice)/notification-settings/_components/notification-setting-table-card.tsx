@@ -88,7 +88,7 @@ const NotificationSettingTableCard = () => {
 	/** 그룹에 속한 항목을 반환하는 함수 */
 	const itemsOf = (groupId: string | null) => items.filter((item) => item.group_id === groupId);
 
-	// 끄는 그룹의 항목은 제외
+	// 드래그 중인 그룹의 항목은 제외
 	const sortableIds = [
 		...itemsOf(null).map((item) => item.id),
 		...groups.flatMap((group) => [
@@ -113,7 +113,7 @@ const NotificationSettingTableCard = () => {
 		if (groupIds.includes(String(active.id))) {
 			const nextGroupIds = movedIds.filter((id) => groupIds.includes(id));
 
-			// 다른 그룹을 지나치지 않으면 순서가 그대로
+			// 다른 그룹을 넘지 않으면 순서 유지
 			if (nextGroupIds.every((id, index) => id === groupIds[index])) {
 				return;
 			}
@@ -225,7 +225,7 @@ const NotificationSettingTableCard = () => {
 								</ul>
 							</SortableContext>
 
-							{/*끄는 동안 포인터를 따라 움직이는 행*/}
+							{/*드래그 중 포인터를 따라 이동하는 행*/}
 							<DragOverlay>
 								{!!draggingItem && (
 									<ul>
@@ -237,7 +237,7 @@ const NotificationSettingTableCard = () => {
 									</ul>
 								)}
 
-								{/*놓을 위치는 그룹 행 높이로 판정*/}
+								{/*드롭 위치는 그룹 행 높이로 판정*/}
 								{!!draggingGroup && (
 									<div className="h-full">
 										<ul className={cn('rounded-md', overlayRowClassName)}>
@@ -262,7 +262,7 @@ const NotificationSettingTableCard = () => {
 				)}
 			</TitledCard>
 
-			{/*목록이 바뀌어도 저장이 끝날 때까지 유지*/}
+			{/*목록이 변경되어도 저장 완료까지 유지*/}
 			{!!editingGroup && (
 				<NotificationSettingGroupFormDialog group={editingGroup} onClose={() => setEditingGroup(undefined)} />
 			)}

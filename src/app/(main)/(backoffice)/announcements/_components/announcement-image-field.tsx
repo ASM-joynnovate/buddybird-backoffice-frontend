@@ -34,9 +34,9 @@ interface Props {
 
 /**
  * 공지 사진 입력 컴포넌트
- * @param images 표시 순서대로 나열한 사진, 업로드 중인 사진은 fileId가 null
+ * @param images 표시 순서의 사진 목록
  * @param onImagePick 사진을 선택하면 실행할 함수
- * @param onImagesChange 사진을 지우거나 순서를 바꾸면 실행할 함수
+ * @param onImagesChange 사진을 삭제하거나 순서를 변경하면 실행할 함수
  */
 const AnnouncementImageField = ({ images, onImagePick, onImagesChange }: Props) => {
 	const imageInputRef = useRef<HTMLInputElement>(null);

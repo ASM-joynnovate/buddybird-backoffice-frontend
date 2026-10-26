@@ -13,7 +13,7 @@ import { toChartDateLabel } from '@/utils/date';
 
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
 
-// recordDayCount는 접속 기록을 합치는 일수
+// recordDayCount는 접속 기록을 합산하는 일수
 const ACTIVE_USER_METRICS = {
 	dau: { label: 'DAU', color: 'var(--chart-2)', recordDayCount: 1 },
 	wau: { label: 'WAU', color: 'var(--chart-3)', recordDayCount: 7 },
@@ -31,14 +31,14 @@ interface Props {
 }
 
 /**
- * 기준마다 오늘 값 및 일별 그래프를 한 줄씩 표시하는 컴포넌트
+ * 기준별 오늘 값 및 일별 그래프 컴포넌트
  * @param daily 날짜별 사용자 집계
  * @param metrics 표시할 활성 사용자 기준
  * @param chartHeight 그래프 한 줄의 높이
  * @param today 오늘 날짜
  */
 const ActiveUserTrends = ({ daily, metrics, chartHeight, today }: Props) => {
-	// url(#id)에 넣을 수 있도록 콜론 제거
+	// url(#id)에 사용할 수 있도록 콜론 제거
 	const gradientIdPrefix = useId().replace(/:/g, '');
 
 	return (

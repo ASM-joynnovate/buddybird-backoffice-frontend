@@ -33,7 +33,7 @@ const ConsentCardSkeleton = () => {
 								<SkeletonText className="h-5 w-6" />
 							</TableCell>
 							<TableCell className="py-2.5">
-								{/*글자가 있어야 태그가 든 행과 높이가 같음*/}
+								{/*글자가 있어야 태그가 있는 행과 높이가 같음*/}
 								<Badge variant="muted" className="w-10 animate-pulse">
 									&nbsp;
 								</Badge>

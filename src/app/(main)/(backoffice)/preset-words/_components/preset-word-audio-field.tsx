@@ -29,11 +29,11 @@ interface Props {
 
 /**
  * 프리셋 음성 파일 입력 컴포넌트
- * @param pickedAudio 고른 음성 파일 및 재생 주소
+ * @param pickedAudio 선택한 음성 파일 및 재생 주소
  * @param registeredAudioUrl 등록된 음성의 주소
  * @param error 입력 아래에 표시할 오류 문구
- * @param onAudioPick 음성 파일을 고르면 실행할 함수
- * @param onErrorChange 오류 문구가 바뀔 때 실행할 함수
+ * @param onAudioPick 음성 파일을 선택하면 실행할 함수
+ * @param onErrorChange 오류 문구가 변경될 때 실행할 함수
  */
 const PresetWordAudioField = ({ pickedAudio, registeredAudioUrl, error, onAudioPick, onErrorChange }: Props) => {
 	const fileInputRef = useRef<HTMLInputElement>(null);

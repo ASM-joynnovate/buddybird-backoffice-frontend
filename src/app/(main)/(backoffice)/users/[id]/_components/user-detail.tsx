@@ -74,7 +74,7 @@ const UserDetail = ({ id, sessionPage, sessionId, sessionList, today, now }: Pro
 				</ErrorHandlingWrapper>
 			</div>
 
-			{/*세션 목록의 페이지가 바뀌면 다시 마운트*/}
+			{/*세션 목록의 페이지가 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={sessionId ?? sessionPage}
 				fallbackComponent={QueryError}

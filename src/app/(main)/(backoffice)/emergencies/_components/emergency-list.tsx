@@ -31,8 +31,8 @@ interface Props {
  * 응급 상황 목록 컴포넌트
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param listParams 목록 조회 조건
- * @param keyword 검색 입력에 적은 검색어
- * @param filterSelected 날짜, 종류, 상태, 알림, 기기 조건을 선택했는지 여부
+ * @param keyword 검색 입력에 입력한 검색어
+ * @param filterSelected 필터 조건을 선택했는지 여부
  * @param query 현재 주소의 쿼리
  * @param initialNow 서버가 화면을 렌더링한 시각
  */

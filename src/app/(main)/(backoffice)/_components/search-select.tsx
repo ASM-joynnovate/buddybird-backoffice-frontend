@@ -54,7 +54,7 @@ const SearchSelect = ({
 		...(customOptionShown ? [customOption] : []),
 	];
 
-	/** 이름이나 값에 검색어가 들어간 항목만 표시 */
+	/** 이름이나 값에 검색어가 포함된 항목만 표시 */
 	const filterOption = (option: string, searchText: string) => {
 		const normalizedSearchText = searchText.trim().toLowerCase();
 

@@ -52,8 +52,8 @@ interface Props {
 }
 
 /**
- * 기기 묶음의 이름 컴포넌트
- * @param deviceGroup 이름을 표시할 기기 묶음
+ * 기기 그룹의 이름 컴포넌트
+ * @param deviceGroup 이름을 표시할 기기 그룹
  */
 const DeviceGroupLabel = ({ deviceGroup }: Props) => {
 	const { label, labelClassName, marker } = DEVICE_GROUPS[deviceGroup];

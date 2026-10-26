@@ -26,7 +26,7 @@ interface Props {
  * 고지문 종류 목록의 행 컴포넌트
  * @param kind 고지문 종류
  * @param kindConsents 같은 종류의 버전 목록
- * @param selected 고른 종류인지 여부
+ * @param selected 선택한 종류인지 여부
  * @param now 현재 시각
  * @param onSelect 행을 누르면 실행할 함수
  */

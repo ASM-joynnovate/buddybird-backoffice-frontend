@@ -22,7 +22,7 @@ interface Props {
  * @param value 입력값
  * @param placeholder 입력이 비었을 때 표시할 문구
  * @param invalid 입력값의 오류 여부
- * @param onValueChange 입력값이 바뀔 때 실행할 함수
+ * @param onValueChange 입력값이 변경될 때 실행할 함수
  */
 const LocaleTextareaField = ({ locale, value, placeholder, invalid = false, onValueChange }: Props) => {
 	const textareaId = useId();

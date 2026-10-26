@@ -19,7 +19,7 @@ interface State {
 }
 
 /**
- * 오류 발생 시 API 요청을 다시 시도하기 위한 wrapper
+ * API 요청을 다시 시도하는 오류 wrapper
  * @param FallbackComponent 오류 화면 컴포넌트
  * @param onReset 다시 시도할 때 조회 오류를 초기화하는 함수
  * @param children 감싸는 내용

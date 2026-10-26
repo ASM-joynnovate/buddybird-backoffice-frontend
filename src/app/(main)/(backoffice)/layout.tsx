@@ -6,7 +6,7 @@ import Sidebar from '@/components/sidebar';
 
 /**
  * 메뉴가 있는 백오피스 공통 레이아웃
- * @param children
+ * @param children 페이지 내용
  */
 export default async function Layout({ children }: LayoutProps<'/'>) {
 	const cookieStore = await cookies();

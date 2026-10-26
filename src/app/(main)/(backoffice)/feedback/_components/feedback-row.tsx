@@ -74,7 +74,7 @@ const FeedbackRow = ({ feedback, keyword, now }: Props) => {
 						<span className="block text-muted-foreground">닉네임 없음</span>
 					)}
 
-					{/*배지 줄도 이메일 줄과 같은 높이*/}
+					{/*배지 행도 이메일 행과 같은 높이*/}
 					{user.is_deleted && (
 						<span className="flex h-lh items-center text-[13px]">
 							<Badge variant="muted" className="group-hover:bg-card">

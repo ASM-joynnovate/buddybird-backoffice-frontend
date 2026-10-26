@@ -15,7 +15,7 @@ interface Props {
 }
 
 /**
- * 숫자 하나를 보여 주는 카드 컴포넌트
+ * 숫자 하나를 표시하는 카드 컴포넌트
  * @param label 숫자의 이름
  * @param icon 이름 앞에 표시할 아이콘
  * @param href 링크를 누르면 이동할 경로

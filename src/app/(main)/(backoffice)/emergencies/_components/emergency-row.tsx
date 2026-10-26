@@ -85,7 +85,7 @@ const EmergencyRow = ({ emergency, expanded, now, player, onToggle }: Props) => 
 						aria-expanded={expanded}
 						aria-controls={detailId}
 						aria-label={`${user.nickname ?? '닉네임 없음'} ${occurredTime} ${kindLabel} 상세`}
-						// 누르는 영역을 행 전체로 넓힘
+						// 클릭 영역을 행 전체로 확장
 						className="text-left font-semibold after:absolute after:inset-0 after:rounded-md focus-visible:outline-0 focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand"
 						onClick={onToggle}
 					>

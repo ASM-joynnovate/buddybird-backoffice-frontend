@@ -33,7 +33,7 @@ interface Props {
  * @param required 값이 꼭 필요한지 여부
  * @param invalid 값이 잘못됐는지 여부
  * @param className 폭을 정하는 class
- * @param onValueChange 값을 고르면 실행할 함수
+ * @param onValueChange 값을 선택하면 실행할 함수
  */
 const DateTimePicker = ({ id, value, ariaLabel, required, invalid, className, onValueChange }: Props) => {
 	const [calendarOpen, setCalendarOpen] = useState(false);

@@ -17,7 +17,7 @@ const SessionTimelineSkeleton = () => {
 			</div>
 
 			<dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				{/*칸이 좁으면 길이의 시간과 분이 두 줄로 나뉨*/}
+				{/*칸이 좁으면 길이의 시간 및 분이 두 줄로 나뉨*/}
 				<StatCell label="길이">
 					<div className="flex flex-wrap gap-x-1">
 						<SkeletonText className="my-0.5 h-6 w-10.5 *:bg-background" />

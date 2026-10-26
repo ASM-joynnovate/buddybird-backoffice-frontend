@@ -11,12 +11,12 @@ interface Props {
 
 /**
  * 다이얼로그의 입력 폼을 불러오는 동안 표시하는 컴포넌트
- * @param className 폼과 칸 너비 및 높이를 맞출 클래스
+ * @param className 폼의 칸 너비 및 높이에 맞출 class
  */
 const FormDialogSkeleton = ({ className }: Props) => {
 	return (
 		<>
-			{/*폼이 화면보다 길어지는 좁은 화면에서는 다이얼로그 최대 높이까지 채움*/}
+			{/*좁은 화면에서는 다이얼로그 최대 높이까지 확장*/}
 			<div className={cn('grid min-h-dvh md:grid-cols-[minmax(0,1fr)_380px] lg:min-h-140', className)}>
 				<div className="grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
 					{Array.from({ length: PLACEHOLDER_FIELD_COUNT }, (_, index) => (

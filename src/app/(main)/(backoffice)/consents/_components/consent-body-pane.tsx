@@ -37,7 +37,7 @@ interface Props {
  * @param previousConsent 바로 아래 버전
  * @param locale 표시할 언어
  * @param compared 이전 버전과 비교 여부
- * @param onLocaleChange 언어를 고르면 실행할 함수
+ * @param onLocaleChange 언어를 선택하면 실행할 함수
  * @param onComparedChange 비교를 켜고 끄면 실행할 함수
  */
 const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleChange, onComparedChange }: Props) => {
@@ -53,7 +53,7 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 	const removedLineCount = lineChanges.filter((lineChange) => lineChange.type === 'removed').length;
 	const lineChangeSummary = `추가 ${addedLineCount}줄, 삭제 ${removedLineCount}줄`;
 
-	// 이어진 추가 줄 및 삭제 줄은 한 묶음
+	// 연속된 추가 행 및 삭제 행은 한 그룹
 	const lineGroups = lineChanges.reduce<{ type: LineChange['type']; texts: string[] }[]>((groups, lineChange) => {
 		const lastGroup = groups.at(-1);
 

@@ -30,7 +30,7 @@ interface Props {
 
 /**
  * 조회 기간 선택 컴포넌트
- * @param pathname 기간을 고르면 이동할 경로
+ * @param pathname 기간을 선택하면 이동할 경로
  * @param query 기간과 함께 유지할 쿼리 값
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
@@ -43,7 +43,7 @@ const PeriodFilter = ({ pathname, query = {}, period, dashboardParams, today }: 
 	const [selectedRange, setSelectedRange] = useState<DateRange>();
 
 	const linkQuery = toLinkQuery(query);
-	// 시작일만 고른 동안에는 최대 기간 밖의 날짜를 막음
+	// 시작일만 선택한 동안에는 최대 기간 밖의 날짜 비활성화
 	const rangeStart = selectedRange?.to ? undefined : selectedRange?.from;
 
 	const handleOpenChange = (nextOpen: boolean) => {

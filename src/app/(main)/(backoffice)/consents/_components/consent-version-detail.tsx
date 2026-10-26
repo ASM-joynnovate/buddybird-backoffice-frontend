@@ -38,15 +38,15 @@ interface Props {
 }
 
 /**
- * 고른 버전의 상태, 동의 통계, 전문 컴포넌트
- * @param consent 고른 버전
+ * 선택한 버전의 상태, 동의 통계, 전문 컴포넌트
+ * @param consent 선택한 버전
  * @param kindConsents 같은 종류의 버전 목록
  * @param liveConsent 게시 중인 버전
  * @param locale 전문에 표시할 언어
  * @param compared 이전 버전과 비교 여부
  * @param today 오늘 날짜
  * @param now 현재 시각
- * @param onLocaleChange 언어를 고르면 실행할 함수
+ * @param onLocaleChange 언어를 선택하면 실행할 함수
  * @param onComparedChange 비교를 켜고 끄면 실행할 함수
  * @param onEdit "수정"을 누르면 실행할 함수
  */

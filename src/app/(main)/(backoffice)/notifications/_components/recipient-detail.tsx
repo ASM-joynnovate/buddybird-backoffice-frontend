@@ -40,12 +40,12 @@ interface Props {
 }
 
 /**
- * 받는 사람이 한 명인 알림의 상세 컴포넌트
+ * 수신자가 한 명인 알림의 상세 컴포넌트
  * @param kind 알림 종류
  * @param title 알림 제목
  * @param body 알림 본문
  * @param imageUrl 알림 사진의 주소
- * @param recipient 받는 사람
+ * @param recipient 수신자
  * @param sentAt 발송 일시
  * @param pushSentAt 푸시 발송 일시
  * @param readAt 읽은 일시

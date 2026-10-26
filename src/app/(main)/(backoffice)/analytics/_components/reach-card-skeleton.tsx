@@ -11,7 +11,7 @@ const ReachCardSkeleton = () => {
 					<p className="text-[13px] text-muted-foreground">접속 기준</p>
 				</div>
 
-				{/*기준별 그래프 세 줄 자리*/}
+				{/*기준별 그래프 세 행 스켈레톤*/}
 				<Skeleton className="h-121" />
 			</div>
 

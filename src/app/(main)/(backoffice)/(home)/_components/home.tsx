@@ -34,7 +34,7 @@ const Home = ({ period, dashboardParams, today, now }: Props) => {
 
 			<PeriodFilter pathname="/" period={period} dashboardParams={dashboardParams} today={today} />
 
-			{/*조회 기간이 바뀌면 다시 마운트*/}
+			{/*조회 기간이 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
 				fallbackComponent={QueryError}

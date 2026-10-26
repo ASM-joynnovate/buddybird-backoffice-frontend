@@ -129,7 +129,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 		setEnglishBodyMissing(nextEnglishBodyMissing);
 		setEndsAtInvalid(nextEndsAtInvalid);
 
-		// 빠진 영어 문구를 입력하도록 영어 선택
+		// 누락된 영어 문구를 입력하도록 영어 선택
 		if (nextEnglishTitleMissing || nextEnglishBodyMissing) {
 			setLocale('en_us');
 		}
@@ -189,7 +189,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 
 					<DialogBody className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_420px]">
 						<div className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
-							{/*선택한 언어의 제목 및 본문을 한 상자에 입력*/}
+							{/*선택한 언어의 제목 및 본문을 한 입력 영역에 입력*/}
 							<div className={rowClassName}>
 								<span className={`${labelClassName} @md:pt-2.5`}>내용</span>
 
@@ -307,7 +307,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 						<Button type="button" variant="outline" disabled={saving} onClick={onClose}>
 							취소
 						</Button>
-						{/*사진 업로드가 끝나야 저장 가능*/}
+						{/*사진 업로드 완료 뒤 저장 가능*/}
 						<Button type="submit" loading={saving} disabled={uploading}>
 							저장
 						</Button>

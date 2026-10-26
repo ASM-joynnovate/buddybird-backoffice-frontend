@@ -146,7 +146,6 @@ const CurrentSessionCard = ({ id, initialNow }: Props) => {
 				</ul>
 			</div>
 
-			{/*세션의 단어, 예정 종료, 수면 시간, 스테이션*/}
 			<div className="grid content-start gap-4 border-t bg-card-inset p-4 md:px-5.5 md:py-5 xl:border-t-0 xl:border-l">
 				<CardTitle className="font-bold">세션 정보</CardTitle>
 

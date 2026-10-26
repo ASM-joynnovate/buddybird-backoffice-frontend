@@ -10,7 +10,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-/** 글자 한 줄 자리에 줄 높이의 60% 막대를 가운데에 그리는 스켈레톤 */
+/** 글자 한 줄 높이의 60% 막대 스켈레톤 */
 function SkeletonText({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

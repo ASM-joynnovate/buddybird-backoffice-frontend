@@ -7,7 +7,7 @@ interface Props {
 }
 
 /**
- * 기기 묶음을 나누는 기준 버전 컴포넌트
+ * 기기 그룹을 나누는 기준 버전 컴포넌트
  * @param name 기준 버전의 이름
  * @param version 표시할 버전
  * @param description 기준 버전의 설명

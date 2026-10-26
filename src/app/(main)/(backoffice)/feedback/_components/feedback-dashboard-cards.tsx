@@ -19,7 +19,7 @@ interface Props {
 /**
  * 피드백 대시보드 카드 목록 컴포넌트
  * @param dashboardParams 조회 기간의 시작일 및 종료일
- * @param date "피드백 추이"에서 고른 날짜
+ * @param date "피드백 추이"에서 선택한 날짜
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
  */

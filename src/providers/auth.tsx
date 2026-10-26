@@ -14,7 +14,7 @@ interface Props {
  * @param children 감싸는 내용
  */
 const AuthProvider = ({ children }: Props) => {
-	/** 비밀번호 오류 응답을 받으면 로그아웃 */
+	/** 비밀번호 오류 응답을 수신하면 로그아웃 */
 	useEffect(() => {
 		setUnauthorizedHandler(signOut);
 	}, []);

@@ -19,7 +19,7 @@ interface Props {
 }
 
 /**
- * Sentry의 이슈, 충돌 없는 사용자, 프로젝트별 오류 카드 목록 컴포넌트
+ * Sentry 카드 목록 컴포넌트
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param sort 이슈 정렬 기준
  * @param issueFilters 이슈 필터로 선택한 값

@@ -42,7 +42,7 @@ interface Props {
  * @param status 공지의 게시 상태
  * @param children 가운데 열에 표시할 내용
  * @param onOpen 행을 누르면 실행할 함수
- * @param onMouseMove 행 위에서 마우스가 움직이면 실행할 함수
+ * @param onMouseMove 행 위에서 마우스가 이동하면 실행할 함수
  * @param onMouseLeave 마우스가 행을 벗어나면 실행할 함수
  * @param onFocus 제목 버튼에 포커스하면 실행할 함수
  * @param onBlur 제목 버튼에서 포커스가 떠나면 실행할 함수
@@ -70,7 +70,7 @@ const AnnouncementRow = ({
 		>
 			<div className="min-w-0 py-2.5">
 				<p className="flex items-center justify-between gap-2">
-					{/*누르는 영역을 행 전체로 넓힌 버튼*/}
+					{/*클릭 영역을 행 전체로 확장한 버튼*/}
 					<button
 						type="button"
 						className="min-w-0 truncate text-left font-semibold after:absolute after:inset-0 after:rounded-md focus-visible:outline-0 focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand"

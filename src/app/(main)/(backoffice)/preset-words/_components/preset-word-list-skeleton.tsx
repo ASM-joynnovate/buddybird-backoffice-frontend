@@ -33,7 +33,7 @@ const PresetWordListSkeleton = () => {
 						>
 							<Skeleton className="size-9 shrink-0 rounded-full bg-card" />
 
-							{/*이름 줄 및 음성 길이 줄*/}
+							{/*이름 행 및 음성 길이 행*/}
 							<div className="flex-1">
 								<SkeletonText className="w-16 *:bg-card" />
 								<SkeletonText className="w-8 text-[13px] *:bg-card" />

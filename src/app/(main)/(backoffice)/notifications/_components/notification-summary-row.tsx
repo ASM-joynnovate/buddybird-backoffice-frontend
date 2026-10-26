@@ -15,7 +15,7 @@ import HighlightedText from '@/app/(main)/(backoffice)/_components/highlighted-t
 import NotificationKindTag from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
-// 누르는 영역을 행 전체로 넓힌 버튼
+// 클릭 영역을 행 전체로 확장한 버튼
 export const rowButtonClassName =
 	'text-left after:absolute after:inset-0 after:rounded-md focus-visible:outline-0 focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand';
 
@@ -34,7 +34,7 @@ interface Props {
 }
 
 /**
- * 보낸 알림 목록의 행 컴포넌트
+ * "보낸 알림" 목록의 행 컴포넌트
  * @param id 행의 id
  * @param kind 알림 종류
  * @param title 알림 제목

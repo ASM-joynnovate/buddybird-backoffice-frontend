@@ -46,7 +46,7 @@ interface Props {
  * 세션의 소리를 점수와 함께 나열한 표 컴포넌트
  * @param sounds 시각 순서의 소리 목록
  * @param distressCallSoundIds 신경질적 짹짹 소리 ID
- * @param judging 모사 판정이 끝나지 않았는지 여부
+ * @param judging 모사 판정이 완료되지 않았는지 여부
  * @param player useAudioPlaylist 결과
  */
 const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Props) => {

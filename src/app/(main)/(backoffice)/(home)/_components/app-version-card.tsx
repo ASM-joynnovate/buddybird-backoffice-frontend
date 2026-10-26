@@ -21,7 +21,7 @@ const AppVersionCard = ({ devices }: Props) => {
 	const sortedVersions = devices.versions.toSorted((a, b) => compareVersions(b.app_version, a.app_version));
 	const olderVersions = sortedVersions.slice(VISIBLE_VERSION_COUNT);
 
-	// 최신 버전은 따로, 나머지는 한 줄로 합침
+	// 최신 버전 외 나머지는 한 행으로 합산
 	const versionGroups = [
 		...sortedVersions
 			.slice(0, VISIBLE_VERSION_COUNT)

@@ -14,7 +14,7 @@ interface Props {
 /**
  * 고지문 종류 카드 컴포넌트
  * @param consentsByKind 종류마다 버전 목록
- * @param selectedKind 고른 종류
+ * @param selectedKind 선택한 종류
  * @param newConsentWriting 새 고지문을 작성 중인지 여부
  * @param now 현재 시각
  * @param onKindSelect 종류를 누르면 실행할 함수

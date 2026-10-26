@@ -37,7 +37,7 @@ const AppUpdateHistorySkeleton = () => {
 						<SkeletonText className="w-10 [grid-area:ver]" />
 						<SkeletonText className="w-3/5 [grid-area:notes]" />
 						<Skeleton className="size-4 [grid-area:forced]" />
-						{/*등록 일시 줄 및 상대 시각 줄*/}
+						{/*등록 일시 행 및 상대 시각 행*/}
 						<div className="[grid-area:when]">
 							<SkeletonText className="w-20" />
 							<SkeletonText className="w-12 text-[12.5px] max-md:hidden" />

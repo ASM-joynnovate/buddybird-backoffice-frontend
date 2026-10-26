@@ -24,7 +24,7 @@ const AnnouncementScheduleSkeleton = () => {
 						className={cn(announcementGridClassName, 'font-medium whitespace-nowrap text-muted-foreground')}
 					>
 						<span className="pb-2">공지</span>
-						{/*날짜 눈금 자리*/}
+						{/*날짜 눈금 스켈레톤*/}
 						<span />
 						<span className="pb-2 text-right">읽음</span>
 						<span className="pb-2">푸시</span>

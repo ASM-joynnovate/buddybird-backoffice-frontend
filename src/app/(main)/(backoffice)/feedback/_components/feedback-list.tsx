@@ -28,8 +28,8 @@ interface Props {
 /**
  * 피드백 목록 컴포넌트
  * @param listParams 목록 조회 조건
- * @param keyword 검색 입력에 적은 검색어
- * @param filterSelected 날짜, 앱 버전, 기기, 언어 조건을 골랐는지 여부
+ * @param keyword 검색 입력에 입력한 검색어
+ * @param filterSelected 필터 조건을 선택했는지 여부
  * @param query 현재 주소의 쿼리
  * @param initialNow 서버가 화면을 렌더링한 시각
  */

@@ -111,7 +111,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 		setSaveTried(true);
 		setEnglishReleaseNotesMissing(nextEnglishReleaseNotesMissing);
 
-		// 빠진 영어 출시 노트를 입력하도록 영어 선택
+		// 누락된 영어 출시 노트를 입력하도록 영어 선택
 		if (nextEnglishReleaseNotesMissing) {
 			setLocale('en_us');
 		}
@@ -240,7 +240,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 						/>
 					</div>
 
-					{/*언어 목록 및 입력이 나란히 놓이도록 이름을 위에 배치*/}
+					{/*언어 목록 및 입력이 나란히 표시되도록 이름을 위에 배치*/}
 					<div className="mt-2 grid gap-1.5 border-t pt-5">
 						<span className={labelClassName}>
 							출시 노트

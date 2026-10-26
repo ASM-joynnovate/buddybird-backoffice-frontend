@@ -36,7 +36,7 @@ interface Props {
  * 한 종류의 버전 칸 목록 컴포넌트
  * @param kindConsents 버전 내림차순의 버전 목록
  * @param liveConsent 게시 중인 버전
- * @param selectedConsent 고른 버전
+ * @param selectedConsent 선택한 버전
  * @param newVersionWriting 새 버전을 작성 중인지 여부
  * @param now 현재 시각
  * @param onVersionSelect 칸을 누르면 실행할 함수
@@ -72,7 +72,7 @@ const ConsentVersionStrip = ({
 		strip?.scrollBy({ left: direction * ((strip.firstElementChild?.clientWidth ?? 0) + CELL_GAP_PX) });
 	};
 
-	/** 고른 칸이 가려져 있으면 보이도록 스크롤 */
+	/** 선택한 칸이 가려져 있으면 화면 안으로 스크롤 */
 	useEffect(() => {
 		const strip = stripRef.current;
 		const selectedCell = strip?.querySelector<HTMLElement>('[aria-current="true"], [data-draft]');
@@ -87,7 +87,7 @@ const ConsentVersionStrip = ({
 		}
 	}, [newVersionWriting, selectedConsent?.id]);
 
-	/** 칸 수가 바뀌면 넘김 버튼 갱신 */
+	/** 칸 수가 변경되면 스크롤 버튼 갱신 */
 	useEffect(handleScroll, [kindConsents.length, newVersionWriting]);
 
 	return (

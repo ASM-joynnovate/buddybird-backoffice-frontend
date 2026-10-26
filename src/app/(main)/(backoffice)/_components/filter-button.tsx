@@ -15,10 +15,10 @@ interface Props {
 }
 
 /**
- * 필터 패널을 여닫는 버튼 컴포넌트
+ * 필터 패널 표시를 전환하는 버튼 컴포넌트
  * @param filterCount 버튼에 표시할 조건의 개수
  * @param size 버튼의 크기
- * @param children 버튼을 누르면 열리는 패널
+ * @param children 버튼을 누르면 표시되는 패널
  */
 const FilterButton = ({ filterCount, size, children }: Props) => {
 	const filterRef = useRef<HTMLDivElement>(null);

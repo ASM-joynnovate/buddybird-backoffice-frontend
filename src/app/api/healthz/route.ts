@@ -1,4 +1,4 @@
-/** 헬스 체크용 API (container health check에 사용) */
+/** container health check용 API */
 export async function GET() {
 	return Response.json(
 		{

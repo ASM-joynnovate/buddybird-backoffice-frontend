@@ -27,7 +27,7 @@ const PlatformFilter = ({ platform, latestVersions }: Props) => {
 						<PlatformIcon platform={platformOption} selected={platformOption === platform} />
 						{toPlatformName(platformOption)}
 
-						{/*로딩 중에는 버전 자리만 표시*/}
+						{/*로딩 중에는 버전 스켈레톤만 표시*/}
 						{latestVersions ? (
 							<span className="font-medium tabular-nums opacity-72">
 								{latestVersions[platformOption] ?? '등록 전'}

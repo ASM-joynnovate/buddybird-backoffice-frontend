@@ -9,7 +9,7 @@ export const isScheduled = (consent: Consent, now: number) => {
 	return dayjs(consent.published_at).isAfter(now);
 };
 
-/** 같은 종류에서 게시 중인 버전을 찾는 함수 */
+/** 같은 종류에서 게시 중인 버전을 반환하는 함수 */
 export const findLiveConsent = (kindConsents: Consent[], now: number) => {
 	// 목록은 버전 내림차순
 	return kindConsents.find((consent) => !isScheduled(consent, now));

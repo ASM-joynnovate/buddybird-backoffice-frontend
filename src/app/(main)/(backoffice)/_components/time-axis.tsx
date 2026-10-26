@@ -20,7 +20,7 @@ interface Props {
 }
 
 /**
- * 한국 시간 위에 시각별 인원을 막대로 그리는 시간 축 컴포넌트
+ * 시각별 인원 막대의 시간 축 컴포넌트
  * @param bars 시각별 인원
  * @param range 표시할 시각 범위
  * @param now 현재 시각
@@ -59,7 +59,7 @@ const TimeAxis = ({ bars, range, now, color }: Props) => {
 					<span
 						key={bar.sent_at}
 						className={cn(
-							// 마우스를 올리는 영역을 위로 넓힘
+							// hover 영역을 위로 확장
 							"group absolute bottom-0 z-1 w-[clamp(3px,calc(var(--hour-width)-2px),14px)] -translate-x-1/2 rounded-t-full before:absolute before:-inset-x-1 before:-top-7 before:bottom-0 before:content-[''] [&:hover]:z-4",
 							sentAt <= now
 								? 'bg-(--bar-color)'

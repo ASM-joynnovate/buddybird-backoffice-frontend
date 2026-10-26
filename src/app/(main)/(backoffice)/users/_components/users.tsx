@@ -36,8 +36,8 @@ interface Props {
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param listParams 목록 조회 조건
- * @param userFilters 필터에서 고른 값
- * @param listQuery 기간을 뺀 현재 주소의 쿼리
+ * @param userFilters 필터에서 선택한 값
+ * @param listQuery 기간을 제외한 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
  * @param now 서버가 화면을 렌더링한 시각
@@ -85,7 +85,7 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				/>
 			</div>
 
-			{/*조회 기간이 바뀌면 다시 마운트*/}
+			{/*조회 기간이 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
 				fallbackComponent={QueryError}
@@ -104,7 +104,7 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				filterPanel=<UserFilterPanel dashboardParams={dashboardParams} query={query} />
 			/>
 
-			{/*조건이 바뀌어도 이전 목록을 유지해 행 이동 전환 실행*/}
+			{/*조건이 변경되어도 이전 목록을 유지해 행 이동 전환 실행*/}
 			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<UserTableSkeleton />>
 				<UserTable listParams={listParams} query={query} initialNow={now} />
 			</ErrorHandlingWrapper>

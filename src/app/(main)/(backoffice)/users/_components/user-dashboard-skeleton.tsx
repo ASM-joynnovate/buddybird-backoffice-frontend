@@ -55,7 +55,7 @@ const UserDashboardSkeleton = () => {
 						</dl>
 					</div>
 
-					{/*전체 사용자 수 및 가입, 탈퇴 그래프 자리*/}
+					{/*전체 사용자 수 및 가입, 탈퇴 그래프 스켈레톤*/}
 					<Skeleton className="h-66" />
 				</div>
 			</TitledCard>
@@ -81,7 +81,7 @@ const UserDashboardSkeleton = () => {
 						<p className="text-[13px] text-muted-foreground">접속 기준</p>
 					</div>
 
-					{/*기준별 그래프 네 줄 자리*/}
+					{/*기준별 그래프 네 행 스켈레톤*/}
 					<Skeleton className="h-127" />
 				</div>
 

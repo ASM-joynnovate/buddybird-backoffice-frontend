@@ -26,7 +26,7 @@ interface Props {
 /**
  * 알림 보내기 다이얼로그 컴포넌트
  * @param initialContent 처음에 채워 둘 알림 내용
- * @param initialUserId 처음에 고를 사용자 ID
+ * @param initialUserId 처음에 선택할 사용자 ID
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */
 const SendNotificationDialog = ({ initialContent = initialNotificationContent, initialUserId, onClose }: Props) => {
@@ -47,7 +47,7 @@ const SendNotificationDialog = ({ initialContent = initialNotificationContent, i
 				</DialogHeader>
 
 				<DialogBody>
-					{/*미리 보기 칸은 400px, 받는 사람을 고른 채 열면 폼이 그 줄만큼 높음*/}
+					{/*처음 선택한 사용자가 있으면 스켈레톤 높이 확장*/}
 					<ErrorHandlingWrapper
 						fallbackComponent={QueryError}
 						suspenseFallback=<FormDialogSkeleton

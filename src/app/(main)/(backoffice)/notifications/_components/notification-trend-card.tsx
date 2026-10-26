@@ -50,7 +50,7 @@ const NotificationTrendCard = ({ notificationDashboard, selectedDate, query, tod
 		emergency: dailyCount.emergency_count,
 	}));
 
-	/** 알림 수에 대한 비율 문구를 반환하는 함수 */
+	/** 알림 수 대비 비율 문구를 반환하는 함수 */
 	const toPercentText = (count: number) => {
 		return `${notifications.count ? Math.round((count / notifications.count) * 100) : 0}%`;
 	};
@@ -76,7 +76,7 @@ const NotificationTrendCard = ({ notificationDashboard, selectedDate, query, tod
 			</div>
 
 			<div className="mt-3.5">
-				{/*고른 날짜, 없으면 오늘만 진하게 표시*/}
+				{/*선택한 날짜, 없으면 오늘만 진하게 표시*/}
 				<DailyCountChart
 					daily={dailyCounts}
 					title="일별 알림 수"

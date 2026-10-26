@@ -64,7 +64,7 @@ interface Props {
 
 /**
  * 사이드바 메뉴 목록 컴포넌트
- * @param onSelect 메뉴를 고르면 실행할 함수
+ * @param onSelect 메뉴를 선택하면 실행할 함수
  */
 const SidebarMenu = ({ onSelect }: Props) => {
 	const pathname = usePathname();

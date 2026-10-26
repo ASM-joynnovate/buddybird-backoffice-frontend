@@ -30,7 +30,7 @@ interface Props {
  * 세션 소리 재생 컴포넌트
  * @param currentSound 재생할 차례인 소리
  * @param distressCallSoundIds 신경질적 짹짹 소리 ID
- * @param judging 모사 판정이 끝나지 않았는지 여부
+ * @param judging 모사 판정이 완료되지 않았는지 여부
  * @param player useAudioPlaylist 결과
  */
 const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, player }: Props) => {
@@ -95,9 +95,9 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 		}
 	});
 
-	/** 소리를 고른 뒤에는 스페이스바로 재생 및 정지 */
+	/** 소리를 선택한 뒤에는 스페이스바로 재생 및 정지 */
 	useEffect(() => {
-		// 포커스가 있는 버튼이 다시 눌리지 않게 막음
+		// 포커스가 있는 버튼이 다시 눌리지 않게 차단
 		const handleKeyUp = (event: KeyboardEvent) => {
 			if (event.code === 'Space' && spaceKeyHandledRef.current) {
 				event.preventDefault();
@@ -129,7 +129,7 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 			<div className="mr-auto min-w-0">
 				<strong className="block font-semibold tabular-nums">{soundTime ?? '처음부터 듣기'}</strong>
 
-				{/*소리 길이, 점수, 태그*/}
+				{/*소리 정보*/}
 				<div className="flex min-h-5 flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] text-muted-foreground">
 					{/*좁은 화면에서는 한 줄로 줄임*/}
 					{!currentSound && (

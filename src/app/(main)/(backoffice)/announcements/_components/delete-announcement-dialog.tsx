@@ -20,7 +20,7 @@ interface Props {
  * @param open 다이얼로그 표시 여부
  * @param announcement 삭제할 공지
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
- * @param onDelete 삭제가 끝나면 실행할 함수
+ * @param onDelete 삭제가 완료되면 실행할 함수
  */
 const DeleteAnnouncementDialog = ({ open, announcement, onClose, onDelete }: Props) => {
 	const { isPending, mutate } = useDeleteAnnouncement();

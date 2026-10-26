@@ -94,7 +94,7 @@ interface Props {
 
 /**
  * 앱에 표시되는 업데이트 다이얼로그의 미리보기 컴포넌트
- * @param version 앞뒤 공백을 지운 버전 입력값
+ * @param version 앞뒤 공백을 제거한 버전 입력값
  * @param forced 강제 업데이트 여부
  * @param releaseNotes 출시 노트 입력값
  * @param locale 미리보기에 표시할 언어

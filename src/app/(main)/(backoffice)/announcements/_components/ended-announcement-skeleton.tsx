@@ -57,7 +57,7 @@ const EndedAnnouncementSkeleton = ({ query }: Props) => {
 								'relative before:absolute before:inset-x-0 before:top-0 before:border-t before:border-border',
 							)}
 						>
-							{/*제목 줄 및 게시 기간 줄*/}
+							{/*제목 행 및 게시 기간 행*/}
 							<div className="py-2.5">
 								<SkeletonText
 									style={{

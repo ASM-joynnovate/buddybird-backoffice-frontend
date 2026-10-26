@@ -22,13 +22,13 @@ interface Props {
  * @param query 현재 주소의 쿼리
  * @param name 쿼리에 저장할 이름
  * @param label 입력의 이름
- * @param unit 입력창 뒤에 적는 단위
+ * @param unit 입력 필드 뒤에 표시할 단위
  */
 const FilterNumberInput = ({ pathname, query, name, label, unit }: Props) => {
 	const router = useRouter();
 
 	const handleCommit = (value: string) => {
-		// 1보다 작은 값은 조건을 지움
+		// 1보다 작은 값은 조건 해제
 		const count = Math.floor(Number(value));
 		const nextValue = count >= 1 ? count : undefined;
 
@@ -41,7 +41,7 @@ const FilterNumberInput = ({ pathname, query, name, label, unit }: Props) => {
 
 	return (
 		<label className="inline-flex items-center gap-1.5 text-[13px] font-semibold">
-			{/*쿼리의 값이 바뀌면 입력값을 새로 채움*/}
+			{/*쿼리의 값이 변경되면 입력값 갱신*/}
 			<Input
 				key={String(query[name])}
 				type="number"

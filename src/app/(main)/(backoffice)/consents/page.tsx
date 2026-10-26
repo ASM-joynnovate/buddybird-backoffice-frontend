@@ -19,7 +19,8 @@ export default async function Page(props: PageProps<'/consents'>) {
 
 	const queryClient = getQueryClient();
 
-	// 응답을 기다리지 않고 조회 시작, 고지문 목록은 통계 조회에도 사용하고 실패는 고지문 카드가 표시
+	// 고지문 목록은 통계 조회에도 사용
+	// 실패는 고지문 카드가 표시
 	const consentList = queryClient.fetchQuery(getConsentListOptions()).catch(() => undefined);
 
 	return (

@@ -14,9 +14,9 @@ interface Props {
 }
 
 /**
- * 저장한 뒤의 묶음별 기기 수 및 증감 컴포넌트
- * @param deviceGroups 저장한 뒤의 기기 묶음
- * @param currentDeviceGroups 현재 목록으로 나눈 기기 묶음
+ * 저장한 뒤의 그룹별 기기 수 및 증감 컴포넌트
+ * @param deviceGroups 저장한 뒤의 기기 그룹
+ * @param currentDeviceGroups 현재 목록으로 나눈 기기 그룹
  * @param minSupportedVersion 저장한 뒤의 최소 지원 버전
  */
 const DeviceCountChanges = ({ deviceGroups, currentDeviceGroups, minSupportedVersion }: Props) => {

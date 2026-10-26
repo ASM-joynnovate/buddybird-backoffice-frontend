@@ -15,7 +15,7 @@ interface Props {
  * 읽음 추이 그래프의 가로 눈금 글자 컴포넌트
  * @param x 눈금의 가로 위치
  * @param y 눈금의 세로 위치
- * @param payload 눈금의 발송 뒤 지난 시간
+ * @param payload 눈금의 발송 뒤 경과 시간
  */
 const ReadTrendTick = ({ x, y, payload }: Props) => {
 	const chartWidth = useChartWidth() ?? 0;

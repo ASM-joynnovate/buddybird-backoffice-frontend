@@ -16,9 +16,7 @@ type ErrorBoundaryProps = {
 };
 
 /**
- * 에러 발생 시 API 요청을 재시도하기 위한 wrapper
- *
- * 에러 발생 시 reset 함수를 통해 API 요청을 초기화하기 위해 사용
+ * API 요청을 다시 시도하는 에러 wrapper
  *
  * @see https://www.mintmin.dev/blog/2404/20240427
  */

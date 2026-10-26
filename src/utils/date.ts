@@ -66,7 +66,7 @@ export const formatToday = () => {
 	return dayjs().tz(DISPLAY_TIME_ZONE).format('YYYY-MM-DD');
 };
 
-/** 시각을 한국 시간의 시와 분으로 변환하는 함수 */
+/** 시각을 한국 시간의 시 및 분으로 변환하는 함수 */
 export const formatTime = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('HH:mm');
 };
@@ -94,17 +94,17 @@ export const toChartDateLabel = (date: string, today: string) => {
 	return date === today ? '오늘' : dayjs(date).format('M.D');
 };
 
-/** 날짜에 일수를 더하는 함수 */
+/** 날짜에 일수를 추가하는 함수 */
 export const addDays = (date: string, days: number) => {
 	return dayjs(date).add(days, 'day').format('YYYY-MM-DD');
 };
 
-/** 양 끝 날짜를 포함한 일수를 세는 함수 */
+/** 양 끝 날짜를 포함한 일수를 계산하는 함수 */
 export const countDays = (dateFrom: string, dateTo: string) => {
 	return dayjs(dateTo).diff(dateFrom, 'day') + 1;
 };
 
-/** 생일부터 오늘까지의 만 나이를 세는 함수 */
+/** 생일부터 오늘까지의 만 나이를 계산하는 함수 */
 export const countAge = (birthdate: string, today: string) => {
 	return dayjs(today).diff(birthdate, 'year');
 };

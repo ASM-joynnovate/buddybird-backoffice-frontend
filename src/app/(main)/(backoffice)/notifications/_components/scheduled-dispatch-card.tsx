@@ -39,13 +39,13 @@ const ScheduledDispatchCard = ({ listParams, expandedRowId, now, onToggleRow }: 
 
 	const { data: dispatchListData } = useGetNotificationDispatchList(listParams);
 
-	// 발송이 진행되면 바뀌는 값
+	// 발송이 진행되면 변경되는 값
 	const sendProgress = dispatchListData.data
 		.map((notificationDispatch) => `${notificationDispatch.id}:${notificationDispatch.sent_count}`)
 		.join(',');
 	const sendProgressRef = useRef(sendProgress);
 
-	/** 발송이 진행되면 보낸 알림 및 대시보드 다시 조회 */
+	/** 발송이 진행되면 "보낸 알림" 목록 및 대시보드 다시 조회 */
 	useEffect(() => {
 		if (sendProgressRef.current === sendProgress) {
 			return;

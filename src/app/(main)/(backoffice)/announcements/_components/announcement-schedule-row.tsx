@@ -60,7 +60,7 @@ const AnnouncementScheduleRow = ({ announcement, userCount, now, onOpen, onToolt
 
 	const barLeftPercent = clampPercent(startPercent);
 	const barWidthPercent = clampPercent(endPercent) - barLeftPercent;
-	// 게시 중인 공지만 현재 시각까지 채움
+	// 게시 중인 공지만 현재 시각까지 표시
 	const filledPercent = scheduled ? 0 : ((nowPercent - barLeftPercent) / barWidthPercent) * 100;
 	// 막대의 시작 및 현재 시각 중 오른쪽 위치
 	const labelPercent = Math.max(barLeftPercent, nowPercent);
@@ -120,7 +120,7 @@ const AnnouncementScheduleRow = ({ announcement, userCount, now, onOpen, onToolt
 			onFocus={handleFocus}
 			onBlur={onTooltipHide}
 		>
-			{/*클릭은 아래에 있는 제목 버튼이 받음*/}
+			{/*클릭 이벤트는 아래 제목 버튼이 처리*/}
 			<figure
 				ref={laneRef}
 				aria-label={`${formatMonthDay(announcement.starts_at)}부터 ${endDateText} 게시, ${remainingText}`}

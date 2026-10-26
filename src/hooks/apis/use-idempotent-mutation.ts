@@ -6,7 +6,7 @@ interface IdempotentVariables {
 	idempotencyKey: string;
 }
 
-/** 요청마다 새 idempotency key를 넣는 useMutation Hook */
+/** idempotency key를 추가하는 useMutation Hook */
 export const useIdempotentMutation = <TData, TError, TVariables extends IdempotentVariables, TContext>(
 	options: UseMutationOptions<TData, TError, TVariables, TContext>,
 ) => {
@@ -14,7 +14,7 @@ export const useIdempotentMutation = <TData, TError, TVariables extends Idempote
 
 	const { mutate, mutateAsync } = mutation;
 
-	/** 새 idempotency key를 넣은 mutate */
+	/** 새 idempotency key를 추가한 mutate */
 	const mutateWithKey = useCallback(
 		(
 			variables: Omit<TVariables, 'idempotencyKey'>,
@@ -23,7 +23,7 @@ export const useIdempotentMutation = <TData, TError, TVariables extends Idempote
 		[mutate],
 	);
 
-	/** 새 idempotency key를 넣은 mutateAsync */
+	/** 새 idempotency key를 추가한 mutateAsync */
 	const mutateAsyncWithKey = useCallback(
 		(
 			variables: Omit<TVariables, 'idempotencyKey'>,

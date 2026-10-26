@@ -88,7 +88,7 @@ const UserProfileFormDialog = ({ user, onClose }: Props) => {
 			return;
 		}
 
-		// 사진 삭제는 프로필 수정이 끝난 뒤 실행
+		// 사진 삭제는 프로필 수정이 완료된 뒤 실행
 		updateUser.mutate(
 			{ id: user.id, data: userUpdate },
 			{

@@ -60,7 +60,7 @@ const UserTableSkeleton = () => {
 				</Table>
 			</Card>
 
-			{/*페이지 이동 링크 자리*/}
+			{/*페이지 이동 링크 스켈레톤*/}
 			<Skeleton className="mx-auto h-9 w-64" />
 		</>
 	);

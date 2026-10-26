@@ -98,7 +98,7 @@ const ParrotFormDialog = ({ userId, parrot, today, onClose }: Props) => {
 			return;
 		}
 
-		// 사진 삭제는 앵무새 수정이 끝난 뒤 실행
+		// 사진 삭제는 앵무새 수정이 완료된 뒤 실행
 		updateUserParrot.mutate(
 			{ id: userId, parrotId: parrot.id, data: parrotUpdate },
 			{ onSuccess: deletePhotoAndClose },

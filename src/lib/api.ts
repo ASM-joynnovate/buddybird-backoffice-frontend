@@ -70,7 +70,7 @@ export const apiErrorMessage = (error: unknown) => {
 	return error instanceof ApiError ? error.message : '요청을 처리하지 못했습니다.';
 };
 
-/** 요청에 넣을 비밀번호를 읽는 함수 */
+/** 요청에 추가할 비밀번호를 읽는 함수 */
 const readPassword = async () => {
 	if (typeof window === 'undefined') {
 		const { cookies } = await import('next/headers');

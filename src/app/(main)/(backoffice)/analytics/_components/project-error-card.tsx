@@ -13,7 +13,7 @@ interface Props {
  */
 const ProjectErrorCard = ({ projects }: Props) => {
 	const maxErrorCount = Math.max(1, ...projects.map((project) => project.error_count));
-	// 행마다 막대의 끝이 같은 자리에 오도록 열의 모든 값을 모음
+	// 행마다 막대 끝을 같은 위치에 맞추도록 열의 값 전체 사용
 	const errorCountTexts = projects.map((project) => project.error_count.toLocaleString('ko-KR'));
 
 	return (

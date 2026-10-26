@@ -9,7 +9,7 @@ import { getQueryClient } from '@/legacy/lib/react-query';
 
 /**
  * react query 사용을 위한 provider
- * @param children
+ * @param children 감싸는 내용
  */
 export function ReactQueryClientProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = getQueryClient();

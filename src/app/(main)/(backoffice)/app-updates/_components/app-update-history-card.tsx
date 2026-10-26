@@ -81,7 +81,7 @@ const AppUpdateHistoryCard = ({ platform, now }: Props) => {
 				)}
 			</TitledCard>
 
-			{/*목록이 바뀌어도 저장이 끝날 때까지 유지*/}
+			{/*목록이 변경되어도 저장 완료까지 유지*/}
 			{!!editingAppUpdate && (
 				<AppUpdateFormDialog
 					platform={platform}

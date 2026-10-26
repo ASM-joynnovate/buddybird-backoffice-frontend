@@ -4,7 +4,7 @@ import { PASSWORD_COOKIE_NAME } from '@/lib/auth';
 
 const LOGIN_PATH = '/login';
 
-/** 비밀번호 쿠키가 없으면 로그인 화면으로 보내는 proxy */
+/** 로그인 확인 proxy */
 export const proxy = (request: NextRequest) => {
 	const { pathname } = request.nextUrl;
 
