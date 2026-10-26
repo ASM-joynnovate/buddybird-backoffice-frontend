@@ -606,10 +606,10 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 								<span
 									key={index}
 									className={cn(
-										'min-w-0 basis-0 rounded-t-xs bg-chart-1/70 transition-colors',
+										'min-w-0 basis-0 rounded-t-xs bg-foreground/70 transition-colors',
 										currentSoundBarIndex !== null &&
-											(index <= currentSoundBarIndex ? 'bg-chart-1' : 'bg-chart-1/38'),
-										index === hoveredSoundBarIndex && 'bg-chart-1',
+											(index <= currentSoundBarIndex ? 'bg-foreground' : 'bg-foreground/38'),
+										index === hoveredSoundBarIndex && 'bg-foreground',
 									)}
 									style={{
 										flexGrow: soundBar.durationMs,
