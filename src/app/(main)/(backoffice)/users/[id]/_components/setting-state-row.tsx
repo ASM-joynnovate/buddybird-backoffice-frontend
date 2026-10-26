@@ -9,12 +9,12 @@ interface Props {
 }
 
 /**
- * 알림 설정 하나의 켜짐 여부 행 컴포넌트
+ * 설정 하나의 켜짐 여부 행 컴포넌트
  * @param label 설정 이름
  * @param enabled 켜짐 여부
  * @param decidedAt 사용자가 결정한 일시, null이면 기본값 사용
  */
-const NotificationSettingStateRow = ({ label, enabled, decidedAt }: Props) => {
+const SettingStateRow = ({ label, enabled, decidedAt }: Props) => {
 	return (
 		<li className="flex items-center justify-between gap-3 py-2 last:pb-0">
 			<span className="grid">
@@ -38,4 +38,4 @@ const NotificationSettingStateRow = ({ label, enabled, decidedAt }: Props) => {
 	);
 };
 
-export default NotificationSettingStateRow;
+export default SettingStateRow;

@@ -16,13 +16,14 @@ const UserProfileCardSkeleton = () => {
 					<SkeletonText className="h-5 w-32" />
 				</div>
 
-				<div className="flex gap-2 max-md:w-full max-md:*:flex-1 md:ml-auto">
+				<div className="flex flex-wrap gap-2 max-md:w-full max-md:*:flex-1 md:ml-auto">
+					<Skeleton className="h-9 w-29" />
 					<Skeleton className="h-9 w-29" />
 					<Skeleton className="h-9 w-29" />
 				</div>
 			</div>
 
-			<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))]">
+			<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))]">
 				<div className={`${factClassName} max-md:col-span-2`}>
 					<dt className={factTitleClassName}>사용자 ID</dt>
 					{/*좁은 화면에서는 사용자 ID가 두 줄로 표시됨*/}
@@ -44,7 +45,7 @@ const UserProfileCardSkeleton = () => {
 					</dd>
 				</div>
 
-				{['가입', '최근 접속'].map((title) => (
+				{['가입', '최근 접속', '국가'].map((title) => (
 					<div key={title} className={factClassName}>
 						<dt className={factTitleClassName}>{title}</dt>
 						<dd>

@@ -4,7 +4,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ROW_COUNT = 5;
 
-/** 수면 시간 및 알림 설정 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 설정 카드를 불러오는 동안 보이는 컴포넌트 */
 const SettingsCardSkeleton = () => {
 	return (
 		<TitledCard title="설정">
@@ -44,6 +44,19 @@ const SettingsCardSkeleton = () => {
 								<SkeletonText className="w-24" />
 								<SkeletonText className="w-28 text-[12.5px]" />
 							</div>
+							<Skeleton className="h-4 w-7 rounded-full" />
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<section className="mt-3 border-t pt-3">
+				<h3 className="mb-1 font-bold">커뮤니티</h3>
+
+				<ul className="divide-y">
+					{['리더보드 참여', '피드 공개', '녹음 공개'].map((label) => (
+						<li key={label} className="flex items-center justify-between gap-3 py-2 last:pb-0">
+							<span className="text-muted-foreground">{label}</span>
 							<Skeleton className="h-4 w-7 rounded-full" />
 						</li>
 					))}

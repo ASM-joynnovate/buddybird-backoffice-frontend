@@ -70,6 +70,7 @@ export const dashboardLiveSchema = z.object({
 		}),
 	}),
 	withdrawals: z.object({ failed_count: z.number().int() }),
+	abuse_reports: z.object({ unhandled_count: z.number().int() }),
 });
 
 export const userDashboardSchema = z.object({
@@ -92,6 +93,7 @@ export const userDashboardSchema = z.object({
 		}),
 	),
 	countries: z.array(z.object({ country: z.string().nullable(), count: z.number().int() })),
+	activity_countries: z.array(z.object({ country: z.string().nullable(), count: z.number().int() })),
 	last_sessions: z.array(z.object({ last_session: userLastSessionSchema, count: z.number().int() })),
 	accounts: z.object({
 		providers: z.array(z.object({ provider: providerSchema, count: z.number().int() })),

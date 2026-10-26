@@ -12,7 +12,7 @@ import { toCountryName } from '@/utils/country';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface Props {
-	countries: UserDashboard['countries'];
+	countries: UserDashboard['activity_countries'];
 	className?: string;
 }
 

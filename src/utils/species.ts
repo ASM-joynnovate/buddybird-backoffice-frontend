@@ -25,6 +25,8 @@ const speciesNames: Record<string, string> = {
 	vasa: '바사앵무',
 };
 
+export const SPECIES_IDS = Object.keys(speciesNames);
+
 /** 앵무새 종 ID를 한국어 이름으로 변환하는 함수 */
 export const toSpeciesName = (species: string) => {
 	// 사용자가 직접 입력한 종은 그대로 표시

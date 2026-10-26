@@ -21,7 +21,7 @@ const MAP_COLORS = {
 };
 
 interface Props {
-	countries: UserDashboard['countries'];
+	countries: UserDashboard['activity_countries'];
 }
 
 /**

@@ -7,7 +7,7 @@ import { Card, CardTitle } from '@/components/ui/card';
 
 interface Props {
 	daily: UserDashboard['daily'];
-	countries: UserDashboard['countries'];
+	countries: UserDashboard['activity_countries'];
 	today: string;
 }
 

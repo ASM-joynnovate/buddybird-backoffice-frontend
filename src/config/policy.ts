@@ -80,6 +80,8 @@ export const NOTIFICATION_BODY_MAX_LENGTH = 500;
 export const CONSENT_KIND_MAX_LENGTH = 50;
 export const APP_VERSION_MAX_LENGTH = 12;
 export const PRESET_WORD_NAME_MAX_LENGTH = 50;
+export const NICKNAME_MAX_LENGTH = 20;
+export const PARROT_NAME_MAX_LENGTH = 20;
 export const KEYWORD_MAX_LENGTH = 100;
 export const BROADCAST_MAX_USER_COUNT = 1000;
 

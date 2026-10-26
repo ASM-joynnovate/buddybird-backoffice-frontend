@@ -42,9 +42,9 @@ const UserFilterPanel = ({ dashboardParams, query }: Props) => {
 		{
 			name: 'country',
 			label: '국가',
-			// 조회 기간에 접속한 사용자가 많은 국가부터 나열
-			options: userDashboardData.countries.flatMap(({ country }) =>
-				country ? [{ value: country, label: toCountryName(country) }] : [],
+			// 프로필 국가 기준 사용자 수
+			options: userDashboardData.countries.flatMap(({ country, count }) =>
+				country ? [{ value: country, label: toCountryName(country), count }] : [],
 			),
 		},
 		{ name: 'is_deleted', label: '계정 상태', options: [{ value: true, label: '삭제됨' }] },
