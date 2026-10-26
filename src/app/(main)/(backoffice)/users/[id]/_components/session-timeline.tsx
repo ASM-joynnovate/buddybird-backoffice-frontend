@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	type CSSProperties,
 	type MouseEvent,
 	type PointerEvent,
 	type ReactNode,
@@ -602,21 +603,33 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 							onPointerMove={handleSoundLanePointerMove}
 							onPointerLeave={handleSoundLanePointerLeave}
 						>
-							{soundBars.map((soundBar, index) => (
-								<span
-									key={index}
-									className={cn(
-										'min-w-0 basis-0 rounded-t-xs bg-foreground/70 transition-colors',
-										currentSoundBarIndex !== null &&
-											(index <= currentSoundBarIndex ? 'bg-foreground' : 'bg-foreground/38'),
-										index === hoveredSoundBarIndex && 'bg-foreground',
-									)}
-									style={{
-										flexGrow: soundBar.durationMs,
-										height: `${(soundBar.sounds.length / maxSoundCount) * 100}%`,
-									}}
-								/>
-							))}
+							{soundBars.map((soundBar, index) => {
+								// 모사 성공 소리가 있으면 주황색
+								const barColor = soundBar.sounds.some((sessionSound) => sessionSound.kind === 'mimic')
+									? 'var(--chart-1)'
+									: 'var(--foreground)';
+
+								return (
+									<span
+										key={index}
+										className={cn(
+											'min-w-0 basis-0 rounded-t-xs bg-(--bar-color)/70 transition-colors',
+											currentSoundBarIndex !== null &&
+												(index <= currentSoundBarIndex
+													? 'bg-(--bar-color)'
+													: 'bg-(--bar-color)/38'),
+											index === hoveredSoundBarIndex && 'bg-(--bar-color)',
+										)}
+										style={
+											{
+												'--bar-color': barColor,
+												flexGrow: soundBar.durationMs,
+												height: `${(soundBar.sounds.length / maxSoundCount) * 100}%`,
+											} as CSSProperties
+										}
+									/>
+								);
+							})}
 						</div>
 
 						<ol className="flex justify-between text-[11.5px] whitespace-nowrap text-muted-foreground tabular-nums">
