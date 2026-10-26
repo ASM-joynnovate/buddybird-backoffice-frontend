@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.25.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.24.0...v0.25.0) (2026-10-26)
+
+
+### Features
+
+* 국가 정보에 국기, 앵무새 종에 종 아이콘 표시 ([ec51a70](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ec51a70d0d0a5e6204143409776662b6fd728f26))
+* 세션 소리 및 이벤트 운영자 라벨링 추가 ([2a2b8d0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/2a2b8d0a5fee763e9cd26593c2192265ff8709b8))
+* 세션 소리 및 이벤트 운영자 라벨링 추가 ([ae99c36](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ae99c3665ca2e7beb1049eb0759e8f91fd11b947))
+* 신고 화면 추가 및 사용자 상세에 프로필 수정 추가 ([c45a00d](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/c45a00d18a52f6f9d23a72737e9f6c0a6f3e4244))
+* 신고 화면 추가 및 사용자 상세에 프로필 수정 추가 ([97d9873](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/97d987399704c7f3a75861949a07ae9ce8e2de6b))
+
+
+### Bug Fixes
+
+* 서버에서 제거된 녹음 공개 설정 표시 삭제 ([8c76730](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/8c7673055099958a88a2b7a69f15610fb11950dc))
+* 서버에서 제거된 녹음 공개 설정 표시 삭제 ([211eda4](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/211eda4646d17e059cf2c74dc3b59998dd6dbec4))
+
 ## [0.24.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.23.1...v0.24.0) (2026-10-19)
 
 
