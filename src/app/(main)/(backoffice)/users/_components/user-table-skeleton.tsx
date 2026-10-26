@@ -3,7 +3,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const PLACEHOLDER_ROW_COUNT = 5;
-const COLUMN_LABELS = ['사용자', '앵무새', '상태', '최근 14일 세션', '세션', '기기', '가입일'];
+const COLUMN_LABELS = ['사용자', '국가', '앵무새', '상태', '최근 14일 세션', '세션', '기기', '가입일'];
 
 /** 사용자 표를 불러오는 동안 표시하는 컴포넌트 */
 const UserTableSkeleton = () => {
@@ -32,6 +32,9 @@ const UserTableSkeleton = () => {
 											<SkeletonText className="w-32 text-[13px]" />
 										</div>
 									</div>
+								</TableCell>
+								<TableCell>
+									<SkeletonText className="h-5 w-20" />
 								</TableCell>
 								<TableCell>
 									<div className="flex items-center gap-2.5">
