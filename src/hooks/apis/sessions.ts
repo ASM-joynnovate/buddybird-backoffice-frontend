@@ -129,7 +129,7 @@ export const useCancelSessionSoundLabel = () => {
 				queryClient.invalidateQueries({ queryKey: apiKeys.users.all() }),
 			]);
 
-			toast.success('라벨을 취소했습니다.');
+			toast.success('라벨을 삭제했습니다.');
 		},
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});

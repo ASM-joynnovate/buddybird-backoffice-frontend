@@ -11,8 +11,6 @@ import { cn } from '@/lib/utils';
 
 import { Check, X } from 'lucide-react';
 
-import TitledBox from '@/app/(main)/(backoffice)/_components/titled-box';
-import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
 import { LABEL_MEMO_MAX_LENGTH } from '@/config';
 import { SESSION_SOUND_LABEL_TARGETS } from '@/config/session';
 
@@ -26,8 +24,8 @@ interface Props {
 	sessionId: string;
 	soundId: string;
 	target: SessionSoundLabelTarget;
-	finalScore: number | null;
 	latestLabel?: SessionSoundDetail['labels'][number];
+	latestModelResult?: { positive: boolean; score: number };
 }
 
 /**
@@ -35,22 +33,22 @@ interface Props {
  * @param sessionId 소리가 속한 세션 ID
  * @param soundId 라벨을 저장할 소리 ID
  * @param target 라벨 대상
- * @param finalScore 라벨 및 모델 결과로 정한 최종 점수
  * @param latestLabel 대상의 최근 라벨
+ * @param latestModelResult 대상의 최근 모델 결과
  */
-const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestLabel }: Props) => {
+const SessionSoundLabelForm = ({ sessionId, soundId, target, latestLabel, latestModelResult }: Props) => {
 	const scoreInputId = useId();
 	const memoInputId = useId();
 
-	// 취소하지 않은 최근 라벨의 값으로 시작
+	// 취소하지 않은 라벨이 없으면 모델 결과로 시작
 	const activeLabel = latestLabel?.is_positive === null ? undefined : latestLabel;
+	const initialPositive = activeLabel ? (activeLabel.is_positive ?? undefined) : latestModelResult?.positive;
+	const initialScore = activeLabel ? activeLabel.score : latestModelResult?.score;
+	const initialScorePercent =
+		initialScore === null || initialScore === undefined ? '' : String(Math.round(initialScore * 100));
 
-	const [positive, setPositive] = useState(activeLabel?.is_positive ?? undefined);
-	const [scorePercent, setScorePercent] = useState(
-		activeLabel?.score === null || activeLabel?.score === undefined
-			? ''
-			: String(Math.round(activeLabel.score * 100)),
-	);
+	const [positive, setPositive] = useState(initialPositive);
+	const [scorePercent, setScorePercent] = useState(initialScorePercent);
 	const [memo, setMemo] = useState('');
 
 	const updateLabel = useUpdateSessionSoundLabel();
@@ -58,6 +56,7 @@ const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestL
 
 	const targetName = SESSION_SOUND_LABEL_TARGETS[target];
 	const saving = updateLabel.isPending || cancelLabel.isPending;
+	const inputChanged = positive !== initialPositive || scorePercent !== initialScorePercent || memo !== '';
 
 	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -67,128 +66,128 @@ const SessionSoundLabelForm = ({ sessionId, soundId, target, finalScore, latestL
 		}
 
 		// 0~100 정수를 서버의 0~1 점수로 변환
-		updateLabel.mutate(
-			{
-				id: sessionId,
-				soundId,
-				target,
-				data: {
-					is_positive: positive,
-					score: Number(scorePercent) / 100,
-					memo: memo.trim() || null,
-					operator_name: readBrowserOperatorName(),
-				},
+		updateLabel.mutate({
+			id: sessionId,
+			soundId,
+			target,
+			data: {
+				is_positive: positive,
+				score: Number(scorePercent) / 100,
+				memo: memo.trim() || null,
+				operator_name: readBrowserOperatorName(),
 			},
-			{ onSuccess: () => setMemo('') },
-		);
+		});
 	};
 
-	const handleCancel = () => {
+	const handleCancelLabel = () => {
 		if (saving) {
 			return;
 		}
 
-		cancelLabel.mutate(
-			{
-				id: sessionId,
-				soundId,
-				target,
-				data: { memo: memo.trim() || null, operator_name: readBrowserOperatorName() },
-			},
-			{ onSuccess: () => setMemo('') },
-		);
+		cancelLabel.mutate({
+			id: sessionId,
+			soundId,
+			target,
+			data: { memo: memo.trim() || null, operator_name: readBrowserOperatorName() },
+		});
+	};
+
+	const handleResetInput = () => {
+		setPositive(initialPositive);
+		setScorePercent(initialScorePercent);
+		setMemo('');
 	};
 
 	return (
-		<TitledBox
-			title={targetName}
-			action={
-				<span className="text-[12.5px] text-muted-foreground">
-					<SessionSoundScore
-						label="최종"
-						score={finalScore}
-						barClassName={target === 'parrot' ? 'bg-foreground' : 'bg-chart-1'}
-					/>
-				</span>
-			}
-		>
-			<form onSubmit={handleSubmit}>
-				<div className="grid grid-cols-[40px_minmax(0,1fr)] items-center gap-2.5 p-3">
-					<span className={fieldLabelClassName}>판정</span>
-					<fieldset className="grid grid-cols-2 gap-2">
-						<legend className="sr-only">{targetName} 여부</legend>
+		<form onSubmit={handleSubmit}>
+			<div className="grid grid-cols-[40px_minmax(0,1fr)] items-center gap-2.5 p-3">
+				<span className={fieldLabelClassName}>판정</span>
+				<fieldset className="grid grid-cols-2 gap-2">
+					<legend className="sr-only">{targetName} 여부</legend>
 
-						<Button
-							type="button"
-							variant="outline"
-							aria-pressed={positive === true}
-							className="aria-pressed:border-success aria-pressed:bg-success/10 aria-pressed:text-success"
-							onClick={() => setPositive(true)}
-						>
-							<Check />예
-						</Button>
-						<Button
-							type="button"
-							variant="outline"
-							aria-pressed={positive === false}
-							className="aria-pressed:border-destructive aria-pressed:bg-destructive/10 aria-pressed:text-destructive"
-							onClick={() => setPositive(false)}
-						>
-							<X />
-							아니오
-						</Button>
-					</fieldset>
-
-					<label htmlFor={scoreInputId} className={fieldLabelClassName}>
-						점수
-					</label>
-					<div className="flex items-center gap-1.5">
-						<Input
-							id={scoreInputId}
-							type="number"
-							inputMode="numeric"
-							required
-							min={0}
-							max={100}
-							step={1}
-							value={scorePercent}
-							className="w-16 text-right tabular-nums"
-							onChange={(event) => setScorePercent(event.target.value)}
-						/>
-						<span className="text-muted-foreground">%</span>
-					</div>
-
-					<label htmlFor={memoInputId} className={cn(fieldLabelClassName, 'self-start pt-2')}>
-						메모
-					</label>
-					<Textarea
-						id={memoInputId}
-						placeholder="메모"
-						maxLength={LABEL_MEMO_MAX_LENGTH}
-						value={memo}
-						className="min-h-14"
-						onChange={(event) => setMemo(event.target.value)}
-					/>
-				</div>
-
-				<div className="flex justify-end gap-1.5 border-t px-3 py-2.5">
-					{!!activeLabel && (
-						<Button
-							type="button"
-							variant="destructive"
-							loading={cancelLabel.isPending}
-							disabled={saving}
-							onClick={handleCancel}
-						>
-							취소
-						</Button>
-					)}
-					<Button type="submit" loading={updateLabel.isPending} disabled={positive === undefined || saving}>
-						저장
+					<Button
+						type="button"
+						variant="outline"
+						aria-pressed={positive === true}
+						className="aria-pressed:border-success aria-pressed:bg-success/10 aria-pressed:text-success"
+						onClick={() => setPositive(true)}
+					>
+						<Check />예
 					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						aria-pressed={positive === false}
+						className="aria-pressed:border-destructive aria-pressed:bg-destructive/10 aria-pressed:text-destructive"
+						onClick={() => setPositive(false)}
+					>
+						<X />
+						아니오
+					</Button>
+				</fieldset>
+
+				<label htmlFor={scoreInputId} className={fieldLabelClassName}>
+					점수
+				</label>
+				<div className="flex items-center gap-1.5">
+					<Input
+						id={scoreInputId}
+						type="number"
+						inputMode="numeric"
+						required
+						min={0}
+						max={100}
+						step={1}
+						value={scorePercent}
+						className="w-16 text-right tabular-nums"
+						onChange={(event) => setScorePercent(event.target.value)}
+					/>
+					<span className="text-muted-foreground">%</span>
 				</div>
-			</form>
-		</TitledBox>
+
+				<label htmlFor={memoInputId} className={cn(fieldLabelClassName, 'self-start pt-2')}>
+					메모
+				</label>
+				<Textarea
+					id={memoInputId}
+					placeholder="메모"
+					maxLength={LABEL_MEMO_MAX_LENGTH}
+					value={memo}
+					className="min-h-14"
+					onChange={(event) => setMemo(event.target.value)}
+				/>
+			</div>
+
+			<div className="flex justify-end gap-1.5 border-t px-3 py-2.5">
+				{!!activeLabel && (
+					<Button
+						type="button"
+						variant="destructive"
+						loading={cancelLabel.isPending}
+						disabled={saving}
+						className="mr-auto"
+						onClick={handleCancelLabel}
+					>
+						삭제
+					</Button>
+				)}
+				<Button
+					type="button"
+					variant="destructive"
+					disabled={!inputChanged || saving}
+					onClick={handleResetInput}
+				>
+					취소
+				</Button>
+				<Button
+					type="submit"
+					loading={updateLabel.isPending}
+					disabled={positive === undefined || (!!activeLabel && !inputChanged) || saving}
+				>
+					저장
+				</Button>
+			</div>
+		</form>
 	);
 };
 

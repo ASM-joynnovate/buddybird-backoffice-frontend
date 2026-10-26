@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { TriangleAlert } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import PlatformIcon from '@/app/(main)/(backoffice)/_components/platform-icon';
 import SortLink from '@/app/(main)/(backoffice)/_components/sort-link';
 import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
@@ -22,6 +23,7 @@ import UserSummary from '@/app/(main)/(backoffice)/_components/user-summary';
 import ParrotPhoto from '@/app/(main)/(backoffice)/users/_components/parrot-photo';
 import { SESSION_PHASES } from '@/config/session';
 import { DAY, HOUR } from '@/config/units';
+import { toCountryName } from '@/utils/country';
 import { formatDate, formatRelativeTime } from '@/utils/date';
 import { toPlatformName } from '@/utils/platform';
 import { toLinkQuery } from '@/utils/search-params';
@@ -102,6 +104,7 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
 							<TableHead className="text-muted-foreground">사용자</TableHead>
+							<TableHead className="text-muted-foreground">국가</TableHead>
 							{sortColumnHead('parrot_count')}
 							{sortColumnHead('status')}
 							{sortColumnHead('recent_duration')}
@@ -131,6 +134,22 @@ const UserTable = ({ listParams, query, initialNow }: Props) => {
 											>
 												<UserSummary user={user} />
 											</Link>
+										</TableCell>
+
+										<TableCell>
+											{user.country ? (
+												<span
+													className={cn(
+														'flex items-center gap-2 whitespace-nowrap',
+														user.is_deleted && 'opacity-55',
+													)}
+												>
+													<CountryFlag country={user.country} />
+													{toCountryName(user.country)}
+												</span>
+											) : (
+												<span className="text-muted-foreground">-</span>
+											)}
 										</TableCell>
 
 										<TableCell>

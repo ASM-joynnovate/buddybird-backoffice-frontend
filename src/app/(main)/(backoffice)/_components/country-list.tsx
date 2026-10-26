@@ -15,13 +15,13 @@ import { toCountryName } from '@/utils/country';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface Props {
-	countries: UserDashboard['activity_countries'];
+	countries: UserDashboard['countries'];
 	className?: string;
 }
 
 /**
- * 국가별 접속 사용자 목록 컴포넌트
- * @param countries 접속 사용자가 많은 순서의 국가 목록
+ * 국가별 사용자 목록 컴포넌트
+ * @param countries 사용자가 많은 순서의 국가 목록
  * @param className 목록의 열 수 및 최소 높이를 정하는 class
  */
 const CountryList = ({ countries, className }: Props) => {
@@ -96,7 +96,7 @@ const CountryList = ({ countries, className }: Props) => {
 	}, [countriesEmpty]);
 
 	if (countriesEmpty) {
-		return <p className="text-muted-foreground">접속 기록이 없습니다.</p>;
+		return <p className="text-muted-foreground">사용자가 없습니다.</p>;
 	}
 
 	return (

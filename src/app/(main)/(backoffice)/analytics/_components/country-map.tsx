@@ -22,12 +22,12 @@ const MAP_COLORS = {
 };
 
 interface Props {
-	countries: UserDashboard['activity_countries'];
+	countries: UserDashboard['countries'];
 }
 
 /**
- * 국가별 접속 사용자 지도 컴포넌트
- * @param countries 접속 사용자가 많은 순서의 국가 목록
+ * 국가별 사용자 지도 컴포넌트
+ * @param countries 사용자가 많은 순서의 국가 목록
  */
 const CountryMap = ({ countries }: Props) => {
 	const mapAreaRef = useRef<HTMLDivElement>(null);
@@ -107,7 +107,7 @@ const CountryMap = ({ countries }: Props) => {
 				touchPitch={false}
 				attributionControl={false}
 			>
-				{/*접속 사용자가 있는 국가는 다른 색으로 표시*/}
+				{/*사용자가 있는 국가는 다른 색으로 표시*/}
 				<MapGeoJSON
 					data={COUNTRY_SHAPES_URL}
 					fillPaint={{

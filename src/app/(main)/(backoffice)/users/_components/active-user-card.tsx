@@ -7,14 +7,14 @@ import { Card, CardTitle } from '@/components/ui/card';
 
 interface Props {
 	daily: UserDashboard['daily'];
-	countries: UserDashboard['activity_countries'];
+	countries: UserDashboard['countries'];
 	today: string;
 }
 
 /**
  * 기준별 활성 사용자 및 국가 카드 컴포넌트
  * @param daily 날짜별 사용자 집계
- * @param countries 국가별 접속 사용자 수
+ * @param countries 국가별 사용자 수
  * @param today 오늘 날짜
  */
 const ActiveUserCard = ({ daily, countries, today }: Props) => {
@@ -35,7 +35,10 @@ const ActiveUserCard = ({ daily, countries, today }: Props) => {
 			</div>
 
 			<div className="flex flex-col border-t bg-card-inset px-5 py-4.5 xl:border-t-0 xl:border-l">
-				<CardTitle className="mb-3 font-bold">국가</CardTitle>
+				<div className="mb-3 flex items-baseline justify-between gap-3">
+					<CardTitle className="font-bold">국가</CardTitle>
+					<p className="text-[13px] text-muted-foreground">프로필 기준</p>
+				</div>
 
 				<CountryList countries={countries} className="divide-y [&>li:first-child]:pt-0" />
 			</div>
