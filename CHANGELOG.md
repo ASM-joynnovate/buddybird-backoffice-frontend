@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.26.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.25.0...v0.26.0) (2026-10-26)
+
+
+### Features
+
+* 모사 성공 소리가 있는 소리 막대를 주황색으로 표시 ([ed53ce9](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/ed53ce936545e90fffd4bcb92b414ceb401147d9))
+* 세션 소리 표 개편 및 자동 다음 소리 재생 삭제 ([6336bd8](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/6336bd82460a6e3fdb34a41611fa0c761c6e9251))
+* 세션 소리 표 개편 및 자동 다음 소리 재생 삭제 ([1f26b76](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/1f26b7682388e5c35b88bdfe7285448d416d933e))
+* 타임라인의 앵무새 소리 막대 색 변경 ([e2cdbd3](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/e2cdbd31ce56b6e295bf82213e48419d5caed6a1))
+
 ## [0.25.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.24.0...v0.25.0) (2026-10-26)
 
 
