@@ -22,7 +22,7 @@ const REFERENCE_VERSIONS = [
 	{ name: '최소 지원 버전', description: '낮은 버전에 강제 업데이트' },
 ];
 
-/** "앱 버전" 카드를 불러오는 동안 보이는 컴포넌트 */
+/** "앱 버전" 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DeviceGroupSkeleton = () => {
 	return (
 		<TitledCard title="앱 버전" action=<Skeleton className="h-3.5 w-18" />>

@@ -52,7 +52,7 @@ interface Props {
  * 사용자 표 컴포넌트
  * @param listParams 목록 조회 조건
  * @param query 현재 주소의 쿼리
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const UserTable = ({ listParams, query, initialNow }: Props) => {
 	const { data: userListData } = useGetUserList(listParams);

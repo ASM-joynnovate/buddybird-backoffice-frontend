@@ -28,7 +28,7 @@ interface Props {
  * @param version 주소에서 고른 버전
  * @param formMode 열려 있는 입력 폼
  * @param today 오늘 날짜
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  * @param onFormModeChange 입력 폼을 열거나 닫을 때 실행할 함수
  */
 const ConsentCards = ({ kind, version, formMode, today, initialNow, onFormModeChange }: Props) => {

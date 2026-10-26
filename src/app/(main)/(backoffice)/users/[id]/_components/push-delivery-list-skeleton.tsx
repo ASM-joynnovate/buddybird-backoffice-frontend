@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const PLACEHOLDER_ROW_COUNT = 5;
 
-/** 푸시 발송 기록 목록을 불러오는 동안 보이는 컴포넌트 */
+/** 푸시 발송 기록 목록을 불러오는 동안 표시하는 컴포넌트 */
 const PushDeliveryListSkeleton = () => {
 	return (
 		<>

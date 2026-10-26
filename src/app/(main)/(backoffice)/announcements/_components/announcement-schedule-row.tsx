@@ -40,7 +40,7 @@ interface Props {
  * 게시 일정의 공지 하나의 행 컴포넌트
  * @param announcement 표시할 공지
  * @param userCount 전체 사용자 수
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  * @param onOpen 행을 누르면 실행할 함수
  * @param onTooltipShow 일정 툴팁을 표시할 때 실행할 함수
  * @param onTooltipHide 일정 툴팁을 숨길 때 실행할 함수

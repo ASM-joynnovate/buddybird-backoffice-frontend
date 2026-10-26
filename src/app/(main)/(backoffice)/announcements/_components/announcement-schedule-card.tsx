@@ -38,7 +38,7 @@ interface Props {
 /**
  * 게시 중이거나 예약된 공지의 일정 카드 컴포넌트
  * @param listParams 목록 조회 조건
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const AnnouncementScheduleCard = ({ listParams, now }: Props) => {
 	const { data: announcementListData } = useGetAnnouncementList(listParams);

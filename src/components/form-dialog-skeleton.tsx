@@ -10,7 +10,7 @@ interface Props {
 }
 
 /**
- * 다이얼로그의 입력 폼을 불러오는 동안 보이는 컴포넌트
+ * 다이얼로그의 입력 폼을 불러오는 동안 표시하는 컴포넌트
  * @param className 폼과 칸 너비 및 높이를 맞출 클래스
  */
 const FormDialogSkeleton = ({ className }: Props) => {

@@ -15,7 +15,7 @@ const NOTIFICATION_SECTIONS = [
 	{ title: '최근 발송', rowCount: 3 },
 ];
 
-/** 기간별 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 기간별 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DashboardSkeleton = () => {
 	return (
 		<>

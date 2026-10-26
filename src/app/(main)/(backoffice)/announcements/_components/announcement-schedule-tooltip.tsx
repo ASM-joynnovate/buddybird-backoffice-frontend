@@ -17,7 +17,7 @@ interface Props {
 /**
  * 게시 일정의 툴팁 컴포넌트
  * @param announcement 가리킨 공지
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  * @param left 가리킨 가로 위치
  * @param top 일정 막대의 세로 위치
  */

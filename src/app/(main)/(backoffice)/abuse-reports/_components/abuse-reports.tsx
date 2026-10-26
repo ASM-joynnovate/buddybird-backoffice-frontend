@@ -20,7 +20,7 @@ interface Props {
  * 신고 화면 컴포넌트
  * @param listParams 목록 조회 조건
  * @param query 현재 주소의 쿼리
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const AbuseReports = ({ listParams, query, now }: Props) => {
 	return (

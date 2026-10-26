@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 const COLUMN_LABELS = ['사용자', '계정', '사용 기간', '세션', '기기', '피드백'];
 const PLACEHOLDER_ROW_COUNT = 5;
 
-/** 완료된 탈퇴 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 완료된 탈퇴 카드를 불러오는 동안 표시하는 컴포넌트 */
 const CompletedWithdrawalSkeleton = () => {
 	return (
 		<TitledCard title="완료">

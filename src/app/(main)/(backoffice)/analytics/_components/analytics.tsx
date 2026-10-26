@@ -34,7 +34,7 @@ interface Props {
  * @param listQuery 기간을 뺀 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Analytics = ({ period, dashboardParams, sort, issueFilters, listQuery, query, today, now }: Props) => {
 	const periodKey = [dashboardParams.date_from, dashboardParams.date_to].join(':');

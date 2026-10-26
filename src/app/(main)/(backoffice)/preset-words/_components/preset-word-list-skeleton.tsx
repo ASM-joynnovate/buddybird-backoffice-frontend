@@ -9,7 +9,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ITEM_COUNT = 7;
 
-/** 단어 프리셋 목록을 불러오는 동안 보이는 컴포넌트 */
+/** 단어 프리셋 목록을 불러오는 동안 표시하는 컴포넌트 */
 const PresetWordListSkeleton = () => {
 	return (
 		<>

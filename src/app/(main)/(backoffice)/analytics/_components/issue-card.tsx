@@ -53,7 +53,7 @@ interface Props {
  * @param project 필터로 선택한 프로젝트
  * @param dateFrom 조회 기간의 시작일
  * @param query 현재 주소의 쿼리
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const IssueCard = ({ issues, projects, issueReleases, sort, project, dateFrom, query, now }: Props) => {
 	const maxCount = Math.max(1, ...issues.map((issue) => issue.count));

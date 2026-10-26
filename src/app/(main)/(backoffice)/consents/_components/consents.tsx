@@ -25,7 +25,7 @@ interface Props {
  * @param kind 주소에서 고른 종류
  * @param version 주소에서 고른 버전
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  * @param statsPrefetch 처음 보여 줄 버전의 통계를 미리 조회하는 컴포넌트
  */
 const Consents = ({ kind, version, today, now, statsPrefetch }: Props) => {

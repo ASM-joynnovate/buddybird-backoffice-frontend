@@ -33,7 +33,7 @@ interface Props {
  * @param notificationListParams 알림 목록 조회 조건
  * @param filterSelected 받는 사람, 종류, 날짜 조건을 골랐는지 여부
  * @param query 현재 주소의 쿼리
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  * @param searchBar 목록 위에 둘 검색 및 필터
  */
 const NotificationFeed = ({

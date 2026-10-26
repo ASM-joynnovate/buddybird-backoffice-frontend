@@ -4,7 +4,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 const factClassName = 'grid min-w-0 content-start gap-1 rounded-lg bg-muted px-3.5 py-2.5';
 const factTitleClassName = 'mb-1 text-[12.5px] text-muted-foreground';
 
-/** 사용자 프로필 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 사용자 프로필 카드를 불러오는 동안 표시하는 컴포넌트 */
 const UserProfileCardSkeleton = () => {
 	return (
 		<Card className="gap-4 px-5 py-4.5">

@@ -7,7 +7,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ROW_COUNT = 12;
 
-/** 응급 상황 목록을 불러오는 동안 보이는 컴포넌트 */
+/** 응급 상황 목록을 불러오는 동안 표시하는 컴포넌트 */
 const EmergencyListSkeleton = () => {
 	return (
 		<>

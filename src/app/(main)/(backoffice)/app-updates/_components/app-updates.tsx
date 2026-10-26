@@ -19,7 +19,7 @@ interface Props {
 /**
  * 앱 업데이트 화면 컴포넌트
  * @param platform 선택된 플랫폼
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const AppUpdates = ({ platform, now }: Props) => {
 	return (

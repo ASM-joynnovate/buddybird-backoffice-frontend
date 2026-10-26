@@ -24,7 +24,7 @@ interface Props {
 /**
  * 완료되지 않은 탈퇴 카드 컴포넌트
  * @param listParams 목록 조회 조건
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const IncompleteWithdrawalCard = ({ listParams, initialNow }: Props) => {
 	const queryClient = useQueryClient();

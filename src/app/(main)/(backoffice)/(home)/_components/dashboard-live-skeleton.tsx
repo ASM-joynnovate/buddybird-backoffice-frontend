@@ -16,7 +16,7 @@ const CHECK_ITEM_LABELS = [
 	'앵무 소리 판별 실패',
 ];
 
-/** 현재 상태 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 현재 상태 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DashboardLiveSkeleton = () => {
 	return (
 		<div className="grid gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">

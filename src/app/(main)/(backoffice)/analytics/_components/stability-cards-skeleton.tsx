@@ -5,7 +5,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 const PLACEHOLDER_ISSUE_COUNT = 10;
 const PLACEHOLDER_ROW_COUNT = 4;
 
-/** Sentry 카드를 불러오는 동안 보이는 컴포넌트 */
+/** Sentry 카드를 불러오는 동안 표시하는 컴포넌트 */
 const StabilityCardsSkeleton = () => {
 	return (
 		<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">

@@ -4,7 +4,7 @@ import { SECOND } from '@/config/units';
 
 /**
  * 현재 시각을 1초마다 갱신하는 Hook
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 export const useNow = (initialNow: number) => {
 	const [now, setNow] = useState(initialNow);

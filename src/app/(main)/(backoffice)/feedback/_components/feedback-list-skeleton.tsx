@@ -3,7 +3,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ROW_COUNT = 5;
 
-/** 피드백 목록을 불러오는 동안 보이는 컴포넌트 */
+/** 피드백 목록을 불러오는 동안 표시하는 컴포넌트 */
 const FeedbackListSkeleton = () => {
 	return (
 		<>

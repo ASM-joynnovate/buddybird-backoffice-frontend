@@ -35,7 +35,7 @@ interface Props {
  * @param id 조회할 사용자 ID
  * @param page 세션 목록의 페이지 번호
  * @param sessionId 처음에 선택할 세션의 ID
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });

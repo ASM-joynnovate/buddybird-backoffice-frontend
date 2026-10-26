@@ -31,7 +31,7 @@ interface Props {
  * @param keyword 검색 입력에 적은 검색어
  * @param filterSelected 날짜, 앱 버전, 기기, 언어 조건을 골랐는지 여부
  * @param query 현재 주소의 쿼리
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const FeedbackList = ({ listParams, keyword, filterSelected, query, initialNow }: Props) => {
 	const { data: feedbackListData } = useGetFeedbackList(listParams);

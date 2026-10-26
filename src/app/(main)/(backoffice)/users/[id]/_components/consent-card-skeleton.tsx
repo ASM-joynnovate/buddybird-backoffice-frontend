@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const PLACEHOLDER_ROW_COUNT = 4;
 
-/** 사용자의 동의 내역 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 사용자의 동의 내역 카드를 불러오는 동안 표시하는 컴포넌트 */
 const ConsentCardSkeleton = () => {
 	return (
 		<TitledCard title="동의">

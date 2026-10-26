@@ -35,7 +35,7 @@ interface Props {
 /**
  * 사용자 프로필 카드 컴포넌트
  * @param id 조회할 사용자 ID
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const UserProfileCard = ({ id, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });

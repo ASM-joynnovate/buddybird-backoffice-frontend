@@ -14,7 +14,7 @@ const PLACEHOLDER_ROWS = [
 	{ titleWidth: '70%', barWidth: '58%' },
 ];
 
-/** 게시 일정 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 게시 일정 카드를 불러오는 동안 표시하는 컴포넌트 */
 const AnnouncementScheduleSkeleton = () => {
 	return (
 		<TitledCard title="게시 일정" action=<Skeleton className="h-3.5 w-24" />>

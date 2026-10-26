@@ -21,7 +21,7 @@ interface Props {
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Home = ({ period, dashboardParams, today, now }: Props) => {
 	return (

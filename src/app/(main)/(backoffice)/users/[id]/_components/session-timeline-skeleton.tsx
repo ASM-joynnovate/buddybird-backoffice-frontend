@@ -7,7 +7,7 @@ const LEGEND_LABELS = ['세션', '수면 시간', '연결 끊김', '응급 상�
 const PLACEHOLDER_EVENT_WIDTHS = ['w-39.5', 'w-46', 'w-39.5', 'w-39.5', 'w-39', 'w-38.5', 'w-49', 'w-46', 'w-39.5'];
 const laneLabelClassName = '-mb-2 text-[12.5px] text-muted-foreground';
 
-/** 세션 하나의 타임라인을 불러오는 동안 보이는 컴포넌트 */
+/** 세션 하나의 타임라인을 불러오는 동안 표시하는 컴포넌트 */
 const SessionTimelineSkeleton = () => {
 	return (
 		<div className="grid min-w-0 content-start gap-4 p-4 md:px-5.5 md:py-5">

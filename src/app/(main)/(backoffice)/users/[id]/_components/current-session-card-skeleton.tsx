@@ -7,7 +7,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const SESSION_INFO_LABELS = ['단어', '예정 종료', '수면 시간', '스테이션'];
 
-/** 현재 세션 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 현재 세션 카드를 불러오는 동안 표시하는 컴포넌트 */
 const CurrentSessionCardSkeleton = () => {
 	return (
 		<Card className="grid gap-0 py-0 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">

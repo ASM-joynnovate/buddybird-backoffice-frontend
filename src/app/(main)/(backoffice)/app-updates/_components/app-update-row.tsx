@@ -23,7 +23,7 @@ interface Props {
 /**
  * 업데이트 내역의 행 컴포넌트
  * @param appUpdate 표시할 업데이트
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  * @param onOpen 행을 누르면 실행할 함수
  */
 const AppUpdateRow = ({ appUpdate, now, onOpen }: Props) => {

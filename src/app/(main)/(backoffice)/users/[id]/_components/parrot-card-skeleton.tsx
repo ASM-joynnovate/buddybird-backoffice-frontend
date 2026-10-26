@@ -4,7 +4,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_PARROT_COUNT = 2;
 
-/** 앵무새 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 앵무새 카드를 불러오는 동안 표시하는 컴포넌트 */
 const ParrotCardSkeleton = () => {
 	return (
 		<TitledCard title="앵무새" action=<Skeleton className="h-4 w-9" />>

@@ -5,7 +5,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 const PLACEHOLDER_DEVICE_COUNT = 2;
 const INFO_LABELS = ['OS', '앱 버전', '최근 접속', '푸시', '언어', '시간대'];
 
-/** 기기 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 기기 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DeviceCardSkeleton = () => {
 	return (
 		<TitledCard title="기기" action=<Skeleton className="h-4 w-6" />>

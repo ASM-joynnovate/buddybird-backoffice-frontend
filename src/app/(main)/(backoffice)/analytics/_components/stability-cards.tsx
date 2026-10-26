@@ -24,7 +24,7 @@ interface Props {
  * @param sort 이슈 정렬 기준
  * @param issueFilters 이슈 필터로 선택한 값
  * @param query 현재 주소의 쿼리
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const StabilityCards = ({ dashboardParams, sort, issueFilters, query, now }: Props) => {
 	const { data: stabilityDashboardData } = useGetStabilityDashboard({ dashboardParams, sort, issueFilters });

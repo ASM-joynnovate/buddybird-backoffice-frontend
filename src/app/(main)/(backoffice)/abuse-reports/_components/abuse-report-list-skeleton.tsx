@@ -3,7 +3,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ROW_COUNT = 4;
 
-/** 신고 목록을 불러오는 동안 보이는 컴포넌트 */
+/** 신고 목록을 불러오는 동안 표시하는 컴포넌트 */
 const AbuseReportListSkeleton = () => {
 	return (
 		<Card className="gap-0 px-5 py-4.5">

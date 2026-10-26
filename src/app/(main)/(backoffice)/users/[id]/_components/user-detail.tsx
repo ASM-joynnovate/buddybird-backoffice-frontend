@@ -47,7 +47,7 @@ interface Props {
  * @param sessionId 처음에 선택할 세션의 ID
  * @param sessionList 페이지에서 시작한 세션 목록 조회
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const UserDetail = ({ id, sessionPage, sessionId, sessionList, today, now }: Props) => {
 	return (
