@@ -109,7 +109,7 @@ export const countAge = (birthdate: string, today: string) => {
 	return dayjs(today).diff(birthdate, 'year');
 };
 
-/** ms를 시간 및 분으로 나누는 함수 */
+/** ms를 시간 및 분으로 분리하는 함수 */
 export const toHoursAndMinutes = (durationMs: number) => {
 	return { hours: Math.floor(durationMs / HOUR), minutes: Math.floor((durationMs % HOUR) / MINUTE) };
 };
@@ -161,7 +161,7 @@ export const formatDurationLater = (durationMs: number) => {
 	return minutes % 60 ? `${hours}시간 ${minutes % 60}분 뒤` : `${hours}시간 뒤`;
 };
 
-/** offset 없는 시각을 변환 없이 'M.D HH:mm'으로 변환하는 함수 */
+/** offset 없는 시각을 시간대 변환 없이 'M.D HH:mm'으로 반환하는 함수 */
 export const formatLocalShortDateTime = (localDateTime: string) => {
 	return dayjs(localDateTime).format('M.D HH:mm');
 };
@@ -171,7 +171,7 @@ export const toDateTimeInputValue = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('YYYY-MM-DDTHH:mm');
 };
 
-/** datetime-local 입력값을 offset이 붙은 시각으로 변환하는 함수 */
+/** datetime-local 입력값을 offset이 포함된 시각으로 변환하는 함수 */
 export const toTimestamp = (inputValue: string) => {
 	return dayjs.tz(inputValue, DISPLAY_TIME_ZONE).toISOString();
 };

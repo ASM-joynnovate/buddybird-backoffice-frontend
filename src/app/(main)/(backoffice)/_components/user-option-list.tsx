@@ -15,7 +15,7 @@ import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 
 import { Spinner } from '@/components/ui/spinner';
 
-// 한 번에 조회하는 사용자 수, API 최대값
+// API의 최대 조회 수
 const USERS_PER_REQUEST = 100;
 
 interface Props {

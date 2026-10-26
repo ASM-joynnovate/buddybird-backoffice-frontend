@@ -688,7 +688,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 				</div>
 			</div>
 
-			{/*이벤트 목록, 누르면 그 시점으로 이동*/}
+			{/*누르면 그 시점으로 이동하는 이벤트 목록*/}
 			<div className="flex flex-wrap gap-1.5">
 				{sessionEvents.map((sessionEvent) => (
 					<button

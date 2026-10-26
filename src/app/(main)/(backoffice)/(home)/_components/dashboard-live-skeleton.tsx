@@ -51,7 +51,7 @@ const DashboardLiveSkeleton = () => {
 					</div>
 				</div>
 
-				{/*오늘의 시작, 종료 및 시간대별 개수 스켈레톤*/}
+				{/*오늘 세션 영역 스켈레톤*/}
 				<div className="grid content-between gap-4 border-t bg-card-inset p-4 md:px-5.5 md:py-5 xl:border-t-0 xl:border-l">
 					<div className="flex items-baseline justify-between gap-3">
 						<CardTitle className="font-bold">오늘</CardTitle>

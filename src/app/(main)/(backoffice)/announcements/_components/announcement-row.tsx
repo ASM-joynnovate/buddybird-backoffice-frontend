@@ -45,7 +45,7 @@ interface Props {
  * @param onMouseMove 행 위에서 마우스가 이동하면 실행할 함수
  * @param onMouseLeave 마우스가 행을 벗어나면 실행할 함수
  * @param onFocus 제목 버튼에 포커스하면 실행할 함수
- * @param onBlur 제목 버튼에서 포커스가 떠나면 실행할 함수
+ * @param onBlur 제목 버튼의 포커스가 해제되면 실행할 함수
  */
 const AnnouncementRow = ({
 	announcement,

@@ -137,7 +137,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 	};
 
 	const handleToggleContinuousPlay = () => {
-		// 다음 소리를 기다리는 중에 끄면 정지
+		// 다음 소리 대기 중에 연속 재생을 끄면 정지
 		if (continuousPlayEnabled && playing && audioRef.current?.paused) {
 			stopSound();
 		}

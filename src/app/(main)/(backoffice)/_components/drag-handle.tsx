@@ -10,7 +10,7 @@ interface Props extends ComponentProps<'button'> {
 
 /**
  * 드래그로 순서를 변경하는 핸들 컴포넌트
- * @param label 옮길 대상의 이름
+ * @param label 이동할 대상의 이름
  */
 const DragHandle = ({ label, className, ...props }: Props) => {
 	return (

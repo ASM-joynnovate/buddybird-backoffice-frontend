@@ -12,7 +12,7 @@ interface Props {
 }
 
 /**
- * 이름, 비율 막대, 비율을 한 줄에 두는 행 컴포넌트
+ * 이름 및 비율 막대 행 컴포넌트
  * @param label 값의 이름
  * @param icon 이름 왼쪽에 표시할 아이콘
  * @param barPercent 막대를 채울 비율

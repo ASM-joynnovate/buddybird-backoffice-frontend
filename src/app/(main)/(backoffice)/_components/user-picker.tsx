@@ -71,7 +71,7 @@ const UserPicker = ({ selectedUsers, onSelectedUsersChange, isUserMuted, renderU
 
 		event.preventDefault();
 
-		// 100개씩 나눠 조회
+		// 100개씩 분할 조회
 		const userIdChunks = Array.from({ length: Math.ceil(userIds.length / USER_IDS_PER_REQUEST) }, (_, index) =>
 			userIds.slice(index * USER_IDS_PER_REQUEST, (index + 1) * USER_IDS_PER_REQUEST),
 		);

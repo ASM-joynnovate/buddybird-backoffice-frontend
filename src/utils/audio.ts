@@ -21,7 +21,7 @@ const findWavChunk = (wavFile: ArrayBuffer, chunkName: string) => {
 	while (offset + WAV_CHUNK_HEADER_BYTES <= wavFile.byteLength) {
 		const name = String.fromCharCode(...new Uint8Array(wavFile, offset, 4));
 		const contentStart = offset + WAV_CHUNK_HEADER_BYTES;
-		// 헤더에 적힌 크기가 파일보다 크면 파일 끝까지
+		// 헤더의 크기가 파일보다 크면 파일 끝까지
 		const contentBytes = Math.min(view.getUint32(offset + 4, true), wavFile.byteLength - contentStart);
 
 		if (name === chunkName) {

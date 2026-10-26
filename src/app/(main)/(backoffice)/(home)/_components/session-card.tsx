@@ -31,7 +31,7 @@ const SessionCard = ({ sessions, today }: Props) => {
 	const averageCount = sessions.count / sessions.daily.length;
 	const averageDuration =
 		sessions.average_duration_ms === null ? null : toHoursAndMinutes(sessions.average_duration_ms);
-	// 지난 날짜는 옅게, 마지막 날짜에만 값 표시
+	// 날짜별 막대 투명도 및 마지막 날짜 값
 	const dailySessions = sessions.daily.map((dailySession, index) => ({
 		...dailySession,
 		fillOpacity: dailySession.date === today ? 1 : 0.42,

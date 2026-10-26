@@ -27,7 +27,7 @@ const HEAD_COLUMNS = [
 	{ sort: 'date', label: '마지막 발생' },
 ] satisfies { sort?: StabilityIssueSort; label: string }[];
 
-// 열: 등급, 이슈, 빈 열, 프로젝트, 발생, 첫 발생, 마지막 발생, 링크
+// 등급부터 링크까지의 열 너비
 const rowClassName = cn(
 	'grid grid-cols-[44px_minmax(0,4.4fr)_var(--issue-gap)_128px_minmax(126px,1.6fr)_minmax(48px,0.8fr)_minmax(74px,1fr)_28px] items-start gap-3',
 	'@max-[899px]:grid-cols-[44px_minmax(0,4.4fr)_var(--issue-gap)_128px_52px_minmax(48px,0.8fr)_minmax(74px,1fr)_28px]',
@@ -84,7 +84,7 @@ const IssueCard = ({ issues, projects, issueReleases, sort, project, dateFrom, q
 			{
 				name: filterGroup.name,
 				groupLabel: filterGroup.label,
-				// 입력한 숫자는 단위를 붙여 표시
+				// 입력한 숫자는 단위와 함께 표시
 				label: selectedOption?.label ?? `${value}${filterGroup.inputUnit ?? ''}`,
 				icon: selectedOption?.icon,
 				resetNames: filterGroup.resetNames,

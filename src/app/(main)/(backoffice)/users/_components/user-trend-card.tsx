@@ -18,7 +18,7 @@ const chartConfig = {
 	withdrawal: { label: '탈퇴', color: 'var(--chart-2)' },
 } satisfies ChartConfig;
 
-/** 개수 앞에 부호를 붙이는 함수 */
+/** 개수 앞에 부호를 추가하는 함수 */
 const toSignedCount = (count: number) => {
 	return `${count < 0 ? '−' : '+'}${Math.abs(count).toLocaleString('ko-KR')}`;
 };
@@ -37,7 +37,7 @@ const UserTrendCard = ({ userDashboard, today }: Props) => {
 	const { users, withdrawals, daily } = userDashboard;
 
 	const changeCount = users.signup_count - withdrawals.count;
-	// 지난 날짜는 옅게, 탈퇴는 0 아래로 표시
+	// 날짜별 막대 투명도 및 음수로 변환한 탈퇴 수
 	const dailyCounts = daily.map((dailyCount) => ({
 		date: dailyCount.date,
 		total: dailyCount.total_count,

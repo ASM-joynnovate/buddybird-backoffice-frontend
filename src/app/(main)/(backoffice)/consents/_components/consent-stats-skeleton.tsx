@@ -1,6 +1,5 @@
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
-// 동의, 거부, 접속 후 미응답, 접속 없음, 전체
 const PLACEHOLDER_DECISION_ROW_COUNT = 5;
 const PLACEHOLDER_RATE_ROW_COUNT = 2;
 const RATE_GROUP_NAMES = ['버전', '기기', '언어'];

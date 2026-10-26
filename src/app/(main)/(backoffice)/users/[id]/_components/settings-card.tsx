@@ -122,7 +122,7 @@ const SettingsCard = ({ id }: Props) => {
 					<ul className="divide-y">
 						<SettingStateRow label="리더보드 참여" enabled={settings.community.leaderboard_enabled} />
 						<SettingStateRow label="피드 공개" enabled={settings.community.feed_enabled} />
-						{/*선택하지 않은 녹음 공개는 꺼짐*/}
+						{/*녹음 공개를 선택하지 않았으면 꺼짐 표시*/}
 						<SettingStateRow
 							label="녹음 공개"
 							enabled={!!settings.community.feed_recording_sharing_enabled}

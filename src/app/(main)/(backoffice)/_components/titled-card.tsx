@@ -20,7 +20,7 @@ interface Props {
  * @param title 카드 제목
  * @param href 링크를 누르면 이동할 경로
  * @param linkLabel 링크 문구
- * @param action 제목 오른쪽 끝에 둘 보조 정보
+ * @param action 제목 오른쪽 끝에 표시할 보조 정보
  * @param className 카드에 더할 class
  * @param children 카드 내용
  */

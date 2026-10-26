@@ -131,7 +131,7 @@ const SessionSoundPlayer = ({ currentSound, distressCallSoundIds, judging, playe
 
 				{/*소리 정보*/}
 				<div className="flex min-h-5 flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] text-muted-foreground">
-					{/*좁은 화면에서는 한 줄로 줄임*/}
+					{/*좁은 화면에서는 한 줄로 축약 표시*/}
 					{!currentSound && (
 						<span>
 							막대를 누르면 <span className="max-md:hidden">그 시각부터 </span>재생

@@ -61,7 +61,7 @@ const ScheduledDispatchCard = ({ listParams, expandedRowId, now, onToggleRow }: 
 		return null;
 	}
 
-	// 가장 이른 발송 시각이 빠른 것부터 나열
+	// 가장 이른 발송 시각 순서로 나열
 	const notificationDispatches = dispatchListData.data.toReversed();
 	// 모든 행이 같은 범위를 사용
 	const range = toTimeAxisRange([

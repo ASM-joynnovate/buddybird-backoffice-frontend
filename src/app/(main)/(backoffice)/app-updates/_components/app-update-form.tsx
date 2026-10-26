@@ -86,7 +86,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 		versionError = '이미 등록된 버전입니다.';
 	}
 
-	// 입력값을 반영한 저장 뒤의 목록
+	// 입력값을 반영한 저장 뒤 예상 목록
 	const savedAppUpdates = versionValid
 		? [...otherAppUpdates, { version: trimmedVersion, is_forced: forced }]
 		: appUpdateListData;

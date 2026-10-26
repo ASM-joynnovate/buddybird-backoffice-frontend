@@ -20,7 +20,7 @@ interface Props {
  * @param photoFile 등록된 사진
  * @param removed 삭제 선택 여부
  * @param square 사각형 사진 여부
- * @param onRemovedChange 삭제를 선택하거나 되돌리면 실행할 함수
+ * @param onRemovedChange 삭제를 선택하거나 취소하면 실행할 함수
  */
 const RemovablePhotoField = ({ photoFile, removed, square = false, onRemovedChange }: Props) => {
 	const photoUrl = toUploadedUrl(photoFile);

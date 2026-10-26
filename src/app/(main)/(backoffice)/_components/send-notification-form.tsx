@@ -52,7 +52,7 @@ interface Props {
 
 /**
  * 알림 보내기 입력 및 미리보기 컴포넌트
- * @param initialContent 처음에 채워 둘 알림 내용
+ * @param initialContent 처음 입력값으로 사용할 알림 내용
  * @param initialUserIds 처음에 선택할 사용자 ID
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */

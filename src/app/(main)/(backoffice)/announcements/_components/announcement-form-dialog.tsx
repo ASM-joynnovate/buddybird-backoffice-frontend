@@ -162,7 +162,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			updateAnnouncement.mutate(
 				{
 					id: announcement.id,
-					// 푸시를 만든 공지는 푸시 설정 제외
+					// 푸시를 생성한 공지는 푸시 설정 제외
 					data: announcement.push_prepared_at
 						? announcementRequest
 						: { ...announcementRequest, ...pushRequest },
@@ -269,7 +269,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 							<div className={`${rowClassName} items-center`}>
 								<span className={labelClassName}>푸시</span>
 
-								{/*푸시를 만든 공지는 발송 결과만 표시*/}
+								{/*푸시를 생성한 공지는 발송 결과만 표시*/}
 								{announcement?.push_prepared_at ? (
 									<p className="flex min-h-9 items-center">
 										<AnnouncementPushStatus announcement={announcement} />

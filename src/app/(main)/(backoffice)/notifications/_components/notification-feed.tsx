@@ -34,7 +34,7 @@ interface Props {
  * @param filterSelected 필터 조건을 선택했는지 여부
  * @param query 현재 주소의 쿼리
  * @param initialNow 서버가 화면을 렌더링한 시각
- * @param searchBar 목록 위에 둘 검색 및 필터
+ * @param searchBar 목록 위에 표시할 검색 및 필터
  */
 const NotificationFeed = ({
 	scheduledListParams,

@@ -40,7 +40,7 @@ export default async function Page(props: PageProps<'/users/[id]'>) {
 	void queryClient.prefetchQuery(getUserNotificationSettingsOptions({ id }));
 
 	// 세션 목록은 첫 세션의 타임라인 조회에도 사용
-	// 실패는 세션 카드가 표시
+	// 실패 시 세션 카드에 오류 표시
 	const sessionList = queryClient
 		.fetchQuery(getUserSessionListOptions({ id, page: sessionPage, sessionId }))
 		.catch(() => undefined);

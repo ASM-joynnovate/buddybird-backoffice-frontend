@@ -41,7 +41,7 @@ const ConsentDetailCard = ({ kindConsents, version, formMode, today, now, onForm
 
 	const liveConsent = findLiveConsent(kindConsents, now);
 	const shownConsent = liveConsent ?? kindConsents[0];
-	// 목록에 없는 버전이면 대표하는 버전
+	// 목록에 없는 버전이면 대표 버전
 	const selectedConsent = kindConsents.find((consent) => String(consent.version) === version) ?? shownConsent;
 
 	return (

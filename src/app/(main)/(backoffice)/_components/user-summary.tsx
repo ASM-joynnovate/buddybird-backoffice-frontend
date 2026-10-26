@@ -9,7 +9,7 @@ interface Props {
 }
 
 /**
- * 사용자의 사진, 닉네임, 이메일 컴포넌트
+ * 사용자 프로필 요약 컴포넌트
  * @param user 표시할 사용자
  */
 const UserSummary = ({ user }: Props) => {
