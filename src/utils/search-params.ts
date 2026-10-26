@@ -1,7 +1,10 @@
 import { localDateSchema } from '@/types/apis/primitives';
+import { correctnessSchema } from '@/types/apis/sessions';
 import type { UserListParams } from '@/types/apis/users';
 
 import type { SearchParamValue } from '@/lib/api';
+
+import { z } from 'zod';
 
 import { DASHBOARD_MAX_PERIOD_DAYS, DASHBOARD_PERIODS, DEFAULT_DASHBOARD_PERIOD } from '@/config';
 import { USER_FILTER_GROUPS, type UserFilters } from '@/config/user-filters';
@@ -42,6 +45,15 @@ export const toOptionalText = (value: UrlSearchParam) => {
 	}
 
 	return value.trim() || undefined;
+};
+
+/** 쉼표로 이은 쿼리 값을 라벨 목록으로 변환하는 함수 */
+export const toLabels = (value: UrlSearchParam) => {
+	return z
+		.string()
+		.transform((text) => text.split(','))
+		.pipe(z.array(correctnessSchema))
+		.safeParse(value).data;
 };
 
 /** 쿼리에서 사용자 필터로 선택한 값을 추출하는 함수 */

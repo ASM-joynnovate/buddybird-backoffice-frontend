@@ -1,4 +1,10 @@
-import type { SessionEndedReason, SessionEvent, SessionPhase } from '@/types/apis/sessions';
+import type {
+	SessionEndedReason,
+	SessionEvent,
+	SessionPhase,
+	SessionSoundKind,
+	SessionSoundLabelTarget,
+} from '@/types/apis/sessions';
 
 export const SESSION_PHASES = {
 	learning: { label: '학습', color: 'var(--chart-1)' },
@@ -30,3 +36,14 @@ export const SESSION_EVENTS = {
 	session_finished: { label: '세션 종료', color: 'var(--foreground)' },
 	unknown: { label: '알 수 없는 이벤트', color: 'var(--muted-foreground)' },
 } satisfies Record<SessionEvent['kind'], { label: string; color: string }>;
+
+export const SESSION_SOUND_KINDS = {
+	not_parrot: { label: '앵무새 X', color: 'var(--chart-neutral)' },
+	parrot: { label: '앵무새 O', color: 'var(--chart-1)' },
+	mimic: { label: '모사', color: 'var(--foreground)' },
+} satisfies Record<SessionSoundKind, { label: string; color: string }>;
+
+export const SESSION_SOUND_LABEL_TARGETS = {
+	parrot: '앵무새 소리',
+	mimic: '모사',
+} satisfies Record<SessionSoundLabelTarget, string>;

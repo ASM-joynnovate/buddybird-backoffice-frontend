@@ -3,6 +3,7 @@
 import {
 	type MouseEvent,
 	type PointerEvent,
+	type ReactNode,
 	useEffect,
 	useEffectEvent,
 	useLayoutEffect,
@@ -12,7 +13,7 @@ import {
 
 import { useSuspenseQueries } from '@tanstack/react-query';
 
-import type { Session, SessionSound } from '@/types/apis/sessions';
+import type { Correctness, Session, SessionSound, SessionSoundListParams } from '@/types/apis/sessions';
 
 import { getSessionEventListOptions, getSessionSoundListOptions } from '@/hooks/apis/sessions';
 import useAudioPlaylist from '@/hooks/use-audio-playlist';
@@ -30,6 +31,8 @@ import SessionPlayhead from '@/app/(main)/(backoffice)/users/[id]/_components/se
 import SessionScoreTooltip, {
 	type ScoreTooltip,
 } from '@/app/(main)/(backoffice)/users/[id]/_components/session-score-tooltip';
+import SessionSoundDetail from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-detail';
+import SessionSoundDetailSkeleton from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-detail-skeleton';
 import SessionSoundPlayer from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-player';
 import SessionSoundTable from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-table';
 import SessionTrack from '@/app/(main)/(backoffice)/users/[id]/_components/session-track';
@@ -44,6 +47,9 @@ import {
 } from '@/utils/date';
 import { toUploadedUrl } from '@/utils/file';
 import { type TimePeriod, toPeriodPercent } from '@/utils/session';
+
+import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
+import QueryError from '@/components/query-error';
 
 const CLICK_MOVE_TOLERANCE_PX = 4;
 
@@ -65,6 +71,9 @@ interface Props {
 	session: Session;
 	sessionPeriod: TimePeriod;
 	timeZone: string;
+	label: Correctness[];
+	soundListParams: SessionSoundListParams;
+	filterButton: ReactNode;
 }
 
 /**
@@ -72,10 +81,16 @@ interface Props {
  * @param session 표시할 세션
  * @param sessionPeriod 세션의 시작 및 끝 시각
  * @param timeZone 스테이션 기기의 시간대
+ * @param label 이벤트 라벨 조건
+ * @param soundListParams 소리 조회 조건
+ * @param filterButton 제목 줄에 표시할 필터 버튼
  */
-const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
+const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListParams, filterButton }: Props) => {
 	const [{ data: sessionEventListData }, { data: sessionSoundListData }] = useSuspenseQueries({
-		queries: [getSessionEventListOptions({ id: session.id }), getSessionSoundListOptions({ id: session.id })],
+		queries: [
+			getSessionEventListOptions({ id: session.id, label }),
+			getSessionSoundListOptions({ id: session.id, ...soundListParams }),
+		],
 	});
 
 	const player = useAudioPlaylist(sessionSoundListData);
@@ -117,6 +132,8 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			wordName: sessionEvent.word?.name,
 			color: heartbeatExpired ? 'var(--destructive-dot)' : SESSION_EVENTS[sessionEvent.kind].color,
 			distressCallDetected: sessionEvent.kind === 'distress_call_detected',
+			isCorrect: sessionEvent.is_correct,
+			userReview: sessionEvent.user_review,
 			imageUrl: toUploadedUrl(sessionEvent.image),
 			videoUrl: toUploadedUrl(sessionEvent.video),
 			// 앵무새 소리가 아닌 녹음은 소리 목록에 없음
@@ -164,7 +181,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 	const maxSoundCount = Math.max(1, ...soundBars.map((soundBar) => soundBar.sounds.length));
 	const mimicScores = sessionSoundListData.flatMap((sessionSound) =>
-		sessionSound.is_mimic && sessionSound.judgment ? [sessionSound.judgment.score] : [],
+		sessionSound.kind === 'mimic' ? (sessionSound.final_mimic_score ?? []) : [],
 	);
 	const tickCount = Math.round(Math.min(60, 5 * zoom));
 
@@ -417,20 +434,27 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h3 className="text-base font-bold">{formatMonthDayTime(session.period.started_at)} 세션</h3>
 
-				<SegmentedControl
-					label="확대"
-					size="sm"
-					options={zoomLevels.map((zoomLevel) => ({
-						value: zoomLevel.label,
-						label: zoomLevel.label,
-						disabled: !!zoomLevel.visibleMs && zoomLevel.zoom <= 1,
-					}))}
-					value={zoomLevels.find((zoomLevel) => Math.abs(zoom - zoomLevel.zoom) < 0.01)?.label}
-					className="border-0 bg-muted"
-					onValueChange={(label) =>
-						changeZoom(() => zoomLevels.find((zoomLevel) => zoomLevel.label === label)?.zoom ?? zoom, 0.5)
-					}
-				/>
+				<div className="flex items-center gap-2">
+					{filterButton}
+
+					<SegmentedControl
+						label="확대"
+						size="sm"
+						options={zoomLevels.map((zoomLevel) => ({
+							value: zoomLevel.label,
+							label: zoomLevel.label,
+							disabled: !!zoomLevel.visibleMs && zoomLevel.zoom <= 1,
+						}))}
+						value={zoomLevels.find((zoomLevel) => Math.abs(zoom - zoomLevel.zoom) < 0.01)?.label}
+						className="border-0 bg-muted"
+						onValueChange={(zoomLabel) =>
+							changeZoom(
+								() => zoomLevels.find((zoomLevel) => zoomLevel.label === zoomLabel)?.zoom ?? zoom,
+								0.5,
+							)
+						}
+					/>
+				</div>
 			</div>
 
 			<dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
@@ -546,7 +570,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 							)}
 
 							{sessionSoundListData
-								.filter((sessionSound) => sessionSound.is_mimic)
+								.filter((sessionSound) => sessionSound.kind === 'mimic')
 								.map((sessionSound) => (
 									<button
 										key={sessionSound.id}
@@ -647,6 +671,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 			{distressCalls.length > 0 && (
 				<SessionDistressCallList
+					sessionId={session.id}
 					distressCalls={distressCalls}
 					player={player}
 					onScoreTooltipShow={showScoreTooltip}
@@ -654,7 +679,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 				/>
 			)}
 
-			{petcamEvents.length > 0 && <SessionPetcamList petcamEvents={petcamEvents} />}
+			{petcamEvents.length > 0 && <SessionPetcamList sessionId={session.id} petcamEvents={petcamEvents} />}
 
 			<hr />
 
@@ -721,12 +746,35 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 				<>
 					<hr />
 
-					<SessionSoundTable
-						sounds={sessionSoundListData}
-						distressCallSoundIds={distressCallSoundIds}
-						judging={judging}
-						player={player}
-					/>
+					<div className="@container">
+						<div className="grid gap-4 @min-[760px]:grid-cols-[minmax(0,1fr)_312px]">
+							<SessionSoundTable
+								sounds={sessionSoundListData}
+								distressCallSoundIds={distressCallSoundIds}
+								judging={judging}
+								player={player}
+							/>
+
+							{/*선택한 소리의 상세*/}
+							<aside className="grid min-w-0 content-start gap-3 rounded-xl bg-card-inset p-3 ring-1 ring-border">
+								{currentSound ? (
+									<ErrorHandlingWrapper
+										key={currentSound.id}
+										fallbackComponent={QueryError}
+										suspenseFallback=<SessionSoundDetailSkeleton />
+									>
+										<SessionSoundDetail
+											sessionId={session.id}
+											sound={currentSound}
+											player={player}
+										/>
+									</ErrorHandlingWrapper>
+								) : (
+									<p className="p-2 text-[13px] text-muted-foreground">선택한 소리 없음</p>
+								)}
+							</aside>
+						</div>
+					</div>
 				</>
 			)}
 

@@ -1,7 +1,9 @@
 import Link from 'next/link';
 
 import type { CountedPage } from '@/types/apis/common';
-import type { Session } from '@/types/apis/sessions';
+import type { Correctness, Session, SessionSoundListParams } from '@/types/apis/sessions';
+
+import type { SearchParamValue } from '@/lib/api';
 
 import { ChevronLeft } from 'lucide-react';
 
@@ -36,6 +38,9 @@ interface Props {
 	sessionPage: number;
 	sessionId?: string;
 	sessionList: Promise<CountedPage<Session> | undefined>;
+	label: Correctness[];
+	soundListParams: SessionSoundListParams;
+	sessionQuery: Record<string, SearchParamValue>;
 	today: string;
 	now: number;
 }
@@ -46,10 +51,23 @@ interface Props {
  * @param sessionPage 세션 목록의 페이지 번호
  * @param sessionId 처음에 선택할 세션의 ID
  * @param sessionList 페이지에서 시작한 세션 목록 조회
+ * @param label 세션 이벤트 라벨 조건
+ * @param soundListParams 세션 소리 조회 조건
+ * @param sessionQuery 링크가 유지할 세션 필터 쿼리
  * @param today 오늘 날짜
  * @param now 서버가 화면을 렌더링한 시각
  */
-const UserDetail = ({ id, sessionPage, sessionId, sessionList, today, now }: Props) => {
+const UserDetail = ({
+	id,
+	sessionPage,
+	sessionId,
+	sessionList,
+	label,
+	soundListParams,
+	sessionQuery,
+	today,
+	now,
+}: Props) => {
 	return (
 		<>
 			<Link
@@ -80,8 +98,21 @@ const UserDetail = ({ id, sessionPage, sessionId, sessionList, today, now }: Pro
 				fallbackComponent={QueryError}
 				suspenseFallback=<UserSessionCardSkeleton />
 			>
-				<SessionTimelinePrefetch sessionList={sessionList} sessionId={sessionId} />
-				<UserSessionCard id={id} page={sessionPage} sessionId={sessionId} initialNow={now} />
+				<SessionTimelinePrefetch
+					sessionList={sessionList}
+					sessionId={sessionId}
+					label={label}
+					soundListParams={soundListParams}
+				/>
+				<UserSessionCard
+					id={id}
+					page={sessionPage}
+					sessionId={sessionId}
+					label={label}
+					soundListParams={soundListParams}
+					sessionQuery={sessionQuery}
+					initialNow={now}
+				/>
 			</ErrorHandlingWrapper>
 
 			<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">

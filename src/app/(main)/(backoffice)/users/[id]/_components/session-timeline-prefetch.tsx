@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import type { CountedPage } from '@/types/apis/common';
-import type { Session } from '@/types/apis/sessions';
+import type { Correctness, Session, SessionSoundListParams } from '@/types/apis/sessions';
 
 import { getSessionEventListOptions, getSessionSoundListOptions } from '@/hooks/apis/sessions';
 
@@ -10,14 +10,18 @@ import { getQueryClient } from '@/lib/query-client';
 interface Props {
 	sessionList: Promise<CountedPage<Session> | undefined>;
 	sessionId?: string;
+	label: Correctness[];
+	soundListParams: SessionSoundListParams;
 }
 
 /**
  * 첫 세션의 타임라인을 미리 조회하는 컴포넌트
  * @param sessionList 페이지에서 시작한 세션 목록 조회
  * @param sessionId 처음에 선택할 세션의 ID
+ * @param label 세션 이벤트 라벨 조건
+ * @param soundListParams 세션 소리 조회 조건
  */
-const SessionTimelinePrefetch = async ({ sessionList, sessionId }: Props) => {
+const SessionTimelinePrefetch = async ({ sessionList, sessionId, label, soundListParams }: Props) => {
 	const sessions = (await sessionList)?.data;
 	// 주소의 세션, 없으면 첫 세션 선택
 	const firstSession = sessions?.find((session) => session.id === sessionId) ?? sessions?.[0];
@@ -29,8 +33,8 @@ const SessionTimelinePrefetch = async ({ sessionList, sessionId }: Props) => {
 	const queryClient = getQueryClient();
 
 	// 응답을 기다리지 않고 조회 시작
-	void queryClient.prefetchQuery(getSessionEventListOptions({ id: firstSession.id }));
-	void queryClient.prefetchQuery(getSessionSoundListOptions({ id: firstSession.id }));
+	void queryClient.prefetchQuery(getSessionEventListOptions({ id: firstSession.id, label }));
+	void queryClient.prefetchQuery(getSessionSoundListOptions({ id: firstSession.id, ...soundListParams }));
 
 	return <HydrationBoundary state={dehydrate(queryClient)} />;
 };

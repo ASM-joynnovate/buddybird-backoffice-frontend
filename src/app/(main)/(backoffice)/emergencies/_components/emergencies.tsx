@@ -22,6 +22,7 @@ import {
 	EMERGENCY_NOTIFICATION_STATES,
 	EMERGENCY_STATES,
 } from '@/config/emergency';
+import { LABEL_FILTER_GROUP } from '@/config/session-filters';
 import { toPlatformName } from '@/utils/platform';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
@@ -52,7 +53,10 @@ interface Props {
  * @param now 서버가 화면을 렌더링한 시각
  */
 const Emergencies = ({ period, dashboardParams, listParams, keyword, date, listQuery, query, today, now }: Props) => {
-	const { kind, is_ongoing, notification, platform } = listParams;
+	const { kind, is_ongoing, notification, platform, label = [] } = listParams;
+
+	const labelFilterSelected = listQuery.label !== undefined;
+	const labelFilterAll = label.length === LABEL_FILTER_GROUP.options.length;
 
 	const panelFilters: SelectedFilter[] = [
 		...(kind
@@ -83,6 +87,20 @@ const Emergencies = ({ period, dashboardParams, listParams, keyword, date, listQ
 						groupLabel: EMERGENCY_FILTER_LABELS.platform,
 						label: toPlatformName(platform),
 						icon: <PlatformIcon platform={platform} />,
+					},
+				]
+			: []),
+		...(labelFilterSelected
+			? [
+					{
+						name: 'label',
+						groupLabel: LABEL_FILTER_GROUP.label,
+						label: labelFilterAll
+							? LABEL_FILTER_GROUP.allOption.label
+							: LABEL_FILTER_GROUP.options
+									.filter((filterOption) => label.some((value) => value === filterOption.value))
+									.map((filterOption) => filterOption.label)
+									.join(', '),
 					},
 				]
 			: []),

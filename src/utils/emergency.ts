@@ -10,6 +10,7 @@ import {
 	EMERGENCY_NOTIFICATION_STATES,
 	EMERGENCY_STATES,
 } from '@/config/emergency';
+import { LABEL_FILTER_GROUP } from '@/config/session-filters';
 import { toPlatformName } from '@/utils/platform';
 
 /** 응급 상황 종류별 건수를 반환하는 함수 */
@@ -63,5 +64,6 @@ export const toEmergencyFilterGroups = (emergencyDashboard: EmergencyDashboard):
 				.flatMap((platform) => platforms.filter((platformCount) => platformCount.platform === platform))
 				.map(({ platform, count }) => ({ value: platform, label: toPlatformName(platform), count })),
 		},
+		LABEL_FILTER_GROUP,
 	];
 };

@@ -12,8 +12,9 @@ import { getQueryClient } from '@/lib/query-client';
 import { z } from 'zod';
 
 import Emergencies from '@/app/(main)/(backoffice)/emergencies/_components/emergencies';
+import { DEFAULT_LABELS } from '@/config/session-filters';
 import { addDays, formatToday, getNow } from '@/utils/date';
-import { toDashboardParams, toDashboardPeriod, toOptionalText, toPageNumber } from '@/utils/search-params';
+import { toDashboardParams, toDashboardPeriod, toLabels, toOptionalText, toPageNumber } from '@/utils/search-params';
 
 /** 응급 상황 목록 페이지 */
 export default async function Page(props: PageProps<'/emergencies'>) {
@@ -30,6 +31,7 @@ export default async function Page(props: PageProps<'/emergencies'>) {
 	const is_ongoing = z.stringbool({ truthy: ['true'], falsy: ['false'] }).safeParse(searchParams.is_ongoing).data;
 	const notification = emergencyNotificationStateSchema.safeParse(searchParams.notification).data;
 	const platform = platformSchema.safeParse(searchParams.platform).data;
+	const labels = toLabels(searchParams.label);
 	// 조회 기간 밖의 날짜는 무시
 	const date = localDateSchema
 		.refine((value) => value >= dashboardParams.date_from && value <= dashboardParams.date_to)
@@ -45,10 +47,11 @@ export default async function Page(props: PageProps<'/emergencies'>) {
 		is_ongoing,
 		notification,
 		platform,
+		label: labels ?? DEFAULT_LABELS,
 	};
 
 	// 링크가 유지할 현재 주소의 쿼리
-	const listQuery = { keyword, kind, is_ongoing, notification, platform };
+	const listQuery = { keyword, kind, is_ongoing, notification, platform, label: labels?.join(',') };
 	const query = { ...(customDashboardParams ?? { period }), ...listQuery, date };
 
 	const queryClient = getQueryClient();

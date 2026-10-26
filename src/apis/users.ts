@@ -1,7 +1,7 @@
 import { type CountedPage, countedPageMetaSchema } from '@/types/apis/common';
 import { type UserConsent, userConsentSchema } from '@/types/apis/consents';
 import { type UserNotificationSettings, userNotificationSettingsSchema } from '@/types/apis/notification-settings';
-import { type Session, sessionSchema } from '@/types/apis/sessions';
+import { type Correctness, type Session, sessionSchema } from '@/types/apis/sessions';
 import {
 	type UpdateParrotRequest,
 	type UpdateUserRequest,
@@ -96,13 +96,15 @@ export const getUserSessionList = async ({
 	id,
 	page,
 	sessionId,
+	label,
 }: {
 	id: string;
 	page: number;
 	sessionId?: string;
+	label?: Correctness[];
 }): Promise<CountedPage<Session>> => {
 	const { data, meta } = await apiRequest(`/api/v1/backoffice/users/${id}/sessions`, z.array(sessionSchema), {
-		searchParams: { page, count_by_page: USER_RECENT_ITEM_COUNT, session_id: sessionId },
+		searchParams: { page, count_by_page: USER_RECENT_ITEM_COUNT, session_id: sessionId, label },
 	});
 
 	return { data, meta: countedPageMetaSchema.parse(meta) };

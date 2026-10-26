@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import dayjs from 'dayjs';
 import { AudioLines, BellOff, ChevronDown, ChevronRight, Play, Square, Video } from 'lucide-react';
 
+import CorrectnessIcon from '@/app/(main)/(backoffice)/_components/correctness-icon';
 import ReadStatus from '@/app/(main)/(backoffice)/_components/read-status';
 import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
@@ -77,8 +78,15 @@ const EmergencyRow = ({ emergency, expanded, now, player, onToggle }: Props) => 
 				)}
 			>
 				<div className="grid whitespace-nowrap tabular-nums">
-					<small className="text-[12.5px] text-muted-foreground">
+					<small className="flex items-center justify-between text-[12.5px] text-muted-foreground">
 						{formatShortDate(emergency.occurred_at)}
+						{emergency.is_correct !== null && (
+							<CorrectnessIcon
+								correct={emergency.is_correct}
+								label={emergency.is_correct ? '라벨 맞음' : '라벨 틀림'}
+								className="size-3.5"
+							/>
+						)}
 					</small>
 					<button
 						type="button"

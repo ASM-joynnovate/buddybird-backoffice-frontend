@@ -1,7 +1,7 @@
 import { fileSchema, type SortOrder } from '@/types/apis/common';
 import { deviceSchema } from '@/types/apis/devices';
 import { countrySchema, localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
-import { sessionPhaseSchema } from '@/types/apis/sessions';
+import { type Correctness, sessionPhaseSchema } from '@/types/apis/sessions';
 import { settingsSchema } from '@/types/apis/settings';
 import { withdrawalSchema } from '@/types/apis/withdrawals';
 
@@ -85,6 +85,12 @@ export type UserDetail = z.infer<typeof userDetailSchema>;
 export type Parrot = z.infer<typeof parrotSchema>;
 export type UpdateUserRequest = z.infer<typeof updateUserRequestSchema>;
 export type UpdateParrotRequest = z.infer<typeof updateParrotRequestSchema>;
+
+export interface UserSessionListParams {
+	page: number;
+	sessionId?: string;
+	label?: Correctness[];
+}
 
 export interface UserListParams {
 	page: number;

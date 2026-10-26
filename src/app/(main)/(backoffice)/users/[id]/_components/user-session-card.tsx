@@ -4,17 +4,24 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 
+import type { Correctness, SessionSoundListParams } from '@/types/apis/sessions';
+
 import { useGetUser, useGetUserSessionList } from '@/hooks/apis/users';
 import { useNow } from '@/hooks/use-now';
 
+import type { SearchParamValue } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
+import FilterButton from '@/app/(main)/(backoffice)/_components/filter-button';
+import FilterPanel from '@/app/(main)/(backoffice)/_components/filter-panel';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import SessionTimeline from '@/app/(main)/(backoffice)/users/[id]/_components/session-timeline';
 import SessionTimelineSkeleton from '@/app/(main)/(backoffice)/users/[id]/_components/session-timeline-skeleton';
 import SessionTrack from '@/app/(main)/(backoffice)/users/[id]/_components/session-track';
 import { SESSION_ENDED_REASONS } from '@/config/session';
+import { LABEL_FILTER_GROUP, SOUND_KIND_FILTER_GROUP, SOUND_REVIEW_FILTER_GROUP } from '@/config/session-filters';
 import { formatDateTime, toHoursAndMinutes } from '@/utils/date';
+import { toLinkQuery } from '@/utils/search-params';
 import { toSessionPeriod } from '@/utils/session';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
@@ -27,6 +34,9 @@ interface Props {
 	id: string;
 	page: number;
 	sessionId?: string;
+	label: Correctness[];
+	soundListParams: SessionSoundListParams;
+	sessionQuery: Record<string, SearchParamValue>;
 	initialNow: number;
 }
 
@@ -35,12 +45,15 @@ interface Props {
  * @param id 조회할 사용자 ID
  * @param page 세션 목록의 페이지 번호
  * @param sessionId 처음에 선택할 세션의 ID
+ * @param label 세션 이벤트 라벨 조건
+ * @param soundListParams 세션 소리 조회 조건
+ * @param sessionQuery 링크가 유지할 세션 필터 쿼리
  * @param initialNow 서버가 화면을 렌더링한 시각
  */
-const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
+const UserSessionCard = ({ id, page, sessionId, label, soundListParams, sessionQuery, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });
 
-	const { data: userSessionListData } = useGetUserSessionList({ id, page, sessionId });
+	const { data: userSessionListData } = useGetUserSessionList({ id, page, sessionId, label });
 
 	const now = useNow(initialNow);
 
@@ -115,7 +128,10 @@ const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 
 				<div className="mx-2 mt-2.5 mb-1 flex justify-end gap-1.5">
 					<Link
-						href={{ pathname: `/users/${id}`, query: { session_page: meta.current_page - 1 } }}
+						href={{
+							pathname: `/users/${id}`,
+							query: toLinkQuery({ ...sessionQuery, session_page: meta.current_page - 1 }),
+						}}
 						scroll={false}
 						aria-disabled={meta.is_first}
 						className={cn(
@@ -126,7 +142,10 @@ const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 						이전
 					</Link>
 					<Link
-						href={{ pathname: `/users/${id}`, query: { session_page: meta.current_page + 1 } }}
+						href={{
+							pathname: `/users/${id}`,
+							query: toLinkQuery({ ...sessionQuery, session_page: meta.current_page + 1 }),
+						}}
 						scroll={false}
 						aria-disabled={meta.is_last}
 						className={cn(
@@ -149,6 +168,23 @@ const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 					session={selectedSession.session}
 					sessionPeriod={selectedSession.sessionPeriod}
 					timeZone={selectedSession.timeZone}
+					label={label}
+					soundListParams={soundListParams}
+					filterButton=<FilterButton
+						size="sm"
+						filterCount={Object.values(sessionQuery).filter((value) => value !== undefined).length}
+					>
+						<FilterPanel
+							pathname={`/users/${id}`}
+							query={{ ...sessionQuery, session_page: page, session_id: sessionId }}
+							filterGroups={[
+								{ ...LABEL_FILTER_GROUP, label: '이벤트 라벨' },
+								SOUND_KIND_FILTER_GROUP,
+								SOUND_REVIEW_FILTER_GROUP,
+							]}
+							className="md:right-0 md:left-auto md:w-110"
+						/>
+					</FilterButton>
 				/>
 			</ErrorHandlingWrapper>
 		</Card>

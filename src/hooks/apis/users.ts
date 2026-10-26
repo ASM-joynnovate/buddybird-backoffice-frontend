@@ -15,7 +15,7 @@ import {
 } from '@/apis/users';
 
 import { ApiError } from '@/types/apis/common';
-import type { UserListParams } from '@/types/apis/users';
+import type { UserListParams, UserSessionListParams } from '@/types/apis/users';
 
 import { apiKeys } from '@/hooks/apis/keys';
 import { useIdempotentMutation } from '@/hooks/apis/use-idempotent-mutation';
@@ -25,6 +25,7 @@ import { apiErrorMessage } from '@/lib/api';
 import { toast } from 'sonner';
 
 import { USER_SESSION_REFETCH_INTERVAL_MS } from '@/config';
+import { DEFAULT_LABELS } from '@/config/session-filters';
 
 /** 사용자 목록 조회 Hook에 사용할 옵션 */
 export const getUserListOptions = (listParams: UserListParams) =>
@@ -53,10 +54,14 @@ export const useGetUser = ({ id }: { id: string }) => {
 };
 
 /** 사용자 세션 목록 조회 Hook에 사용할 옵션 */
-export const getUserSessionListOptions = ({ id, page, sessionId }: { id: string; page: number; sessionId?: string }) =>
+export const getUserSessionListOptions = ({
+	id,
+	label = DEFAULT_LABELS,
+	...listParams
+}: { id: string } & UserSessionListParams) =>
 	queryOptions({
-		queryKey: apiKeys.users.sessionList(id, page, sessionId),
-		queryFn: () => getUserSessionList({ id, page, sessionId }),
+		queryKey: apiKeys.users.sessionList(id, { ...listParams, label }),
+		queryFn: () => getUserSessionList({ id, ...listParams, label }),
 		// 실행 중인 세션이 있을 때만 다시 조회
 		refetchInterval: (query) =>
 			query.state.data?.data.some((session) => session.status === 'running')
@@ -64,8 +69,8 @@ export const getUserSessionListOptions = ({ id, page, sessionId }: { id: string;
 				: false,
 	});
 /** 사용자 세션 목록 조회 Hook */
-export const useGetUserSessionList = ({ id, page, sessionId }: { id: string; page: number; sessionId?: string }) => {
-	return useSuspenseQuery(getUserSessionListOptions({ id, page, sessionId }));
+export const useGetUserSessionList = (listParams: { id: string } & UserSessionListParams) => {
+	return useSuspenseQuery(getUserSessionListOptions(listParams));
 };
 
 /** 사용자 단어 목록 조회 Hook에 사용할 옵션 */

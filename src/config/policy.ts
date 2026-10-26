@@ -83,6 +83,8 @@ export const PRESET_WORD_NAME_MAX_LENGTH = 50;
 export const NICKNAME_MAX_LENGTH = 20;
 export const PARROT_NAME_MAX_LENGTH = 20;
 export const KEYWORD_MAX_LENGTH = 100;
+export const OPERATOR_NAME_MAX_LENGTH = 50;
+export const LABEL_MEMO_MAX_LENGTH = 1000;
 export const BROADCAST_MAX_USER_COUNT = 1000;
 
 export const UUID_PATTERN = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}';

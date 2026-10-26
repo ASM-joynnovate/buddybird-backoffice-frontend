@@ -10,7 +10,8 @@ import type {
 	PushDeliveryListParams,
 	SendableNotificationKind,
 } from '@/types/apis/notifications';
-import type { UserListParams } from '@/types/apis/users';
+import type { SessionEventListParams, SessionSoundListParams } from '@/types/apis/sessions';
+import type { UserListParams, UserSessionListParams } from '@/types/apis/users';
 import type { WithdrawalListParams } from '@/types/apis/withdrawals';
 
 export const apiKeys = {
@@ -39,16 +40,20 @@ export const apiKeys = {
 		infiniteList: (listParams: Omit<UserListParams, 'page'>) =>
 			['api', 'users', 'infinite-list', listParams] as const,
 		detail: (id: string) => ['api', 'users', id] as const,
-		// 세션 ID로 조회한 목록은 따로 보관
-		sessionList: (id: string, page: number, sessionId?: string) =>
-			['api', 'users', id, 'sessions', page, ...(sessionId ? [sessionId] : [])] as const,
+		sessionList: (id: string, listParams: UserSessionListParams) =>
+			['api', 'users', id, 'sessions', listParams] as const,
 		wordList: (id: string) => ['api', 'users', id, 'words'] as const,
 		consentList: (id: string) => ['api', 'users', id, 'consents'] as const,
 		notificationSettings: (id: string) => ['api', 'users', id, 'settings', 'notifications'] as const,
 	},
 	sessions: {
-		eventList: (id: string) => ['api', 'sessions', id, 'events'] as const,
-		soundList: (id: string) => ['api', 'sessions', id, 'sounds'] as const,
+		detail: (id: string) => ['api', 'sessions', id] as const,
+		eventList: (id: string, listParams: SessionEventListParams) =>
+			['api', 'sessions', id, 'events', listParams] as const,
+		event: (id: string, eventId: string) => ['api', 'sessions', id, 'events', eventId] as const,
+		soundList: (id: string, listParams: SessionSoundListParams) =>
+			['api', 'sessions', id, 'sounds', listParams] as const,
+		sound: (id: string, soundId: string) => ['api', 'sessions', id, 'sounds', soundId] as const,
 	},
 	announcements: {
 		all: () => ['api', 'announcements'] as const,
@@ -65,6 +70,7 @@ export const apiKeys = {
 		list: (listParams: FeedbackListParams) => ['api', 'feedback', 'list', listParams] as const,
 	},
 	emergencies: {
+		all: () => ['api', 'emergencies'] as const,
 		list: (listParams: EmergencyListParams) => ['api', 'emergencies', 'list', listParams] as const,
 	},
 	notifications: {

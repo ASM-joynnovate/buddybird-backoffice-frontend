@@ -8,32 +8,29 @@ import type { AudioPlaylist } from '@/hooks/use-audio-playlist';
 
 import { cn } from '@/lib/utils';
 
-import { Play, Siren } from 'lucide-react';
+import { BadgeCheck, Play, Siren } from 'lucide-react';
 
 import ColorTag from '@/app/(main)/(backoffice)/_components/color-tag';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
-import SoundDownloadButton from '@/app/(main)/(backoffice)/_components/sound-download-button';
+import UserReviewIcon from '@/app/(main)/(backoffice)/_components/user-review-icon';
 import SessionSoundScore from '@/app/(main)/(backoffice)/users/[id]/_components/session-sound-score';
+import { SESSION_SOUND_KINDS } from '@/config/session';
 import { SECOND } from '@/config/units';
 import { formatAudioDuration } from '@/utils/audio';
-import {
-	formatCompactDateTime,
-	formatShortDate,
-	formatShortDateTimeWithSeconds,
-	formatTimeWithSeconds,
-} from '@/utils/date';
+import { formatShortDate, formatShortDateTimeWithSeconds, formatTimeWithSeconds } from '@/utils/date';
 
-import { Badge } from '@/components/ui/badge';
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const SOUND_SORTS = [
 	{ sort: 'captured_at', label: '시각순' },
-	{ sort: 'judgment', label: '모사 점수순' },
-	{ sort: 'analysis', label: '앵무새 소리 점수순' },
+	{ sort: 'final_mimic_score', label: '모사 점수순' },
+	{ sort: 'final_parrot_score', label: '앵무새 점수순' },
 ] as const;
 
 const headClassName =
-	'sticky top-0 z-10 h-9 bg-card text-muted-foreground shadow-[inset_0_-1px_var(--border)] max-md:px-1';
+	'sticky -top-px z-10 h-9 bg-card text-muted-foreground shadow-[inset_0_-1px_var(--border)] max-md:px-1 @min-[760px]:px-1';
+const narrowTableHiddenClassName = 'max-md:hidden @min-[760px]:hidden';
+const statusHeadClassName = cn(headClassName, 'text-center');
 
 interface Props {
 	sounds: SessionSound[];
@@ -56,8 +53,7 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Pr
 	const [sort, setSort] = useState<(typeof SOUND_SORTS)[number]['sort']>('captured_at');
 
 	// 점수가 없는 소리는 맨 뒤
-	const sortedSounds =
-		sort === 'captured_at' ? sounds : sounds.toSorted((a, b) => (b[sort]?.score ?? -1) - (a[sort]?.score ?? -1));
+	const sortedSounds = sort === 'captured_at' ? sounds : sounds.toSorted((a, b) => (b[sort] ?? -1) - (a[sort] ?? -1));
 
 	/** 선택한 소리의 행이 가려져 있으면 목록 가운데로 스크롤 */
 	useLayoutEffect(() => {
@@ -80,7 +76,7 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Pr
 	}, [player.currentSoundId, sort]);
 
 	return (
-		<section className="grid gap-3">
+		<section className="flex min-w-0 flex-col gap-3">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h4 className="font-bold tabular-nums">소리 {sounds.length.toLocaleString('ko-KR')}개</h4>
 
@@ -94,21 +90,23 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Pr
 				/>
 			</div>
 
-			{/*정해진 높이를 넘으면 표 안에서 스크롤*/}
+			{/*표 옆에 상세가 있으면 상세 높이까지 확장*/}
 			<div
 				ref={scrollAreaRef}
-				className="relative -mr-2 max-h-93 [scrollbar-width:thin] overflow-auto overscroll-contain pr-2"
+				className="relative -mr-2 max-h-93 [scrollbar-width:thin] overflow-auto overscroll-contain pr-2 @min-[760px]:max-h-none @min-[760px]:min-h-93 @min-[760px]:flex-1 @min-[760px]:basis-0"
 			>
 				<table className="w-full text-sm">
 					<TableHeader className="[&_tr]:border-0">
 						<TableRow className="hover:bg-transparent">
-							<TableHead className={cn(headClassName, 'w-10 pl-1.5')} />
-							<TableHead className={headClassName}>시각</TableHead>
-							<TableHead className={cn(headClassName, 'max-md:hidden')}>길이</TableHead>
-							<TableHead className={headClassName}>앵무새 소리</TableHead>
-							<TableHead className={headClassName}>모사</TableHead>
-							<TableHead className={headClassName} />
-							<TableHead className={cn(headClassName, 'w-11')} />
+							<TableHead className={cn(headClassName, 'w-10 min-w-10 pl-1.5')} />
+							<TableHead className={cn(headClassName, 'min-w-18')}>시각</TableHead>
+							<TableHead className={cn(headClassName, narrowTableHiddenClassName)}>길이</TableHead>
+							<TableHead className={cn(headClassName, 'min-w-12 border-l')}>앵무새</TableHead>
+							<TableHead className={cn(headClassName, 'min-w-11')}>모사</TableHead>
+							<TableHead className={cn(statusHeadClassName, 'min-w-20 border-l')}>결과</TableHead>
+							<TableHead className={cn(statusHeadClassName, 'min-w-10')}>응급</TableHead>
+							<TableHead className={cn(statusHeadClassName, 'min-w-19')}>사용자 리뷰</TableHead>
+							<TableHead className={cn(statusHeadClassName, 'min-w-10')}>라벨</TableHead>
 						</TableRow>
 					</TableHeader>
 
@@ -122,7 +120,7 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Pr
 									key={sound.id}
 									ref={selected ? selectedRowRef : undefined}
 									className={cn(
-										'cursor-pointer hover:bg-muted [&>td]:py-1.5 max-md:[&>td]:px-1',
+										'cursor-pointer hover:bg-muted [&>td]:py-1.5 max-md:[&>td]:px-1 @min-[760px]:[&>td]:px-1',
 										selected && 'bg-muted',
 									)}
 									onClick={() => player.playSound(sound)}
@@ -137,56 +135,72 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player }: Pr
 										</button>
 									</TableCell>
 									<TableCell className="font-semibold whitespace-nowrap tabular-nums">
-										<span className="mr-1.5 font-normal text-muted-foreground">
+										<span
+											className={cn(
+												'mr-1.5 font-normal text-muted-foreground',
+												narrowTableHiddenClassName,
+											)}
+										>
 											{formatShortDate(sound.captured_at)}
 										</span>
 										{formatTimeWithSeconds(sound.captured_at)}
 									</TableCell>
-									<TableCell className="whitespace-nowrap text-muted-foreground tabular-nums max-md:hidden">
+									<TableCell
+										className={cn(
+											'whitespace-nowrap text-muted-foreground tabular-nums',
+											narrowTableHiddenClassName,
+										)}
+									>
 										{sound.duration_ms ? formatAudioDuration(sound.duration_ms / SECOND) : '-'}
 									</TableCell>
-									<TableCell>
+									<TableCell className="border-l">
 										<SessionSoundScore
-											score={sound.analysis?.score ?? null}
+											score={sound.final_parrot_score}
 											barClassName="bg-chart-1"
-											trackClassName="w-18 max-md:hidden"
+											trackClassName={cn('w-18', narrowTableHiddenClassName)}
 										/>
 									</TableCell>
 									<TableCell>
 										<SessionSoundScore
-											score={sound.judgment?.score ?? null}
+											score={sound.final_mimic_score}
 											judging={judging}
 											barClassName="bg-foreground"
-											trackClassName="w-18 max-md:hidden"
+											trackClassName={cn('w-18', narrowTableHiddenClassName)}
 										/>
 									</TableCell>
-									<TableCell>
-										<div className="flex justify-end gap-1">
-											{/*좁은 화면에서는 태그의 글자를 숨김*/}
-											{sound.is_mimic && (
-												<ColorTag color="var(--foreground)">
-													<span className="max-md:sr-only">모사 성공</span>
-												</ColorTag>
-											)}
-											{distressCallSoundIds.has(sound.id) && (
-												<Badge
-													variant="destructive"
-													className="max-md:pr-1.5 dark:bg-destructive/10"
-												>
-													<Siren data-icon="inline-start" />
-													<span className="max-md:sr-only">응급 상황</span>
-												</Badge>
-											)}
-										</div>
+									<TableCell className="border-l text-center">
+										{sound.kind ? (
+											<ColorTag color={SESSION_SOUND_KINDS[sound.kind].color}>
+												{SESSION_SOUND_KINDS[sound.kind].label}
+											</ColorTag>
+										) : (
+											<span className="text-muted-foreground">-</span>
+										)}
 									</TableCell>
-									{/*다운로드를 눌러도 행의 소리를 재생하지 않음*/}
-									<TableCell className="pr-1.5" onClick={(event) => event.stopPropagation()}>
-										<SoundDownloadButton
-											sounds={[sound]}
-											fileName={`sound-${formatCompactDateTime(sound.captured_at)}.wav`}
-											label={`${soundTime} 소리 다운로드`}
-											iconOnly
-										/>
+									<TableCell className="text-center">
+										{distressCallSoundIds.has(sound.id) && (
+											<Siren
+												aria-label="응급 상황"
+												className="inline size-4 text-destructive-dot"
+											>
+												<title>응급 상황</title>
+											</Siren>
+										)}
+									</TableCell>
+									<TableCell className="text-center">
+										{!!sound.user_review && (
+											<UserReviewIcon correct={sound.user_review.is_correct} className="inline" />
+										)}
+									</TableCell>
+									<TableCell className="text-center">
+										{sound.is_labeled && (
+											<BadgeCheck
+												aria-label="운영자 라벨 있음"
+												className="inline size-4 text-info"
+											>
+												<title>운영자 라벨 있음</title>
+											</BadgeCheck>
+										)}
 									</TableCell>
 								</TableRow>
 							);

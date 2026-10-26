@@ -1,6 +1,6 @@
 'use client';
 
-import type { SessionSound } from '@/types/apis/sessions';
+import type { SessionEvent, SessionSound } from '@/types/apis/sessions';
 
 import type { AudioPlaylist } from '@/hooks/use-audio-playlist';
 
@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { Play, Siren, Square } from 'lucide-react';
 
 import SoundDownloadButton from '@/app/(main)/(backoffice)/_components/sound-download-button';
+import SessionEventLabel from '@/app/(main)/(backoffice)/users/[id]/_components/session-event-label';
 import { SECOND } from '@/config/units';
 import { formatAudioDuration } from '@/utils/audio';
 import {
@@ -40,10 +41,13 @@ const showSoundCell = (soundCell: HTMLButtonElement | null) => {
 
 export interface DistressCall {
 	id: string;
+	isCorrect: SessionEvent['is_correct'];
+	userReview: SessionEvent['user_review'];
 	sounds: SessionSound[];
 }
 
 interface Props {
+	sessionId: string;
 	distressCalls: DistressCall[];
 	player: AudioPlaylist;
 	onScoreTooltipShow: (anchor: Element, sounds: SessionSound[]) => void;
@@ -52,12 +56,19 @@ interface Props {
 
 /**
  * 신경질적 짹짹별 소리 목록 컴포넌트
+ * @param sessionId 신경질적 짹짹이 속한 세션 ID
  * @param distressCalls 신경질적 짹짹 및 감지된 소리 목록
  * @param player useAudioPlaylist 결과
  * @param onScoreTooltipShow 소리 칸을 가리키면 실행할 함수
  * @param onScoreTooltipHide 소리 칸에서 벗어나면 실행할 함수
  */
-const SessionDistressCallList = ({ distressCalls, player, onScoreTooltipShow, onScoreTooltipHide }: Props) => {
+const SessionDistressCallList = ({
+	sessionId,
+	distressCalls,
+	player,
+	onScoreTooltipShow,
+	onScoreTooltipHide,
+}: Props) => {
 	return (
 		<section className="rounded-lg bg-[color-mix(in_srgb,var(--destructive)_6%,var(--card))] px-3.5 py-3 shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--destructive)_24%,transparent)]">
 			<div className="mb-1.5 flex items-baseline justify-between gap-3">
@@ -154,6 +165,14 @@ const SessionDistressCallList = ({ distressCalls, player, onScoreTooltipShow, on
 							</fieldset>
 
 							<div className="flex items-center gap-1.5 max-md:col-start-2 max-md:row-start-1">
+								<SessionEventLabel
+									sessionId={sessionId}
+									eventId={distressCall.id}
+									title={`${firstSoundTime} 응급 상황`}
+									isCorrect={distressCall.isCorrect}
+									userReview={distressCall.userReview}
+								/>
+
 								<Button
 									variant="outline"
 									size="icon-sm"
