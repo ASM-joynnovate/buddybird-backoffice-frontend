@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { type MouseEvent, type ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 import type { SessionSound } from '@/types/apis/sessions';
 
@@ -31,7 +31,7 @@ const headClassName =
 	'sticky -top-px z-10 h-12 border-r border-b bg-card-inset px-3 text-muted-foreground last:border-r-0';
 const cellClassName = 'border-r border-b px-3 py-1.5 last:border-r-0';
 const narrowTableHiddenClassName = 'max-md:hidden @min-[760px]:hidden';
-const statusHeadClassName = cn(headClassName, 'text-center');
+const statusHeadClassName = cn(headClassName, 'w-13 text-center');
 const statusCellClassName = cn(cellClassName, 'text-center');
 const scoreTrackClassName = 'flex-1 max-md:hidden';
 
@@ -86,6 +86,13 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player, filt
 		}
 	};
 
+	const handlePlaySound = (event: MouseEvent<HTMLButtonElement>, sound: SessionSound) => {
+		// 행 클릭으로 재생이 멈추지 않게 함
+		event.stopPropagation();
+
+		player.playSound(sound);
+	};
+
 	return (
 		<section className="flex min-w-0 flex-col gap-3">
 			<div className="flex flex-wrap items-center justify-between gap-3">
@@ -127,8 +134,8 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player, filt
 							<TableRow className="hover:bg-transparent">
 								<TableHead className={cn(headClassName, 'w-13')} />
 								<TableHead className={headClassName}>시각</TableHead>
-								<TableHead className={cn(headClassName, narrowTableHiddenClassName)}>길이</TableHead>
-								<TableHead className={cn(headClassName, 'w-[30%] min-w-36 text-xs')}>
+								<TableHead className={cn(headClassName, 'max-md:hidden')}>길이</TableHead>
+								<TableHead className={cn(headClassName, 'w-35 min-w-35 text-xs')}>
 									<span className="grid gap-0.5">
 										<span className="flex items-center gap-1.5">
 											<span className="size-2 rounded-full bg-foreground" />
@@ -140,7 +147,7 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player, filt
 										</span>
 									</span>
 								</TableHead>
-								<TableHead className={statusHeadClassName}>결과</TableHead>
+								<TableHead className={cn(statusHeadClassName, 'w-31 min-w-31')}>결과</TableHead>
 								<TableHead className={statusHeadClassName}>응급</TableHead>
 								<TableHead className={statusHeadClassName}>리뷰</TableHead>
 								<TableHead className={statusHeadClassName}>라벨</TableHead>
@@ -157,13 +164,14 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player, filt
 										key={sound.id}
 										ref={selected ? selectedRowRef : undefined}
 										className={cn('cursor-pointer hover:bg-muted', selected && 'bg-muted')}
-										onClick={() => player.playSound(sound)}
+										onClick={() => player.selectSound(sound)}
 									>
 										<TableCell className={cn(cellClassName, 'p-3')}>
 											<button
 												type="button"
 												aria-label={`${soundTime} 소리 재생`}
 												className="grid size-7 place-items-center rounded-full bg-foreground text-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+												onClick={(event) => handlePlaySound(event, sound)}
 											>
 												<Play className="size-3 fill-current" />
 											</button>
@@ -182,8 +190,7 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player, filt
 										<TableCell
 											className={cn(
 												cellClassName,
-												'text-muted-foreground tabular-nums',
-												narrowTableHiddenClassName,
+												'text-muted-foreground tabular-nums max-md:hidden',
 											)}
 										>
 											{sound.duration_ms ? formatAudioDuration(sound.duration_ms / SECOND) : '-'}

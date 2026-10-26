@@ -33,6 +33,7 @@ const modelResultClassName = 'inline-flex items-center gap-1 font-semibold tabul
 
 interface Props {
 	sessionId: string;
+	wordName: string;
 	sound: SessionSound;
 	player: AudioPlaylist;
 }
@@ -40,10 +41,11 @@ interface Props {
 /**
  * 선택한 소리의 상세 컴포넌트
  * @param sessionId 소리가 속한 세션 ID
+ * @param wordName 세션의 단어 이름
  * @param sound 선택한 소리
  * @param player useAudioPlaylist 결과
  */
-const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
+const SessionSoundDetail = ({ sessionId, wordName, sound, player }: Props) => {
 	const { data: sessionSoundData } = useGetSessionSound({ id: sessionId, soundId: sound.id });
 
 	const requestMimicJudgment = useRequestSessionSoundMimicJudgment();
@@ -100,13 +102,23 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 					/>
 				</div>
 
-				<dl className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-x-3 border-t pt-2.5 text-[13px]">
+				<dl className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-x-3 gap-y-2 border-t pt-2.5 text-[13px]">
 					<dt className="text-muted-foreground">최종 결과</dt>
 					<dd>
 						{kind ? (
 							<ColorTag color={SESSION_SOUND_KINDS[kind].color}>
 								{SESSION_SOUND_KINDS[kind].label}
 							</ColorTag>
+						) : (
+							<span className="text-muted-foreground">-</span>
+						)}
+					</dd>
+
+					{/*모사는 세션 단어로 판정*/}
+					<dt className="text-muted-foreground">단어</dt>
+					<dd>
+						{kind === 'mimic' ? (
+							<strong className="font-semibold">{wordName}</strong>
 						) : (
 							<span className="text-muted-foreground">-</span>
 						)}
@@ -218,7 +230,7 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 						<TableHeader>
 							<TableRow className="hover:bg-transparent">
 								<TableHead className={cn(headClassName, 'min-w-24')}>시각</TableHead>
-								<TableHead className={cn(headClassName, 'min-w-20')}>모델</TableHead>
+								<TableHead className={cn(headClassName, 'w-full min-w-20')}>모델</TableHead>
 								<TableHead className={cn(headClassName, 'min-w-5')} />
 								<TableHead className={cn(headClassName, 'min-w-10')}>점수</TableHead>
 								<TableHead className={cn(headClassName, 'min-w-9')}>울음</TableHead>
@@ -265,7 +277,7 @@ const SessionSoundDetail = ({ sessionId, sound, player }: Props) => {
 						<TableHeader>
 							<TableRow className="hover:bg-transparent">
 								<TableHead className={cn(headClassName, 'min-w-24')}>시각</TableHead>
-								<TableHead className={cn(headClassName, 'min-w-20')}>모델</TableHead>
+								<TableHead className={cn(headClassName, 'w-full min-w-20')}>모델</TableHead>
 								<TableHead className={cn(headClassName, 'min-w-5')} />
 								<TableHead className={cn(headClassName, 'min-w-10')}>점수</TableHead>
 							</TableRow>

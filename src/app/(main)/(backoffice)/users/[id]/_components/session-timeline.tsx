@@ -757,7 +757,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 				<div
 					className={cn(
 						'grid gap-4',
-						sessionSoundListData.length > 0 && '@min-[760px]:grid-cols-[minmax(0,1fr)_384px]',
+						sessionSoundListData.length > 0 && '@min-[760px]:grid-cols-[minmax(0,1fr)_448px]',
 					)}
 				>
 					<SessionSoundTable
@@ -777,7 +777,12 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone, label, soundListPar
 									fallbackComponent={QueryError}
 									suspenseFallback=<SessionSoundDetailSkeleton />
 								>
-									<SessionSoundDetail sessionId={session.id} sound={currentSound} player={player} />
+									<SessionSoundDetail
+										sessionId={session.id}
+										wordName={session.word.name}
+										sound={currentSound}
+										player={player}
+									/>
 								</ErrorHandlingWrapper>
 							) : (
 								<p className="p-2 text-[13px] text-muted-foreground">선택한 소리 없음</p>

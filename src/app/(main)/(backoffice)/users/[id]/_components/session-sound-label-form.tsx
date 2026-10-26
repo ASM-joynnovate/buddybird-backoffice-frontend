@@ -159,18 +159,16 @@ const SessionSoundLabelForm = ({ sessionId, soundId, target, latestLabel, latest
 			</div>
 
 			<div className="flex justify-end gap-1.5 border-t px-3 py-2.5">
-				{!!activeLabel && (
-					<Button
-						type="button"
-						variant="destructive"
-						loading={cancelLabel.isPending}
-						disabled={saving}
-						className="mr-auto"
-						onClick={handleCancelLabel}
-					>
-						삭제
-					</Button>
-				)}
+				<Button
+					type="button"
+					variant="destructive"
+					loading={cancelLabel.isPending}
+					disabled={!activeLabel || saving}
+					className="mr-auto"
+					onClick={handleCancelLabel}
+				>
+					삭제
+				</Button>
 				<Button
 					type="button"
 					variant="destructive"
