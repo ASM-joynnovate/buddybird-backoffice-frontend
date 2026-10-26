@@ -133,7 +133,7 @@ const CountryList = ({ countries, className }: Props) => {
 										{hiddenCountries.map(({ country, count }) => (
 											<div key={country} className="flex items-center justify-between gap-4">
 												<span className="flex items-center gap-1.5 text-tooltip-foreground/75">
-													<CountryFlag country={country} className="h-3 w-4" />
+													<CountryFlag country={country} className="w-4" />
 													{toCountryName(country)}
 												</span>
 												<strong className="text-[13px] font-bold">

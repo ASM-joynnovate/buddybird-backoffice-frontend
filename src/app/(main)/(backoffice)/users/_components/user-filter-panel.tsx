@@ -51,7 +51,7 @@ const UserFilterPanel = ({ dashboardParams, query }: Props) => {
 								value: country,
 								label: toCountryName(country),
 								count,
-								icon: <CountryFlag country={country} className="h-3 w-4" />,
+								icon: <CountryFlag country={country} className="w-4" />,
 							},
 						]
 					: [],

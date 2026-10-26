@@ -94,7 +94,7 @@ const AbuseReportRow = ({ abuseReport, now }: Props) => {
 
 					{!!reportedUser.country && (
 						<span className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
-							<CountryFlag country={reportedUser.country} className="h-3 w-4" />
+							<CountryFlag country={reportedUser.country} className="w-4" />
 							<span className="truncate">{toCountryName(reportedUser.country)}</span>
 						</span>
 					)}

@@ -26,7 +26,7 @@ const CountryFlag = ({ country, className }: Props) => {
 			alt=""
 			width={20}
 			height={15}
-			className={cn('h-[15px] w-5 shrink-0 rounded-[3px] ring-1 ring-foreground/10', className)}
+			className={cn('aspect-4/3 w-5 shrink-0 rounded-[3px] ring-1 ring-foreground/10', className)}
 		/>
 	);
 };

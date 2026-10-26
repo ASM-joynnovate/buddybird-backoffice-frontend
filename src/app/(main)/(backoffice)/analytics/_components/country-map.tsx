@@ -148,7 +148,7 @@ const CountryMap = ({ countries }: Props) => {
 									{countryMarker.count.toLocaleString('ko-KR')}명
 								</strong>
 								<span className="flex items-center gap-1.5 text-tooltip-foreground/75">
-									<CountryFlag country={countryMarker.country} className="h-3 w-4" />
+									<CountryFlag country={countryMarker.country} className="w-4" />
 									{countryName}
 								</span>
 							</MarkerTooltip>

@@ -17,7 +17,7 @@ interface Props {
  * @param className 크기를 정하는 class
  */
 const SpeciesIcon = ({ species, className }: Props) => {
-	// 사용자가 직접 입력한 종은 새 아이콘
+	// 직접 입력한 종은 새 아이콘 표시
 	if (!SPECIES_IDS.includes(species)) {
 		return <Bird aria-hidden className={cn('size-5 shrink-0 text-muted-foreground', className)} />;
 	}

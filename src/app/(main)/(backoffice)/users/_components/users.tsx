@@ -64,7 +64,7 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 						name: 'country',
 						groupLabel: '국가',
 						label: toCountryName(listParams.country),
-						icon: <CountryFlag country={listParams.country} className="h-3 w-4" />,
+						icon: <CountryFlag country={listParams.country} className="w-4" />,
 					},
 				]
 			: []),
