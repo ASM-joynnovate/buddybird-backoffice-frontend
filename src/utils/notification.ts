@@ -7,7 +7,7 @@ import type { I18nFieldValue } from '@/types/i18n';
 import { MARKETING_PREFIXES } from '@/config/notification';
 import { toI18nFieldValue, toI18nText } from '@/utils/i18n-text';
 
-/** 사용자가 이 종류의 알림을 받는지 확인하는 함수 */
+/** 사용자가 이 종류의 알림을 수신하는지 확인하는 함수 */
 export const receivesNotification = (user: UserListItem, kind: SendableNotificationKind) => {
 	if (kind === 'announcement') {
 		return user.is_announcement_enabled;
@@ -16,7 +16,7 @@ export const receivesNotification = (user: UserListItem, kind: SendableNotificat
 	return kind === 'urgent' || user.is_marketing_enabled;
 };
 
-/** 입력값을 마케팅이면 언어별 머리말을 붙인 발송 문구로 변환하는 함수 */
+/** 입력값을 발송 문구로 변환하는 함수 */
 export const toSentText = (fieldValue: I18nFieldValue, kind: SendableNotificationKind): I18nText => {
 	const text = toI18nText(fieldValue);
 
@@ -33,12 +33,12 @@ export const toSentText = (fieldValue: I18nFieldValue, kind: SendableNotificatio
 	};
 };
 
-/** 저장된 문구 앞의 머리말을 빼는 함수 */
+/** 저장된 문구 앞의 prefix를 제거하는 함수 */
 const removeMarketingPrefix = (text: string, locale: keyof I18nFieldValue) => {
 	return text.startsWith(MARKETING_PREFIXES[locale]) ? text.slice(MARKETING_PREFIXES[locale].length) : text;
 };
 
-/** 보낸 알림을 다시 보낼 입력값으로 변환하는 함수 */
+/** 발송한 알림을 재발송 입력값으로 변환하는 함수 */
 export const toCopiedContent = (notification: {
 	kind: SendableNotificationKind;
 	title: I18nText;
@@ -46,7 +46,7 @@ export const toCopiedContent = (notification: {
 	image: { url: string } | null;
 	image_file_id: string | null;
 }) => {
-	// 마케팅 문구는 발송할 때 머리말이 다시 붙음
+	// 마케팅 문구는 발송할 때 prefix가 다시 추가됨
 	const toFieldValue = (text: I18nText) =>
 		toI18nFieldValue(
 			notification.kind === 'marketing'

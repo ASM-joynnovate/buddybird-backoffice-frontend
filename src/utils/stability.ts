@@ -9,18 +9,18 @@ import type { FilterGroup } from '@/types/filter';
 
 import { ISSUE_ENVIRONMENT_LABELS, ISSUE_LEVELS, ISSUE_PRIORITY_LABELS } from '@/config/analytics';
 
-/** 이슈 등급의 이름 및 색을 찾는 함수 */
+/** 이슈 등급의 이름 및 색을 반환하는 함수 */
 export const toIssueLevel = (level: string) => {
 	return ISSUE_LEVELS[level] ?? { label: level, color: 'var(--chart-neutral)' };
 };
 
-/** 릴리스에서 @ 뒤의 버전을 꺼내는 함수 */
+/** 릴리스에서 @ 뒤의 버전을 추출하는 함수 */
 export const toReleaseVersion = (release: string) => {
 	return release.slice(release.lastIndexOf('@') + 1);
 };
 
 /**
- * 이슈 필터 그룹을 만드는 함수
+ * 이슈 필터 그룹을 생성하는 함수
  * @param projects 프로젝트 목록
  * @param issueReleases 이슈가 발생한 릴리스 목록
  * @param project 선택한 프로젝트
@@ -46,7 +46,7 @@ export const toIssueFilterGroups = (
 				value: stabilityProject.project,
 				label: stabilityProject.project,
 			})),
-			// 릴리스는 프로젝트에 딸린 값
+			// 릴리스는 프로젝트에 종속된 값
 			resetNames: ['release'],
 		},
 		{

@@ -21,7 +21,7 @@ interface Props {
 /**
  * 등록된 업데이트를 나열한 "업데이트 내역" 카드 컴포넌트
  * @param platform 선택된 플랫폼
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const AppUpdateHistoryCard = ({ platform, now }: Props) => {
 	const { data: appUpdateListData } = useGetAppUpdateList({ platform });
@@ -81,7 +81,7 @@ const AppUpdateHistoryCard = ({ platform, now }: Props) => {
 				)}
 			</TitledCard>
 
-			{/*목록이 바뀌어도 저장이 끝날 때까지 유지*/}
+			{/*목록이 변경되어도 저장 완료까지 유지*/}
 			{!!editingAppUpdate && (
 				<AppUpdateFormDialog
 					platform={platform}

@@ -28,12 +28,12 @@ interface Props {
  * @param body 본문 입력값
  * @param bodyLabel 본문 입력의 이름
  * @param bodyMaxLength 본문의 최대 길이
- * @param className 입력 상자에 더할 class
+ * @param className 입력 영역에 더할 class
  * @param bodyClassName 본문 입력에 더할 class
  * @param englishBodyRequired 영어 본문의 필수 여부
  * @param lengthText 헤더에 표시할 글자 수
- * @param onTitleChange 제목이 바뀔 때 실행할 함수
- * @param onBodyChange 본문이 바뀔 때 실행할 함수
+ * @param onTitleChange 제목이 변경될 때 실행할 함수
+ * @param onBodyChange 본문이 변경될 때 실행할 함수
  */
 const LocaleTextField = ({
 	locale,

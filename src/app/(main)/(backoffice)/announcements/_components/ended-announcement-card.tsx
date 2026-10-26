@@ -99,7 +99,7 @@ const EndedAnnouncementCard = ({ listParams, query }: Props) => {
 				<PageNavigation meta={announcementListData.meta} pathname="/announcements" query={query} />
 			)}
 
-			{/*목록이 바뀌어도 저장이 끝날 때까지 유지*/}
+			{/*목록이 변경되어도 저장 완료까지 유지*/}
 			{!!editingAnnouncement && (
 				<AnnouncementFormDialog
 					announcement={editingAnnouncement}

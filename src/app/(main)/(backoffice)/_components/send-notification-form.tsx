@@ -52,8 +52,8 @@ interface Props {
 
 /**
  * 알림 보내기 입력 및 미리보기 컴포넌트
- * @param initialContent 처음에 채워 둘 알림 내용
- * @param initialUserIds 처음에 고를 사용자 ID
+ * @param initialContent 처음 입력값으로 사용할 알림 내용
+ * @param initialUserIds 처음에 선택할 사용자 ID
  * @param onClose 다이얼로그를 닫을 때 실행할 함수
  */
 const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props) => {
@@ -104,7 +104,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 
 		setSendTried(true);
 
-		// 빠진 영어 문구를 입력하도록 영어 선택
+		// 누락된 영어 문구를 입력하도록 영어 선택
 		if (englishTextMissing) {
 			setLocale('en_us');
 
@@ -114,7 +114,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 		setConfirmDialogOpen(true);
 	};
 
-	/** 사진 파일 ID를 넣어 알림 발송 */
+	/** 사진 파일 ID를 포함해 알림 발송 */
 	const broadcast = (imageFileId: string | null) => {
 		broadcastNotification.mutate(
 			{
@@ -138,7 +138,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 			return;
 		}
 
-		// 새로 고른 사진은 발송 직전에 업로드
+		// 새로 선택한 사진은 발송 직전에 업로드
 		if (content.imageFile) {
 			uploadNotificationImage.mutate(
 				{ file: content.imageFile },
@@ -161,7 +161,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className="grid md:min-h-140 md:grid-cols-[minmax(0,1fr)_400px]">
-				{/*받는 사람, 내용, 예약 입력*/}
+				{/*알림 입력 영역*/}
 				<div className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
 					<div className={rowClassName}>
 						<span className={`${labelClassName} @md:pt-2`}>받는 사람</span>
@@ -229,7 +229,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 					</div>
 				</div>
 
-				{/*미리보기 및 받는 사람 수*/}
+				{/*미리보기 및 수신자 수*/}
 				<aside className="grid content-start gap-3 border-t bg-card-inset p-4 md:border-t-0 md:border-l md:p-5 [&_h4]:text-base [&_h4]:font-bold">
 					<NotificationPreview
 						kind={content.kind}

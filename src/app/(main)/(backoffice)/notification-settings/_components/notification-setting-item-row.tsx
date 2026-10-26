@@ -40,7 +40,7 @@ interface Props {
  * @param ref 행의 ref
  * @param style 행에 적용할 style
  * @param className 행에 더할 class
- * @param dragHandleProps 손잡이에 넘길 끌기 속성
+ * @param dragHandleProps 드래그 핸들에 전달할 속성
  * @param onOpen 행을 누르면 실행할 함수
  */
 const NotificationSettingItemRow = ({ item, grouped, ref, style, className, dragHandleProps, onOpen }: Props) => {
@@ -60,7 +60,7 @@ const NotificationSettingItemRow = ({ item, grouped, ref, style, className, drag
 			<DragHandle label={title} className="relative z-10 [grid-area:grip]" {...dragHandleProps} />
 
 			<div className={cn('min-w-0 [grid-area:title]', grouped && 'border-l-2 border-chart-neutral pl-4')}>
-				{/*누르는 영역을 행 전체로 넓힌 버튼*/}
+				{/*클릭 영역을 행 전체로 확장한 버튼*/}
 				<button
 					type="button"
 					className="text-left font-semibold after:absolute after:inset-0 after:rounded-md focus-visible:outline-0 focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand"

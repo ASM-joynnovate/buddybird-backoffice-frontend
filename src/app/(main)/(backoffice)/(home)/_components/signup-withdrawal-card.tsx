@@ -102,7 +102,7 @@ const SignupWithdrawalCard = ({ users, withdrawals, today }: Props) => {
 						isAnimationActive={false}
 					/>
 
-					{/*낮은 평균은 선 아래 이름표*/}
+					{/*낮은 평균은 선 아래 라벨*/}
 					<AverageLine
 						value={signupAverage}
 						valueText={`${signupAverage.toFixed(1)}명`}

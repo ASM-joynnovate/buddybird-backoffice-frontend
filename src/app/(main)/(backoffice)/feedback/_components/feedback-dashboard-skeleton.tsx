@@ -11,7 +11,7 @@ const PLACEHOLDER_GROUPS = [
 	{ title: FEEDBACK_FILTER_LABELS.locale, legendWidths: [68, 76] },
 ];
 
-/** 피드백 대시보드 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 피드백 대시보드 카드를 불러오는 동안 표시하는 컴포넌트 */
 const FeedbackDashboardSkeleton = () => {
 	return (
 		<>

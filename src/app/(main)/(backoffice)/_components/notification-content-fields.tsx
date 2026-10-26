@@ -47,7 +47,7 @@ interface Props {
  * 알림 내용 입력 컴포넌트
  * @param content 알림 내용 입력값
  * @param locale 입력할 언어
- * @param englishTextMissing 영어 제목이나 본문이 빠졌는지 여부
+ * @param englishTextMissing 영어 제목이나 본문이 누락됐는지 여부
  * @param onContentChange 입력값을 변경할 때 실행할 함수
  * @param onLocaleChange 언어를 선택하면 실행할 함수
  */
@@ -76,7 +76,7 @@ const NotificationContentFields = ({ content, locale, englishTextMissing, onCont
 				/>
 			</div>
 
-			{/*선택한 언어의 제목 및 본문을 한 상자에 입력*/}
+			{/*선택한 언어의 제목 및 본문을 한 입력 영역에 입력*/}
 			<div className={`${rowClassName} mt-2 border-t pt-5`}>
 				<span className={`${labelClassName} @md:pt-2.5`}>내용</span>
 
@@ -122,7 +122,7 @@ const NotificationContentFields = ({ content, locale, englishTextMissing, onCont
 
 				<NotificationImageField
 					imagePreviewUrl={content.imagePreviewUrl}
-					// 복사한 사진 대신 고른 사진 사용
+					// 복사한 사진 대신 선택한 사진 사용
 					onImageChange={(image) => onContentChange((prev) => ({ ...prev, ...image, imageFileId: null }))}
 				/>
 			</div>

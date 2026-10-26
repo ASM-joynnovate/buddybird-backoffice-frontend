@@ -4,7 +4,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 const factClassName = 'grid min-w-0 content-start gap-1 rounded-lg bg-muted px-3.5 py-2.5';
 const factTitleClassName = 'mb-1 text-[12.5px] text-muted-foreground';
 
-/** 사용자 프로필 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 사용자 프로필 카드를 불러오는 동안 표시하는 컴포넌트 */
 const UserProfileCardSkeleton = () => {
 	return (
 		<Card className="gap-4 px-5 py-4.5">
@@ -16,13 +16,14 @@ const UserProfileCardSkeleton = () => {
 					<SkeletonText className="h-5 w-32" />
 				</div>
 
-				<div className="flex gap-2 max-md:w-full max-md:*:flex-1 md:ml-auto">
+				<div className="flex flex-wrap gap-2 max-md:w-full max-md:*:flex-1 md:ml-auto">
+					<Skeleton className="h-9 w-29" />
 					<Skeleton className="h-9 w-29" />
 					<Skeleton className="h-9 w-29" />
 				</div>
 			</div>
 
-			<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))]">
+			<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))]">
 				<div className={`${factClassName} max-md:col-span-2`}>
 					<dt className={factTitleClassName}>사용자 ID</dt>
 					{/*좁은 화면에서는 사용자 ID가 두 줄로 표시됨*/}
@@ -44,7 +45,7 @@ const UserProfileCardSkeleton = () => {
 					</dd>
 				</div>
 
-				{['가입', '최근 접속'].map((title) => (
+				{['가입', '최근 접속', '국가'].map((title) => (
 					<div key={title} className={factClassName}>
 						<dt className={factTitleClassName}>{title}</dt>
 						<dd>

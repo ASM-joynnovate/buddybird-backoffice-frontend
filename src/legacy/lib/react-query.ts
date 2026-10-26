@@ -5,7 +5,7 @@ function makeQueryClient() {
 	return new QueryClient({
 		defaultOptions: {
 			queries: {
-				staleTime: 60 * 1000, // 신선도를 판별할 시간 (1분)
+				staleTime: 60 * 1000, // 데이터를 최신으로 보는 시간
 				throwOnError: true, // 에러 발생 시 throw
 			},
 			dehydrate: {
@@ -20,8 +20,7 @@ let browserQueryClient: QueryClient | undefined = undefined;
 /** QueryClient getter */
 export function getQueryClient() {
 	/**
-	 * 서버 사이드에서는 항상 새로운 QueryClient 생성
-	 * 클라이언트 사이드에서는 싱글톤 형태로 사용
+	 * 브라우저에서만 QueryClient 재사용
 	 */
 	if (environmentManager.isServer()) {
 		return makeQueryClient();

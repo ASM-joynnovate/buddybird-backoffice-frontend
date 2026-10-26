@@ -9,7 +9,7 @@ interface Props {
 }
 
 /**
- * 보낸 알림 목록을 불러오는 동안 보이는 컴포넌트
+ * "보낸 알림" 목록을 불러오는 동안 표시하는 컴포넌트
  * @param title 카드 제목
  */
 const NotificationListSkeleton = ({ title }: Props) => {

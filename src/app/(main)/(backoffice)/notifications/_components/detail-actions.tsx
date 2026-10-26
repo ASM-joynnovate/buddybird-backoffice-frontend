@@ -19,9 +19,9 @@ interface Props {
 }
 
 /**
- * 펼친 상세 아래의 취소 및 다시 보내기 버튼 컴포넌트
- * @param copiedContent 다시 보낼 알림 내용
- * @param copiedUserId 다시 보낼 사용자 ID
+ * 펼친 상세 아래의 "취소" 및 "다시 보내기" 버튼 컴포넌트
+ * @param copiedContent 다시 발송할 알림 내용
+ * @param copiedUserId 다시 발송할 사용자 ID
  * @param notificationDispatch 취소할 수 있는 발송
  */
 const DetailActions = ({ copiedContent, copiedUserId, notificationDispatch }: Props) => {

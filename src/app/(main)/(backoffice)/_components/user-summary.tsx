@@ -9,7 +9,7 @@ interface Props {
 }
 
 /**
- * 사용자의 사진, 닉네임, 이메일 컴포넌트
+ * 사용자 프로필 요약 컴포넌트
  * @param user 표시할 사용자
  */
 const UserSummary = ({ user }: Props) => {
@@ -28,7 +28,7 @@ const UserSummary = ({ user }: Props) => {
 					<span className="block text-muted-foreground">닉네임 없음</span>
 				)}
 
-				{/*배지 줄도 이메일 줄과 같은 높이*/}
+				{/*배지 행도 이메일 행과 같은 높이*/}
 				{user.is_anonymous ? (
 					<span className="flex h-lh items-center text-[13px]">
 						<Badge variant="muted" className="group-hover:bg-card">

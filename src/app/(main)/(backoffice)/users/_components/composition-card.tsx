@@ -62,7 +62,7 @@ const CompositionCard = ({ userDashboard, query }: Props) => {
 					percent: totalCount ? Math.round((count / totalCount) * 100) : 0,
 					icon: <UserFilterIcon listParams={filterOption?.listParams} />,
 					colorClassName: colorClassNames[value] ?? 'bg-chart-neutral',
-					// 다른 값을 골랐으면 옅게 표시
+					// 다른 값을 선택했으면 옅게 표시
 					dimmed: !!query[composition.name] && query[composition.name] !== value,
 					href: { pathname: '/users', query: toToggledQuery(query, composition.name, value) },
 				};

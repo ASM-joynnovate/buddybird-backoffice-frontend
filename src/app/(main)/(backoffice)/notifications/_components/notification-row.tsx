@@ -19,10 +19,10 @@ interface Props {
 }
 
 /**
- * 받는 사람 한 명의 알림 한 건의 행 컴포넌트
+ * 수신자 한 명의 알림 행 컴포넌트
  * @param notification 표시할 알림
  * @param keyword 강조할 검색어
- * @param recipientListed 한 사용자가 받은 알림 목록인지 여부
+ * @param recipientListed 한 사용자가 수신한 알림 목록인지 여부
  * @param expanded 상세 표시 여부
  * @param now 현재 시각
  * @param onToggle 행을 누르면 실행할 함수
@@ -65,7 +65,7 @@ const NotificationRow = ({ notification, keyword, recipientListed, expanded, now
 				pushSentAt={notification.push_sent_at}
 				readAt={notification.read_at}
 			>
-				{/*리포트 및 응급 알림은 다시 보낼 수 없음*/}
+				{/*리포트 및 응급 알림은 다시 발송할 수 없음*/}
 				{kind !== 'report' && kind !== 'emergency' && (
 					<DetailActions
 						copiedContent={toCopiedContent({ ...notification, kind })}

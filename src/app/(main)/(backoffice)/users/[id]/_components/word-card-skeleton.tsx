@@ -5,7 +5,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 const PLACEHOLDER_RECORDING_COUNT = 3;
 const PLACEHOLDER_CLOSED_WORD_COUNT = 2;
 
-/** 단어 및 녹음 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 단어 및 녹음 카드를 불러오는 동안 표시하는 컴포넌트 */
 const WordCardSkeleton = () => {
 	return (
 		<TitledCard title="단어" action=<Skeleton className="h-4 w-6" />>

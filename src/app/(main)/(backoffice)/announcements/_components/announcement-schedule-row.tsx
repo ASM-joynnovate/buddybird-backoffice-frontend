@@ -40,7 +40,7 @@ interface Props {
  * 게시 일정의 공지 하나의 행 컴포넌트
  * @param announcement 표시할 공지
  * @param userCount 전체 사용자 수
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  * @param onOpen 행을 누르면 실행할 함수
  * @param onTooltipShow 일정 툴팁을 표시할 때 실행할 함수
  * @param onTooltipHide 일정 툴팁을 숨길 때 실행할 함수
@@ -60,7 +60,7 @@ const AnnouncementScheduleRow = ({ announcement, userCount, now, onOpen, onToolt
 
 	const barLeftPercent = clampPercent(startPercent);
 	const barWidthPercent = clampPercent(endPercent) - barLeftPercent;
-	// 게시 중인 공지만 현재 시각까지 채움
+	// 게시 중인 공지만 현재 시각까지 표시
 	const filledPercent = scheduled ? 0 : ((nowPercent - barLeftPercent) / barWidthPercent) * 100;
 	// 막대의 시작 및 현재 시각 중 오른쪽 위치
 	const labelPercent = Math.max(barLeftPercent, nowPercent);
@@ -120,7 +120,7 @@ const AnnouncementScheduleRow = ({ announcement, userCount, now, onOpen, onToolt
 			onFocus={handleFocus}
 			onBlur={onTooltipHide}
 		>
-			{/*클릭은 아래에 있는 제목 버튼이 받음*/}
+			{/*클릭 이벤트는 아래 제목 버튼이 처리*/}
 			<figure
 				ref={laneRef}
 				aria-label={`${formatMonthDay(announcement.starts_at)}부터 ${endDateText} 게시, ${remainingText}`}

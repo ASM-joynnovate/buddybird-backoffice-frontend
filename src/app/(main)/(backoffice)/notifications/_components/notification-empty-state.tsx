@@ -11,7 +11,7 @@ interface Props {
  * 조건에 맞는 알림이 없을 때의 카드 컴포넌트
  * @param title 카드 제목
  * @param keyword 검색어
- * @param filterSelected 받는 사람, 종류, 날짜 조건을 골랐는지 여부
+ * @param filterSelected 필터 조건을 선택했는지 여부
  */
 const NotificationEmptyState = ({ title, keyword, filterSelected }: Props) => {
 	return (

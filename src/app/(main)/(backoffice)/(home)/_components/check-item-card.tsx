@@ -42,6 +42,12 @@ const CheckItemCard = ({ dashboardLive }: Props) => {
 			dotClassName: 'bg-destructive-dot',
 			href: '/withdrawals',
 		},
+		{
+			label: '처리 전 신고',
+			count: dashboardLive.abuse_reports.unhandled_count,
+			dotClassName: 'bg-warning-dot',
+			href: '/abuse-reports',
+		},
 		{ label: '앵무 소리 판별 실패', count: parrot_detection_failed_count, dotClassName: 'bg-warning-dot' },
 	];
 	const totalCount = checkItems.reduce((total, checkItem) => total + checkItem.count, 0);

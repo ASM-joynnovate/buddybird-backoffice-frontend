@@ -30,7 +30,7 @@ interface Props {
 }
 
 /**
- * 발송 예정의 발송 하나의 행 컴포넌트
+ * "발송 예정" 카드의 발송 행 컴포넌트
  * @param notificationDispatch 표시할 발송
  * @param range 시간 축의 범위
  * @param expanded 상세 표시 여부

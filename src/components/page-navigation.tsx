@@ -53,7 +53,7 @@ interface Props {
  * @param pageParam 페이지 번호의 쿼리 이름
  */
 const PageNavigation = ({ meta, pathname, query, pageParam = 'page' }: Props) => {
-	/** 페이지 번호가 들어간 링크 주소를 반환하는 함수 */
+	/** 페이지 번호를 포함한 링크 주소를 반환하는 함수 */
 	const pageHref = (page: number) => {
 		const entries = Object.entries({ ...query, [pageParam]: page }).filter(([, value]) => value !== undefined);
 

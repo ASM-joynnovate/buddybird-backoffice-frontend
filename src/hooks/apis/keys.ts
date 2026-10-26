@@ -1,3 +1,4 @@
+import type { AbuseReportListParams } from '@/types/apis/abuse-reports';
 import type { AnnouncementListParams } from '@/types/apis/announcements';
 import type { Platform } from '@/types/apis/app-updates';
 import type { DashboardParams, StabilityIssueFilters, StabilityIssueSort } from '@/types/apis/dashboard';
@@ -83,6 +84,10 @@ export const apiKeys = {
 	},
 	presetWords: {
 		all: () => ['api', 'preset-words'] as const,
+	},
+	abuseReports: {
+		all: () => ['api', 'abuse-reports'] as const,
+		list: (listParams: AbuseReportListParams) => ['api', 'abuse-reports', 'list', listParams] as const,
 	},
 	withdrawals: {
 		all: () => ['api', 'withdrawals'] as const,

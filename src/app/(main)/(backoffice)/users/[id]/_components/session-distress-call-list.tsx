@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 
 const SHORTEST_SOUND_WIDTH_PX = 72;
 
-/** 재생 중인 소리 칸이 가려져 있으면 보이는 곳으로 스크롤하는 함수 */
+/** 재생 중인 소리 칸으로 스크롤하는 함수 */
 const showSoundCell = (soundCell: HTMLButtonElement | null) => {
 	const soundCells = soundCell?.parentElement;
 
@@ -51,7 +51,7 @@ interface Props {
 }
 
 /**
- * 신경질적 짹짹마다 감지된 소리를 한 줄에 나열한 목록 컴포넌트
+ * 신경질적 짹짹별 소리 목록 컴포넌트
  * @param distressCalls 신경질적 짹짹 및 감지된 소리 목록
  * @param player useAudioPlaylist 결과
  * @param onScoreTooltipShow 소리 칸을 가리키면 실행할 함수
@@ -68,7 +68,7 @@ const SessionDistressCallList = ({ distressCalls, player, onScoreTooltipShow, on
 				<span className="text-[13px] text-muted-foreground tabular-nums">{distressCalls.length}번</span>
 			</div>
 
-			{/*응급 상황 세 번까지 보이고 넘으면 스크롤*/}
+			{/*응급 상황 세 개까지 표시, 초과하면 스크롤*/}
 			<ul className="-mr-2 max-h-33.5 [scrollbar-width:thin] divide-y divide-destructive/16 overflow-y-auto overscroll-contain pr-2 max-md:max-h-57.5">
 				{distressCalls.map((distressCall) => {
 					const firstSoundTime = formatShortDateTimeWithSeconds(distressCall.sounds[0].captured_at);
@@ -84,7 +84,7 @@ const SessionDistressCallList = ({ distressCalls, player, onScoreTooltipShow, on
 							key={distressCall.id}
 							className="grid h-11 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 tabular-nums max-md:h-auto max-md:grid-cols-[minmax(0,1fr)_auto] max-md:gap-x-2 max-md:gap-y-1.5 max-md:py-2"
 						>
-							{/*시각, 소리 개수, 길이의 합을 한 묶음으로 표시*/}
+							{/*시각, 소리 개수 및 길이 합계를 한 그룹으로 표시*/}
 							<div className="grid gap-0.5 border-r border-destructive/16 pr-3 leading-tight whitespace-nowrap max-md:border-r-0 max-md:pr-0">
 								<p className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">
 									{formatShortDate(distressCall.sounds[0].captured_at)}
@@ -131,7 +131,7 @@ const SessionDistressCallList = ({ distressCalls, player, onScoreTooltipShow, on
 											onFocus={(event) => onScoreTooltipShow(event.currentTarget, [sound])}
 											onBlur={onScoreTooltipHide}
 										>
-											{/*이어 듣는 동안 소리 길이만큼 왼쪽부터 채움*/}
+											{/*연속 재생 중 소리 길이만큼 왼쪽부터 진행 표시*/}
 											{selected && groupPlaying && !!sound.duration_ms && (
 												<span
 													aria-hidden

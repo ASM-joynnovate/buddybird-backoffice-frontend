@@ -15,9 +15,9 @@ interface Props {
 }
 
 /**
- * 끌어서 옮길 수 있는 알림 설정 그룹 행 컴포넌트
+ * 드래그로 이동할 수 있는 알림 설정 그룹 행 컴포넌트
  * @param group 표시할 그룹
- * @param dragDisabled 끌기를 막을지 여부
+ * @param dragDisabled 드래그 비활성화 여부
  * @param onOpen 행을 누르면 실행할 함수
  */
 const SortableNotificationSettingGroupRow = ({ group, dragDisabled, onOpen }: Props) => {

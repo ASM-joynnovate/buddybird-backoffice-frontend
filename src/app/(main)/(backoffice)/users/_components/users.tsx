@@ -5,6 +5,7 @@ import type { SelectedFilter } from '@/types/filter';
 
 import type { SearchParamValue } from '@/lib/api';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import PeriodFilter from '@/app/(main)/(backoffice)/_components/period-filter';
 import SearchBar from '@/app/(main)/(backoffice)/_components/search-bar';
 import UserDashboardCards from '@/app/(main)/(backoffice)/users/_components/user-dashboard-cards';
@@ -35,11 +36,11 @@ interface Props {
  * @param period 선택된 기간 버튼의 일수
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param listParams 목록 조회 조건
- * @param userFilters 필터에서 고른 값
- * @param listQuery 기간을 뺀 현재 주소의 쿼리
+ * @param userFilters 필터에서 선택한 값
+ * @param listQuery 기간을 제외한 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, query, today, now }: Props) => {
 	const selectedFilters: SelectedFilter[] = [
@@ -58,7 +59,14 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				: [];
 		}),
 		...(listParams.country
-			? [{ name: 'country', groupLabel: '국가', label: toCountryName(listParams.country) }]
+			? [
+					{
+						name: 'country',
+						groupLabel: '국가',
+						label: toCountryName(listParams.country),
+						icon: <CountryFlag country={listParams.country} className="w-4" />,
+					},
+				]
 			: []),
 		...(query.is_deleted ? [{ name: 'is_deleted', label: '삭제됨' }] : []),
 	];
@@ -77,7 +85,7 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				/>
 			</div>
 
-			{/*조회 기간이 바뀌면 다시 마운트*/}
+			{/*조회 기간이 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
 				fallbackComponent={QueryError}
@@ -96,7 +104,7 @@ const Users = ({ period, dashboardParams, listParams, userFilters, listQuery, qu
 				filterPanel=<UserFilterPanel dashboardParams={dashboardParams} query={query} />
 			/>
 
-			{/*조건이 바뀌어도 이전 목록을 유지해 행 이동 전환 실행*/}
+			{/*조건이 변경되어도 이전 목록을 유지해 행 이동 전환 실행*/}
 			<ErrorHandlingWrapper fallbackComponent={QueryError} suspenseFallback=<UserTableSkeleton />>
 				<UserTable listParams={listParams} query={query} initialNow={now} />
 			</ErrorHandlingWrapper>

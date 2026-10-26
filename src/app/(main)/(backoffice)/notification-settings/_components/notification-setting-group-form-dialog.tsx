@@ -68,14 +68,14 @@ const NotificationSettingGroupFormDialog = ({ group, onClose }: Props) => {
 
 		setTextError(nextTextError);
 
-		// 빠진 영어 문구를 입력하도록 영어 선택
+		// 누락된 영어 문구를 입력하도록 영어 선택
 		if (nextTextError) {
 			setLocale('en_us');
 
 			return;
 		}
 
-		// 바뀐 값이 없는 수정은 요청 없이 닫음
+		// 변경한 값이 없으면 요청 없이 닫음
 		if (group && Object.keys(toNotificationSettingTextUpdate(title, description, group)).length === 0) {
 			onClose();
 
@@ -91,7 +91,7 @@ const NotificationSettingGroupFormDialog = ({ group, onClose }: Props) => {
 		}
 
 		if (group) {
-			// 수정은 바뀐 값만 보냄
+			// 수정은 변경한 값만 전송
 			updateGroup.mutate(
 				{ id: group.id, data: toNotificationSettingTextUpdate(title, description, group) },
 				{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },

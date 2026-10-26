@@ -27,13 +27,13 @@ interface Props {
 }
 
 /**
- * 고른 종류의 버전 및 전문 카드 컴포넌트
- * @param kindConsents 고른 종류의 버전 목록
- * @param version 주소에서 고른 버전
- * @param formMode 열려 있는 입력 폼
+ * 선택한 종류의 버전 및 전문 카드 컴포넌트
+ * @param kindConsents 선택한 종류의 버전 목록
+ * @param version 주소에서 선택한 버전
+ * @param formMode 표시 중인 입력 폼
  * @param today 오늘 날짜
  * @param now 현재 시각
- * @param onFormModeChange 입력 폼을 열거나 닫을 때 실행할 함수
+ * @param onFormModeChange 입력 폼을 표시하거나 닫을 때 실행할 함수
  */
 const ConsentDetailCard = ({ kindConsents, version, formMode, today, now, onFormModeChange }: Props) => {
 	const [locale, setLocale] = useState<keyof I18nFieldValue>('ko_kr');
@@ -41,7 +41,7 @@ const ConsentDetailCard = ({ kindConsents, version, formMode, today, now, onForm
 
 	const liveConsent = findLiveConsent(kindConsents, now);
 	const shownConsent = liveConsent ?? kindConsents[0];
-	// 목록에 없는 버전이면 대표하는 버전
+	// 목록에 없는 버전이면 대표 버전
 	const selectedConsent = kindConsents.find((consent) => String(consent.version) === version) ?? shownConsent;
 
 	return (
@@ -59,7 +59,7 @@ const ConsentDetailCard = ({ kindConsents, version, formMode, today, now, onForm
 			</CardHeader>
 
 			<CardContent className="px-5">
-				{/*종류가 바뀌면 다시 마운트*/}
+				{/*종류가 변경되면 다시 마운트*/}
 				<ConsentVersionStrip
 					key={shownConsent.kind}
 					kindConsents={kindConsents}

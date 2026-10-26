@@ -21,7 +21,7 @@ const pretendard = localFont({
 
 /**
  * 새 백오피스 화면의 root 레이아웃
- * @param children
+ * @param children 페이지 내용
  */
 export default async function RootLayout({ children }: LayoutProps<'/'>) {
 	const cookieStore = await cookies();

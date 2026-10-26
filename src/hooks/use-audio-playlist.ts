@@ -33,12 +33,12 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 	const previousSound = currentIndex > 0 ? sounds[currentIndex - 1] : undefined;
 	const nextSound = currentIndex >= 0 ? sounds[currentIndex + 1] : undefined;
 
-	/** 화면을 떠나면 다음 소리 재생 취소 */
+	/** unmount 시 다음 소리 재생 취소 */
 	useEffect(() => {
 		return () => clearTimeout(nextSoundTimerRef.current);
 	}, []);
 
-	/** 재생이 끝난 상태로 변경하는 함수 */
+	/** 재생 완료 상태로 변경하는 함수 */
 	const finishPlaying = () => {
 		setPlaying(false);
 		setPlayingSoundGroup(null);
@@ -60,7 +60,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 
 		audio.src = sound.audio_file.url;
 		audio.play().catch((error: unknown) => {
-			// 브라우저가 재생을 막으면 error 이벤트 없이 끝남
+			// 브라우저가 재생을 차단하면 error 이벤트 없이 종료
 			if (error instanceof DOMException && error.name === 'NotAllowedError') {
 				finishPlaying();
 			}
@@ -74,7 +74,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		startSound(sound);
 	};
 
-	/** 묶음의 선택한 소리부터 끝까지 재생하는 함수 */
+	/** 그룹의 선택한 소리부터 끝까지 재생하는 함수 */
 	const playSoundInGroup = (soundGroup: SoundGroup, sound: PlaylistSound) => {
 		setPlayingSoundGroup(soundGroup);
 
@@ -109,7 +109,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		}
 	};
 
-	/** 묶음의 소리만 처음부터 끝까지 재생하거나 정지 */
+	/** 그룹의 소리만 처음부터 끝까지 재생하거나 정지 */
 	const handleToggleSoundGroup = (soundGroup: SoundGroup) => {
 		if (playing && playingSoundGroup?.id === soundGroup.id) {
 			stopSound();
@@ -137,7 +137,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 	};
 
 	const handleToggleContinuousPlay = () => {
-		// 다음 소리를 기다리는 중에 끄면 정지
+		// 다음 소리 대기 중에 연속 재생을 끄면 정지
 		if (continuousPlayEnabled && playing && audioRef.current?.paused) {
 			stopSound();
 		}
@@ -165,7 +165,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 	};
 
 	const handleEnded = () => {
-		// 묶음을 재생 중이면 묶음 안의 다음 소리만 재생
+		// 그룹을 재생 중이면 그룹 안의 다음 소리만 재생
 		const queuedSound = playingSoundGroup
 			? playingSoundGroup.sounds[playingSoundGroup.sounds.findIndex((sound) => sound.id === currentSoundId) + 1]
 			: continuousPlayEnabled
@@ -179,7 +179,7 @@ const useAudioPlaylist = (sounds: PlaylistSound[]) => {
 		}
 
 		nextSoundTimerRef.current = setTimeout(() => {
-			// 기다리는 동안 다른 음성을 재생하면 멈춤
+			// 대기 중 다른 음성을 재생하면 정지
 			if (audioRef.current && !isLastPlayedAudio(audioRef.current)) {
 				finishPlaying();
 

@@ -6,13 +6,16 @@ import type { UserDashboard } from '@/types/apis/dashboard';
 
 import { cn } from '@/lib/utils';
 
+import { CircleQuestionMark, Earth } from 'lucide-react';
+
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import { VISIBLE_COUNTRY_COUNT } from '@/config';
 import { toCountryName } from '@/utils/country';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface Props {
-	countries: UserDashboard['countries'];
+	countries: UserDashboard['activity_countries'];
 	className?: string;
 }
 
@@ -39,11 +42,12 @@ const CountryList = ({ countries, className }: Props) => {
 	const totalCount = countries.reduce((total, { count }) => total + count, 0);
 	const maxCount = Math.max(1, ...countries.map(({ count }) => count));
 
-	// 이름 있는 국가, 나머지 국가의 합, 국가를 알 수 없는 사용자 순서
+	// 국가, 나머지 합계, 알 수 없음 순서
 	const countryRows = [
 		...knownCountries.slice(0, visibleCountryCount).map(({ country, count }) => ({
 			name: toCountryName(country),
 			code: country,
+			icon: <CountryFlag country={country} />,
 			count,
 			known: true,
 			countriesHidden: false,
@@ -53,6 +57,7 @@ const CountryList = ({ countries, className }: Props) => {
 					{
 						name: `그 외 ${hiddenCountries.length}개국`,
 						code: '',
+						icon: <Earth aria-hidden className="h-4 w-5 shrink-0 text-muted-foreground" />,
 						count: hiddenCountries.reduce((total, { count }) => total + count, 0),
 						known: true,
 						countriesHidden: true,
@@ -62,6 +67,7 @@ const CountryList = ({ countries, className }: Props) => {
 		...unknownCountries.map(({ count }) => ({
 			name: '알 수 없음',
 			code: '',
+			icon: <CircleQuestionMark aria-hidden className="h-4 w-5 shrink-0" />,
 			count,
 			known: false,
 			countriesHidden: false,
@@ -103,38 +109,49 @@ const CountryList = ({ countries, className }: Props) => {
 					key={countryRow.name}
 					className="grid grid-cols-[minmax(0,1fr)_auto_38px] items-center gap-x-2.5 gap-y-1 py-2"
 				>
-					<span className={cn('truncate', countryRow.known ? 'font-semibold' : 'text-muted-foreground')}>
-						{countryRow.countriesHidden ? (
-							<Popover>
-								<PopoverTrigger
-									openOnHover
-									delay={0}
-									className="font-semibold outline-none focus-visible:underline"
-								>
-									{countryRow.name}
-								</PopoverTrigger>
-								<PopoverContent
-									side="top"
-									className="max-h-(--available-height) w-auto max-w-xs gap-1 overflow-y-auto bg-tooltip px-3 py-2 text-xs text-tooltip-foreground tabular-nums shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-0"
-								>
-									{hiddenCountries.map(({ country, count }) => (
-										<div key={country} className="flex items-center justify-between gap-4">
-											<span className="text-tooltip-foreground/75">{toCountryName(country)}</span>
-											<strong className="text-[13px] font-bold">
-												{count.toLocaleString('ko-KR')}
-											</strong>
-										</div>
-									))}
-								</PopoverContent>
-							</Popover>
-						) : (
-							countryRow.name
+					<span
+						className={cn(
+							'flex min-w-0 items-center gap-2',
+							countryRow.known ? 'font-semibold' : 'text-muted-foreground',
 						)}
-						{!!countryRow.code && (
-							<span className="ml-1.5 text-[12.5px] font-normal text-muted-foreground">
-								{countryRow.code}
-							</span>
-						)}
+					>
+						{countryRow.icon}
+						<span className="truncate">
+							{countryRow.countriesHidden ? (
+								<Popover>
+									<PopoverTrigger
+										openOnHover
+										delay={0}
+										className="font-semibold outline-none focus-visible:underline"
+									>
+										{countryRow.name}
+									</PopoverTrigger>
+									<PopoverContent
+										side="top"
+										className="max-h-(--available-height) w-auto max-w-xs gap-1 overflow-y-auto bg-tooltip px-3 py-2 text-xs text-tooltip-foreground tabular-nums shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-0"
+									>
+										{hiddenCountries.map(({ country, count }) => (
+											<div key={country} className="flex items-center justify-between gap-4">
+												<span className="flex items-center gap-1.5 text-tooltip-foreground/75">
+													<CountryFlag country={country} className="w-4" />
+													{toCountryName(country)}
+												</span>
+												<strong className="text-[13px] font-bold">
+													{count.toLocaleString('ko-KR')}
+												</strong>
+											</div>
+										))}
+									</PopoverContent>
+								</Popover>
+							) : (
+								countryRow.name
+							)}
+							{!!countryRow.code && (
+								<span className="ml-1.5 text-[12.5px] font-normal text-muted-foreground">
+									{countryRow.code}
+								</span>
+							)}
+						</span>
 					</span>
 					<strong className="font-bold">{countryRow.count.toLocaleString('ko-KR')}</strong>
 					<span className="text-right text-[13px] text-muted-foreground">

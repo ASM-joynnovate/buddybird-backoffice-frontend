@@ -5,7 +5,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 const PLACEHOLDER_ISSUE_COUNT = 10;
 const PLACEHOLDER_ROW_COUNT = 4;
 
-/** Sentry 카드를 불러오는 동안 보이는 컴포넌트 */
+/** Sentry 카드를 불러오는 동안 표시하는 컴포넌트 */
 const StabilityCardsSkeleton = () => {
 	return (
 		<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
@@ -15,7 +15,7 @@ const StabilityCardsSkeleton = () => {
 				<ul className="divide-y">
 					{Array.from({ length: PLACEHOLDER_ISSUE_COUNT }, (_, index) => (
 						<li key={index} className="py-2.5 last:pb-0">
-							{/*제목 줄 및 등급, 프로젝트 줄*/}
+							{/*제목 행 및 등급, 프로젝트 행*/}
 							<SkeletonText className="w-3/5" />
 							<SkeletonText className="w-2/5 text-[12.5px]" />
 						</li>

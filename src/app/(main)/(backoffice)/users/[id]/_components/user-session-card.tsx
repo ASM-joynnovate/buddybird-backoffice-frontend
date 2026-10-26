@@ -31,11 +31,11 @@ interface Props {
 }
 
 /**
- * 세션 목록 및 고른 세션의 타임라인 카드 컴포넌트
+ * 세션 카드 컴포넌트
  * @param id 조회할 사용자 ID
  * @param page 세션 목록의 페이지 번호
  * @param sessionId 처음에 선택할 세션의 ID
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });
@@ -139,7 +139,7 @@ const UserSessionCard = ({ id, page, sessionId, initialNow }: Props) => {
 				</div>
 			</div>
 
-			{/*고른 세션이 바뀌면 다시 마운트*/}
+			{/*선택한 세션이 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={selectedSession.session.id}
 				fallbackComponent={QueryError}

@@ -6,13 +6,16 @@ import { useGetUser } from '@/hooks/apis/users';
 import { useNow } from '@/hooks/use-now';
 
 import dayjs from 'dayjs';
-import { Bell, Copy, Trash2, TriangleAlert } from 'lucide-react';
+import { Bell, Copy, Pencil, Trash2, TriangleAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import DeleteUserDialog from '@/app/(main)/(backoffice)/users/[id]/_components/delete-user-dialog';
+import UserProfileFormDialog from '@/app/(main)/(backoffice)/users/[id]/_components/user-profile-form-dialog';
+import { toCountryName } from '@/utils/country';
 import { formatDateTime, formatRelativeTime } from '@/utils/date';
 
 import { Badge } from '@/components/ui/badge';
@@ -32,13 +35,14 @@ interface Props {
 /**
  * 사용자 프로필 카드 컴포넌트
  * @param id 조회할 사용자 ID
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const UserProfileCard = ({ id, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });
 
 	const now = useNow(initialNow);
 
+	const [profileDialogOpen, setProfileDialogOpen] = useState(false);
 	const [sendDialogOpen, setSendDialogOpen] = useState(false);
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -74,7 +78,11 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 					</div>
 
 					{!userData.is_deleted && (
-						<div className="flex gap-2 max-md:w-full max-md:*:flex-1 md:ml-auto">
+						<div className="flex flex-wrap gap-2 max-md:w-full max-md:*:flex-1 md:ml-auto">
+							<Button variant="outline" onClick={() => setProfileDialogOpen(true)}>
+								<Pencil />
+								프로필 수정
+							</Button>
 							<Button variant="outline" onClick={() => setSendDialogOpen(true)}>
 								<Bell />
 								알림 보내기
@@ -87,7 +95,7 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 					)}
 				</header>
 
-				<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))]">
+				<dl className="grid grid-cols-2 gap-2 md:grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))]">
 					<div className={`${factClassName} relative max-md:col-span-2`}>
 						<dt className={factTitleClassName}>사용자 ID</dt>
 						<dd className={`${factValueClassName} wrap-anywhere`}>{userData.id}</dd>
@@ -139,6 +147,21 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 						</dd>
 						<dd className={factNoteClassName}>{lastSeenDevice?.client.model}</dd>
 					</div>
+
+					<div className={factClassName}>
+						<dt className={factTitleClassName}>국가</dt>
+						<dd className={`${factValueClassName} flex items-center gap-2`}>
+							{userData.country ? (
+								<>
+									<CountryFlag country={userData.country} />
+									{toCountryName(userData.country)}
+								</>
+							) : (
+								'-'
+							)}
+						</dd>
+						<dd className={factNoteClassName}>{userData.country}</dd>
+					</div>
 				</dl>
 			</Card>
 
@@ -154,6 +177,8 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 					)}
 				</p>
 			)}
+
+			{profileDialogOpen && <UserProfileFormDialog user={userData} onClose={() => setProfileDialogOpen(false)} />}
 
 			{sendDialogOpen && (
 				<SendNotificationDialog initialUserId={userData.id} onClose={() => setSendDialogOpen(false)} />

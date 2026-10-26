@@ -2,7 +2,7 @@ import { useSyncExternalStore } from 'react';
 
 const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 
-/** html class 및 시스템 설정이 바뀌면 알림 */
+/** html class 및 시스템 설정이 변경되면 알림 */
 const subscribeTheme = (onThemeChange: () => void) => {
 	const classObserver = new MutationObserver(onThemeChange);
 	const darkMediaQuery = matchMedia(DARK_MEDIA_QUERY);

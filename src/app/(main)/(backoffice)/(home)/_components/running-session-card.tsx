@@ -76,7 +76,7 @@ const RunningSessionCard = ({ dashboardLive }: Props) => {
 				</div>
 			</div>
 
-			{/*오늘의 시작, 종료 및 시간대별 개수*/}
+			{/*오늘 세션 영역*/}
 			<div className="grid content-between gap-4 border-t bg-card-inset p-4 md:px-5.5 md:py-5 xl:border-t-0 xl:border-l">
 				<div className="flex items-baseline justify-between gap-3">
 					<CardTitle className="font-bold">오늘</CardTitle>
@@ -125,7 +125,7 @@ const RunningSessionCard = ({ dashboardLive }: Props) => {
 						className="flex h-21 items-end justify-between"
 					>
 						{today.hourly.map((hourlySession, index) => (
-							// 마우스를 올리는 영역을 막대 높이 전체 및 좌우로 넓힘
+							// hover 영역을 막대 높이 전체 및 좌우로 확장
 							<span
 								key={hourlySession.start}
 								className="group relative flex h-full w-1.5 items-end before:absolute before:-inset-x-1 before:inset-y-0 before:content-[''] md:w-2 [&:hover]:z-1"

@@ -9,20 +9,20 @@ import ReferenceVersion from '@/app/(main)/(backoffice)/app-updates/_components/
 
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
-// 묶음마다 표시할 버전 행 수
+// 그룹마다 표시할 버전 행 수
 const PLACEHOLDER_CELLS = [
 	{ deviceGroup: 'latest', versionCount: 1 },
 	{ deviceGroup: 'optional', versionCount: 2 },
 	{ deviceGroup: 'forced', versionCount: 3 },
 ] as const;
 
-// 묶음 사이의 기준 버전
+// 그룹 사이의 기준 버전
 const REFERENCE_VERSIONS = [
 	{ name: '최신 버전', description: '낮은 버전에 선택 업데이트' },
 	{ name: '최소 지원 버전', description: '낮은 버전에 강제 업데이트' },
 ];
 
-/** "앱 버전" 카드를 불러오는 동안 보이는 컴포넌트 */
+/** "앱 버전" 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DeviceGroupSkeleton = () => {
 	return (
 		<TitledCard title="앱 버전" action=<Skeleton className="h-3.5 w-18" />>
@@ -38,10 +38,10 @@ const DeviceGroupSkeleton = () => {
 							>
 								<DeviceGroupLabel deviceGroup={deviceGroup} />
 
-								{/*기기 수 줄, "대" 글자와 기준선을 맞춘 실제 줄과 같은 높이*/}
+								{/*실제 기기 수 행과 같은 높이*/}
 								<div className="mt-1.5 flex items-baseline text-[26px] leading-9">
 									<span>
-										{/*기준선을 유지하도록 줄 위쪽에 정렬*/}
+										{/*기준선을 유지하도록 행 위쪽에 정렬*/}
 										<SkeletonText className="inline-flex w-24 align-top *:bg-card" />
 									</span>
 									<span className="text-[13px]">&nbsp;</span>

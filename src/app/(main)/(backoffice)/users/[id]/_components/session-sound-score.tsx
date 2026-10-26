@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * 점수 하나의 이름, 막대, 값 컴포넌트
+ * 점수 하나의 막대 컴포넌트
  * @param label 점수의 이름
  * @param score 0부터 1까지의 점수
  * @param judging 점수를 아직 계산하는 중인지 여부

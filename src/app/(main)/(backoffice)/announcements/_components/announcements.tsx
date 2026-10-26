@@ -23,7 +23,7 @@ interface Props {
  * @param activeListParams 게시 중이거나 예약된 공지의 조회 조건
  * @param endedListParams 종료된 공지의 조회 조건
  * @param query 현재 주소의 쿼리
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Announcements = ({ activeListParams, endedListParams, query, now }: Props) => {
 	return (

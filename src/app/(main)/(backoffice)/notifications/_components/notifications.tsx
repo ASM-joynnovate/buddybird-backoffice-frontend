@@ -41,12 +41,12 @@ interface Props {
  * @param scheduledListParams "발송 예정" 조회 조건
  * @param dispatchListParams 발송 목록 조회 조건
  * @param notificationListParams 알림 목록 조회 조건
- * @param recipientNickname 고른 받는 사람의 닉네임
- * @param date "알림 추이"에서 고른 날짜
- * @param listQuery 기간 및 날짜를 뺀 현재 주소의 쿼리
+ * @param recipientNickname 선택한 수신자의 닉네임
+ * @param date "알림 추이"에서 선택한 날짜
+ * @param listQuery 기간 및 날짜를 제외한 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Notifications = ({
 	period,
@@ -121,7 +121,7 @@ const Notifications = ({
 
 				{/*한 열일 때는 목록 위에 표시*/}
 				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 max-xl:order-first xl:sticky xl:top-2">
-					{/*조회 기간이 바뀌면 다시 마운트*/}
+					{/*조회 기간이 변경되면 다시 마운트*/}
 					<ErrorHandlingWrapper
 						key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
 						fallbackComponent={QueryError}

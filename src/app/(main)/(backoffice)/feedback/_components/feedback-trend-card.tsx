@@ -52,7 +52,7 @@ const FeedbackTrendCard = ({ feedbackDashboard, selectedDate, query, today }: Pr
 			</div>
 
 			<div className="mt-3.5">
-				{/*고른 날짜, 없으면 오늘만 진하게 표시*/}
+				{/*선택한 날짜, 없으면 오늘만 진하게 표시*/}
 				<DailyCountChart
 					daily={daily}
 					title="일별 피드백 수"

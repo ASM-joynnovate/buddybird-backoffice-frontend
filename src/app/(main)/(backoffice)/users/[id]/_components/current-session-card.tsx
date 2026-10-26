@@ -27,7 +27,7 @@ interface Props {
 /**
  * 현재 세션 카드 컴포넌트
  * @param id 조회할 사용자 ID
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const CurrentSessionCard = ({ id, initialNow }: Props) => {
 	const { data: userData } = useGetUser({ id });
@@ -146,7 +146,6 @@ const CurrentSessionCard = ({ id, initialNow }: Props) => {
 				</ul>
 			</div>
 
-			{/*세션의 단어, 예정 종료, 수면 시간, 스테이션*/}
 			<div className="grid content-start gap-4 border-t bg-card-inset p-4 md:px-5.5 md:py-5 xl:border-t-0 xl:border-l">
 				<CardTitle className="font-bold">세션 정보</CardTitle>
 

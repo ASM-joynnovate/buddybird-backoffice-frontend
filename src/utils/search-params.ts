@@ -44,7 +44,7 @@ export const toOptionalText = (value: UrlSearchParam) => {
 	return value.trim() || undefined;
 };
 
-/** 쿼리에서 사용자 필터로 고른 값을 꺼내는 함수 */
+/** 쿼리에서 사용자 필터로 선택한 값을 추출하는 함수 */
 export const toUserFilters = (searchParams: Record<string, UrlSearchParam>) => {
 	const userFilters: UserFilters = {};
 
@@ -57,7 +57,7 @@ export const toUserFilters = (searchParams: Record<string, UrlSearchParam>) => {
 	return userFilters;
 };
 
-/** 고른 사용자 필터를 목록 조회 조건으로 변환하는 함수 */
+/** 선택한 사용자 필터를 목록 조회 조건으로 변환하는 함수 */
 export const toUserFilterParams = (userFilters: UserFilters, today: string) => {
 	const listParams: Partial<UserListParams> = {};
 
@@ -75,22 +75,22 @@ export const toUserFilterParams = (userFilters: UserFilters, today: string) => {
 	return listParams;
 };
 
-/** 값이 없는 항목을 뺀 링크 쿼리를 반환하는 함수 */
+/** 값이 없는 항목을 제외한 링크 쿼리를 반환하는 함수 */
 export const toLinkQuery = (query: Record<string, SearchParamValue>) => {
 	return Object.fromEntries(Object.entries(query).filter(([, value]) => value !== undefined));
 };
 
-/** 링크 쿼리를 주소에 붙일 URLSearchParams로 변환하는 함수 */
+/** 링크 쿼리를 URLSearchParams로 변환하는 함수 */
 export const toUrlSearchParams = (query: Record<string, SearchParamValue>) => {
 	return new URLSearchParams(Object.entries(toLinkQuery(query)).map(([name, value]) => [name, String(value)]));
 };
 
-/** 이름마다 값을 지운 쿼리를 반환하는 함수 */
+/** 이름마다 값을 삭제한 쿼리를 반환하는 함수 */
 export const toClearedQuery = (names: string[] = []): Record<string, SearchParamValue> => {
 	return Object.fromEntries(names.map((name) => [name, undefined]));
 };
 
-/** 이미 고른 값이면 빼고 아니면 넣은 링크 쿼리를 반환하는 함수 */
+/** 값의 선택을 토글한 링크 쿼리를 반환하는 함수 */
 export const toToggledQuery = (query: Record<string, SearchParamValue>, name: string, value: SearchParamValue) => {
 	return toLinkQuery({ ...query, [name]: query[name] === value ? undefined : value });
 };

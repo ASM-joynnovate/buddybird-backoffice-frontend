@@ -20,12 +20,12 @@ interface LabelProps {
 }
 
 /**
- * 평균선 끝의 평균 이름표 컴포넌트
+ * 평균선 끝의 평균 라벨 컴포넌트
  * @param viewBox 평균선의 위치
  * @param valueText 평균 값 문구
  * @param color 계열 색
- * @param labelPosition 평균선 기준 이름표 위치
- * @param labelAlign 이름표를 붙일 평균선 끝
+ * @param labelPosition 평균선 기준 라벨 위치
+ * @param labelAlign 라벨을 붙일 평균선 끝
  */
 const AverageLineLabel = ({ viewBox, valueText, color, labelPosition, labelAlign }: LabelProps) => {
 	const plotArea = usePlotArea();
@@ -79,10 +79,10 @@ interface Props {
 /**
  * 그래프의 평균 점선 컴포넌트
  * @param value 평균 값
- * @param valueText 이름표에 표시할 평균 값 문구
+ * @param valueText 라벨에 표시할 평균 값 문구
  * @param color 계열 색, 없으면 글자색
- * @param labelPosition 평균선 기준 이름표 위치
- * @param labelAlign 이름표를 붙일 평균선 끝
+ * @param labelPosition 평균선 기준 라벨 위치
+ * @param labelAlign 라벨을 붙일 평균선 끝
  */
 const AverageLine = ({ value, valueText, color, labelPosition = 'top', labelAlign = 'start' }: Props) => {
 	return (

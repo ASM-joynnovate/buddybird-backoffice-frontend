@@ -28,7 +28,7 @@ const SelectedFilters = ({ pathname, query, selectedFilters }: Props) => {
 					key={selectedFilter.name}
 					href={{
 						pathname,
-						// 칩을 누르면 그 조건 및 딸린 조건을 지움
+						// 칩을 누르면 해당 조건 및 하위 조건 해제
 						query: toLinkQuery({
 							...query,
 							...toClearedQuery([selectedFilter.name, ...(selectedFilter.resetNames ?? [])]),

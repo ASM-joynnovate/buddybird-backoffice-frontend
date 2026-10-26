@@ -67,7 +67,7 @@ function Button({
     >
       {loading ? (
         <>
-          {/*회전 표시가 나타나도 버튼 너비 유지*/}
+          {/*로딩 아이콘이 표시되어도 버튼 너비 유지*/}
           <span className="invisible contents">{children}</span>
           <Spinner className="absolute inset-0 m-auto" />
         </>

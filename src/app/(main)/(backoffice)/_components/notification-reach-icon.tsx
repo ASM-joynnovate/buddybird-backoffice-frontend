@@ -13,8 +13,8 @@ interface Props {
 
 /**
  * 사용자에게 알림이 전달되는 방식의 아이콘 컴포넌트
- * @param user 받는 사용자
- * @param kind 보낼 알림 종류
+ * @param user 수신 사용자
+ * @param kind 발송할 알림 종류
  */
 const NotificationReachIcon = ({ user, kind }: Props) => {
 	if (!receivesNotification(user, kind)) {

@@ -13,9 +13,9 @@ export interface FilterGroup {
 	options: FilterOption[];
 	// 값을 선택하지 않은 상태의 버튼
 	allOption?: { label: string; count?: number };
-	// 숫자를 입력받는 그룹의 입력창 뒤에 적는 단위
+	// 숫자를 입력받는 그룹의 입력 필드 뒤에 표시할 단위
 	inputUnit?: string;
-	// 이 그룹의 값이 바뀌면 함께 지울 그룹
+	// 이 그룹의 값이 변경되면 함께 해제할 그룹
 	resetNames?: string[];
 }
 
@@ -24,6 +24,6 @@ export interface SelectedFilter {
 	groupLabel?: string;
 	label: string;
 	icon?: ReactNode;
-	// 이 조건을 지우면 함께 지울 조건
+	// 이 조건을 해제하면 함께 해제할 조건
 	resetNames?: string[];
 }

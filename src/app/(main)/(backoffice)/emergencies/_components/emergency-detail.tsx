@@ -59,7 +59,7 @@ const EmergencyDetail = ({ emergency, now, currentSoundId, soundPlaying, onToggl
 
 				{!!vision && <EmergencyPetcam occurredAt={emergency.occurred_at} vision={vision} />}
 
-				{/*세션 안의 위치, 기기, 세션으로 이동*/}
+				{/*세션 정보 및 세션 이동 링크*/}
 				<div className="grid items-center gap-x-6 gap-y-3 border-t pt-4 @min-[620px]:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto]">
 					<div>
 						<p className="mb-2 flex items-center justify-between gap-3 text-[13px] text-muted-foreground tabular-nums">

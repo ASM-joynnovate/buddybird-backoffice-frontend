@@ -31,17 +31,17 @@ interface Props {
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param sort 이슈 정렬 기준
  * @param issueFilters 이슈 필터로 선택한 값
- * @param listQuery 기간을 뺀 현재 주소의 쿼리
+ * @param listQuery 기간을 제외한 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Analytics = ({ period, dashboardParams, sort, issueFilters, listQuery, query, today, now }: Props) => {
 	const periodKey = [dashboardParams.date_from, dashboardParams.date_to].join(':');
 
 	return (
 		<>
-			{/*넓은 화면에서는 제목 줄을 아래 카드의 두 열에 맞춤*/}
+			{/*넓은 화면에서는 제목 행을 아래 카드의 두 열에 맞춤*/}
 			<div className="@container">
 				<div className="flex flex-wrap items-center gap-2.5 @min-[1520px]:grid @min-[1520px]:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)] @min-[1520px]:gap-4">
 					<div className="contents @min-[1520px]:flex @min-[1520px]:items-center @min-[1520px]:justify-between @min-[1520px]:gap-2.5">
@@ -62,7 +62,7 @@ const Analytics = ({ period, dashboardParams, sort, issueFilters, listQuery, que
 				</div>
 			</div>
 
-			{/*조회 기간이 바뀌면 다시 마운트*/}
+			{/*조회 기간이 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={`reach:${periodKey}`}
 				fallbackComponent={QueryError}
@@ -73,7 +73,7 @@ const Analytics = ({ period, dashboardParams, sort, issueFilters, listQuery, que
 
 			<hr />
 
-			{/*정렬 및 필터가 바뀌어도 이전 목록을 유지*/}
+			{/*정렬 및 필터가 변경되어도 이전 목록을 유지*/}
 			<ErrorHandlingWrapper
 				key={`stability:${periodKey}`}
 				fallbackComponent={QueryError}

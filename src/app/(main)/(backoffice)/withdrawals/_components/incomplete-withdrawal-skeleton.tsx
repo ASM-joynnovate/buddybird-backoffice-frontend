@@ -2,7 +2,7 @@ import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
-/** 완료되지 않은 탈퇴 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 완료되지 않은 탈퇴 카드를 불러오는 동안 표시하는 컴포넌트 */
 const IncompleteWithdrawalSkeleton = () => {
 	return (
 		<TitledCard title="처리 중" action=<Skeleton className="h-3 w-48 max-md:hidden" />>

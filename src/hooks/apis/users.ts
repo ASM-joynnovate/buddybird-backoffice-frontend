@@ -2,14 +2,19 @@ import { queryOptions, useQueryClient, useSuspenseInfiniteQuery, useSuspenseQuer
 
 import {
 	deleteUser,
+	deleteUserParrotPhoto,
+	deleteUserPhoto,
 	getUser,
 	getUserConsentList,
 	getUserList,
 	getUserNotificationSettings,
 	getUserSessionList,
 	getUserWordList,
+	patchUser,
+	patchUserParrot,
 } from '@/apis/users';
 
+import { ApiError } from '@/types/apis/common';
 import type { UserListParams } from '@/types/apis/users';
 
 import { apiKeys } from '@/hooks/apis/keys';
@@ -104,6 +109,89 @@ export const useDeleteUser = () => {
 			]);
 
 			toast.success('사용자 삭제를 요청했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
+	});
+};
+
+/** 사용자 프로필 수정 Hook */
+export const useUpdateUser = () => {
+	const queryClient = useQueryClient();
+
+	return useIdempotentMutation({
+		mutationKey: apiKeys.mutation('users', 'update'),
+		mutationFn: patchUser,
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: apiKeys.users.all() }),
+				queryClient.invalidateQueries({ queryKey: apiKeys.abuseReports.all() }),
+			]);
+
+			toast.success('프로필을 수정했습니다.');
+		},
+		onError: (error) => {
+			// 닉네임 중복은 다이얼로그에 표시
+			if (error instanceof ApiError && error.code === 'USER__DUPLICATE_NICKNAME') {
+				return;
+			}
+
+			toast.error(apiErrorMessage(error));
+		},
+	});
+};
+
+/** 사용자 프로필 사진 삭제 Hook */
+export const useDeleteUserPhoto = () => {
+	const queryClient = useQueryClient();
+
+	return useIdempotentMutation({
+		mutationKey: apiKeys.mutation('users', 'photo', 'delete'),
+		mutationFn: deleteUserPhoto,
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: apiKeys.users.all() }),
+				queryClient.invalidateQueries({ queryKey: apiKeys.abuseReports.all() }),
+			]);
+
+			toast.success('프로필 사진을 삭제했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
+	});
+};
+
+/** 사용자 앵무새 수정 Hook */
+export const useUpdateUserParrot = () => {
+	const queryClient = useQueryClient();
+
+	return useIdempotentMutation({
+		mutationKey: apiKeys.mutation('users', 'parrots', 'update'),
+		mutationFn: patchUserParrot,
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: apiKeys.users.all() }),
+				queryClient.invalidateQueries({ queryKey: apiKeys.abuseReports.all() }),
+			]);
+
+			toast.success('앵무새를 수정했습니다.');
+		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
+	});
+};
+
+/** 사용자 앵무새 사진 삭제 Hook */
+export const useDeleteUserParrotPhoto = () => {
+	const queryClient = useQueryClient();
+
+	return useIdempotentMutation({
+		mutationKey: apiKeys.mutation('users', 'parrots', 'photo', 'delete'),
+		mutationFn: deleteUserParrotPhoto,
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: apiKeys.users.all() }),
+				queryClient.invalidateQueries({ queryKey: apiKeys.abuseReports.all() }),
+			]);
+
+			toast.success('앵무새 사진을 삭제했습니다.');
 		},
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});

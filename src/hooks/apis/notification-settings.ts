@@ -76,7 +76,7 @@ export const useReorderNotificationSettingGroups = () => {
 		mutationKey: apiKeys.mutation('notification-settings', 'groups', 'order'),
 		mutationFn: putNotificationSettingGroupOrder,
 		onError: (error) => toast.error(apiErrorMessage(error)),
-		// 다시 조회할 때까지 바꾼 순서 표시
+		// 다시 조회할 때까지 변경한 순서 표시
 		onSettled: () => queryClient.invalidateQueries({ queryKey: apiKeys.notificationSettings.all() }),
 	});
 };
@@ -130,7 +130,7 @@ export const useReorderNotificationSettingItems = () => {
 		mutationKey: apiKeys.mutation('notification-settings', 'items', 'order'),
 		mutationFn: putNotificationSettingItemOrder,
 		onError: (error) => toast.error(apiErrorMessage(error)),
-		// 다시 조회할 때까지 바꾼 순서 표시
+		// 다시 조회할 때까지 변경한 순서 표시
 		onSettled: () => queryClient.invalidateQueries({ queryKey: apiKeys.notificationSettings.all() }),
 	});
 };

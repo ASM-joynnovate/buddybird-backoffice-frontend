@@ -4,6 +4,12 @@ import { z } from 'zod';
 
 export const sleepSchema = z.object({ sleep_at: timeSchema, wake_at: timeSchema });
 
-export const settingsSchema = z.object({ sleep: sleepSchema });
+const communitySettingsSchema = z.object({
+	leaderboard_enabled: z.boolean(),
+	feed_enabled: z.boolean(),
+	feed_recording_sharing_enabled: z.boolean().nullable(),
+});
+
+export const settingsSchema = z.object({ sleep: sleepSchema, community: communitySettingsSchema });
 
 export type Settings = z.infer<typeof settingsSchema>;

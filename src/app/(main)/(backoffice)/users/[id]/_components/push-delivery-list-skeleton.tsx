@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const PLACEHOLDER_ROW_COUNT = 5;
 
-/** 푸시 발송 기록 목록을 불러오는 동안 보이는 컴포넌트 */
+/** 푸시 발송 기록 목록을 불러오는 동안 표시하는 컴포넌트 */
 const PushDeliveryListSkeleton = () => {
 	return (
 		<>
@@ -25,7 +25,7 @@ const PushDeliveryListSkeleton = () => {
 								<SkeletonText className="h-5 w-28" />
 							</TableCell>
 							<TableCell className="py-2.5">
-								{/*글자가 있어야 태그가 든 행과 높이가 같음*/}
+								{/*글자가 있어야 태그가 있는 행과 높이가 같음*/}
 								<Badge variant="muted" className="w-14 animate-pulse">
 									&nbsp;
 								</Badge>

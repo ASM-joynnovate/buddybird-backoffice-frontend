@@ -5,7 +5,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_KIND_COUNT = 4;
 
-/** 알림 대시보드 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 알림 대시보드 카드를 불러오는 동안 표시하는 컴포넌트 */
 const NotificationDashboardSkeleton = () => {
 	return (
 		<>

@@ -4,7 +4,7 @@ import { USER_RECENT_ITEM_COUNT } from '@/config';
 import { SkeletonText } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-/** 사용자의 최근 피드백 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 사용자의 최근 피드백 카드를 불러오는 동안 표시하는 컴포넌트 */
 const FeedbackCardSkeleton = () => {
 	return (
 		<TitledCard title="피드백">

@@ -12,7 +12,7 @@ export const formatAudioDuration = (durationSeconds: number) => {
 	return `${Math.floor(roundedSeconds / 60)}:${String(roundedSeconds % 60).padStart(2, '0')}`;
 };
 
-/** WAV 파일에서 이름이 같은 chunk의 내용을 찾는 함수 */
+/** WAV 파일에서 이름이 같은 chunk의 내용을 반환하는 함수 */
 const findWavChunk = (wavFile: ArrayBuffer, chunkName: string) => {
 	const view = new DataView(wavFile);
 
@@ -21,7 +21,7 @@ const findWavChunk = (wavFile: ArrayBuffer, chunkName: string) => {
 	while (offset + WAV_CHUNK_HEADER_BYTES <= wavFile.byteLength) {
 		const name = String.fromCharCode(...new Uint8Array(wavFile, offset, 4));
 		const contentStart = offset + WAV_CHUNK_HEADER_BYTES;
-		// 헤더에 적힌 크기가 파일보다 크면 파일 끝까지
+		// 헤더의 크기가 파일보다 크면 파일 끝까지
 		const contentBytes = Math.min(view.getUint32(offset + 4, true), wavFile.byteLength - contentStart);
 
 		if (name === chunkName) {
@@ -35,7 +35,7 @@ const findWavChunk = (wavFile: ArrayBuffer, chunkName: string) => {
 	return null;
 };
 
-/** WAV 파일 여러 개를 순서대로 이어 붙인 WAV 파일을 반환하는 함수 */
+/** WAV 파일을 순서대로 이어 붙이는 함수 */
 export const joinWavFiles = (wavFiles: ArrayBuffer[]) => {
 	// ponytail: 모든 파일이 첫 파일과 같은 형식
 	const format = wavFiles.map((wavFile) => findWavChunk(wavFile, 'fmt ')).find((chunk) => chunk !== null);

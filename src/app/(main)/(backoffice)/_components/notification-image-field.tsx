@@ -17,13 +17,13 @@ interface Props {
 
 /**
  * 알림 사진 선택 컴포넌트
- * @param imagePreviewUrl 고른 사진을 표시할 주소
- * @param onImageChange 사진이 바뀔 때 실행할 함수
+ * @param imagePreviewUrl 선택한 사진을 표시할 주소
+ * @param onImageChange 사진이 변경될 때 실행할 함수
  */
 const NotificationImageField = ({ imagePreviewUrl, onImageChange }: Props) => {
 	const imageInputRef = useRef<HTMLInputElement>(null);
 
-	/** 이전 미리보기 주소를 지우고 사진 변경 */
+	/** 이전 미리보기 주소 해제 뒤 사진 변경 */
 	const changeImage = (image: { imageFile: File | null; imagePreviewUrl: string | null }) => {
 		if (imagePreviewUrl) {
 			URL.revokeObjectURL(imagePreviewUrl);

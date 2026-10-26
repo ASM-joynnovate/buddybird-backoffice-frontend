@@ -15,7 +15,7 @@ import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 
 import { Spinner } from '@/components/ui/spinner';
 
-// 한 번에 조회하는 사용자 수, API 최대값
+// API의 최대 조회 수
 const USERS_PER_REQUEST = 100;
 
 interface Props {
@@ -29,7 +29,7 @@ interface Props {
 /**
  * 사용자 검색 결과 목록 컴포넌트
  * @param keyword 검색어
- * @param selectedUsers 고른 사용자
+ * @param selectedUsers 선택한 사용자
  * @param isUserMuted 옅게 표시할 사용자인지 확인하는 함수
  * @param renderUserIcon 사용자 오른쪽에 표시할 아이콘
  * @param onSelectUsers "모두 선택"을 누르면 실행할 함수
@@ -46,7 +46,7 @@ const UserOptionList = ({ keyword, selectedUsers, isUserMuted, renderUserIcon, o
 
 	const users = userListData.pages.flatMap((userList) => userList.data);
 
-	/** 목록 끝이 보이면 다음 사용자 조회 */
+	/** 목록 끝이 화면에 표시되면 다음 사용자 조회 */
 	useEffect(() => {
 		if (!listEndRef.current || !hasNextPage || isFetchingNextPage) {
 			return;

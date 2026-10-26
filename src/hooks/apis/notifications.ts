@@ -65,7 +65,7 @@ export const useGetNotificationDispatch = ({ id }: { id: string }) => {
 	return useSuspenseQuery(getNotificationDispatchOptions({ id }));
 };
 
-/** 받는 사람 수 조회 Hook에 사용할 옵션 */
+/** 수신자 수 조회 Hook에 사용할 옵션 */
 export const getNotificationAudienceOptions = ({ kind }: { kind: SendableNotificationKind }) =>
 	queryOptions({
 		queryKey: apiKeys.notifications.audience(kind),

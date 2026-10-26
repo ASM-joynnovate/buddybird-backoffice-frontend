@@ -39,13 +39,13 @@ const ScheduledDispatchCard = ({ listParams, expandedRowId, now, onToggleRow }: 
 
 	const { data: dispatchListData } = useGetNotificationDispatchList(listParams);
 
-	// 발송이 진행되면 바뀌는 값
+	// 발송이 진행되면 변경되는 값
 	const sendProgress = dispatchListData.data
 		.map((notificationDispatch) => `${notificationDispatch.id}:${notificationDispatch.sent_count}`)
 		.join(',');
 	const sendProgressRef = useRef(sendProgress);
 
-	/** 발송이 진행되면 보낸 알림 및 대시보드 다시 조회 */
+	/** 발송이 진행되면 "보낸 알림" 목록 및 대시보드 다시 조회 */
 	useEffect(() => {
 		if (sendProgressRef.current === sendProgress) {
 			return;
@@ -61,7 +61,7 @@ const ScheduledDispatchCard = ({ listParams, expandedRowId, now, onToggleRow }: 
 		return null;
 	}
 
-	// 가장 이른 발송 시각이 빠른 것부터 나열
+	// 가장 이른 발송 시각 순서로 나열
 	const notificationDispatches = dispatchListData.data.toReversed();
 	// 모든 행이 같은 범위를 사용
 	const range = toTimeAxisRange([

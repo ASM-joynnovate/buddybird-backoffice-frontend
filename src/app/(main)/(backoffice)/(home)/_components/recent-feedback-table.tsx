@@ -35,7 +35,7 @@ const RecentFeedbackTable = () => {
 						<TableCell className="py-2.5 pl-0 text-muted-foreground tabular-nums">
 							{formatDateTime(feedback.created_at)}
 						</TableCell>
-						{/*남는 폭에 맞춰 한 줄로 자름*/}
+						{/*남는 폭에 맞춰 한 줄로 말줄임 표시*/}
 						<TableCell className="w-full max-w-0 min-w-60 truncate py-2.5">{feedback.message}</TableCell>
 						<TableCell className="py-2.5 text-muted-foreground tabular-nums">
 							{feedback.app_version}

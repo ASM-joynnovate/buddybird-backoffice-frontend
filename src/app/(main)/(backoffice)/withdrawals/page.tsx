@@ -18,7 +18,7 @@ export default async function Page(props: PageProps<'/withdrawals'>) {
 	const today = formatToday();
 
 	const period = toDashboardPeriod(searchParams.period);
-	// 직접 고른 날짜가 없으면 기간 버튼의 일수로 조회
+	// 직접 선택한 날짜가 없으면 기간 버튼의 일수로 조회
 	const customDashboardParams = toDashboardParams(searchParams.date_from, searchParams.date_to);
 	const dashboardParams = customDashboardParams ?? { date_from: addDays(today, 1 - period), date_to: today };
 

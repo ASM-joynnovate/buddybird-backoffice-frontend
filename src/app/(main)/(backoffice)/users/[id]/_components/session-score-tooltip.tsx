@@ -21,7 +21,7 @@ interface Props {
 /**
  * 가리킨 소리의 점수 툴팁 컴포넌트
  * @param scoreTooltip 표시할 소리 및 화면 위치
- * @param judging 모사 판정이 끝나지 않았는지 여부
+ * @param judging 모사 판정이 완료되지 않았는지 여부
  */
 const SessionScoreTooltip = ({ scoreTooltip, judging }: Props) => {
 	const { title, sounds, left, top } = scoreTooltip;

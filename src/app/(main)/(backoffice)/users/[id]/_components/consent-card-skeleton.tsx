@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const PLACEHOLDER_ROW_COUNT = 4;
 
-/** 사용자의 동의 내역 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 사용자의 동의 내역 카드를 불러오는 동안 표시하는 컴포넌트 */
 const ConsentCardSkeleton = () => {
 	return (
 		<TitledCard title="동의">
@@ -33,7 +33,7 @@ const ConsentCardSkeleton = () => {
 								<SkeletonText className="h-5 w-6" />
 							</TableCell>
 							<TableCell className="py-2.5">
-								{/*글자가 있어야 태그가 든 행과 높이가 같음*/}
+								{/*글자가 있어야 태그가 있는 행과 높이가 같음*/}
 								<Badge variant="muted" className="w-10 animate-pulse">
 									&nbsp;
 								</Badge>

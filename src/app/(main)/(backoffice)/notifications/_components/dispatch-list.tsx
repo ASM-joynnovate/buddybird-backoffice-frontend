@@ -22,9 +22,9 @@ interface Props {
 }
 
 /**
- * 보낸 알림의 발송 목록 컴포넌트
+ * "보낸 알림" 카드의 발송 목록 컴포넌트
  * @param listParams 목록 조회 조건
- * @param filterSelected 종류, 날짜 조건을 골랐는지 여부
+ * @param filterSelected 필터 조건을 선택했는지 여부
  * @param query 현재 주소의 쿼리
  * @param expandedRowId 펼친 행의 id
  * @param now 현재 시각

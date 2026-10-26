@@ -8,7 +8,7 @@ export const diffLines = (before: string, after: string) => {
 	const beforeLines = before.split('\n');
 	const afterLines = after.split('\n');
 
-	// 뒤에서부터 센 공통 줄 수
+	// 뒤에서부터 카운트한 공통 줄 수
 	const commonCounts = Array.from({ length: beforeLines.length + 1 }, () =>
 		Array.from({ length: afterLines.length + 1 }, () => 0),
 	);

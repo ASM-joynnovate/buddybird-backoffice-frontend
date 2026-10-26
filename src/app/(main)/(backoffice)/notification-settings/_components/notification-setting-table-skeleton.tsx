@@ -10,7 +10,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ROW_COUNT = 7;
 
-/** "항목" 카드를 불러오는 동안 보이는 컴포넌트 */
+/** "항목" 카드를 불러오는 동안 표시하는 컴포넌트 */
 const NotificationSettingTableSkeleton = () => {
 	return (
 		<TitledCard title="항목" action=<Skeleton className="h-3.5 w-5" />>

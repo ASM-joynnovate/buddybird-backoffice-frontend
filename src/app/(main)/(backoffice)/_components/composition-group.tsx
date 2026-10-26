@@ -29,7 +29,7 @@ interface Props {
 /**
  * 값별 비율 막대 및 범례 컴포넌트
  * @param title 그룹 제목
- * @param parts 값별 비율, 로고, 색, 누르면 이동할 주소
+ * @param parts 값별 비율 막대 항목
  */
 const CompositionGroup = ({ title, parts }: Props) => {
 	return (

@@ -21,7 +21,7 @@ interface Props {
  */
 const PushDeliveryList = ({ deviceId }: Props) => {
 	const [page, setPage] = useState(1);
-	// 다음 페이지를 받는 동안 이전 목록 유지
+	// 다음 페이지를 조회하는 동안 이전 목록 유지
 	const [pagePending, startPageTransition] = useTransition();
 
 	const { data: pushDeliveryListData } = useGetPushDeliveryList({ device_id: deviceId, page });

@@ -12,7 +12,7 @@ export interface TimeAxisRange {
 	to: number;
 }
 
-/** 시각들을 6시간 단위로 감싼 한국 시간 범위를 반환하는 함수 */
+/** 시각 목록을 포함하는 6시간 단위 한국 시간 범위를 반환하는 함수 */
 export const toTimeAxisRange = (times: number[]): TimeAxisRange => {
 	return {
 		from: Math.floor((Math.min(...times) - HOUR + KST_OFFSET_MS) / RANGE_STEP_MS) * RANGE_STEP_MS - KST_OFFSET_MS,

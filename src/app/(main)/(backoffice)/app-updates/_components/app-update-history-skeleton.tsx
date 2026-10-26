@@ -9,7 +9,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const PLACEHOLDER_ROW_COUNT = 5;
 
-/** "업데이트 내역" 카드를 불러오는 동안 보이는 컴포넌트 */
+/** "업데이트 내역" 카드를 불러오는 동안 표시하는 컴포넌트 */
 const AppUpdateHistorySkeleton = () => {
 	return (
 		<TitledCard title="업데이트 내역" action=<Skeleton className="h-3.5 w-5" />>
@@ -37,7 +37,7 @@ const AppUpdateHistorySkeleton = () => {
 						<SkeletonText className="w-10 [grid-area:ver]" />
 						<SkeletonText className="w-3/5 [grid-area:notes]" />
 						<Skeleton className="size-4 [grid-area:forced]" />
-						{/*등록 일시 줄 및 상대 시각 줄*/}
+						{/*등록 일시 행 및 상대 시각 행*/}
 						<div className="[grid-area:when]">
 							<SkeletonText className="w-20" />
 							<SkeletonText className="w-12 text-[12.5px] max-md:hidden" />

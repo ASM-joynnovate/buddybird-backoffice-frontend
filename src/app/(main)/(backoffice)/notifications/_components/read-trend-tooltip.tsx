@@ -9,7 +9,7 @@ interface Props extends Partial<TooltipContentProps<TooltipValueType, number | s
  * @param active 툴팁 표시 여부
  * @param payload 가리킨 시간의 읽은 사람 수
  * @param label 가리킨 시간
- * @param elapsedHours 발송 뒤 지난 시간
+ * @param elapsedHours 발송 뒤 경과 시간
  */
 const ReadTrendTooltip = ({ active, payload, label, elapsedHours }: Props) => {
 	const hour = Number(label);

@@ -5,7 +5,7 @@ interface Props {
 
 /**
  * 검색어와 같은 글자를 강조하는 컴포넌트
- * @param text 표시할 글
+ * @param text 표시할 문구
  * @param keyword 강조할 검색어
  */
 const HighlightedText = ({ text, keyword }: Props) => {

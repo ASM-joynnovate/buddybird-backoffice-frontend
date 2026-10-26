@@ -13,7 +13,7 @@ interface Props {
 }
 
 /**
- * Google Analytics의 이벤트, 온보딩, 구성 카드 목록 컴포넌트
+ * Google Analytics 카드 목록 컴포넌트
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  */
 const AnalyticsCards = ({ dashboardParams }: Props) => {

@@ -27,14 +27,14 @@ interface Props {
 }
 
 /**
- * "발송 예정" 및 보낸 알림 목록 컴포넌트
+ * "발송 예정" 및 "보낸 알림" 목록 컴포넌트
  * @param scheduledListParams "발송 예정" 조회 조건
  * @param dispatchListParams 발송 목록 조회 조건
  * @param notificationListParams 알림 목록 조회 조건
- * @param filterSelected 받는 사람, 종류, 날짜 조건을 골랐는지 여부
+ * @param filterSelected 필터 조건을 선택했는지 여부
  * @param query 현재 주소의 쿼리
- * @param initialNow 서버가 화면을 그린 시각
- * @param searchBar 목록 위에 둘 검색 및 필터
+ * @param initialNow 서버가 화면을 렌더링한 시각
+ * @param searchBar 목록 위에 표시할 검색 및 필터
  */
 const NotificationFeed = ({
 	scheduledListParams,

@@ -4,7 +4,7 @@ import { USER_RECENT_ITEM_COUNT } from '@/config';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
-/** 세션 목록 및 고른 세션의 타임라인 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 세션 카드를 불러오는 동안 표시하는 컴포넌트 */
 const UserSessionCardSkeleton = () => {
 	return (
 		<Card className="grid gap-0 py-0 md:grid-cols-[288px_minmax(0,1fr)]">

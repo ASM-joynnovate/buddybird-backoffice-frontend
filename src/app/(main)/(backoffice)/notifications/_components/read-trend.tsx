@@ -46,7 +46,7 @@ const ReadTrend = ({ notificationDispatch, now }: Props) => {
 		? Math.round((firstHourCount / dispatchDetailData.sent_count) * 100)
 		: 0;
 
-	// 지난 시간은 옅게, 지금 지나고 있는 시간은 진하게 표시
+	// 지난 시간은 옅게, 현재 시간은 진하게 표시
 	const hourlyReads = dispatchDetailData.hourly_reads.map(({ hour, count }) => ({
 		hour,
 		count,
@@ -118,7 +118,7 @@ const ReadTrend = ({ notificationDispatch, now }: Props) => {
 						<LabelList dataKey="peakLabel" position="top" className="fill-foreground text-xs font-bold" />
 					</Bar>
 
-					{/*최고값 글자를 피해 오른쪽 끝에 이름표*/}
+					{/*최고값 문구를 피해 오른쪽 끝에 라벨 표시*/}
 					{averageCount !== null && (
 						<AverageLine value={averageCount} valueText={`${averageCount.toFixed(1)}명`} labelAlign="end" />
 					)}

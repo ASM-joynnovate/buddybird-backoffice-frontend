@@ -27,7 +27,7 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
 const USER_IDS_PER_REQUEST = 100;
 
-/** 고른 사용자에 새 사용자를 겹치지 않게 더하는 함수 */
+/** 선택한 사용자 목록에 새 사용자를 중복 없이 추가하는 함수 */
 const mergeUsers = (users: UserListItem[], addedUsers: UserListItem[]) => {
 	return [...users, ...addedUsers.filter((addedUser) => !users.some((user) => user.id === addedUser.id))];
 };
@@ -40,9 +40,9 @@ interface Props {
 }
 
 /**
- * 사용자를 검색해 여러 명 고르는 입력 컴포넌트
- * @param selectedUsers 고른 사용자
- * @param onSelectedUsersChange 고른 사용자가 바뀔 때 실행할 함수
+ * 사용자를 검색해 여러 명 선택하는 입력 컴포넌트
+ * @param selectedUsers 선택한 사용자
+ * @param onSelectedUsersChange 선택한 사용자가 변경될 때 실행할 함수
  * @param isUserMuted 옅게 표시할 사용자인지 확인하는 함수
  * @param renderUserIcon 사용자 오른쪽에 표시할 아이콘
  */
@@ -71,7 +71,7 @@ const UserPicker = ({ selectedUsers, onSelectedUsersChange, isUserMuted, renderU
 
 		event.preventDefault();
 
-		// 100개씩 나눠 조회
+		// 100개씩 분할 조회
 		const userIdChunks = Array.from({ length: Math.ceil(userIds.length / USER_IDS_PER_REQUEST) }, (_, index) =>
 			userIds.slice(index * USER_IDS_PER_REQUEST, (index + 1) * USER_IDS_PER_REQUEST),
 		);

@@ -15,7 +15,7 @@ const NOTIFICATION_SECTIONS = [
 	{ title: '최근 발송', rowCount: 3 },
 ];
 
-/** 기간별 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 기간별 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DashboardSkeleton = () => {
 	return (
 		<>
@@ -54,7 +54,7 @@ const DashboardSkeleton = () => {
 							<StatCell label="평균 시간">
 								{/*좁은 화면에서는 실제 값이 두 줄로 줄바꿈*/}
 								<SkeletonText className="my-0.5 h-6 w-16 *:bg-background" />
-								{/*앞 줄과 겹치는 여백만큼 위 여백을 늘림*/}
+								{/*앞 줄과 겹치는 여백만큼 위 여백 추가*/}
 								<SkeletonText className="mt-1 mb-0.5 h-6 w-16 *:bg-background sm:hidden" />
 							</StatCell>
 						</dl>
@@ -100,7 +100,7 @@ const DashboardSkeleton = () => {
 					</TitledCard>
 
 					<TitledCard title="앱 버전" href="/app-updates" linkLabel="앱 업데이트">
-						{/*최신 버전의 행 및 나머지를 합친 행*/}
+						{/*최신 버전 행 및 나머지 버전을 합산한 행*/}
 						<ul className="divide-y">
 							{Array.from({ length: VISIBLE_VERSION_COUNT + 1 }, (_, index) => (
 								<li key={index} className="py-3 first:pt-0">

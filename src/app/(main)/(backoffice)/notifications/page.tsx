@@ -23,13 +23,13 @@ export default async function Page(props: PageProps<'/notifications'>) {
 	const today = formatToday();
 	const keyword = toOptionalText(searchParams.keyword);
 
-	// 사용자 ID로 검색하면 그 사용자가 받은 알림 조회
+	// 사용자 ID로 검색하면 그 사용자가 수신한 알림 조회
 	if (uuidSchema.safeParse(keyword).success) {
 		redirect(`/notifications?user_id=${keyword}`);
 	}
 
 	const period = toDashboardPeriod(searchParams.period);
-	// 직접 고른 날짜가 없으면 기간 버튼의 일수로 조회
+	// 직접 선택한 날짜가 없으면 기간 버튼의 일수로 조회
 	const customDashboardParams = toDashboardParams(searchParams.date_from, searchParams.date_to);
 	const dashboardParams = customDashboardParams ?? { date_from: addDays(today, 1 - period), date_to: today };
 
@@ -74,7 +74,7 @@ export default async function Page(props: PageProps<'/notifications'>) {
 		void queryClient.prefetchQuery(getNotificationListOptions(notificationListParams));
 	}
 
-	// "받는 사람" 칩에 표시할 닉네임, 조회에 실패하면 사용자 ID 앞부분
+	// "받는 사람" 칩에 표시할 닉네임
 	const recipientNickname = user_id
 		? await queryClient
 				.fetchQuery(getUserOptions({ id: user_id }))

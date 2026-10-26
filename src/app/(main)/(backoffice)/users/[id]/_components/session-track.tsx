@@ -18,13 +18,13 @@ interface Props {
 }
 
 /**
- * 수면, 연결 끊김 및 신경질적 짹짹 구간을 표시한 세션 막대 컴포넌트
+ * 구간을 표시한 세션 막대 컴포넌트
  * @param session 표시할 세션
  * @param sessionPeriod 세션의 시작 및 끝 시각
  * @param timeZone 스테이션 기기의 시간대
  * @param distressCallPeriods 신경질적 짹짹 구간
  * @param className 막대의 높이를 정하는 class
- * @param children 막대 위에 놓을 이벤트 핀
+ * @param children 막대 위에 표시할 이벤트 핀
  */
 const SessionTrack = ({ session, sessionPeriod, timeZone, distressCallPeriods, className, children }: Props) => {
 	const highlightedPeriods = [

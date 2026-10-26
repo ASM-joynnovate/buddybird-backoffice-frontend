@@ -23,8 +23,8 @@ interface Props {
  * @param description 언어별 설명 입력값
  * @param error 입력값의 오류 문구
  * @param onLocaleChange 언어를 선택하면 실행할 함수
- * @param onTitleChange 선택한 언어의 제목이 바뀔 때 실행할 함수
- * @param onDescriptionChange 선택한 언어의 설명이 바뀔 때 실행할 함수
+ * @param onTitleChange 선택한 언어의 제목이 변경될 때 실행할 함수
+ * @param onDescriptionChange 선택한 언어의 설명이 변경될 때 실행할 함수
  */
 const NotificationSettingTextField = ({
 	locale,

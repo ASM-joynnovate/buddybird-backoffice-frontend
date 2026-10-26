@@ -86,7 +86,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 		versionError = '이미 등록된 버전입니다.';
 	}
 
-	// 입력값을 반영한 저장 뒤의 목록
+	// 입력값을 반영한 저장 뒤 예상 목록
 	const savedAppUpdates = versionValid
 		? [...otherAppUpdates, { version: trimmedVersion, is_forced: forced }]
 		: appUpdateListData;
@@ -111,7 +111,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 		setSaveTried(true);
 		setEnglishReleaseNotesMissing(nextEnglishReleaseNotesMissing);
 
-		// 빠진 영어 출시 노트를 입력하도록 영어 선택
+		// 누락된 영어 출시 노트를 입력하도록 영어 선택
 		if (nextEnglishReleaseNotesMissing) {
 			setLocale('en_us');
 		}
@@ -240,7 +240,7 @@ const AppUpdateForm = ({ platform, appUpdate, versionInputRef, onClose }: Props)
 						/>
 					</div>
 
-					{/*언어 목록 및 입력이 나란히 놓이도록 이름을 위에 배치*/}
+					{/*언어 목록 및 입력이 나란히 표시되도록 이름을 위에 배치*/}
 					<div className="mt-2 grid gap-1.5 border-t pt-5">
 						<span className={labelClassName}>
 							출시 노트

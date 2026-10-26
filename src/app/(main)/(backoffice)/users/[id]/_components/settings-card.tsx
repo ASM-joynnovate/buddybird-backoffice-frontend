@@ -5,7 +5,7 @@ import type { Settings } from '@/types/apis/settings';
 import { useGetUser, useGetUserNotificationSettings } from '@/hooks/apis/users';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
-import NotificationSettingStateRow from '@/app/(main)/(backoffice)/users/[id]/_components/notification-setting-state-row';
+import SettingStateRow from '@/app/(main)/(backoffice)/users/[id]/_components/setting-state-row';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
 const HOURS_PER_DAY = 24;
@@ -36,7 +36,7 @@ interface Props {
 }
 
 /**
- * 사용자의 수면 시간 및 알림 설정 카드 컴포넌트
+ * 사용자의 수면 시간, 알림 및 커뮤니티 설정 카드 컴포넌트
  * @param id 조회할 사용자 ID
  */
 const SettingsCard = ({ id }: Props) => {
@@ -86,12 +86,9 @@ const SettingsCard = ({ id }: Props) => {
 				<h3 className="mb-1 font-bold">알림</h3>
 
 				<ul className="divide-y">
-					<NotificationSettingStateRow
-						label="전체 알림"
-						enabled={userNotificationSettingsData.push_enabled}
-					/>
+					<SettingStateRow label="전체 알림" enabled={userNotificationSettingsData.push_enabled} />
 					{userNotificationSettingsData.items.map((item) => (
-						<NotificationSettingStateRow
+						<SettingStateRow
 							key={item.id}
 							label={koreanOrEnglishText(item.title)}
 							enabled={item.enabled}
@@ -106,7 +103,7 @@ const SettingsCard = ({ id }: Props) => {
 
 						<ul className="divide-y">
 							{group.items.map((item) => (
-								<NotificationSettingStateRow
+								<SettingStateRow
 									key={item.id}
 									label={koreanOrEnglishText(item.title)}
 									enabled={item.enabled}
@@ -117,6 +114,22 @@ const SettingsCard = ({ id }: Props) => {
 					</div>
 				))}
 			</section>
+
+			{!!settings && (
+				<section className="mt-3 border-t pt-3">
+					<h3 className="mb-1 font-bold">커뮤니티</h3>
+
+					<ul className="divide-y">
+						<SettingStateRow label="리더보드 참여" enabled={settings.community.leaderboard_enabled} />
+						<SettingStateRow label="피드 공개" enabled={settings.community.feed_enabled} />
+						{/*녹음 공개를 선택하지 않았으면 꺼짐 표시*/}
+						<SettingStateRow
+							label="녹음 공개"
+							enabled={!!settings.community.feed_recording_sharing_enabled}
+						/>
+					</ul>
+				</section>
+			)}
 		</TitledCard>
 	);
 };

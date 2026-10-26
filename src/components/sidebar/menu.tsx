@@ -10,6 +10,7 @@ import {
 	BellPlus,
 	ChartNoAxesColumn,
 	FileText,
+	Flag,
 	House,
 	Megaphone,
 	MessageSquare,
@@ -34,6 +35,7 @@ const menuGroups = [
 			{ href: '/users', label: '사용자', icon: UserRound },
 			{ href: '/emergencies', label: '응급 상황', icon: Siren },
 			{ href: '/feedback', label: '피드백', icon: MessageSquare },
+			{ href: '/abuse-reports', label: '신고', icon: Flag },
 			{ href: '/withdrawals', label: '탈퇴', icon: UserRoundX },
 		],
 	},
@@ -62,7 +64,7 @@ interface Props {
 
 /**
  * 사이드바 메뉴 목록 컴포넌트
- * @param onSelect 메뉴를 고르면 실행할 함수
+ * @param onSelect 메뉴를 선택하면 실행할 함수
  */
 const SidebarMenu = ({ onSelect }: Props) => {
 	const pathname = usePathname();

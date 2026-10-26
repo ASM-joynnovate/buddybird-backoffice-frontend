@@ -27,7 +27,7 @@ const HEAD_COLUMNS = [
 	{ sort: 'date', label: '마지막 발생' },
 ] satisfies { sort?: StabilityIssueSort; label: string }[];
 
-// 열: 등급, 이슈, 빈 열, 프로젝트, 발생, 첫 발생, 마지막 발생, 링크
+// 등급부터 링크까지의 열 너비
 const rowClassName = cn(
 	'grid grid-cols-[44px_minmax(0,4.4fr)_var(--issue-gap)_128px_minmax(126px,1.6fr)_minmax(48px,0.8fr)_minmax(74px,1fr)_28px] items-start gap-3',
 	'@max-[899px]:grid-cols-[44px_minmax(0,4.4fr)_var(--issue-gap)_128px_52px_minmax(48px,0.8fr)_minmax(74px,1fr)_28px]',
@@ -53,7 +53,7 @@ interface Props {
  * @param project 필터로 선택한 프로젝트
  * @param dateFrom 조회 기간의 시작일
  * @param query 현재 주소의 쿼리
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const IssueCard = ({ issues, projects, issueReleases, sort, project, dateFrom, query, now }: Props) => {
 	const maxCount = Math.max(1, ...issues.map((issue) => issue.count));
@@ -84,7 +84,7 @@ const IssueCard = ({ issues, projects, issueReleases, sort, project, dateFrom, q
 			{
 				name: filterGroup.name,
 				groupLabel: filterGroup.label,
-				// 입력한 숫자는 단위를 붙여 표시
+				// 입력한 숫자는 단위와 함께 표시
 				label: selectedOption?.label ?? `${value}${filterGroup.inputUnit ?? ''}`,
 				icon: selectedOption?.icon,
 				resetNames: filterGroup.resetNames,
@@ -93,7 +93,7 @@ const IssueCard = ({ issues, projects, issueReleases, sort, project, dateFrom, q
 	});
 
 	return (
-		// 필터 패널이 카드 밖으로 넘쳐도 다른 카드 위에 보이도록 표시
+		// 필터 패널을 카드 밖까지 다른 카드 위에 표시
 		<TitledCard
 			title="이슈"
 			action=<div className="flex items-center gap-2.5">
@@ -121,7 +121,7 @@ const IssueCard = ({ issues, projects, issueReleases, sort, project, dateFrom, q
 
 			{/*좁은 화면에서는 가로로 스크롤*/}
 			<div className="overflow-x-auto">
-				{/*이슈 열 및 프로젝트 열 사이의 빈 열은 카드가 넓어지면 함께 넓어짐*/}
+				{/*빈 열은 카드 폭에 맞춰 확장*/}
 				<div className="@container min-w-175 [--issue-gap:clamp(16px,calc((100cqw_-_735px)_*_0.3),120px)]">
 					{/*열 이름을 누르면 그 기준으로 다시 조회*/}
 					<div

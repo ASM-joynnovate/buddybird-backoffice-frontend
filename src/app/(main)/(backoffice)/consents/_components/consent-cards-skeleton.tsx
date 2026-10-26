@@ -12,7 +12,7 @@ const PLACEHOLDER_KIND_COUNT = 4;
 const PLACEHOLDER_VERSION_COUNT = 3;
 const PLACEHOLDER_LINE_WIDTHS = [52, 88, 0, 34, 92, 78, 0, 30, 84];
 
-/** 종류 카드 및 상세 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 종류 카드 및 상세 카드를 불러오는 동안 표시하는 컴포넌트 */
 const ConsentCardsSkeleton = () => {
 	return (
 		<div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)]">

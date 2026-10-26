@@ -1,7 +1,7 @@
 import { Card, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-/** 활성 사용자 및 국가 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 활성 사용자 및 국가 카드를 불러오는 동안 표시하는 컴포넌트 */
 const ReachCardSkeleton = () => {
 	return (
 		<Card className="grid gap-0 py-0 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
@@ -11,7 +11,7 @@ const ReachCardSkeleton = () => {
 					<p className="text-[13px] text-muted-foreground">접속 기준</p>
 				</div>
 
-				{/*기준별 그래프 세 줄 자리*/}
+				{/*기준별 그래프 세 행 스켈레톤*/}
 				<Skeleton className="h-121" />
 			</div>
 

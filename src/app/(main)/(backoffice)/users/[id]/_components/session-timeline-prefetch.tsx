@@ -13,13 +13,13 @@ interface Props {
 }
 
 /**
- * 세션 목록을 받은 뒤 처음 고르는 세션의 타임라인 조회를 시작하는 컴포넌트
+ * 첫 세션의 타임라인을 미리 조회하는 컴포넌트
  * @param sessionList 페이지에서 시작한 세션 목록 조회
  * @param sessionId 처음에 선택할 세션의 ID
  */
 const SessionTimelinePrefetch = async ({ sessionList, sessionId }: Props) => {
 	const sessions = (await sessionList)?.data;
-	// UserSessionCard는 주소의 세션, 없으면 첫 세션을 먼저 선택
+	// 주소의 세션, 없으면 첫 세션 선택
 	const firstSession = sessions?.find((session) => session.id === sessionId) ?? sessions?.[0];
 
 	if (!firstSession) {

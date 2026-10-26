@@ -18,7 +18,7 @@ interface Props {
 }
 
 /**
- * 종료된 공지 카드를 불러오는 동안 보이는 컴포넌트
+ * 종료된 공지 카드를 불러오는 동안 표시하는 컴포넌트
  * @param query 현재 주소의 쿼리
  */
 const EndedAnnouncementSkeleton = ({ query }: Props) => {
@@ -57,7 +57,7 @@ const EndedAnnouncementSkeleton = ({ query }: Props) => {
 								'relative before:absolute before:inset-x-0 before:top-0 before:border-t before:border-border',
 							)}
 						>
-							{/*제목 줄 및 게시 기간 줄*/}
+							{/*제목 행 및 게시 기간 행*/}
 							<div className="py-2.5">
 								<SkeletonText
 									style={{

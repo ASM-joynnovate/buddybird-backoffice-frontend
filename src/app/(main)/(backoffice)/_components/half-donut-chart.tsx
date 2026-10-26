@@ -25,7 +25,7 @@ interface Props {
 const HalfDonutChart = ({ title, parts, value, label, unit, minAngle }: Props) => {
 	return (
 		<div className="relative mx-auto mt-1 w-52.5 max-w-full">
-			{/*툴팁이 가운데 값 위에 오도록 위에 쌓음*/}
+			{/*툴팁을 가운데 값보다 위 레이어에 표시*/}
 			<ChartContainer config={{}} className="relative z-1 aspect-auto h-26 w-full">
 				<PieChart title={title} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
 					<Pie

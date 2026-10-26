@@ -10,7 +10,7 @@ export const toTheme = (value: string | undefined) => {
 	return themes.find((theme) => theme === value);
 };
 
-/** 화면 모드를 html class와 브라우저 쿠키에 저장하는 함수 */
+/** 화면 모드를 html class 및 쿠키에 저장하는 함수 */
 export const saveTheme = (theme: Theme | undefined) => {
 	document.documentElement.classList.remove(...themes);
 

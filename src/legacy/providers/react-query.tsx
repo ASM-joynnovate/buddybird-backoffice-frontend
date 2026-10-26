@@ -8,8 +8,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { getQueryClient } from '@/legacy/lib/react-query';
 
 /**
- * react query 사용을 위한 provider
- * @param children
+ * react query provider
+ * @param children 감싸는 내용
  */
 export function ReactQueryClientProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = getQueryClient();

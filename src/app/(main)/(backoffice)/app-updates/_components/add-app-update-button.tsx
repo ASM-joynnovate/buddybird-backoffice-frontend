@@ -16,7 +16,7 @@ interface Props {
 
 /**
  * 업데이트 추가 버튼 컴포넌트
- * @param platform 다이얼로그에서 처음 고를 플랫폼
+ * @param platform 다이얼로그에서 처음 선택할 플랫폼
  */
 const AddAppUpdateButton = ({ platform }: Props) => {
 	const [formDialogOpen, setFormDialogOpen] = useState(false);

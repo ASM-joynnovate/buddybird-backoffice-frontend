@@ -6,22 +6,23 @@ import type { UserDashboard } from '@/types/apis/dashboard';
 
 import useResolvedTheme from '@/hooks/use-resolved-theme';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import { COUNTRY_POSITIONS } from '@/config/country-positions';
 import { toCountryName } from '@/utils/country';
 
 import { Map, MapControls, MapGeoJSON, MapMarker, MarkerContent, MarkerTooltip } from '@/components/ui/map';
 
-// Natural Earth 110m 국가 경계, 속성은 국가 코드 country
+// Natural Earth 110m 국가 경계
 const COUNTRY_SHAPES_URL = '/maps/countries.geojson';
 
-// WebGL은 CSS 변수를 읽지 못해 화면 모드별 색을 직접 지정
+// CSS 변수를 읽지 못하는 WebGL용 색
 const MAP_COLORS = {
 	light: { land: '#e8e7e1', border: '#ffffff', activeLand: '#c5d9fb' },
 	dark: { land: '#33332f', border: '#1f1f1d', activeLand: '#2c4270' },
 };
 
 interface Props {
-	countries: UserDashboard['countries'];
+	countries: UserDashboard['activity_countries'];
 }
 
 /**
@@ -36,7 +37,7 @@ const CountryMap = ({ countries }: Props) => {
 
 	const mapColors = MAP_COLORS[theme];
 	const maxCount = Math.max(1, ...countries.map(({ count }) => count));
-	// 목록 순서대로 그려 사용자가 적은 국가의 원이 위에 놓임
+	// 사용자가 적은 국가의 원을 위에 표시
 	const countryMarkers = countries.flatMap(({ country, count }) => {
 		const countryPosition = country ? COUNTRY_POSITIONS[country] : undefined;
 
@@ -106,7 +107,7 @@ const CountryMap = ({ countries }: Props) => {
 				touchPitch={false}
 				attributionControl={false}
 			>
-				{/*접속 사용자가 있는 국가는 다른 색으로 칠함*/}
+				{/*접속 사용자가 있는 국가는 다른 색으로 표시*/}
 				<MapGeoJSON
 					data={COUNTRY_SHAPES_URL}
 					fillPaint={{
@@ -146,7 +147,10 @@ const CountryMap = ({ countries }: Props) => {
 								<strong className="block text-[13px] font-bold tabular-nums">
 									{countryMarker.count.toLocaleString('ko-KR')}명
 								</strong>
-								<span className="text-tooltip-foreground/75">{countryName}</span>
+								<span className="flex items-center gap-1.5 text-tooltip-foreground/75">
+									<CountryFlag country={countryMarker.country} className="w-4" />
+									{countryName}
+								</span>
 							</MarkerTooltip>
 						</MapMarker>
 					);

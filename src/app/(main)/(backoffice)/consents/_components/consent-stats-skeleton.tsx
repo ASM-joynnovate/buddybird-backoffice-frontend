@@ -1,6 +1,5 @@
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
-// 동의, 거부, 접속 후 미응답, 접속 없음, 전체
 const PLACEHOLDER_DECISION_ROW_COUNT = 5;
 const PLACEHOLDER_RATE_ROW_COUNT = 2;
 const RATE_GROUP_NAMES = ['버전', '기기', '언어'];
@@ -8,7 +7,7 @@ const RATE_GROUP_NAMES = ['버전', '기기', '언어'];
 const sectionClassName = 'min-w-0 px-4 pt-3.5 pb-4';
 const sectionTitleClassName = 'text-[13px] font-semibold';
 
-/** 동의 통계를 불러오는 동안 보이는 컴포넌트 */
+/** 동의 통계를 불러오는 동안 표시하는 컴포넌트 */
 const ConsentStatsSkeleton = () => {
 	return (
 		<div className="mt-4 grid rounded-lg border md:grid-cols-[264px_minmax(0,1fr)]">

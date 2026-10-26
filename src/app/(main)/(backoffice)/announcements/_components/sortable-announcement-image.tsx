@@ -20,10 +20,10 @@ interface Props {
 }
 
 /**
- * 끌어서 순서를 바꿀 수 있는 공지 사진 칸 컴포넌트
+ * 드래그로 순서를 변경할 수 있는 공지 사진 칸 컴포넌트
  * @param image 표시할 사진
  * @param index 사진의 순서
- * @param onRemove 사진을 지우면 실행할 함수
+ * @param onRemove 사진을 삭제하면 실행할 함수
  */
 const SortableAnnouncementImage = ({ image, index, onRemove }: Props) => {
 	const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({

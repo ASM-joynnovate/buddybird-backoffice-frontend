@@ -2,7 +2,7 @@ import type { StabilityDashboard } from '@/types/apis/dashboard';
 
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 
-/** 0부터 1까지의 비율을 소수 둘째 자리까지의 %로 변환하는 함수 */
+/** 비율을 소수 둘째 자리 %로 변환하는 함수 */
 const toPercentText = (rate: number) => {
 	return (rate * 100).toFixed(2);
 };

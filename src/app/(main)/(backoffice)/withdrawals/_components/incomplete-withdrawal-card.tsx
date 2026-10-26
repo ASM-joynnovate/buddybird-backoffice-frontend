@@ -24,7 +24,7 @@ interface Props {
 /**
  * 완료되지 않은 탈퇴 카드 컴포넌트
  * @param listParams 목록 조회 조건
- * @param initialNow 서버가 화면을 그린 시각
+ * @param initialNow 서버가 화면을 렌더링한 시각
  */
 const IncompleteWithdrawalCard = ({ listParams, initialNow }: Props) => {
 	const queryClient = useQueryClient();
@@ -35,7 +35,7 @@ const IncompleteWithdrawalCard = ({ listParams, initialNow }: Props) => {
 
 	const userIdsRef = useRef(withdrawalListData.data.map((withdrawal) => withdrawal.user_id));
 
-	/** 처리 중 목록에서 빠진 탈퇴가 있으면 완료 목록 및 대시보드 다시 조회 */
+	/** 탈퇴가 완료되면 완료 목록 및 대시보드 다시 조회 */
 	useEffect(() => {
 		const userIds = withdrawalListData.data.map((withdrawal) => withdrawal.user_id);
 		const withdrawalFinished = userIdsRef.current.some((userId) => !userIds.includes(userId));

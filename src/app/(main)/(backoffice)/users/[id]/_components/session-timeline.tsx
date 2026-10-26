@@ -138,7 +138,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 			: [],
 	);
 
-	// 실행 중인 세션이 길어져도 막대가 바뀌지 않도록 시작 시각부터 정해진 길이로 나눔
+	// 시작 시각부터 고정 길이로 막대 분할
 	const maxSoundBarCount = Math.min(TIMELINE_MAX_SOUND_BAR_COUNT, 80 * zoom);
 	const soundBarDurationMs =
 		TIMELINE_SOUND_BAR_DURATIONS_MS.find((barDurationMs) => durationMs / barDurationMs <= maxSoundBarCount) ??
@@ -153,7 +153,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		);
 
 	const soundBars = Array.from({ length: soundBarCount }, (_, index) => ({
-		// 마지막 막대는 세션이 끝난 시각까지
+		// 마지막 막대는 세션 종료 시각까지
 		durationMs: Math.min(soundBarDurationMs, durationMs - index * soundBarDurationMs),
 		sounds: [] as SessionSound[],
 	}));
@@ -174,7 +174,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		: null;
 	const currentSoundBarIndex = currentSound ? toSoundBarIndex(currentSound.captured_at) : null;
 
-	/** 미니맵에 표시할 현재 보이는 범위 갱신 */
+	/** 미니맵에 표시할 현재 표시 범위 갱신 */
 	const updateVisibleRange = () => {
 		const view = viewRef.current;
 
@@ -256,7 +256,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 		const soundX = (currentSoundPercent / 100) * view.scrollWidth;
 
-		// 보이는 범위 안의 소리는 그대로 둠
+		// 표시 범위 안의 소리는 스크롤하지 않음
 		if (soundX < view.scrollLeft || soundX > view.scrollLeft + view.clientWidth) {
 			view.scrollTo({
 				left: soundX - view.clientWidth / 2,
@@ -265,7 +265,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		}
 	});
 
-	/** 재생할 소리가 바뀌면 그 위치가 보이도록 스크롤 */
+	/** 재생할 소리가 변경되면 그 위치로 스크롤 */
 	useEffect(() => {
 		scrollToCurrentSound();
 	}, [player.currentSoundId]);
@@ -350,7 +350,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 		handleShowEvent(sessionEvent.percent);
 	};
 
-	/** 소리 줄에서 가리킨 막대의 순서를 반환하는 함수 */
+	/** 소리 행에서 가리킨 막대의 순서를 반환하는 함수 */
 	const toPointedSoundBarIndex = (event: MouseEvent<HTMLDivElement>) => {
 		const laneRect = event.currentTarget.getBoundingClientRect();
 		const pointedMs = ((event.clientX - laneRect.left) / laneRect.width) * durationMs;
@@ -397,7 +397,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 	/** 누른 막대의 첫 소리부터 재생 */
 	const handleSoundLaneClick = (event: MouseEvent<HTMLDivElement>) => {
-		// 끌어서 이동한 경우는 무시
+		// 드래그로 이동한 경우는 무시
 		if (Math.abs(event.clientX - pointerDownClientXRef.current) > CLICK_MOVE_TOLERANCE_PX) {
 			return;
 		}
@@ -658,7 +658,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 
 			<hr />
 
-			{/*전체 구간 및 현재 보이는 범위*/}
+			{/*전체 구간 및 현재 표시 범위*/}
 			<div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 text-[12.5px] text-muted-foreground">
 				전체 구간
 				<div
@@ -688,7 +688,7 @@ const SessionTimeline = ({ session, sessionPeriod, timeZone }: Props) => {
 				</div>
 			</div>
 
-			{/*이벤트 목록, 누르면 그 시점으로 이동*/}
+			{/*누르면 그 시점으로 이동하는 이벤트 목록*/}
 			<div className="flex flex-wrap gap-1.5">
 				{sessionEvents.map((sessionEvent) => (
 					<button

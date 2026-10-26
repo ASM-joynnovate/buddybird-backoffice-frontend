@@ -48,7 +48,7 @@ const DailyCountChart = ({
 
 	const dailyCounts = daily.map((dailyCount, index) => {
 		const totalCount = series.reduce((sum, { dataKey }) => sum + Number(dailyCount[dataKey]), 0);
-		// 계열을 고르지 않으면 합계 표시
+		// 계열을 선택하지 않으면 합계 표시
 		const lastValue = lastValueDataKey ? Number(dailyCount[lastValueDataKey]) : totalCount;
 
 		return {

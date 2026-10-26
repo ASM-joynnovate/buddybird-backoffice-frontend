@@ -23,7 +23,7 @@ interface Props {
 /**
  * 업데이트 내역의 행 컴포넌트
  * @param appUpdate 표시할 업데이트
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  * @param onOpen 행을 누르면 실행할 함수
  */
 const AppUpdateRow = ({ appUpdate, now, onOpen }: Props) => {
@@ -40,7 +40,7 @@ const AppUpdateRow = ({ appUpdate, now, onOpen }: Props) => {
 		return !!releaseNotesElement && releaseNotesElement.scrollWidth > releaseNotesElement.clientWidth;
 	};
 
-	// 버튼이 행을 덮어 위치로 확인
+	// 버튼이 행을 덮으므로 포인터 좌표로 확인
 	const handleMouseMove = (event: MouseEvent<HTMLButtonElement>) => {
 		const releaseNotesRect = releaseNotesRef.current?.getBoundingClientRect();
 		const releaseNotesPointed =
@@ -64,7 +64,7 @@ const AppUpdateRow = ({ appUpdate, now, onOpen }: Props) => {
 				'relative -mx-2 rounded-md px-2 py-2.5 tabular-nums transition-colors before:absolute before:inset-x-2 before:top-0 before:border-t before:border-border hover:bg-muted max-md:gap-y-3 max-md:first:before:hidden',
 			)}
 		>
-			{/*누르는 영역을 행 전체로 넓힌 버튼*/}
+			{/*클릭 영역을 행 전체로 확장한 버튼*/}
 			<button
 				type="button"
 				aria-label={`${appUpdate.version} 편집`}

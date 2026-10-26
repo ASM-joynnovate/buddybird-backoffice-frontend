@@ -12,15 +12,16 @@ const CHECK_ITEM_LABELS = [
 	'오디오 기반 응급 상황',
 	'비전 기반 응급 상황',
 	'탈퇴 실패',
+	'처리 전 신고',
 	'앵무 소리 판별 실패',
 ];
 
-/** 현재 상태 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 현재 상태 카드를 불러오는 동안 표시하는 컴포넌트 */
 const DashboardLiveSkeleton = () => {
 	return (
 		<div className="grid gap-4 xl:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
 			<Card className="grid gap-0 py-0 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-				{/*현재 개수 및 단계별 개수 자리*/}
+				{/*현재 개수 및 단계별 개수 스켈레톤*/}
 				<div className="grid content-between gap-4.5 p-4 md:px-5.5 md:py-5">
 					<div className="flex items-baseline justify-between gap-3">
 						<CardTitle className="font-bold">실행 중인 세션</CardTitle>
@@ -50,7 +51,7 @@ const DashboardLiveSkeleton = () => {
 					</div>
 				</div>
 
-				{/*오늘의 시작, 종료 및 시간대별 개수 자리*/}
+				{/*오늘 세션 영역 스켈레톤*/}
 				<div className="grid content-between gap-4 border-t bg-card-inset p-4 md:px-5.5 md:py-5 xl:border-t-0 xl:border-l">
 					<div className="flex items-baseline justify-between gap-3">
 						<CardTitle className="font-bold">오늘</CardTitle>

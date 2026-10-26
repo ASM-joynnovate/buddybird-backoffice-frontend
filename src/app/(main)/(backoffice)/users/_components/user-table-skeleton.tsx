@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 const PLACEHOLDER_ROW_COUNT = 5;
 const COLUMN_LABELS = ['사용자', '앵무새', '상태', '최근 14일 세션', '세션', '기기', '가입일'];
 
-/** 사용자 표를 불러오는 동안 보이는 컴포넌트 */
+/** 사용자 표를 불러오는 동안 표시하는 컴포넌트 */
 const UserTableSkeleton = () => {
 	return (
 		<>
@@ -60,7 +60,7 @@ const UserTableSkeleton = () => {
 				</Table>
 			</Card>
 
-			{/*페이지 이동 링크 자리*/}
+			{/*페이지 이동 링크 스켈레톤*/}
 			<Skeleton className="mx-auto h-9 w-64" />
 		</>
 	);

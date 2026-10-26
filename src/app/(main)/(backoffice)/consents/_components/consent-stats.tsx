@@ -72,7 +72,7 @@ const ConsentStats = ({ consent, dashboardParams, today }: Props) => {
 			rows: versions.map((versionDecision) => ({
 				label: `버전 ${versionDecision.version}`,
 				percent: toGrantedPercent(versionDecision),
-				// 고른 버전만 강조
+				// 선택한 버전만 강조
 				barClassName: versionDecision.version === consent.version ? undefined : 'bg-chart-neutral',
 			})),
 		},

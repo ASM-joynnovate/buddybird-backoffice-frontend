@@ -14,7 +14,7 @@ const PLACEHOLDER_GROUPS = [
 ];
 const PLACEHOLDER_ERROR_COUNT = 2;
 
-/** 탈퇴 대시보드 카드를 불러오는 동안 보이는 컴포넌트 */
+/** 탈퇴 대시보드 카드를 불러오는 동안 표시하는 컴포넌트 */
 const WithdrawalDashboardSkeleton = () => {
 	return (
 		<div className="grid grid-cols-[minmax(0,1fr)] gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)_minmax(0,1fr)]">

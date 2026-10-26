@@ -42,7 +42,7 @@ const CompositionCard = ({ feedbackDashboard, query }: Props) => {
 			colorClassName:
 				colorClassNames[value] ??
 				STACKED_RATIO_COLOR_CLASS_NAMES[Math.min(index, STACKED_RATIO_COLOR_CLASS_NAMES.length - 1)],
-			// 다른 값을 골랐으면 옅게 표시
+			// 다른 값을 선택했으면 옅게 표시
 			dimmed: !!query[filterGroup.name] && query[filterGroup.name] !== value,
 			href: { pathname: '/feedback', query: toToggledQuery(query, filterGroup.name, value) },
 		})),

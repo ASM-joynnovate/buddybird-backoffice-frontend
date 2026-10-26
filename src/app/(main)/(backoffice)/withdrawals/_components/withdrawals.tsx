@@ -31,10 +31,10 @@ interface Props {
  * @param dashboardParams 조회 기간의 시작일 및 종료일
  * @param incompleteListParams 완료되지 않은 탈퇴의 조회 조건
  * @param completedListParams 완료된 탈퇴의 조회 조건
- * @param listQuery 기간을 뺀 현재 주소의 쿼리
+ * @param listQuery 기간을 제외한 현재 주소의 쿼리
  * @param query 현재 주소의 쿼리
  * @param today 오늘 날짜
- * @param now 서버가 화면을 그린 시각
+ * @param now 서버가 화면을 렌더링한 시각
  */
 const Withdrawals = ({
 	period,
@@ -64,7 +64,7 @@ const Withdrawals = ({
 				<IncompleteWithdrawalCard listParams={incompleteListParams} initialNow={now} />
 			</ErrorHandlingWrapper>
 
-			{/*조회 기간이 바뀌면 다시 마운트*/}
+			{/*조회 기간이 변경되면 다시 마운트*/}
 			<ErrorHandlingWrapper
 				key={[dashboardParams.date_from, dashboardParams.date_to].join(':')}
 				fallbackComponent={QueryError}

@@ -16,9 +16,9 @@ interface Props {
 }
 
 /**
- * "앱 버전" 카드의 기기 묶음 칸 컴포넌트
- * @param deviceGroup 칸에 표시할 기기 묶음
- * @param versions 묶음에 속한 앱 버전별 기기 수
+ * "앱 버전" 카드의 기기 그룹 칸 컴포넌트
+ * @param deviceGroup 칸에 표시할 기기 그룹
+ * @param versions 그룹에 속한 앱 버전별 기기 수
  * @param deviceCount 플랫폼의 전체 기기 수
  */
 const DeviceGroupCell = ({ deviceGroup, versions, deviceCount }: Props) => {
@@ -28,7 +28,7 @@ const DeviceGroupCell = ({ deviceGroup, versions, deviceCount }: Props) => {
 	const percent = deviceCount ? Math.round((groupDeviceCount / deviceCount) * 100) : 0;
 	const olderVersions = (versions ?? []).slice(VISIBLE_VERSION_COUNT);
 
-	// 나머지 버전은 한 줄로 합침
+	// 나머지 버전은 한 행으로 합산
 	const versionRows = [
 		...(versions ?? [])
 			.slice(0, VISIBLE_VERSION_COUNT)

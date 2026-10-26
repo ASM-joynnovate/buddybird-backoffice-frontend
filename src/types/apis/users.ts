@@ -1,6 +1,6 @@
 import { fileSchema, type SortOrder } from '@/types/apis/common';
 import { deviceSchema } from '@/types/apis/devices';
-import { localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
+import { countrySchema, localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { sessionPhaseSchema } from '@/types/apis/sessions';
 import { settingsSchema } from '@/types/apis/settings';
 import { withdrawalSchema } from '@/types/apis/withdrawals';
@@ -18,10 +18,11 @@ export const userSortSchema = z.enum([
 	'parrot_count',
 ]);
 
-const userSchema = z.object({
+export const userSchema = z.object({
 	id: uuidSchema,
 	email: z.string().nullable(),
 	nickname: z.string().nullable(),
+	country: z.string().nullable(),
 	is_anonymous: z.boolean(),
 	is_deleted: z.boolean(),
 	created_at: timestampSchema,
@@ -48,7 +49,7 @@ export const userListItemSchema = userSchema.extend({
 	is_marketing_enabled: z.boolean(),
 });
 
-const parrotSchema = z.object({
+export const parrotSchema = z.object({
 	id: uuidSchema,
 	name: z.string(),
 	species: z.string(),
@@ -65,12 +66,25 @@ export const userDetailSchema = userSchema.extend({
 	withdrawal: withdrawalSchema.nullable(),
 });
 
+const updateUserRequestSchema = z.object({
+	nickname: z.string().nullable().optional(),
+	country: countrySchema.optional(),
+});
+
+const updateParrotRequestSchema = z.object({
+	name: z.string().optional(),
+	species: z.string().optional(),
+	birthdate: localDateSchema.nullable().optional(),
+});
+
 export type Provider = z.infer<typeof providerSchema>;
 export type UserLastSession = z.infer<typeof userLastSessionSchema>;
 export type UserSort = z.infer<typeof userSortSchema>;
 export type UserListItem = z.infer<typeof userListItemSchema>;
 export type UserDetail = z.infer<typeof userDetailSchema>;
 export type Parrot = z.infer<typeof parrotSchema>;
+export type UpdateUserRequest = z.infer<typeof updateUserRequestSchema>;
+export type UpdateParrotRequest = z.infer<typeof updateParrotRequestSchema>;
 
 export interface UserListParams {
 	page: number;

@@ -54,7 +54,7 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 
 	const registeredKinds = itemListData.map((registeredItem) => registeredItem.kind);
 
-	// 다이얼로그를 열 때 등록되지 않은 종류
+	// 다이얼로그 표시 시점에 등록되지 않은 종류
 	const [kindOptions] = useState(() =>
 		notificationSettingKindSchema.options.filter((kindOption) => !registeredKinds.includes(kindOption)),
 	);
@@ -100,14 +100,14 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 			return;
 		}
 
-		// 다이얼로그를 연 뒤에 등록된 종류
+		// 다이얼로그 표시 뒤에 등록된 종류
 		const nextKindError = !item && !!kind && registeredKinds.includes(kind) ? '이미 등록된 종류입니다.' : '';
 		const nextTextError = toNotificationSettingTextError(title, description);
 
 		setKindError(nextKindError);
 		setTextError(nextTextError);
 
-		// 빠진 영어 문구를 입력하도록 영어 선택
+		// 누락된 영어 문구를 입력하도록 영어 선택
 		if (nextTextError) {
 			setLocale('en_us');
 		}
@@ -116,7 +116,7 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 			return;
 		}
 
-		// 바뀐 값이 없는 수정은 요청 없이 닫음
+		// 변경한 값이 없으면 요청 없이 닫음
 		if (item && Object.keys(toNotificationSettingTextUpdate(title, description, item)).length === 0) {
 			onClose();
 
@@ -132,7 +132,7 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 		}
 
 		if (item) {
-			// 수정은 바뀐 값만 보냄
+			// 수정은 변경한 값만 전송
 			updateItem.mutate(
 				{ id: item.id, data: toNotificationSettingTextUpdate(title, description, item) },
 				{ onSuccess: onClose, onError: () => setConfirmDialogOpen(false) },
@@ -141,7 +141,7 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 			return;
 		}
 
-		// 종류 없는 추가는 위에서 막으므로 타입만 좁힌다
+		// 타입 narrowing용 검사
 		if (!kind) {
 			return;
 		}
@@ -227,7 +227,7 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 							</div>
 						</div>
 
-						{/*그룹 이동은 표에서 끌어서 저장*/}
+						{/*그룹 이동은 표에서 드래그해 저장*/}
 						{!item && (
 							<div className={`${rowClassName} @md:items-center`}>
 								<span className={labelClassName}>그룹</span>
