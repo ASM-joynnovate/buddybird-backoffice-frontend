@@ -76,7 +76,7 @@ const UserProfileFormDialog = ({ user, onClose }: Props) => {
 		}
 
 		const trimmedNickname = nickname.trim();
-		// 바뀐 값만 보냄
+		// 변경한 값만 전송
 		const userUpdate: UpdateUserRequest = {
 			...(trimmedNickname !== (user.nickname ?? '') && { nickname: trimmedNickname || null }),
 			...(!!country && country !== user.country && { country }),

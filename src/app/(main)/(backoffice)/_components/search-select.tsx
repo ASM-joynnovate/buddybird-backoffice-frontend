@@ -40,15 +40,15 @@ const SearchSelect = ({
 	toOptionIcon,
 	onValueChange,
 }: Props) => {
-	const [query, setQuery] = useState('');
+	const [inputValue, setInputValue] = useState('');
 
-	const customOption = query.trim();
+	const customOption = inputValue.trim();
 	const customOptionShown =
 		customOptionAllowed &&
 		!!customOption &&
 		!options.some((option) => option === customOption || toOptionLabel(option) === customOption);
 	// 목록에 없는 현재 값도 선택 표시
-	const items = [
+	const selectableOptions = [
 		...(value && !options.includes(value) ? [value] : []),
 		...options,
 		...(customOptionShown ? [customOption] : []),
@@ -72,12 +72,12 @@ const SearchSelect = ({
 
 	return (
 		<Combobox.Root
-			items={items}
+			items={selectableOptions}
 			value={value}
-			inputValue={query}
+			inputValue={inputValue}
 			filter={filterOption}
 			itemToStringLabel={toOptionLabel}
-			onInputValueChange={setQuery}
+			onInputValueChange={setInputValue}
 			onValueChange={handleValueChange}
 		>
 			<Combobox.Trigger

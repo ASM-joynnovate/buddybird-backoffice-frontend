@@ -47,7 +47,7 @@ interface Props {
 const AbuseReportFeedItem = ({ feedItem, parrotPhotoUrl, className }: Props) => {
 	const { playing, progressPercent, handleTogglePlay, audioProps } = useAudioPlayer();
 
-	const text = toFeedItemText(feedItem);
+	const feedItemText = toFeedItemText(feedItem);
 	const recordingUrl = toUploadedUrl(feedItem.file);
 	const MilestoneIcon = feedItem.kind === 'mimic_succeeded' ? undefined : milestoneIcons[feedItem.kind];
 
@@ -66,7 +66,7 @@ const AbuseReportFeedItem = ({ feedItem, parrotPhotoUrl, className }: Props) => 
 					</audio>
 
 					<PlayButton
-						label={text}
+						label={feedItemText}
 						playing={playing}
 						progressPercent={progressPercent}
 						onClick={handleTogglePlay}
@@ -87,7 +87,7 @@ const AbuseReportFeedItem = ({ feedItem, parrotPhotoUrl, className }: Props) => 
 						feedItem.is_deleted && 'text-muted-foreground line-through decoration-chart-neutral',
 					)}
 				>
-					{text}
+					{feedItemText}
 				</strong>
 				{feedItem.kind === 'mimic_succeeded' && (
 					<span className="block text-[13px] text-muted-foreground">따라 한 단어</span>

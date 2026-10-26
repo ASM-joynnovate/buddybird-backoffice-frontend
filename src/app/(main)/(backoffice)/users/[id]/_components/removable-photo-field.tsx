@@ -43,8 +43,6 @@ const RemovablePhotoField = ({ photoFile, removed, square = false, onRemovedChan
 				</span>
 			)}
 
-			{removed && <p className="text-[13px] text-muted-foreground">저장하면 삭제</p>}
-
 			{!!photoFile &&
 				(removed ? (
 					<Button

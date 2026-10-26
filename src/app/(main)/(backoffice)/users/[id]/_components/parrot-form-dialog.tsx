@@ -85,7 +85,7 @@ const ParrotFormDialog = ({ userId, parrot, today, onClose }: Props) => {
 			return;
 		}
 
-		// 바뀐 값만 보냄
+		// 변경한 값만 전송
 		const parrotUpdate: UpdateParrotRequest = {
 			...(trimmedName !== parrot.name && { name: trimmedName }),
 			...(species !== parrot.species && { species }),

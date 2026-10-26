@@ -39,14 +39,14 @@ interface Props {
  */
 const AbuseReportRow = ({ abuseReport, now }: Props) => {
 	const [hideDialogOpen, setHideDialogOpen] = useState(false);
-	const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
+	const [userPhotoDialogOpen, setUserPhotoDialogOpen] = useState(false);
 	const [parrotPhotoDialogOpen, setParrotPhotoDialogOpen] = useState(false);
 
 	const { isPending, mutate } = useHandleAbuseReport();
 
 	const { reported_user: reportedUser, reporter, feed_item: feedItem, handled_at: handledAt } = abuseReport;
 	const firstParrot = reportedUser.parrots.at(0);
-	const mimicFeedItem = feedItem?.kind === 'mimic_succeeded';
+	const isMimicFeedItem = feedItem?.kind === 'mimic_succeeded';
 
 	const handleCompleteAbuseReport = () => {
 		if (isPending) {
@@ -153,12 +153,12 @@ const AbuseReportRow = ({ abuseReport, now }: Props) => {
 							</Button>
 						)}
 						{!!reportedUser.photo_file && (
-							<Button variant="outline" size="sm" onClick={() => setPhotoDialogOpen(true)}>
+							<Button variant="outline" size="sm" onClick={() => setUserPhotoDialogOpen(true)}>
 								<ImageIcon />
 								프로필 사진 삭제
 							</Button>
 						)}
-						{mimicFeedItem && !!firstParrot?.photo_file && (
+						{isMimicFeedItem && !!firstParrot?.photo_file && (
 							<Button variant="outline" size="sm" onClick={() => setParrotPhotoDialogOpen(true)}>
 								<Feather />
 								앵무새 사진 삭제
@@ -176,9 +176,9 @@ const AbuseReportRow = ({ abuseReport, now }: Props) => {
 				<HideFeedItemDialog open={hideDialogOpen} id={feedItem.id} onClose={() => setHideDialogOpen(false)} />
 			)}
 			<DeleteUserPhotoDialog
-				open={photoDialogOpen}
+				open={userPhotoDialogOpen}
 				id={reportedUser.id}
-				onClose={() => setPhotoDialogOpen(false)}
+				onClose={() => setUserPhotoDialogOpen(false)}
 			/>
 			{!!firstParrot && (
 				<DeleteParrotPhotoDialog
