@@ -40,14 +40,14 @@ const ReachCard = ({ dashboardParams, today }: Props) => {
 			</div>
 
 			<div className="flex min-w-0 flex-col gap-3 border-t bg-card-inset px-5 py-4.5 xl:border-t-0 xl:border-l">
-				<CardTitle className="font-bold">국가</CardTitle>
+				<div className="flex items-baseline justify-between gap-3">
+					<CardTitle className="font-bold">국가</CardTitle>
+					<p className="text-[13px] text-muted-foreground">프로필 기준</p>
+				</div>
 
-				<CountryMap countries={userDashboardData.activity_countries} />
+				<CountryMap countries={userDashboardData.countries} />
 
-				<CountryList
-					countries={userDashboardData.activity_countries}
-					className="gap-x-6 md:min-h-44 md:grid-cols-2"
-				/>
+				<CountryList countries={userDashboardData.countries} className="gap-x-6 md:min-h-44 md:grid-cols-2" />
 			</div>
 		</Card>
 	);
