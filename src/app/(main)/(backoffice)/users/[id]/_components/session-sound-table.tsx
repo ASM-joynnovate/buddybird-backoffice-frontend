@@ -95,7 +95,8 @@ const SessionSoundTable = ({ sounds, distressCallSoundIds, judging, player, filt
 
 	return (
 		<section className="flex min-w-0 flex-col gap-3">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+			{/*모바일에서 필터 패널의 위치 기준*/}
+			<div className="relative flex flex-wrap items-center justify-between gap-3">
 				<h4 className="font-bold tabular-nums">소리 {sounds.length.toLocaleString('ko-KR')}개</h4>
 
 				<div className="flex items-center gap-2">

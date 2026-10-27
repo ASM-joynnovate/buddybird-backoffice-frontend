@@ -128,7 +128,7 @@ const CountryList = ({ countries, className }: Props) => {
 									</PopoverTrigger>
 									<PopoverContent
 										side="top"
-										className="max-h-(--available-height) w-auto max-w-xs gap-1 overflow-y-auto bg-tooltip px-3 py-2 text-xs text-tooltip-foreground tabular-nums shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-0"
+										className="max-h-[min(15rem,var(--available-height))] w-auto max-w-xs gap-1 overflow-y-auto overscroll-contain bg-tooltip px-3 py-2 text-xs text-tooltip-foreground tabular-nums shadow-[0_10px_24px_-8px_rgb(0_0_0/0.4)] ring-0"
 									>
 										{hiddenCountries.map(({ country, count }) => (
 											<div key={country} className="flex items-center justify-between gap-4">

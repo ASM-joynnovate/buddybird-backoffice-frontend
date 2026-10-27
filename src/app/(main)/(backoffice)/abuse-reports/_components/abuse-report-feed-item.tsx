@@ -3,6 +3,7 @@
 import Image from 'next/image';
 
 import type { AbuseReport } from '@/types/apis/abuse-reports';
+import type { Parrot } from '@/types/apis/users';
 
 import useAudioPlayer from '@/hooks/use-audio-player';
 
@@ -10,6 +11,7 @@ import { cn } from '@/lib/utils';
 
 import { CalendarDays, Clock, EyeOff, Repeat } from 'lucide-react';
 
+import PhotoDialog from '@/app/(main)/(backoffice)/_components/photo-dialog';
 import PlayButton from '@/app/(main)/(backoffice)/_components/play-button';
 import { HOUR } from '@/config/units';
 import { toUploadedUrl } from '@/utils/file';
@@ -34,21 +36,22 @@ const toFeedItemText = (feedItem: NonNullable<AbuseReport['feed_item']>) => {
 
 interface Props {
 	feedItem: NonNullable<AbuseReport['feed_item']>;
-	parrotPhotoUrl?: string;
+	parrot?: Pick<Parrot, 'name' | 'photo_file'>;
 	className?: string;
 }
 
 /**
  * 신고된 피드 항목 컴포넌트
  * @param feedItem 신고된 피드 항목
- * @param parrotPhotoUrl 신고된 사용자의 첫 앵무새 사진 주소
+ * @param parrot 신고된 사용자의 첫 앵무새
  * @param className 항목에 더할 class
  */
-const AbuseReportFeedItem = ({ feedItem, parrotPhotoUrl, className }: Props) => {
+const AbuseReportFeedItem = ({ feedItem, parrot, className }: Props) => {
 	const { playing, progressPercent, handleTogglePlay, audioProps } = useAudioPlayer();
 
 	const feedItemText = toFeedItemText(feedItem);
 	const recordingUrl = toUploadedUrl(feedItem.file);
+	const parrotPhotoUrl = toUploadedUrl(parrot?.photo_file ?? null);
 	const MilestoneIcon = feedItem.kind === 'mimic_succeeded' ? undefined : milestoneIcons[feedItem.kind];
 
 	return (
@@ -100,16 +103,18 @@ const AbuseReportFeedItem = ({ feedItem, parrotPhotoUrl, className }: Props) => 
 				</EyeOff>
 			)}
 
-			{feedItem.kind === 'mimic_succeeded' && !!parrotPhotoUrl && (
-				<Image
-					src={parrotPhotoUrl}
-					alt="첫 앵무새 사진"
-					title="첫 앵무새 사진"
-					width={40}
-					height={40}
-					unoptimized
-					className="size-10 shrink-0 rounded-full object-cover"
-				/>
+			{feedItem.kind === 'mimic_succeeded' && !!parrot && !!parrotPhotoUrl && (
+				<PhotoDialog photoUrl={parrotPhotoUrl} title={parrot.name} className="rounded-full">
+					<Image
+						src={parrotPhotoUrl}
+						alt="첫 앵무새 사진"
+						title="첫 앵무새 사진"
+						width={40}
+						height={40}
+						unoptimized
+						className="size-10 shrink-0 rounded-full object-cover"
+					/>
+				</PhotoDialog>
 			)}
 		</div>
 	);

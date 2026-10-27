@@ -112,7 +112,7 @@ const AbuseReportRow = ({ abuseReport, now }: Props) => {
 				{!!feedItem && (
 					<AbuseReportFeedItem
 						feedItem={feedItem}
-						parrotPhotoUrl={toUploadedUrl(firstParrot?.photo_file ?? null)}
+						parrot={firstParrot}
 						className={handledAt ? 'opacity-55' : undefined}
 					/>
 				)}
