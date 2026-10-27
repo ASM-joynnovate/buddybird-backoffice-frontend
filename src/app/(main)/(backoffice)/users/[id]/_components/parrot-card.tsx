@@ -8,6 +8,7 @@ import { useGetUser } from '@/hooks/apis/users';
 
 import { Pencil } from 'lucide-react';
 
+import PhotoDialog from '@/app/(main)/(backoffice)/_components/photo-dialog';
 import SpeciesIcon from '@/app/(main)/(backoffice)/_components/species-icon';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import ParrotFormDialog from '@/app/(main)/(backoffice)/users/[id]/_components/parrot-form-dialog';
@@ -46,11 +47,13 @@ const ParrotCard = ({ id, today }: Props) => {
 			<ul className="divide-y">
 				{userData.parrots.map((parrot) => (
 					<li key={parrot.id} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
-						<ParrotPhoto
-							photoUrl={parrot.photo_file?.url}
-							name={parrot.name}
-							className="size-14 rounded-lg text-xl"
-						/>
+						<PhotoDialog photoUrl={parrot.photo_file?.url} title={parrot.name} className="rounded-lg">
+							<ParrotPhoto
+								photoUrl={parrot.photo_file?.url}
+								name={parrot.name}
+								className="size-14 rounded-lg text-xl"
+							/>
+						</PhotoDialog>
 
 						<div className="min-w-0">
 							<strong className="block text-base font-bold">{parrot.name}</strong>

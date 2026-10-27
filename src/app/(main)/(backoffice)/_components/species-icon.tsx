@@ -1,10 +1,9 @@
-import Image from 'next/image';
-
 import { cn } from '@/lib/utils';
 
 import { Bird } from 'lucide-react';
 
 import { SPECIES_IDS } from '@/utils/species';
+import { toSpriteStyle } from '@/utils/sprite';
 
 interface Props {
 	species: string;
@@ -17,19 +16,18 @@ interface Props {
  * @param className 크기를 정하는 class
  */
 const SpeciesIcon = ({ species, className }: Props) => {
+	const speciesIndex = SPECIES_IDS.indexOf(species);
+
 	// 직접 입력한 종은 새 아이콘 표시
-	if (!SPECIES_IDS.includes(species)) {
+	if (speciesIndex === -1) {
 		return <Bird aria-hidden className={cn('size-5 shrink-0 text-muted-foreground', className)} />;
 	}
 
 	return (
-		<Image
-			src={`/images/species/${species}.webp`}
-			alt=""
-			width={20}
-			height={20}
-			unoptimized
-			className={cn('size-5 shrink-0', className)}
+		<span
+			aria-hidden
+			className={cn('inline-block size-5 shrink-0', className)}
+			style={toSpriteStyle('/images/species.png', speciesIndex, SPECIES_IDS.length)}
 		/>
 	);
 };

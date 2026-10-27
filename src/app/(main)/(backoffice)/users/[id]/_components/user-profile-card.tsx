@@ -10,6 +10,7 @@ import { Bell, Copy, Pencil, Trash2, TriangleAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
 import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
+import PhotoDialog from '@/app/(main)/(backoffice)/_components/photo-dialog';
 import ProviderIcon, { PROVIDER_LABELS } from '@/app/(main)/(backoffice)/_components/provider-icon';
 import SendNotificationDialog from '@/app/(main)/(backoffice)/_components/send-notification-dialog';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
@@ -62,11 +63,13 @@ const UserProfileCard = ({ id, initialNow }: Props) => {
 		<>
 			<Card className="gap-4 px-5 py-4.5">
 				<header className="flex flex-wrap items-center gap-3.5">
-					<UserAvatar
-						photoUrl={userData.photo_file?.url}
-						nickname={userData.nickname}
-						className="size-14 text-[22px]"
-					/>
+					<PhotoDialog photoUrl={userData.photo_file?.url} title="프로필 사진" className="rounded-full">
+						<UserAvatar
+							photoUrl={userData.photo_file?.url}
+							nickname={userData.nickname}
+							className="size-14 text-[22px]"
+						/>
+					</PhotoDialog>
 
 					<div>
 						<h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold">
