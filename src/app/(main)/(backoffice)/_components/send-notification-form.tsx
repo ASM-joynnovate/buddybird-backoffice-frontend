@@ -15,6 +15,7 @@ import {
 } from '@/hooks/apis/notifications';
 import { getUserListOptions } from '@/hooks/apis/users';
 
+import CountryPicker from '@/app/(main)/(backoffice)/_components/country-picker';
 import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
 import FunnelRows from '@/app/(main)/(backoffice)/_components/funnel-rows';
 import NotificationContentFields, {
@@ -39,6 +40,7 @@ import { Switch } from '@/components/ui/switch';
 const RECIPIENT_TARGETS = [
 	{ target: 'all', label: '전체' },
 	{ target: 'selected', label: '선택' },
+	{ target: 'countries', label: '국가' },
 ] as const;
 
 const rowClassName = 'grid gap-1.5 @md:grid-cols-[72px_minmax(0,1fr)] @md:gap-3';
@@ -67,8 +69,11 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 	const broadcastNotification = useBroadcastNotification();
 	const uploadNotificationImage = useUploadNotificationImage();
 
-	const [target, setTarget] = useState<'all' | 'selected'>(initialUsers.length > 0 ? 'selected' : 'all');
+	const [target, setTarget] = useState<'all' | 'selected' | 'countries'>(
+		initialUsers.length > 0 ? 'selected' : 'all',
+	);
 	const [selectedUsers, setSelectedUsers] = useState<UserListItem[]>(initialUsers);
+	const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
 	const [content, setContent] = useState(initialContent);
 	const [locale, setLocale] = useState<keyof I18nFieldValue>('ko_kr');
 	const [sendTried, setSendTried] = useState(false);
@@ -79,18 +84,23 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 	const scheduleLabelId = useId();
 
 	// 새 값을 불러오는 동안 이전 인원 표시
-	const audienceKind = useDeferredValue(target === 'all' ? content.kind : null);
+	const audienceKind = useDeferredValue(target === 'selected' ? null : content.kind);
+	const audienceCountries = useDeferredValue(target === 'countries' ? selectedCountries : undefined);
 	const audience = useSuspenseQueries({
-		queries: (audienceKind ? [audienceKind] : []).map((kind) => getNotificationAudienceOptions({ kind })),
+		// 국가를 선택하기 전에는 조회하지 않음
+		queries: (audienceKind && audienceCountries?.length !== 0 ? [audienceKind] : []).map((kind) =>
+			getNotificationAudienceOptions({ kind, countries: audienceCountries }),
+		),
 		combine: (results) => results[0]?.data,
 	});
 
 	const urgent = content.kind === 'urgent';
 	const scheduleOn = scheduled && !urgent;
-	const receivers = selectedUsers.filter((user) => receivesNotification(user, content.kind));
+	const targetUsers = target === 'selected' ? selectedUsers : [];
+	const receivers = targetUsers.filter((user) => receivesNotification(user, content.kind));
 	const reachCounts = audience
 		? [audience.user_count, audience.recipient_count, audience.pushable_count]
-		: [selectedUsers.length, receivers.length, receivers.filter((user) => user.is_pushable).length];
+		: [targetUsers.length, receivers.length, receivers.filter((user) => user.is_pushable).length];
 	const recipientCount = reachCounts[1];
 	const englishTextMissing = !content.title.en_us.trim() || !content.body.en_us.trim();
 	const sending = uploadNotificationImage.isPending || broadcastNotification.isPending;
@@ -116,6 +126,12 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 
 	/** 사진 파일 ID를 포함해 알림 발송 */
 	const broadcast = (imageFileId: string | null) => {
+		const recipientRequests = {
+			all: { all_users: true },
+			selected: { user_ids: selectedUsers.map((user) => user.id), all_users: false },
+			countries: { countries: selectedCountries, all_users: false },
+		};
+
 		broadcastNotification.mutate(
 			{
 				data: {
@@ -123,9 +139,7 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 					title: toI18nText(content.title),
 					body: toI18nText(content.body),
 					image_file_id: imageFileId,
-					...(target === 'all'
-						? { all_users: true }
-						: { user_ids: selectedUsers.map((user) => user.id), all_users: false }),
+					...recipientRequests[target],
 					recipient_local_datetime: scheduleOn ? toLocalDateTime(recipientLocalDatetime) : null,
 				},
 			},
@@ -186,6 +200,10 @@ const SendNotificationForm = ({ initialContent, initialUserIds, onClose }: Props
 									isUserMuted={(user) => !receivesNotification(user, content.kind)}
 									renderUserIcon={(user) => <NotificationReachIcon user={user} kind={content.kind} />}
 								/>
+							)}
+
+							{target === 'countries' && (
+								<CountryPicker countries={selectedCountries} onCountriesChange={setSelectedCountries} />
 							)}
 						</div>
 					</div>

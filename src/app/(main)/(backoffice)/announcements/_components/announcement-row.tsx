@@ -6,13 +6,14 @@ import { cn } from '@/lib/utils';
 
 import { ChevronRight } from 'lucide-react';
 
+import CountryFlagGroup from '@/app/(main)/(backoffice)/_components/country-flag-group';
 import AnnouncementPushStatus from '@/app/(main)/(backoffice)/announcements/_components/announcement-push-status';
 import { formatPublishPeriod } from '@/utils/announcement';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
 import { Badge } from '@/components/ui/badge';
 
-export const announcementGridClassName = 'grid grid-cols-[300px_minmax(0,1fr)_64px_132px_14px] items-center gap-x-5';
+export const announcementGridClassName = 'grid grid-cols-[300px_minmax(0,1fr)_104px_132px_14px] items-center gap-x-5';
 
 // 좁은 화면에서는 가로 스크롤
 export const announcementTableClassName = 'min-w-240';
@@ -25,7 +26,6 @@ const statusTags = {
 
 interface Props {
 	announcement: AnnouncementListItem;
-	userCount: number;
 	status: keyof typeof statusTags;
 	children: ReactNode;
 	onOpen: () => void;
@@ -38,7 +38,6 @@ interface Props {
 /**
  * 공지 목록의 행 컴포넌트
  * @param announcement 표시할 공지
- * @param userCount 전체 사용자 수
  * @param status 공지의 게시 상태
  * @param children 가운데 열에 표시할 내용
  * @param onOpen 행을 누르면 실행할 함수
@@ -49,7 +48,6 @@ interface Props {
  */
 const AnnouncementRow = ({
 	announcement,
-	userCount,
 	status,
 	children,
 	onOpen,
@@ -86,8 +84,9 @@ const AnnouncementRow = ({
 					{!!statusTag && <Badge variant={statusTag.variant}>{statusTag.label}</Badge>}
 				</p>
 
-				<small className="block text-[13px] text-muted-foreground tabular-nums">
+				<small className="flex items-center justify-between gap-2 text-[13px] text-muted-foreground tabular-nums">
 					{formatPublishPeriod(announcement)}
+					<CountryFlagGroup countries={announcement.countries} />
 				</small>
 			</div>
 
@@ -98,10 +97,14 @@ const AnnouncementRow = ({
 			) : (
 				<p className="text-right whitespace-nowrap tabular-nums">
 					<strong className="font-bold">
-						{userCount ? Math.round((announcement.read_count / userCount) * 100) : 0}%
+						{announcement.user_count
+							? Math.round((announcement.read_count / announcement.user_count) * 100)
+							: 0}
+						%
 					</strong>
 					<small className="block text-[13px] text-muted-foreground">
-						{announcement.read_count.toLocaleString('ko-KR')}명
+						{announcement.read_count.toLocaleString('ko-KR')} /{' '}
+						{announcement.user_count.toLocaleString('ko-KR')}명
 					</small>
 				</p>
 			)}

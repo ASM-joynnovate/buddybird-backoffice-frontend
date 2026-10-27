@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react';
 
 import type { NotificationDispatch } from '@/types/apis/notifications';
 
+import CountryFlagGroup from '@/app/(main)/(backoffice)/_components/country-flag-group';
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import ReadStatus from '@/app/(main)/(backoffice)/_components/read-status';
 import DispatchDetail from '@/app/(main)/(backoffice)/notifications/_components/dispatch-detail';
@@ -60,9 +61,13 @@ const DispatchRow = ({ notificationDispatch, keyword, expanded, now, onToggle }:
 				) : (
 					<>
 						<span className="whitespace-nowrap">
-							<small className="mr-1.5 text-[12.5px] text-muted-foreground">
-								{notificationDispatch.target === 'all' ? '전체' : '선택'}
-							</small>
+							{notificationDispatch.target === 'countries' ? (
+								<CountryFlagGroup countries={notificationDispatch.countries} className="mr-1.5" />
+							) : (
+								<small className="mr-1.5 text-[12.5px] text-muted-foreground">
+									{notificationDispatch.target === 'all' ? '전체' : '선택'}
+								</small>
+							)}
 							<b className="font-bold">
 								{notificationDispatch.recipient_count.toLocaleString('ko-KR')}명
 							</b>

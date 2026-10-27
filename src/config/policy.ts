@@ -22,6 +22,7 @@ export const USER_RECENT_ITEM_COUNT = 5;
 export const VISIBLE_SPECIES_COUNT = 6;
 export const VISIBLE_VERSION_COUNT = 5;
 export const VISIBLE_COUNTRY_COUNT = 5;
+export const VISIBLE_FLAG_COUNT = 3;
 export const VISIBLE_EVENT_COUNT = 10;
 
 export const ACTIVE_USER_RECORD_START_DATE = '2026-10-11';

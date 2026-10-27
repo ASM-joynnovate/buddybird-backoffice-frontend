@@ -9,6 +9,7 @@ import {
 	dispatchCancelResultSchema,
 	type Notification,
 	type NotificationAudience,
+	type NotificationAudienceParams,
 	notificationAudienceSchema,
 	type NotificationDispatch,
 	type NotificationDispatchDetail,
@@ -20,7 +21,6 @@ import {
 	type PushDelivery,
 	type PushDeliveryListParams,
 	pushDeliverySchema,
-	type SendableNotificationKind,
 } from '@/types/apis/notifications';
 
 import { apiRequest } from '@/lib/api';
@@ -72,15 +72,13 @@ export const postNotificationDispatchCancel = async ({
 	return dispatchCancelResult;
 };
 
-export const getNotificationAudience = async ({
-	kind,
-}: {
-	kind: SendableNotificationKind;
-}): Promise<NotificationAudience> => {
+export const getNotificationAudience = async (
+	audienceParams: NotificationAudienceParams,
+): Promise<NotificationAudience> => {
 	const { data: notificationAudience } = await apiRequest(
 		'/api/v1/backoffice/notifications/audience',
 		notificationAudienceSchema,
-		{ searchParams: { kind } },
+		{ searchParams: { ...audienceParams } },
 	);
 
 	return notificationAudience;

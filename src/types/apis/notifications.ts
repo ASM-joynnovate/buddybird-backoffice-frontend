@@ -1,5 +1,5 @@
 import { fileSchema, i18nSchema } from '@/types/apis/common';
-import { timestampSchema, uuidSchema } from '@/types/apis/primitives';
+import { countrySchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 
 import { z } from 'zod';
 
@@ -35,7 +35,8 @@ export const notificationDispatchSchema = z.object({
 	body: i18nSchema,
 	image: notificationImageSchema.nullable(),
 	image_file_id: uuidSchema.nullable(),
-	target: z.enum(['all', 'selected']),
+	target: z.enum(['all', 'selected', 'countries']),
+	countries: z.array(countrySchema),
 	recipient_local_datetime: z.iso.datetime({ local: true }).nullable(),
 	created_at: timestampSchema,
 	status: z.enum(['scheduled', 'sending', 'sent']),
@@ -90,6 +91,7 @@ const broadcastNotificationRequestSchema = z.object({
 	image_file_id: uuidSchema.nullable(),
 	user_ids: z.array(uuidSchema).optional(),
 	all_users: z.boolean(),
+	countries: z.array(countrySchema).optional(),
 	recipient_local_datetime: z.string().nullable(),
 });
 
@@ -123,6 +125,11 @@ export interface NotificationDispatchListParams {
 	keyword?: string;
 	sent_from?: string;
 	sent_to?: string;
+}
+
+export interface NotificationAudienceParams {
+	kind: SendableNotificationKind;
+	countries?: string[];
 }
 
 export interface PushDeliveryListParams {

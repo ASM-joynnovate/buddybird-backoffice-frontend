@@ -12,10 +12,10 @@ import {
 } from '@/apis/notifications';
 
 import type {
+	NotificationAudienceParams,
 	NotificationDispatchListParams,
 	NotificationListParams,
 	PushDeliveryListParams,
-	SendableNotificationKind,
 } from '@/types/apis/notifications';
 
 import { apiKeys } from '@/hooks/apis/keys';
@@ -66,10 +66,10 @@ export const useGetNotificationDispatch = ({ id }: { id: string }) => {
 };
 
 /** 수신자 수 조회 Hook에 사용할 옵션 */
-export const getNotificationAudienceOptions = ({ kind }: { kind: SendableNotificationKind }) =>
+export const getNotificationAudienceOptions = (audienceParams: NotificationAudienceParams) =>
 	queryOptions({
-		queryKey: apiKeys.notifications.audience(kind),
-		queryFn: () => getNotificationAudience({ kind }),
+		queryKey: apiKeys.notifications.audience(audienceParams),
+		queryFn: () => getNotificationAudience(audienceParams),
 	});
 
 /** 푸시 발송 기록 조회 Hook에 사용할 옵션 */

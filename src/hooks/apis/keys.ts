@@ -5,10 +5,10 @@ import type { DashboardParams, StabilityIssueFilters, StabilityIssueSort } from 
 import type { EmergencyListParams } from '@/types/apis/emergencies';
 import type { FeedbackListParams } from '@/types/apis/feedback';
 import type {
+	NotificationAudienceParams,
 	NotificationDispatchListParams,
 	NotificationListParams,
 	PushDeliveryListParams,
-	SendableNotificationKind,
 } from '@/types/apis/notifications';
 import type { SessionEventListParams, SessionSoundListParams } from '@/types/apis/sessions';
 import type { UserListParams, UserSessionListParams } from '@/types/apis/users';
@@ -81,7 +81,8 @@ export const apiKeys = {
 		dispatchList: (listParams: NotificationDispatchListParams) =>
 			['api', 'notifications', 'dispatches', 'list', listParams] as const,
 		dispatchDetail: (id: string) => ['api', 'notifications', 'dispatches', id] as const,
-		audience: (kind: SendableNotificationKind) => ['api', 'notifications', 'audience', kind] as const,
+		audience: (audienceParams: NotificationAudienceParams) =>
+			['api', 'notifications', 'audience', audienceParams] as const,
 	},
 	notificationSettings: {
 		all: () => ['api', 'notification-settings'] as const,

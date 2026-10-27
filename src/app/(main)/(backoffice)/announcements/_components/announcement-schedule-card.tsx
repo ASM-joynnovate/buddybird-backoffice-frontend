@@ -153,7 +153,6 @@ const AnnouncementScheduleCard = ({ listParams, now }: Props) => {
 										<AnnouncementScheduleRow
 											key={announcement.id}
 											announcement={announcement}
-											userCount={announcementListData.meta.user_count}
 											now={now}
 											onOpen={() => setEditingAnnouncement(announcement)}
 											onTooltipShow={handleTooltipShow}

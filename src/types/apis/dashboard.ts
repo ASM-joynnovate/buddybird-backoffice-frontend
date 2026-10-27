@@ -1,6 +1,6 @@
 import { fileSchema, i18nSchema } from '@/types/apis/common';
 import { notificationKindSchema } from '@/types/apis/notifications';
-import { localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
+import { countrySchema, localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { sessionPhaseSchema } from '@/types/apis/sessions';
 import { providerSchema, userLastSessionSchema } from '@/types/apis/users';
 
@@ -41,7 +41,14 @@ export const dashboardSchema = z.object({
 		scheduled: z.array(dashboardNotificationSchema),
 	}),
 	announcements: z.array(
-		z.object({ id: uuidSchema, title: i18nSchema, starts_at: timestampSchema, read_count: z.number().int() }),
+		z.object({
+			id: uuidSchema,
+			title: i18nSchema,
+			starts_at: timestampSchema,
+			countries: z.array(countrySchema),
+			read_count: z.number().int(),
+			user_count: z.number().int(),
+		}),
 	),
 	devices: z.object({
 		versions: z.array(z.object({ app_version: z.string(), count: z.number().int() })),

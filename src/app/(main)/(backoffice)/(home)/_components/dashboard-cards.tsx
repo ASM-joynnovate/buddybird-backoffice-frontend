@@ -82,11 +82,7 @@ const DashboardCards = ({ dashboardParams, today, now }: Props) => {
 				</div>
 
 				<div className="contents xl:grid xl:gap-4">
-					<AnnouncementCard
-						announcements={dashboardData.announcements}
-						userCount={dashboardData.users.total_count}
-						now={now}
-					/>
+					<AnnouncementCard announcements={dashboardData.announcements} now={now} />
 					<AppVersionCard devices={dashboardData.devices} />
 					<NotificationCard notifications={dashboardData.notifications} />
 				</div>

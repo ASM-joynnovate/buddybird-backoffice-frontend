@@ -37,7 +37,8 @@ const NotificationPreview = ({ kind, title, body, imageUrl, locale }: Props) => 
 
 	return (
 		<section className="grid gap-2.5">
-			<div className="flex min-h-7 items-center justify-between gap-3">
+			{/*칸이 좁으면 언어 선택을 다음 줄에 배치*/}
+			<div className="flex min-h-7 flex-wrap items-center justify-between gap-x-3 gap-y-2">
 				<h4 className="text-[13px] font-semibold">미리보기</h4>
 
 				{/*입력 폼에서는 폼의 언어 목록으로 선택*/}
