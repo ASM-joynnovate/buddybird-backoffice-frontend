@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import dayjs from 'dayjs';
 import { ChevronDown, Clock } from 'lucide-react';
 
+import CountryFlagGroup from '@/app/(main)/(backoffice)/_components/country-flag-group';
 import NotificationKindTag, { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import TimeAxis from '@/app/(main)/(backoffice)/_components/time-axis';
 import TimeAxisTicks from '@/app/(main)/(backoffice)/_components/time-axis-ticks';
@@ -88,6 +89,7 @@ const ScheduledDispatchRow = ({ notificationDispatch, range, expanded, now, onTo
 
 				<div className="grid justify-items-end gap-1 text-right tabular-nums max-md:col-span-full max-md:grid-cols-[auto_minmax(0,1fr)] max-md:items-center max-md:justify-items-start max-md:gap-3">
 					<b className="font-bold whitespace-nowrap">
+						<CountryFlagGroup countries={notificationDispatch.countries} className="mr-1.5" />
 						{sending && `${notificationDispatch.sent_count.toLocaleString('ko-KR')} / `}
 						{notificationDispatch.recipient_count.toLocaleString('ko-KR')}명
 					</b>

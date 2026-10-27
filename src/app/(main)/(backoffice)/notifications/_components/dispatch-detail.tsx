@@ -4,6 +4,7 @@ import type { NotificationDispatch } from '@/types/apis/notifications';
 
 import dayjs from 'dayjs';
 
+import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import FunnelRows from '@/app/(main)/(backoffice)/_components/funnel-rows';
 import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import NotificationPreview from '@/app/(main)/(backoffice)/_components/notification-preview';
@@ -16,6 +17,7 @@ import RecipientDetail, {
 	detailSectionClassName,
 	detailStatClassName,
 } from '@/app/(main)/(backoffice)/notifications/_components/recipient-detail';
+import { toCountryName } from '@/utils/country';
 import { toCopiedContent } from '@/utils/notification';
 import { toTimeAxisRange } from '@/utils/time-axis';
 
@@ -79,6 +81,20 @@ const DispatchDetail = ({ notificationDispatch, now }: Props) => {
 
 			<section className={detailStatClassName}>
 				<h4 className="text-[13px] font-semibold">{delivered ? '전달' : '예상 전달'}</h4>
+
+				{notificationDispatch.countries.length > 0 && (
+					<p className="grid grid-cols-[64px_minmax(0,1fr)] items-start gap-2.5 text-[13px]">
+						<span className="text-muted-foreground">국가</span>
+						<span className="flex flex-wrap gap-x-3 gap-y-1">
+							{notificationDispatch.countries.map((country) => (
+								<span key={country} className="inline-flex items-center gap-1.5 font-semibold">
+									<CountryFlag country={country} />
+									{toCountryName(country)}
+								</span>
+							))}
+						</span>
+					</p>
+				)}
 
 				<FunnelRows
 					color={color}

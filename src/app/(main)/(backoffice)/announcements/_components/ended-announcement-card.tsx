@@ -80,7 +80,6 @@ const EndedAnnouncementCard = ({ listParams, query }: Props) => {
 									<AnnouncementRow
 										key={announcement.id}
 										announcement={announcement}
-										userCount={announcementListData.meta.user_count}
 										status="ended"
 										onOpen={() => setEditingAnnouncement(announcement)}
 									>

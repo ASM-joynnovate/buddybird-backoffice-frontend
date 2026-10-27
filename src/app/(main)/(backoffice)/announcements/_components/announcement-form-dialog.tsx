@@ -10,9 +10,11 @@ import { useCreateAnnouncement, useUpdateAnnouncement, useUploadAnnouncementImag
 
 import dayjs from 'dayjs';
 
+import CountryPicker from '@/app/(main)/(backoffice)/_components/country-picker';
 import DateTimePicker from '@/app/(main)/(backoffice)/_components/date-time-picker';
 import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
+import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import AnnouncementImageField, {
 	type AnnouncementImageInput,
 } from '@/app/(main)/(backoffice)/announcements/_components/announcement-image-field';
@@ -29,6 +31,11 @@ import { englishTextMissing, toI18nFieldValue, toI18nText, toOptionalI18nText } 
 import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
+const AUDIENCE_TARGETS = [
+	{ target: 'all', label: '전체' },
+	{ target: 'countries', label: '국가' },
+] as const;
 
 const rowClassName = 'grid gap-1.5 @md:grid-cols-[72px_minmax(0,1fr)] @md:gap-3';
 const labelClassName = 'text-[13px] font-semibold text-muted-foreground';
@@ -52,6 +59,10 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 	const [images, setImages] = useState<AnnouncementImageInput[]>(() =>
 		(announcement?.images ?? []).map((image) => ({ url: image.url, fileId: image.file_id })),
 	);
+
+	const [target, setTarget] = useState<'all' | 'countries'>(announcement?.countries.length ? 'countries' : 'all');
+	const [countries, setCountries] = useState(announcement?.countries ?? []);
+	const [countriesMissing, setCountriesMissing] = useState(false);
 
 	const [startsAt, setStartsAt] = useState(announcement ? toDateTimeInputValue(announcement.starts_at) : '');
 	const [endsAt, setEndsAt] = useState(announcement?.ends_at ? toDateTimeInputValue(announcement.ends_at) : '');
@@ -104,6 +115,16 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			});
 	};
 
+	const handleTargetChange = (nextTarget: 'all' | 'countries') => {
+		setTarget(nextTarget);
+		setCountriesMissing(false);
+	};
+
+	const handleCountriesChange = (nextCountries: string[]) => {
+		setCountries(nextCountries);
+		setCountriesMissing(false);
+	};
+
 	const handleStartsAtChange = (value: string) => {
 		setStartsAt(value);
 		setEndsAtInvalid(false);
@@ -123,10 +144,12 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 
 		const nextEnglishTitleMissing = !title.en_us.trim();
 		const nextEnglishBodyMissing = englishTextMissing(body);
+		const nextCountriesMissing = target === 'countries' && countries.length === 0;
 		const nextEndsAtInvalid = !!endsAt && !dayjs(endsAt).isAfter(startsAt);
 
 		setEnglishTitleMissing(nextEnglishTitleMissing);
 		setEnglishBodyMissing(nextEnglishBodyMissing);
+		setCountriesMissing(nextCountriesMissing);
 		setEndsAtInvalid(nextEndsAtInvalid);
 
 		// 누락된 영어 문구를 입력하도록 영어 선택
@@ -134,7 +157,7 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			setLocale('en_us');
 		}
 
-		if (nextEnglishTitleMissing || nextEnglishBodyMissing || nextEndsAtInvalid) {
+		if (nextEnglishTitleMissing || nextEnglishBodyMissing || nextCountriesMissing || nextEndsAtInvalid) {
 			return;
 		}
 
@@ -151,6 +174,8 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 			body: toOptionalI18nText(body),
 			starts_at: toTimestamp(startsAt),
 			ends_at: endsAt ? toTimestamp(endsAt) : null,
+			// 빈 목록은 전체 대상
+			countries: target === 'countries' ? countries : [],
 			image_file_ids: images.flatMap((image) => (image.fileId ? [image.fileId] : [])),
 		};
 		const pushRequest = {
@@ -235,6 +260,35 @@ const AnnouncementFormDialog = ({ announcement, onClose }: Props) => {
 							</div>
 
 							<div className={`${rowClassName} mt-2 border-t pt-5`}>
+								<span className={`${labelClassName} @md:pt-2`}>대상</span>
+
+								<div className="grid min-w-0 justify-items-start gap-2">
+									<SegmentedControl
+										label="대상"
+										options={AUDIENCE_TARGETS.map((audienceTarget) => ({
+											value: audienceTarget.target,
+											label: audienceTarget.label,
+										}))}
+										value={target}
+										onValueChange={handleTargetChange}
+									/>
+
+									{target === 'countries' && (
+										<CountryPicker
+											countries={countries}
+											onCountriesChange={handleCountriesChange}
+										/>
+									)}
+
+									{countriesMissing && (
+										<p role="alert" className="text-[13px] text-destructive">
+											대상 국가를 선택해 주세요.
+										</p>
+									)}
+								</div>
+							</div>
+
+							<div className={rowClassName}>
 								<span className={`${labelClassName} @md:pt-2.5`}>게시 기간</span>
 
 								<div>
