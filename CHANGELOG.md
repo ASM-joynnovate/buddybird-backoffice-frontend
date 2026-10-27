@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.29.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.28.0...v0.29.0) (2026-10-27)
+
+
+### Features
+
+* 공지 및 알림 발송 대상 국가 추가 ([e07024b](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/e07024bf47be783e500adf811edc7ca813f1a43a))
+* 공지 및 알림 발송 대상 국가 추가 ([782d8d6](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/782d8d6d06e48089a5ddfd51c8a35dd00941ab6a))
+* 사진 크게 보기 추가, 아이콘 스프라이트 및 모바일 세션 필터 수정 ([3b62675](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/3b626758ad5008c2300b115e8a25af601b3cf7ae))
+* 사진 크게 보기 추가, 아이콘 스프라이트 및 모바일 세션 필터 수정 ([bd790cb](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/bd790cbd7b3f00d45a271c77f8be5da7350c4d31))
+
 ## [0.28.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.27.0...v0.28.0) (2026-10-26)
 
 
