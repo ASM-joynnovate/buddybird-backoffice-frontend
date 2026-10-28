@@ -6,10 +6,11 @@ import type { I18nText } from '@/types/apis/common';
 import type { NotificationKind } from '@/types/apis/notifications';
 
 import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
-import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { I18N_LOCALES } from '@/config/locale';
 import { UNSUBSCRIBE_TEXTS } from '@/config/notification';
 import { toI18nLocaleName } from '@/utils/i18n-text';
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Props {
 	kind: NotificationKind;
@@ -35,6 +36,12 @@ const NotificationPreview = ({ kind, title, body, imageUrl, locale }: Props) => 
 	const textLocale = body[previewLocale] === null ? 'en_us' : previewLocale;
 	const previewTitle = title[previewLocale] ?? title.en_us;
 
+	const handleLocaleChange = (nextLocale: keyof I18nText | null) => {
+		if (nextLocale) {
+			setSelectedLocale(nextLocale);
+		}
+	};
+
 	return (
 		<section className="grid gap-2.5">
 			{/*칸이 좁으면 언어 선택을 다음 줄에 배치*/}
@@ -45,17 +52,25 @@ const NotificationPreview = ({ kind, title, body, imageUrl, locale }: Props) => 
 				{locale ? (
 					<p className="text-[13px] text-muted-foreground">{toI18nLocaleName(locale)}</p>
 				) : (
-					<SegmentedControl
-						label="미리보기 언어"
-						size="sm"
-						options={I18N_LOCALES.map((localeOption) => ({
+					<Select
+						items={I18N_LOCALES.map((localeOption) => ({
 							value: localeOption.locale,
 							label: localeOption.label,
 						}))}
 						value={selectedLocale}
-						className="border-border"
-						onValueChange={setSelectedLocale}
-					/>
+						onValueChange={handleLocaleChange}
+					>
+						<SelectTrigger size="sm" aria-label="미리보기 언어">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent align="end">
+							{I18N_LOCALES.map((localeOption) => (
+								<SelectItem key={localeOption.locale} value={localeOption.locale}>
+									{localeOption.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				)}
 			</div>
 

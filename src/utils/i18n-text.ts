@@ -22,6 +22,12 @@ export const toI18nFieldValue = (text: I18nText | null): I18nFieldValue => {
 		ja_jp: text?.ja_jp ?? '',
 		ru_ru: text?.ru_ru ?? '',
 		es_es: text?.es_es ?? '',
+		th_th: text?.th_th ?? '',
+		zh_hans: text?.zh_hans ?? '',
+		zh_hant: text?.zh_hant ?? '',
+		vi_vn: text?.vi_vn ?? '',
+		hi_in: text?.hi_in ?? '',
+		bn_bd: text?.bn_bd ?? '',
 	};
 };
 
@@ -33,6 +39,12 @@ export const toI18nText = (fieldValue: I18nFieldValue): I18nText => {
 		ja_jp: fieldValue.ja_jp.trim() || null,
 		ru_ru: fieldValue.ru_ru.trim() || null,
 		es_es: fieldValue.es_es.trim() || null,
+		th_th: fieldValue.th_th.trim() || null,
+		zh_hans: fieldValue.zh_hans.trim() || null,
+		zh_hant: fieldValue.zh_hant.trim() || null,
+		vi_vn: fieldValue.vi_vn.trim() || null,
+		hi_in: fieldValue.hi_in.trim() || null,
+		bn_bd: fieldValue.bn_bd.trim() || null,
 	};
 };
 

@@ -73,6 +73,78 @@ const DIALOG_TEXTS = {
 			message: (version) => <>Actualiza a la versión {version} para seguir usando la app.</>,
 		},
 	},
+	th_th: {
+		closeLabel: 'ปิด',
+		acceptLabel: 'อัปเดต',
+		optional: {
+			title: 'มีอัปเดตใหม่',
+			message: (version) => <>BuddyBird เวอร์ชัน {version} พร้อมให้ใช้งานแล้ว</>,
+		},
+		forced: {
+			title: 'ต้องอัปเดตแอป',
+			message: (version) => <>โปรดอัปเดตเป็นเวอร์ชัน {version} เพื่อใช้งานต่อ</>,
+		},
+	},
+	zh_hans: {
+		closeLabel: '关闭',
+		acceptLabel: '更新',
+		optional: {
+			title: '更新提醒',
+			message: (version) => <>BuddyBird {version}版本现已推出。</>,
+		},
+		forced: {
+			title: '需要更新',
+			message: (version) => <>如需继续使用，请更新到{version}版本。</>,
+		},
+	},
+	zh_hant: {
+		closeLabel: '關閉',
+		acceptLabel: '更新',
+		optional: {
+			title: '更新通知',
+			message: (version) => <>現在可以更新至 BuddyBird {version} 版。</>,
+		},
+		forced: {
+			title: '需要更新',
+			message: (version) => <>請更新至 {version} 版以繼續使用。</>,
+		},
+	},
+	vi_vn: {
+		closeLabel: 'Đóng',
+		acceptLabel: 'Cập nhật',
+		optional: {
+			title: 'Thông báo cập nhật',
+			message: (version) => <>Đã có BuddyBird phiên bản {version}.</>,
+		},
+		forced: {
+			title: 'Cần cập nhật ứng dụng',
+			message: (version) => <>Vui lòng cập nhật lên phiên bản {version} để tiếp tục sử dụng.</>,
+		},
+	},
+	hi_in: {
+		closeLabel: 'बंद करें',
+		acceptLabel: 'अपडेट करें',
+		optional: {
+			title: 'अपडेट उपलब्ध है',
+			message: (version) => <>BuddyBird का {version} वर्शन उपलब्ध है।</>,
+		},
+		forced: {
+			title: 'अपडेट करना ज़रूरी है',
+			message: (version) => <>ऐप इस्तेमाल करते रहने के लिए {version} वर्शन पर अपडेट करें।</>,
+		},
+	},
+	bn_bd: {
+		closeLabel: 'বন্ধ করুন',
+		acceptLabel: 'আপডেট করুন',
+		optional: {
+			title: 'আপডেট পাওয়া যাচ্ছে',
+			message: (version) => <>BuddyBird-এর {version} ভার্সন এখন পাওয়া যাচ্ছে।</>,
+		},
+		forced: {
+			title: 'আপডেট করা দরকার',
+			message: (version) => <>ব্যবহার চালিয়ে যেতে {version} ভার্সনে আপডেট করুন।</>,
+		},
+	},
 } satisfies Record<
 	keyof I18nFieldValue,
 	{ closeLabel: string; acceptLabel: string; optional: UpdateTexts; forced: UpdateTexts }
