@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.30.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.29.0...v0.30.0) (2026-10-28)
+
+
+### Features
+
+* 태국어, 중국어, 베트남어, 힌디어 및 벵골어 추가 ([cff0ed8](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/cff0ed8a25508dcbd5445c927bb1ec0a12456a49))
+* 프리셋 단어 locale 값 변경 및 새 언어 추가 ([cedb587](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/cedb5878ccd294c5d6e24113d891297299852b49))
+* 프리셋 단어 언어 값을 locale 값으로 변경 ([d9a791a](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/d9a791a13b77576c2347c6e5f04779411121edf7))
+
 ## [0.29.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.28.0...v0.29.0) (2026-10-27)
 
 
