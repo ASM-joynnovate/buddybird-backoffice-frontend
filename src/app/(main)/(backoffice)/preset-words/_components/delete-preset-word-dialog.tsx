@@ -5,7 +5,7 @@ import type { PresetWord } from '@/types/apis/preset-words';
 import { useDeletePresetWord } from '@/hooks/apis/preset-words';
 import { useConfirmOnce } from '@/hooks/use-confirm-once';
 
-import { toPresetLanguageName } from '@/utils/locale';
+import { toLocaleName } from '@/utils/locale';
 
 import {
 	AlertDialog,
@@ -59,7 +59,7 @@ const DeletePresetWordDialog = ({ open, presetWord, onClose }: Props) => {
 				<div className="grid gap-4 p-4">
 					<p className="flex items-center gap-2">
 						<strong className="truncate font-semibold">{presetWord.name}</strong>
-						<Badge variant="muted">{toPresetLanguageName(presetWord.language)}</Badge>
+						<Badge variant="muted">{toLocaleName(presetWord.language)}</Badge>
 					</p>
 
 					<p className="text-[12.5px] text-muted-foreground">

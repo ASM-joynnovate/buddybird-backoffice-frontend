@@ -15,6 +15,12 @@ const POPUP_TEXTS = {
 	ja_jp: { closeLabel: '閉じる', detailLabel: '詳しく見る' },
 	ru_ru: { closeLabel: 'ЗАКРЫТЬ', detailLabel: 'ПОДРОБНЕЕ' },
 	es_es: { closeLabel: 'CERRAR', detailLabel: 'VER MÁS' },
+	th_th: { closeLabel: 'ปิด', detailLabel: 'ดูรายละเอียด' },
+	zh_hans: { closeLabel: '关闭', detailLabel: '详情' },
+	zh_hant: { closeLabel: '關閉', detailLabel: '查看詳情' },
+	vi_vn: { closeLabel: 'ĐÓNG', detailLabel: 'CHI TIẾT' },
+	hi_in: { closeLabel: 'बंद करें', detailLabel: 'पूरा देखें' },
+	bn_bd: { closeLabel: 'বন্ধ করুন', detailLabel: 'বিস্তারিত' },
 } satisfies Record<keyof I18nFieldValue, { closeLabel: string; detailLabel: string }>;
 
 interface Props {

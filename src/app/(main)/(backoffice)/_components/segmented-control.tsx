@@ -43,7 +43,7 @@ const SegmentedControl = <T extends string | number | boolean>({
 	const radioName = useId();
 
 	const groupClassName = cn(
-		'inline-flex w-fit min-w-0 rounded-md border bg-card p-0.5 text-sm',
+		'relative inline-flex w-fit min-w-0 rounded-md border bg-card p-0.5 text-sm',
 		sizeClassNames[size].group,
 		className,
 	);

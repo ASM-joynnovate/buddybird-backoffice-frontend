@@ -10,12 +10,12 @@ import { cn } from '@/lib/utils';
 
 import { Diff, Minus, Plus } from 'lucide-react';
 
-import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { I18N_LOCALES } from '@/config/locale';
 import { diffLines, type LineChange } from '@/utils/diff';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const changedLinesClassName =
@@ -66,20 +66,38 @@ const ConsentBodyPane = ({ consent, previousConsent, locale, compared, onLocaleC
 		return groups;
 	}, []);
 
+	const handleLocaleChange = (nextLocale: keyof I18nFieldValue | null) => {
+		if (nextLocale) {
+			onLocaleChange(nextLocale);
+		}
+	};
+
 	return (
 		<div className="mt-4.5 overflow-hidden rounded-lg border">
 			<div className="flex flex-wrap items-center gap-2 border-b bg-muted px-3 py-2 max-md:gap-1.5 max-md:px-2">
-				<SegmentedControl
-					label="언어"
-					size="sm"
-					options={I18N_LOCALES.map((localeOption) => ({
+				<Select
+					items={I18N_LOCALES.map((localeOption) => ({
 						value: localeOption.locale,
 						label: localeOption.label,
-						disabled: consent.body[localeOption.locale] === null,
 					}))}
 					value={shownLocale}
-					onValueChange={onLocaleChange}
-				/>
+					onValueChange={handleLocaleChange}
+				>
+					<SelectTrigger size="sm" aria-label="언어">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						{I18N_LOCALES.map((localeOption) => (
+							<SelectItem
+								key={localeOption.locale}
+								value={localeOption.locale}
+								disabled={consent.body[localeOption.locale] === null}
+							>
+								{localeOption.label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 
 				<div className="ml-auto flex items-center gap-2 max-md:gap-1.5">
 					{compared && !!previousConsent && (

@@ -3,7 +3,7 @@ import { presetLanguageSchema } from '@/types/apis/preset-words';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import AddPresetWordButton from '@/app/(main)/(backoffice)/preset-words/_components/add-preset-word-button';
-import { toPresetLanguageName } from '@/utils/locale';
+import { toLocaleName } from '@/utils/locale';
 
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 
@@ -17,14 +17,14 @@ const PresetWordListSkeleton = () => {
 				label="언어"
 				options={presetLanguageSchema.options.map((language) => ({
 					value: language,
-					label: toPresetLanguageName(language),
+					label: toLocaleName(language),
 					disabled: true,
 				}))}
-				value="ko"
+				value="ko-KR"
 				className="max-w-full overflow-x-auto"
 			/>
 
-			<TitledCard title={toPresetLanguageName('ko')} action=<Skeleton className="h-3.5 w-5" />>
+			<TitledCard title={toLocaleName('ko-KR')} action=<Skeleton className="h-3.5 w-5" />>
 				<ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-2 xl:grid-cols-4">
 					{Array.from({ length: PLACEHOLDER_ITEM_COUNT }, (_, index) => (
 						<li
@@ -42,7 +42,7 @@ const PresetWordListSkeleton = () => {
 					))}
 
 					<li className="grid">
-						<AddPresetWordButton language="ko" />
+						<AddPresetWordButton language="ko-KR" />
 					</li>
 				</ul>
 			</TitledCard>

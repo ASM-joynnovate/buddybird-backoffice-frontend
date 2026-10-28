@@ -10,13 +10,13 @@ import { cn } from '@/lib/utils';
 
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import PresetLanguageCard from '@/app/(main)/(backoffice)/preset-words/_components/preset-language-card';
-import { toPresetLanguageName } from '@/utils/locale';
+import { toLocaleName } from '@/utils/locale';
 
 /** 언어 탭 및 선택한 언어의 단어 프리셋 목록 컴포넌트 */
 const PresetWordList = () => {
 	const { data: presetWordListData } = useGetPresetWordList();
 
-	const [selectedLanguage, setSelectedLanguage] = useState<PresetLanguage>('ko');
+	const [selectedLanguage, setSelectedLanguage] = useState<PresetLanguage>('ko-KR');
 
 	const selectedPresetWords = presetWordListData.filter((presetWord) => presetWord.language === selectedLanguage);
 
@@ -33,7 +33,7 @@ const PresetWordList = () => {
 						value: language,
 						label: (
 							<>
-								{toPresetLanguageName(language)}
+								{toLocaleName(language)}
 								{/*프리셋이 없는 언어는 개수를 경고 색으로 표시*/}
 								<span
 									className={cn(
