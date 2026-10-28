@@ -10,7 +10,7 @@ import PresetWordAudioField, {
 	type PickedAudio,
 } from '@/app/(main)/(backoffice)/preset-words/_components/preset-word-audio-field';
 import { PRESET_WORD_NAME_MAX_LENGTH } from '@/config';
-import { toPresetLanguageName } from '@/utils/locale';
+import { toLocaleName } from '@/utils/locale';
 
 import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
@@ -44,7 +44,7 @@ const PresetWordFormDialog = ({ language, presetWord, onClose }: Props) => {
 	const createPresetWord = useCreatePresetWord();
 	const updatePresetWord = useUpdatePresetWord();
 
-	const languageName = toPresetLanguageName(language);
+	const languageName = toLocaleName(language);
 	const saving = createPresetWord.isPending || updatePresetWord.isPending;
 
 	const handleOpenChange = (nextOpen: boolean) => {

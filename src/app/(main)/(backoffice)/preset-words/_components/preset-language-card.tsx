@@ -5,7 +5,7 @@ import { TriangleAlert } from 'lucide-react';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
 import AddPresetWordButton from '@/app/(main)/(backoffice)/preset-words/_components/add-preset-word-button';
 import PresetWordItem from '@/app/(main)/(backoffice)/preset-words/_components/preset-word-item';
-import { toPresetLanguageName } from '@/utils/locale';
+import { toLocaleName } from '@/utils/locale';
 
 interface Props {
 	language: PresetLanguage;
@@ -18,7 +18,7 @@ interface Props {
  * @param presetWords 그 언어의 단어 프리셋 목록
  */
 const PresetLanguageCard = ({ language, presetWords }: Props) => {
-	const languageName = toPresetLanguageName(language);
+	const languageName = toLocaleName(language);
 
 	return (
 		<TitledCard

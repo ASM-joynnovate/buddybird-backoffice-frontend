@@ -1,21 +1,6 @@
-import type { PresetLanguage } from '@/types/apis/preset-words';
-
 import { LOCALE_NAMES } from '@/config/locale';
-
-const presetLanguageNames: Record<PresetLanguage, string> = {
-	ko: '한국어',
-	en: '영어',
-	ja: '일본어',
-	ru: '러시아어',
-	es: '스페인어',
-};
 
 /** 언어 값을 화면에 표시할 이름으로 변환하는 함수 */
 export const toLocaleName = (locale: string) => {
 	return LOCALE_NAMES[locale] ?? locale;
-};
-
-/** 프리셋 언어를 화면에 표시할 이름으로 변환하는 함수 */
-export const toPresetLanguageName = (language: PresetLanguage) => {
-	return presetLanguageNames[language];
 };
