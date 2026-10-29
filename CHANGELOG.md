@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.30.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.30.0...v0.30.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* 마지막 세션 비율을 구간별 사용자 합계로 계산 ([d02ead5](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/d02ead5d13ba3a5d59596b8924dd6e6f86cc4736))
+* 마지막 세션 비율을 구간별 사용자 합계로 계산 ([f54284f](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/f54284fd36713defbe23f1d575fd7cb597cd089c))
+
 ## [0.30.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.29.0...v0.30.0) (2026-10-28)
 
 
