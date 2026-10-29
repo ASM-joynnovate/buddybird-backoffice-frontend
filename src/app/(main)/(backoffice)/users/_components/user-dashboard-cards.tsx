@@ -30,10 +30,7 @@ const UserDashboardCards = ({ dashboardParams, query, today }: Props) => {
 	return (
 		<div className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
 			<UserTrendCard userDashboard={userDashboardData} today={today} />
-			<LastSessionCard
-				lastSessions={userDashboardData.last_sessions}
-				query={query}
-			/>
+			<LastSessionCard lastSessions={userDashboardData.last_sessions} query={query} />
 			<ActiveUserCard daily={userDashboardData.daily} countries={userDashboardData.countries} today={today} />
 			<CompositionCard userDashboard={userDashboardData} query={query} />
 			<SpeciesCard parrots={userDashboardData.parrots} />
