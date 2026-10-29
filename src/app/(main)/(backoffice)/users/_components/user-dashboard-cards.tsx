@@ -32,7 +32,6 @@ const UserDashboardCards = ({ dashboardParams, query, today }: Props) => {
 			<UserTrendCard userDashboard={userDashboardData} today={today} />
 			<LastSessionCard
 				lastSessions={userDashboardData.last_sessions}
-				userCount={userDashboardData.users.total_count}
 				query={query}
 			/>
 			<ActiveUserCard daily={userDashboardData.daily} countries={userDashboardData.countries} today={today} />

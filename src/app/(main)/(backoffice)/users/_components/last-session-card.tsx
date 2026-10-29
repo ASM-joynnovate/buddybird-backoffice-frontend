@@ -13,17 +13,16 @@ const colorClassNames = ['bg-chart-1', 'bg-chart-1/62', 'bg-chart-1/30', 'bg-cha
 
 interface Props {
 	lastSessions: UserDashboard['last_sessions'];
-	userCount: number;
 	query: Record<string, SearchParamValue>;
 }
 
 /**
  * 마지막 세션 카드 컴포넌트
  * @param lastSessions 마지막 세션 구간별 사용자 수
- * @param userCount 전체 사용자 수
  * @param query 현재 주소의 쿼리
  */
-const LastSessionCard = ({ lastSessions, userCount, query }: Props) => {
+const LastSessionCard = ({ lastSessions, query }: Props) => {
+	const userCount = lastSessions.reduce((total, { count }) => total + count, 0);
 	const lastSessionGroups = lastSessions.map(({ last_session, count }, index) => ({
 		value: last_session,
 		count,
