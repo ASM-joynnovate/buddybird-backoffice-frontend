@@ -26,6 +26,11 @@ export const formatShortDateTime = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M.D HH:mm');
 };
 
+/** 기간을 '10.1 10:00 ~ 10.15 18:00' 형식으로 변환하는 함수 */
+export const formatPeriod = ({ starts_at, ends_at }: { starts_at: string; ends_at: string | null }) => {
+	return `${formatShortDateTime(starts_at)} ~ ${ends_at ? formatShortDateTime(ends_at) : '종료일 없음'}`;
+};
+
 /** 시각을 'M.D HH:mm:ss' 형식의 한국 시간으로 변환하는 함수 */
 export const formatShortDateTimeWithSeconds = (date: ConfigType) => {
 	return dayjs(date).tz(DISPLAY_TIME_ZONE).format('M.D HH:mm:ss');

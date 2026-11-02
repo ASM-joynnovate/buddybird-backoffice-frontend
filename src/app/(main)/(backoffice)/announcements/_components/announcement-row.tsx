@@ -8,7 +8,7 @@ import { ChevronRight } from 'lucide-react';
 
 import CountryFlagGroup from '@/app/(main)/(backoffice)/_components/country-flag-group';
 import AnnouncementPushStatus from '@/app/(main)/(backoffice)/announcements/_components/announcement-push-status';
-import { formatPublishPeriod } from '@/utils/announcement';
+import { formatPeriod } from '@/utils/date';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
 import { Badge } from '@/components/ui/badge';
@@ -85,7 +85,7 @@ const AnnouncementRow = ({
 				</p>
 
 				<small className="flex items-center justify-between gap-2 text-[13px] text-muted-foreground tabular-nums">
-					{formatPublishPeriod(announcement)}
+					{formatPeriod(announcement)}
 					<CountryFlagGroup countries={announcement.countries} />
 				</small>
 			</div>
