@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.30.1...v0.31.0) (2026-11-02)
+
+
+### Features
+
+* 광고 탭 추가 ([af5b62c](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/af5b62ce9fb094c12003f5eb1699f884321a77f7))
+* 광고 탭 추가 ([8e3ec04](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/8e3ec04127bcca9902c10db46ec67f1c2d703e8e))
+
 ## [0.30.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.30.0...v0.30.1) (2026-10-29)
 
 
