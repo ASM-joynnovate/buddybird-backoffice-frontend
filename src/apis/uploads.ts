@@ -1,3 +1,4 @@
+import type { AdImageKind } from '@/types/apis/ads';
 import { type Upload, uploadSchema } from '@/types/apis/uploads';
 
 import { apiRequest } from '@/lib/api';
@@ -30,6 +31,24 @@ export const postNotificationImageUpload = async ({
 	const { data: upload } = await apiRequest('/api/v1/backoffice/notifications/images', uploadSchema, {
 		method: 'POST',
 		json: { content_type: file.type, file_size: file.size },
+		idempotencyKey,
+	});
+
+	return upload;
+};
+
+export const postAdImageUpload = async ({
+	file,
+	kind,
+	idempotencyKey,
+}: {
+	file: File;
+	kind: AdImageKind;
+	idempotencyKey: string;
+}): Promise<Upload> => {
+	const { data: upload } = await apiRequest('/api/v1/backoffice/ads/images', uploadSchema, {
+		method: 'POST',
+		json: { content_type: file.type, file_size: file.size, kind },
 		idempotencyKey,
 	});
 

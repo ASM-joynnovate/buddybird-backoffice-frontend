@@ -28,36 +28,44 @@ const LocaleFieldGroup = ({ locale, summaryTexts, englishRequired, children, onL
 	return (
 		<div className="@container">
 			<div className="grid items-start gap-2.5 @lg:grid-cols-[208px_minmax(0,1fr)]">
-				{/*언어 다섯 개까지 표시, 초과하면 스크롤*/}
-				<fieldset className="max-h-60.5 min-w-0 [scrollbar-width:thin] divide-y overflow-y-auto overscroll-contain rounded-lg border bg-card">
-					<legend className="sr-only">입력할 언어</legend>
+				{/*두 열이면 입력 높이에 맞춤*/}
+				<div className="relative min-w-0 self-stretch">
+					{/*언어 다섯 개까지 표시, 초과하면 스크롤*/}
+					<fieldset className="max-h-60.5 min-w-0 [scrollbar-width:thin] divide-y overflow-y-auto overscroll-contain rounded-lg border bg-card @lg:absolute @lg:inset-0 @lg:max-h-none">
+						<legend className="sr-only">입력할 언어</legend>
 
-					{I18N_LOCALES.map((localeOption) => {
-						const summaryText = summaryTexts[localeOption.locale].trim().split('\n')[0];
+						{I18N_LOCALES.map((localeOption) => {
+							const summaryText = summaryTexts[localeOption.locale].trim().split('\n')[0];
 
-						return (
-							<button
-								key={localeOption.locale}
-								type="button"
-								aria-pressed={localeOption.locale === locale}
-								className="group grid h-12 w-full min-w-0 content-center gap-px px-3 text-left hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand aria-pressed:bg-muted"
-								onClick={() => onLocaleChange(localeOption.locale)}
-							>
-								<span className="flex items-baseline justify-between gap-1.5 text-[13px] font-semibold group-aria-pressed:font-bold">
-									{localeOption.label}
-									{englishRequired && localeOption.locale !== 'en_us' && (
-										<span className="text-xs font-normal text-muted-foreground">선택</span>
-									)}
-								</span>
+							return (
+								<button
+									key={localeOption.locale}
+									type="button"
+									aria-pressed={localeOption.locale === locale}
+									className="group grid h-12 w-full min-w-0 content-center gap-px px-3 text-left hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand aria-pressed:bg-muted"
+									onClick={() => onLocaleChange(localeOption.locale)}
+								>
+									<span className="flex items-baseline justify-between gap-1.5 text-[13px] font-semibold group-aria-pressed:font-bold">
+										{localeOption.label}
+										{englishRequired && localeOption.locale !== 'en_us' && (
+											<span className="text-xs font-normal text-muted-foreground">선택</span>
+										)}
+									</span>
 
-								{/*비워 둔 언어는 앱에서 영어 문구 표시*/}
-								<span className={cn('truncate text-[12.5px]', !summaryText && 'text-muted-foreground')}>
-									{summaryText || (localeOption.locale === 'en_us' ? '-' : '영어 문구 표시')}
-								</span>
-							</button>
-						);
-					})}
-				</fieldset>
+									{/*비워 둔 언어는 앱에서 영어 문구 표시*/}
+									<span
+										className={cn(
+											'truncate text-[12.5px]',
+											!summaryText && 'text-muted-foreground',
+										)}
+									>
+										{summaryText || (localeOption.locale === 'en_us' ? '-' : '영어 문구 표시')}
+									</span>
+								</button>
+							);
+						})}
+					</fieldset>
+				</div>
 
 				{children}
 			</div>

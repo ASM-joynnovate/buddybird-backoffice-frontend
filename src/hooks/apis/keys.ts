@@ -1,4 +1,5 @@
 import type { AbuseReportListParams } from '@/types/apis/abuse-reports';
+import type { AdListParams, AdStatsParams } from '@/types/apis/ads';
 import type { AnnouncementListParams } from '@/types/apis/announcements';
 import type { Platform } from '@/types/apis/app-updates';
 import type { DashboardParams, StabilityIssueFilters, StabilityIssueSort } from '@/types/apis/dashboard';
@@ -58,6 +59,12 @@ export const apiKeys = {
 	announcements: {
 		all: () => ['api', 'announcements'] as const,
 		list: (listParams: AnnouncementListParams) => ['api', 'announcements', 'list', listParams] as const,
+	},
+	ads: {
+		all: () => ['api', 'ads'] as const,
+		list: (listParams: AdListParams) => ['api', 'ads', 'list', listParams] as const,
+		totalStats: (statsParams: AdStatsParams) => ['api', 'ads', 'stats', statsParams] as const,
+		stats: (id: string, statsParams: AdStatsParams) => ['api', 'ads', id, 'stats', statsParams] as const,
 	},
 	consents: {
 		all: () => ['api', 'consents'] as const,

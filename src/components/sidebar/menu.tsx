@@ -11,6 +11,7 @@ import {
 	ChartNoAxesColumn,
 	FileText,
 	Flag,
+	GalleryHorizontalEnd,
 	House,
 	Megaphone,
 	MessageSquare,
@@ -50,6 +51,7 @@ const menuGroups = [
 		title: '등록',
 		menus: [
 			{ href: '/announcements', label: '공지', icon: Megaphone },
+			{ href: '/ads', label: '광고', icon: GalleryHorizontalEnd },
 			{ href: '/consents', label: '고지문', icon: FileText },
 			{ href: '/app-updates', label: '앱 업데이트', icon: Smartphone },
 			{ href: '/preset-words', label: '단어 프리셋', icon: Music },

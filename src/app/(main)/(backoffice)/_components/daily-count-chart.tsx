@@ -87,7 +87,8 @@ const DailyCountChart = ({
 					tickFormatter={(date: string) => toChartDateLabel(date, today)}
 				/>
 				<YAxis
-					width={30}
+					// 세 자리를 넘는 눈금은 글자 폭만큼 확장
+					width={Math.max(30, String(maxAxisCount).length * 7 + 9)}
 					tickLine={false}
 					axisLine={false}
 					domain={[0, maxAxisCount]}

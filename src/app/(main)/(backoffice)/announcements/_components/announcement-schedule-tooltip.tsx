@@ -4,8 +4,7 @@ import { cn } from '@/lib/utils';
 
 import dayjs from 'dayjs';
 
-import { formatPublishPeriod } from '@/utils/announcement';
-import { formatDaysOrHours } from '@/utils/date';
+import { formatDaysOrHours, formatPeriod } from '@/utils/date';
 
 interface Props {
 	announcement: AnnouncementListItem;
@@ -52,7 +51,7 @@ const AnnouncementScheduleTooltip = ({ announcement, now, left, top }: Props) =>
 				</div>
 			)}
 
-			<span className="text-tooltip-foreground/75 tabular-nums">{formatPublishPeriod(announcement)}</span>
+			<span className="text-tooltip-foreground/75 tabular-nums">{formatPeriod(announcement)}</span>
 		</div>
 	);
 };
