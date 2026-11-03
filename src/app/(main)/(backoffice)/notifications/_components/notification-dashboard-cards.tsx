@@ -30,6 +30,7 @@ const NotificationDashboardCards = ({ dashboardParams, date, query, today }: Pro
 		<>
 			<NotificationTrendCard
 				notificationDashboard={notificationDashboardData}
+				dashboardParams={dashboardParams}
 				selectedDate={date}
 				query={query}
 				today={today}

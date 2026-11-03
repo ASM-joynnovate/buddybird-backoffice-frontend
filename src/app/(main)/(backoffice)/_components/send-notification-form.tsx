@@ -21,13 +21,12 @@ import FunnelRows from '@/app/(main)/(backoffice)/_components/funnel-rows';
 import NotificationContentFields, {
 	type NotificationContent,
 } from '@/app/(main)/(backoffice)/_components/notification-content-fields';
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import NotificationPreview from '@/app/(main)/(backoffice)/_components/notification-preview';
 import NotificationReachIcon from '@/app/(main)/(backoffice)/_components/notification-reach-icon';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import UserPicker from '@/app/(main)/(backoffice)/_components/user-picker';
 import { BROADCAST_MAX_USER_COUNT } from '@/config';
-import { AUDIENCE_HELP_TEXTS } from '@/config/notification';
+import { AUDIENCE_HELP_TEXTS, NOTIFICATION_KINDS } from '@/config/notification';
 import { toLocalDateTime } from '@/utils/date';
 import { toI18nText } from '@/utils/i18n-text';
 import { receivesNotification, toSentText } from '@/utils/notification';

@@ -5,7 +5,6 @@ import type { ReactNode } from 'react';
 import Image from 'next/image';
 
 import type { I18nText } from '@/types/apis/common';
-import type { NotificationKind } from '@/types/apis/notifications';
 
 import { cn } from '@/lib/utils';
 
@@ -21,7 +20,7 @@ export const rowButtonClassName =
 
 interface Props {
 	id: string;
-	kind: NotificationKind;
+	kind: string;
 	title: I18nText;
 	body: I18nText;
 	imageUrl?: string;

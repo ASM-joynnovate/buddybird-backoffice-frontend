@@ -18,11 +18,15 @@ const TimeAxisTicks = ({ range, now, className }: Props) => {
 	const { ticks, nowPercent } = toTimeAxisTicks(range, now);
 
 	return (
-		<div aria-hidden className={cn('relative h-4.5 text-[11.5px] text-muted-foreground tabular-nums', className)}>
+		<div
+			aria-hidden
+			className={cn('@container relative h-4.5 text-[11.5px] text-muted-foreground tabular-nums', className)}
+		>
+			{/*좁은 폭에서는 0시 및 12시만 표시*/}
 			{ticks.map((tick) => (
 				<span
 					key={tick.percent}
-					className="absolute bottom-0 pl-1 whitespace-nowrap"
+					className={cn('absolute bottom-0 pl-1 whitespace-nowrap', tick.minor && '@max-[400px]:hidden')}
 					style={{ left: `${tick.percent}%` }}
 				>
 					{tick.label}

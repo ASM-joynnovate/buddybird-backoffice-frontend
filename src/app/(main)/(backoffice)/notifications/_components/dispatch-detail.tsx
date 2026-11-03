@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 
 import CountryFlag from '@/app/(main)/(backoffice)/_components/country-flag';
 import FunnelRows from '@/app/(main)/(backoffice)/_components/funnel-rows';
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import NotificationPreview from '@/app/(main)/(backoffice)/_components/notification-preview';
 import TimeAxis from '@/app/(main)/(backoffice)/_components/time-axis';
 import TimeAxisTicks from '@/app/(main)/(backoffice)/_components/time-axis-ticks';
@@ -17,6 +16,7 @@ import RecipientDetail, {
 	detailSectionClassName,
 	detailStatClassName,
 } from '@/app/(main)/(backoffice)/notifications/_components/recipient-detail';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { toCountryName } from '@/utils/country';
 import { toCopiedContent } from '@/utils/notification';
 import { toTimeAxisRange } from '@/utils/time-axis';

@@ -8,11 +8,10 @@ import { ChevronRight } from 'lucide-react';
 
 import DragHandle from '@/app/(main)/(backoffice)/_components/drag-handle';
 import DefaultEnabledIcon from '@/app/(main)/(backoffice)/notification-settings/_components/default-enabled-icon';
-import NotificationSettingKindTag from '@/app/(main)/(backoffice)/notification-settings/_components/notification-setting-kind-tag';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 
 export const notificationSettingGridClassName =
-	'grid grid-cols-[20px_minmax(0,1fr)_auto_14px] items-center gap-x-2.5 gap-y-1 [grid-template-areas:"grip_title_def_go"_"grip_kind_kind_kind"] md:grid-cols-[20px_minmax(0,1fr)_112px_64px_14px] md:gap-x-4 md:[grid-template-areas:"grip_title_kind_def_go"]';
+	'grid grid-cols-[20px_minmax(0,1fr)_auto_14px] items-center gap-x-2.5 [grid-template-areas:"grip_title_def_go"] md:grid-cols-[20px_minmax(0,1fr)_64px_14px] md:gap-x-4';
 
 export const notificationSettingRowClassName =
 	'relative -mx-2 min-h-12 rounded-md px-2 py-2.5 before:absolute before:inset-x-2 before:top-0 before:border-t before:border-border';
@@ -72,10 +71,6 @@ const NotificationSettingItemRow = ({ item, grouped, ref, style, className, drag
 					<p className="text-[12.5px] text-muted-foreground">{koreanOrEnglishText(item.description)}</p>
 				)}
 			</div>
-
-			<span className={cn('[grid-area:kind]', grouped && 'max-md:pl-4.5')}>
-				<NotificationSettingKindTag kind={item.kind} />
-			</span>
 
 			<span className="[grid-area:def]">
 				<DefaultEnabledIcon enabled={item.default_enabled} />

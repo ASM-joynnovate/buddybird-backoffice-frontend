@@ -9,9 +9,9 @@ import type { I18nFieldValue } from '@/types/i18n';
 import LocaleFieldGroup from '@/app/(main)/(backoffice)/_components/locale-field-group';
 import LocaleTextField from '@/app/(main)/(backoffice)/_components/locale-text-field';
 import NotificationImageField from '@/app/(main)/(backoffice)/_components/notification-image-field';
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import { NOTIFICATION_BODY_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/config';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { toI18nFieldValue } from '@/utils/i18n-text';
 
 const rowClassName = 'grid gap-1.5 @md:grid-cols-[72px_minmax(0,1fr)] @md:gap-3';

@@ -3,7 +3,7 @@ import type { UserListItem } from '@/types/apis/users';
 
 import { Ban, Bell, BellOff } from 'lucide-react';
 
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { receivesNotification } from '@/utils/notification';
 
 interface Props {

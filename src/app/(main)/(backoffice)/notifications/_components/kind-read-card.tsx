@@ -7,8 +7,9 @@ import type { NotificationDashboard } from '@/types/apis/dashboard';
 import type { SearchParamValue } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
+import { NOTIFICATION_KINDS } from '@/config/notification';
+import { toNotificationKindDisplay } from '@/utils/notification';
 import { toToggledQuery } from '@/utils/search-params';
 
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +27,7 @@ interface Props {
  * @param query 현재 주소의 쿼리
  */
 const KindReadCard = ({ notificationDashboard, query }: Props) => {
-	// 리포트, 공지, 마케팅, 긴급 순서
+	// 리포트, 공지, 마케팅, 긴급, 응급 순서
 	const kindCounts = notificationDashboard.kinds.toSorted(
 		(a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind),
 	);
@@ -55,13 +56,15 @@ const KindReadCard = ({ notificationDashboard, query }: Props) => {
 										!!query.kind && !kindSelected && 'opacity-40',
 									)}
 									style={
-										{ '--kind-color': NOTIFICATION_KINDS[kindCount.kind].color } as CSSProperties
+										{
+											'--kind-color': toNotificationKindDisplay(kindCount.kind).color,
+										} as CSSProperties
 									}
 								>
 									<span className="flex items-center gap-2 font-semibold">
 										<span className="size-2 shrink-0 rounded-full bg-(--kind-color)" />
 										<span className="group-hover:underline group-hover:underline-offset-3">
-											{NOTIFICATION_KINDS[kindCount.kind].label}
+											{toNotificationKindDisplay(kindCount.kind).label}
 										</span>
 										{kindCount.kind === 'report' && <Badge variant="muted">자동</Badge>}
 									</span>

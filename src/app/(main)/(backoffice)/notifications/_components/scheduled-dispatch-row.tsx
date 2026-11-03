@@ -8,11 +8,12 @@ import dayjs from 'dayjs';
 import { ChevronDown, Clock } from 'lucide-react';
 
 import CountryFlagGroup from '@/app/(main)/(backoffice)/_components/country-flag-group';
-import NotificationKindTag, { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
+import NotificationKindTag from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import TimeAxis from '@/app/(main)/(backoffice)/_components/time-axis';
 import TimeAxisTicks from '@/app/(main)/(backoffice)/_components/time-axis-ticks';
 import DispatchDetail from '@/app/(main)/(backoffice)/notifications/_components/dispatch-detail';
 import { rowButtonClassName } from '@/app/(main)/(backoffice)/notifications/_components/notification-summary-row';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { formatDurationLater, formatLocalShortDateTime } from '@/utils/date';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
 import type { TimeAxisRange } from '@/utils/time-axis';

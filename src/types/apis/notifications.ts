@@ -11,7 +11,7 @@ const notificationImageSchema = z.object({ url: z.string() });
 export const notificationSchema = z.object({
 	id: uuidSchema,
 	user_id: uuidSchema,
-	kind: notificationKindSchema,
+	kind: z.string(),
 	data_id: uuidSchema.nullable(),
 	title: i18nSchema,
 	body: i18nSchema,
@@ -75,7 +75,7 @@ export const pushDeliverySchema = z.object({
 	id: uuidSchema,
 	notification_id: uuidSchema.nullable(),
 	announcement_id: uuidSchema.nullable(),
-	kind: notificationKindSchema,
+	kind: z.string(),
 	title: i18nSchema,
 	body: i18nSchema.nullable(),
 	scheduled_at: timestampSchema,

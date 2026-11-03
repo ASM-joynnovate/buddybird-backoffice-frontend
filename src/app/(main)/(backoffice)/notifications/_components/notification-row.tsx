@@ -1,6 +1,6 @@
 'use client';
 
-import type { Notification } from '@/types/apis/notifications';
+import { type Notification, sendableNotificationKindSchema } from '@/types/apis/notifications';
 
 import ReadStatus from '@/app/(main)/(backoffice)/_components/read-status';
 import DetailActions from '@/app/(main)/(backoffice)/notifications/_components/detail-actions';
@@ -29,6 +29,7 @@ interface Props {
  */
 const NotificationRow = ({ notification, keyword, recipientListed, expanded, now, onToggle }: Props) => {
 	const { kind } = notification;
+	const sendableKind = sendableNotificationKindSchema.safeParse(kind).data;
 
 	return (
 		<NotificationSummaryRow
@@ -65,10 +66,10 @@ const NotificationRow = ({ notification, keyword, recipientListed, expanded, now
 				pushSentAt={notification.push_sent_at}
 				readAt={notification.read_at}
 			>
-				{/*리포트 및 응급 알림은 다시 발송할 수 없음*/}
-				{kind !== 'report' && kind !== 'emergency' && (
+				{/*직접 발송하는 종류만 다시 발송*/}
+				{!!sendableKind && (
 					<DetailActions
-						copiedContent={toCopiedContent({ ...notification, kind })}
+						copiedContent={toCopiedContent({ ...notification, kind: sendableKind })}
 						copiedUserId={notification.user_id}
 					/>
 				)}

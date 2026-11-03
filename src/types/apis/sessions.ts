@@ -68,6 +68,8 @@ export const sessionEventSchema = z.object({
 			'distress_call_detected',
 			'parrot_disappeared',
 			'parrot_appeared',
+			'parrot_motionless',
+			'parrot_moved',
 			'session_finished',
 			'unknown',
 		])

@@ -5,10 +5,10 @@ import type { CSSProperties } from 'react';
 import type { NotificationDispatch } from '@/types/apis/notifications';
 
 import CountryFlagGroup from '@/app/(main)/(backoffice)/_components/country-flag-group';
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import ReadStatus from '@/app/(main)/(backoffice)/_components/read-status';
 import DispatchDetail from '@/app/(main)/(backoffice)/notifications/_components/dispatch-detail';
 import NotificationSummaryRow from '@/app/(main)/(backoffice)/notifications/_components/notification-summary-row';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { formatLocalShortDateTime, formatRelativeTime, formatShortDateTime } from '@/utils/date';
 
 interface Props {

@@ -21,7 +21,6 @@ const NotificationSettingTableSkeleton = () => {
 				)}
 			>
 				<span className="pb-2 [grid-area:title]">제목</span>
-				<span className="pb-2 [grid-area:kind]">종류</span>
 				<span className="pb-2 [grid-area:def]">기본값</span>
 			</div>
 
@@ -36,7 +35,6 @@ const NotificationSettingTableSkeleton = () => {
 						)}
 					>
 						<SkeletonText className="w-2/5 [grid-area:title]" />
-						<Skeleton className="h-5 w-16 [grid-area:kind]" />
 						<Skeleton className="size-4 [grid-area:def]" />
 					</div>
 				))}

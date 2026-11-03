@@ -1,4 +1,14 @@
+import type { NotificationKind } from '@/types/apis/notifications';
+
 import type { I18nFieldValue } from '@/types/i18n';
+
+export const NOTIFICATION_KINDS = {
+	report: { label: '리포트', color: 'var(--chart-1)' },
+	announcement: { label: '공지', color: 'var(--chart-2)' },
+	marketing: { label: '마케팅', color: 'var(--chart-3)' },
+	urgent: { label: '긴급', color: 'var(--chart-4)' },
+	emergency: { label: '응급', color: 'var(--destructive-dot)' },
+} satisfies Record<NotificationKind, { label: string; color: string }>;
 
 export const MARKETING_PREFIXES: I18nFieldValue = {
 	ko_kr: '(광고) ',

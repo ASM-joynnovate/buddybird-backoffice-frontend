@@ -7,7 +7,6 @@ import type { SearchParamValue } from '@/lib/api';
 
 import dayjs from 'dayjs';
 
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import PeriodFilter from '@/app/(main)/(backoffice)/_components/period-filter';
 import SearchBar from '@/app/(main)/(backoffice)/_components/search-bar';
 import DispatchResultCount from '@/app/(main)/(backoffice)/notifications/_components/dispatch-result-count';
@@ -16,6 +15,7 @@ import NotificationDashboardSkeleton from '@/app/(main)/(backoffice)/notificatio
 import NotificationFeed from '@/app/(main)/(backoffice)/notifications/_components/notification-feed';
 import NotificationResultCount from '@/app/(main)/(backoffice)/notifications/_components/notification-result-count';
 import SendNotificationButton from '@/app/(main)/(backoffice)/notifications/_components/send-notification-button';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 
 import ErrorHandlingWrapper from '@/components/error-handling-wrapper';
 import QueryError from '@/components/query-error';

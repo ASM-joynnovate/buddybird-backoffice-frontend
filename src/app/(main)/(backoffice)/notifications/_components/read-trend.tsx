@@ -8,9 +8,9 @@ import dayjs from 'dayjs';
 import { Bar, BarChart, type BarShapeProps, LabelList, Rectangle, XAxis, YAxis } from 'recharts';
 
 import AverageLine from '@/app/(main)/(backoffice)/_components/average-line';
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import ReadTrendTick from '@/app/(main)/(backoffice)/notifications/_components/read-trend-tick';
 import ReadTrendTooltip from '@/app/(main)/(backoffice)/notifications/_components/read-trend-tooltip';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { HOUR } from '@/config/units';
 
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
