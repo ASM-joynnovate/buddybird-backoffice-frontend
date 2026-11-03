@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.31.0...v0.31.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* 새 알림 종류로 알림 화면이 깨지던 문제 수정 ([83fb205](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/83fb2054ff26b1168b93e186ae3d2e6c7c89aa3e))
+* 새 알림 종류로 알림 화면이 깨지던 문제 수정 ([0125cae](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/0125caee21e9a4b9cb884fecf270d274fd53e7cc))
+
 ## [0.31.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.30.1...v0.31.0) (2026-11-02)
 
 
