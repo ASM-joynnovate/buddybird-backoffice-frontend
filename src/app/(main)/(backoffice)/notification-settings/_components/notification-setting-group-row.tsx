@@ -61,8 +61,6 @@ const NotificationSettingGroupRow = ({ group, ref, style, className, dragHandleP
 				)}
 			</div>
 
-			<span className="text-muted-foreground [grid-area:kind]">그룹</span>
-
 			<ChevronRight aria-hidden className="size-3.5 text-muted-foreground [grid-area:go]" />
 		</li>
 	);

@@ -5,17 +5,16 @@ import type { CSSProperties, ReactNode } from 'react';
 import Link from 'next/link';
 
 import type { I18nText } from '@/types/apis/common';
-import type { NotificationKind } from '@/types/apis/notifications';
 
 import { cn } from '@/lib/utils';
 
 import dayjs from 'dayjs';
 import { Bell, BellOff, Mail, MailOpen, Send } from 'lucide-react';
 
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import NotificationPreview from '@/app/(main)/(backoffice)/_components/notification-preview';
 import UserAvatar from '@/app/(main)/(backoffice)/_components/user-avatar';
 import { formatDurationLater, formatShortDateTime } from '@/utils/date';
+import { toNotificationKindDisplay } from '@/utils/notification';
 
 export const detailPanelClassName =
 	'grid overflow-hidden rounded-lg bg-card-inset shadow-[inset_0_0_0_1px_var(--border)] @min-[761px]:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]';
@@ -23,7 +22,7 @@ export const detailSectionClassName = 'grid min-w-0 content-start gap-2.5 p-4';
 export const detailStatClassName = `${detailSectionClassName} border-t @min-[761px]:border-t-0 @min-[761px]:border-l`;
 
 interface Props {
-	kind: NotificationKind;
+	kind: string;
 	title: I18nText;
 	body: I18nText;
 	imageUrl?: string;
@@ -92,7 +91,7 @@ const RecipientDetail = ({ kind, title, body, imageUrl, recipient, sentAt, pushS
 				{/*발송, 푸시, 읽음 순서*/}
 				<ol
 					className="grid tabular-nums"
-					style={{ '--kind-color': NOTIFICATION_KINDS[kind].color } as CSSProperties}
+					style={{ '--kind-color': toNotificationKindDisplay(kind).color } as CSSProperties}
 				>
 					{steps.map(({ label, at, Icon }) => (
 						<li

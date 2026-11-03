@@ -44,6 +44,7 @@ export const toTimeAxisTicks = (range: TimeAxisRange, now: number) => {
 			percent: toTimeAxisPercent(time, range),
 			// 자정은 날짜로 표시
 			label: formatTime(time) === '00:00' ? formatShortDate(time) : formatTime(time),
+			minor: formatTime(time) !== '00:00' && formatTime(time) !== '12:00',
 		}))
 		// "지금"과 겹치는 눈금 제외
 		.filter((tick) => !nowVisible || Math.abs(tick.percent - nowPercent) > NOW_TICK_GAP_PERCENT);

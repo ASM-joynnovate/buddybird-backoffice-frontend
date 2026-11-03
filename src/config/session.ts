@@ -33,6 +33,8 @@ export const SESSION_EVENTS = {
 	distress_call_detected: { label: '오디오 기반 응급 상황', color: 'var(--destructive-dot)' },
 	parrot_disappeared: { label: '이탈', color: 'var(--destructive-dot)' },
 	parrot_appeared: { label: '복귀', color: 'var(--chart-3)' },
+	parrot_motionless: { label: '앵무새 움직임 없음', color: 'var(--destructive-dot)' },
+	parrot_moved: { label: '앵무새 다시 움직임', color: 'var(--chart-3)' },
 	session_finished: { label: '세션 종료', color: 'var(--foreground)' },
 	unknown: { label: '알 수 없는 이벤트', color: 'var(--muted-foreground)' },
 } satisfies Record<SessionEvent['kind'], { label: string; color: string }>;

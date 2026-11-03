@@ -1,5 +1,4 @@
 import { fileSchema, i18nSchema } from '@/types/apis/common';
-import { notificationKindSchema } from '@/types/apis/notifications';
 import { countrySchema, localDateSchema, timestampSchema, uuidSchema } from '@/types/apis/primitives';
 import { sessionPhaseSchema } from '@/types/apis/sessions';
 import { providerSchema, userLastSessionSchema } from '@/types/apis/users';
@@ -9,7 +8,7 @@ import { z } from 'zod';
 const dailyCountSchema = z.object({ date: localDateSchema, count: z.number().int() });
 
 const dashboardNotificationSchema = z.object({
-	kind: notificationKindSchema,
+	kind: z.string(),
 	title: i18nSchema,
 	sent_at: timestampSchema,
 	recipient_count: z.number().int(),
@@ -34,9 +33,7 @@ export const dashboardSchema = z.object({
 	withdrawals: z.object({ count: z.number().int(), daily: z.array(dailyCountSchema) }),
 	feedback: z.object({ count: z.number().int(), previous_count: z.number().int() }),
 	notifications: z.object({
-		kinds: z.array(
-			z.object({ kind: notificationKindSchema, sent_count: z.number().int(), read_count: z.number().int() }),
-		),
+		kinds: z.array(z.object({ kind: z.string(), sent_count: z.number().int(), read_count: z.number().int() })),
 		recent: z.array(dashboardNotificationSchema),
 		scheduled: z.array(dashboardNotificationSchema),
 	}),
@@ -181,22 +178,13 @@ export const notificationDashboardSchema = z.object({
 	notifications: z.object({ count: z.number().int(), previous_count: z.number().int() }),
 	kinds: z.array(
 		z.object({
-			kind: notificationKindSchema,
+			kind: z.string(),
 			sent_count: z.number().int(),
 			read_count: z.number().int(),
 			push_sent_count: z.number().int(),
 		}),
 	),
-	daily: z.array(
-		z.object({
-			date: localDateSchema,
-			report_count: z.number().int(),
-			announcement_count: z.number().int(),
-			marketing_count: z.number().int(),
-			urgent_count: z.number().int(),
-			emergency_count: z.number().int(),
-		}),
-	),
+	daily: z.array(z.object({ date: localDateSchema, kind: z.string(), count: z.number().int() })),
 });
 
 export const appUpdateDashboardSchema = z.object({

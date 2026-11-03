@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import type { I18nText } from '@/types/apis/common';
-import type { NotificationKind } from '@/types/apis/notifications';
 
 import PushPreviewCard from '@/app/(main)/(backoffice)/_components/push-preview-card';
 import { I18N_LOCALES } from '@/config/locale';
@@ -13,7 +12,7 @@ import { toI18nLocaleName } from '@/utils/i18n-text';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Props {
-	kind: NotificationKind;
+	kind: string;
 	title: I18nText;
 	body: I18nText;
 	imageUrl?: string | null;

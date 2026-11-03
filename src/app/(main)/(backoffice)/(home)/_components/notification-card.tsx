@@ -3,10 +3,11 @@
 import type { Dashboard } from '@/types/apis/dashboard';
 
 import HalfDonutChart from '@/app/(main)/(backoffice)/_components/half-donut-chart';
-import { NOTIFICATION_KINDS } from '@/app/(main)/(backoffice)/_components/notification-kind-tag';
 import TitledCard from '@/app/(main)/(backoffice)/_components/titled-card';
+import { NOTIFICATION_KINDS } from '@/config/notification';
 import { formatDateTime } from '@/utils/date';
 import { koreanOrEnglishText } from '@/utils/i18n-text';
+import { toNotificationKindDisplay } from '@/utils/notification';
 
 const KIND_ORDER = Object.keys(NOTIFICATION_KINDS);
 
@@ -39,9 +40,9 @@ const NotificationCard = ({ notifications }: Props) => {
 					<HalfDonutChart
 						title="알림의 종류별 건수"
 						parts={kindCounts.map((kindCount) => ({
-							name: NOTIFICATION_KINDS[kindCount.kind].label,
+							name: toNotificationKindDisplay(kindCount.kind).label,
 							count: kindCount.sent_count,
-							color: NOTIFICATION_KINDS[kindCount.kind].color,
+							color: toNotificationKindDisplay(kindCount.kind).color,
 						}))}
 						value={`${Math.round((readCount / sentCount) * 100)}%`}
 						label="읽음"
@@ -53,9 +54,9 @@ const NotificationCard = ({ notifications }: Props) => {
 							<li key={kindCount.kind} className="flex items-center gap-2 py-1.5">
 								<span
 									className="size-2 rounded-full"
-									style={{ backgroundColor: NOTIFICATION_KINDS[kindCount.kind].color }}
+									style={{ backgroundColor: toNotificationKindDisplay(kindCount.kind).color }}
 								/>
-								{NOTIFICATION_KINDS[kindCount.kind].label}
+								{toNotificationKindDisplay(kindCount.kind).label}
 								<strong className="ml-auto font-bold">
 									{kindCount.sent_count.toLocaleString('ko-KR')}
 								</strong>
@@ -91,9 +92,9 @@ const NotificationCard = ({ notifications }: Props) => {
 								<p className="col-span-2 flex items-center gap-1.5 text-[13px] text-muted-foreground">
 									<span
 										className="size-2 rounded-full"
-										style={{ backgroundColor: NOTIFICATION_KINDS[notification.kind].color }}
+										style={{ backgroundColor: toNotificationKindDisplay(notification.kind).color }}
 									/>
-									{NOTIFICATION_KINDS[notification.kind].label}
+									{toNotificationKindDisplay(notification.kind).label}
 									<span className="ml-1">{formatDateTime(notification.sent_at)}</span>
 
 									{notificationSection.readRateVisible && (

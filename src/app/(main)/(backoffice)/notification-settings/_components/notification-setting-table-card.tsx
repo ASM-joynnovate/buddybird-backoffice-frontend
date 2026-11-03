@@ -166,7 +166,6 @@ const NotificationSettingTableCard = () => {
 							)}
 						>
 							<span className="pb-2 [grid-area:title]">제목</span>
-							<span className="pb-2 [grid-area:kind]">종류</span>
 							<span className="pb-2 [grid-area:def]">기본값</span>
 						</div>
 

@@ -9,6 +9,7 @@ export const notificationSettingKindSchema = z.enum([
 	'emergency',
 	'marketing',
 	'marketing_night',
+	'parrot_motionless',
 ]);
 
 export const notificationSettingGroupSchema = z.object({
@@ -21,7 +22,7 @@ export const notificationSettingGroupSchema = z.object({
 export const notificationSettingItemSchema = z.object({
 	id: uuidSchema,
 	group_id: uuidSchema.nullable(),
-	kind: notificationSettingKindSchema,
+	kind: z.string(),
 	title: i18nSchema,
 	description: i18nSchema.nullable(),
 	default_enabled: z.boolean(),
@@ -30,7 +31,7 @@ export const notificationSettingItemSchema = z.object({
 
 const userNotificationSettingItemSchema = z.object({
 	id: uuidSchema,
-	kind: notificationSettingKindSchema,
+	kind: z.string(),
 	title: i18nSchema,
 	description: i18nSchema.nullable(),
 	enabled: z.boolean(),

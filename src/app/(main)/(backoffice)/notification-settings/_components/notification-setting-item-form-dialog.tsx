@@ -20,9 +20,6 @@ import {
 
 import SegmentedControl from '@/app/(main)/(backoffice)/_components/segmented-control';
 import DefaultEnabledIcon from '@/app/(main)/(backoffice)/notification-settings/_components/default-enabled-icon';
-import NotificationSettingKindTag, {
-	NOTIFICATION_SETTING_KINDS,
-} from '@/app/(main)/(backoffice)/notification-settings/_components/notification-setting-kind-tag';
 import NotificationSettingTextField from '@/app/(main)/(backoffice)/notification-settings/_components/notification-setting-text-field';
 import { koreanOrEnglishText, toI18nFieldValue, toI18nText, toOptionalI18nText } from '@/utils/i18n-text';
 import { toNotificationSettingTextError, toNotificationSettingTextUpdate } from '@/utils/notification-setting';
@@ -178,21 +175,17 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 					</DialogHeader>
 
 					<DialogBody className="@container grid content-start gap-3 px-4 pt-5 pb-6 md:px-6">
-						<div className={`${rowClassName} @md:items-start`}>
-							<span className={`${labelClassName} @md:pt-2`}>종류</span>
+						{/*추가한 뒤에는 종류를 변경할 수 없음*/}
+						{!item && (
+							<div className={`${rowClassName} @md:items-start`}>
+								<span className={`${labelClassName} @md:pt-2`}>종류</span>
 
-							{/*추가한 뒤에는 종류를 변경할 수 없음*/}
-							{item ? (
-								<div className="flex min-h-9 items-center">
-									<NotificationSettingKindTag kind={item.kind} />
-								</div>
-							) : (
 								<div>
 									<SegmentedControl
 										label="종류"
 										options={kindOptions.map((kindOption) => ({
 											value: kindOption,
-											label: NOTIFICATION_SETTING_KINDS[kindOption].label,
+											label: kindOption,
 											disabled: registeredKinds.includes(kindOption),
 										}))}
 										value={kind}
@@ -205,8 +198,8 @@ const NotificationSettingItemFormDialog = ({ item, onClose }: Props) => {
 										</p>
 									)}
 								</div>
-							)}
-						</div>
+							</div>
+						)}
 
 						<div className={`${rowClassName} @md:items-center`}>
 							<span id={defaultEnabledLabelId} className={labelClassName}>

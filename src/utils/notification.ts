@@ -4,8 +4,15 @@ import type { UserListItem } from '@/types/apis/users';
 
 import type { I18nFieldValue } from '@/types/i18n';
 
-import { MARKETING_PREFIXES } from '@/config/notification';
+import { MARKETING_PREFIXES, NOTIFICATION_KINDS } from '@/config/notification';
 import { toI18nFieldValue, toI18nText } from '@/utils/i18n-text';
+
+/** 알림 종류를 이름 및 색으로 변환하는 함수 */
+export const toNotificationKindDisplay = (kind: string) => {
+	const notificationKinds: Record<string, { label: string; color: string }> = NOTIFICATION_KINDS;
+
+	return notificationKinds[kind] ?? { label: kind, color: 'var(--chart-neutral)' };
+};
 
 /** 사용자가 이 종류의 알림을 수신하는지 확인하는 함수 */
 export const receivesNotification = (user: UserListItem, kind: SendableNotificationKind) => {
