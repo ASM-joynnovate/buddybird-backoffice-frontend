@@ -37,10 +37,10 @@ const DashboardCards = ({ dashboardParams, today, now }: Props) => {
 	return (
 		<>
 			<div className="grid grid-cols-2 gap-2.5 md:gap-4 xl:grid-cols-4">
-				<KpiCard label="사용자" icon={UsersRound} href="/users" linkLabel="사용자 화면 열기">
-					<KpiCount count={dashboardData.users.total_count} unit="명" />
+				<KpiCard label="가입" icon={UsersRound} href="/users" linkLabel="사용자 화면 열기">
+					<KpiCount count={dashboardData.users.signup_count} unit="명" />
 					<p className="text-[13px] text-muted-foreground">
-						가입 {dashboardData.users.signup_count.toLocaleString('ko-KR')}명
+						전체 {dashboardData.users.total_count.toLocaleString('ko-KR')}명
 					</p>
 				</KpiCard>
 
