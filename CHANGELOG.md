@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.32.0](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.31.1...v0.32.0) (2026-11-11)
+
+
+### Features
+
+* 기본 조회 기간 14일로 변경, 홈 가입 수 표시 ([55658d5](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/55658d520447dc9074e937b01a3f460626738220))
+* 기본 조회 기간 14일로 변경, 홈 가입 수 표시 ([9802192](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/commit/980219221a1118d496daaa7ad0daf0ab18d22539))
+
 ## [0.31.1](https://github.com/ASM-joynnovate/buddybird-backoffice-frontend/compare/v0.31.0...v0.31.1) (2026-11-03)
 
 
